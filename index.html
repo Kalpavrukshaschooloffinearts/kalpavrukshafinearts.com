@@ -18,40 +18,83 @@ gtag('config', 'G-8L108BFGM2');
 </script>
 
 <style>
-body { font-family: Arial, sans-serif; margin:0; }
-nav { padding:10px; background:#333; }
-nav a { color:white; margin-right:15px; text-decoration:none; }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
 
+/* NAV */
+nav {
+  padding: 12px;
+  background: #222;
+  text-align: center;
+}
+nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* HERO */
 .hero {
-  text-align:center;
-  padding:20px;
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #5a2d0c, #a0522d);
+  color: white;
+}
+
+.hero h1 {
+  font-size: 34px;
+  margin-bottom: 10px;
 }
 
 .hero img {
-  max-width:100%;
-  height:auto;
-  border-radius:10px;
+  max-width: 300px;
+  margin: 20px auto;
+  display: block;
+}
+
+.hero p {
+  margin: 6px 0;
+  font-size: 16px;
 }
 
 .cta-button {
-  display:inline-block;
-  margin-top:15px;
-  background:#25D366;
-  color:white;
-  padding:12px 20px;
-  border-radius:5px;
-  text-decoration:none;
-  font-weight:bold;
+  display: inline-block;
+  margin-top: 20px;
+  background: #25D366;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-section { padding:20px; }
-footer { text-align:center; padding:20px; background:#f5f5f5; }
+/* SECTIONS */
+section {
+  padding: 30px 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #f5f5f5;
+}
 </style>
 
 </head>
 
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="#about">About</a>
   <a href="#courses">Courses</a>
@@ -59,11 +102,14 @@ footer { text-align:center; padding:20px; background:#f5f5f5; }
   <a href="#contact">Contact</a>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <h1>Bharatanatyam Classes in Chennai & Online</h1>
+  <h1>Kalpavruksha School of Fine Arts</h1>
 
-  <img src="hero.webp" alt="Kalpavruksha School of Fine Arts Bharatanatyam Chennai">
+  <!-- IMPORTANT: Make sure this file exists -->
+  <img src="hero.webp" alt="Kalpavruksha School of Fine Arts Logo">
 
+  <p>Bharatanatyam Classes in Chennai & Online</p>
   <p>Kalakshetra tradition | Est. 2014 | Kodambakkam, Chennai</p>
 
   <a href="https://wa.me/917200095585" class="cta-button">
@@ -71,6 +117,7 @@ footer { text-align:center; padding:20px; background:#f5f5f5; }
   </a>
 </section>
 
+<!-- ABOUT -->
 <section id="about">
   <h2>About Us</h2>
   <p>
@@ -79,6 +126,7 @@ footer { text-align:center; padding:20px; background:#f5f5f5; }
   </p>
 </section>
 
+<!-- COURSES -->
 <section id="courses">
   <h2>Courses</h2>
   <ul>
@@ -89,22 +137,25 @@ footer { text-align:center; padding:20px; background:#f5f5f5; }
   <p><strong>Fees:</strong> Contact via WhatsApp</p>
 </section>
 
+<!-- ONLINE -->
 <section id="online">
   <h2>Online Classes</h2>
   <p>Live Bharatanatyam classes available worldwide.</p>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
   <h2>Contact</h2>
   <p>Kodambakkam, Chennai</p>
   <p>+91 7200095585</p>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <a href="privacy.html">Privacy Policy</a>
 </footer>
 
-<!-- WhatsApp Floating -->
+<!-- FLOATING WHATSAPP -->
 <a href="https://wa.me/917200095585"
 style="position:fixed;bottom:20px;right:20px;
 background:#25D366;color:white;
