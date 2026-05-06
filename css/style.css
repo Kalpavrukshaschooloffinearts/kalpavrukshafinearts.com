@@ -40,6 +40,8 @@ body {
   color: var(--ink);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+
+   padding-top: var(--nav-h); /* ✅ ADD THIS */
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -391,7 +393,8 @@ a { color: inherit; text-decoration: none; }
 
 /* ── PAGE HERO (inner pages) ─────────────────────────────── */
 .page-hero {
-  min-height: 380px;
+  min-height: calc(380px + var(--nav-h));
+   padding-top: var(--nav-h);
   background: var(--maroon);
   display: flex;
   align-items: flex-end;
