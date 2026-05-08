@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalpavruksha School of Fine Arts | Bharatanatyam Classes</title>
-  <meta name="description" content="Learn authentic Bharatanatyam in the Kalakshetra Style at Kalpavruksha School of Fine Arts, Chennai. Founded by Smt. Deepa Sadasivam. In-person classes in Kodambakkam &amp; online worldwide. Est. 2014.">
+  <title>Kalpavruksha School of Fine Arts | Bharatanatyam Classes Chennai</title>
+  <meta name="description" content="Learn authentic Bharatanatyam in the Kalakshetra Style at Kalpavruksha School of Fine Arts, Chennai. Founded by Smt. Deepa Sadasivam. In-person in Kodambakkam &amp; online worldwide. Est. 2014.">
   <meta name="keywords" content="Bharatanatyam classes Chennai, Bharatanatyam school Kodambakkam, Kalakshetra Style dance, dance classes for kids Chennai, Arangetram training Chennai, Bharatanatyam for adults Chennai, classical dance school Chennai">
   <meta name="author" content="Kalpavruksha School of Fine Arts">
   <link rel="canonical" href="https://kalpavrukshafinearts.com/">
@@ -46,15 +46,17 @@
     ]
   }
   </script>
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8L108BFGM2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-8L108BFGM2');
+    gtag('config', 'G-8L108BFGM2', { send_page_view: true });
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -62,7 +64,7 @@
 <a href="#main" class="skip-link">Skip to main content</a>
 
 <!-- NAVIGATION -->
-<nav class="site-nav" role="navigation" aria-label="Main navigation">
+<nav class="site-nav" role="navigation" aria-label="Main navigation" id="site-nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School of Fine Arts — Home">
       <span class="nav-logo-name">Kalpavruksha</span>
@@ -72,7 +74,7 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" role="list">
-      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="index.html" class="active" aria-current="page">Home</a></li>
       <li><a href="courses.html">Courses</a></li>
       <li><a href="guru.html">Our Guru</a></li>
       <li><a href="online-classes.html">Online Classes</a></li>
@@ -86,17 +88,130 @@
 
 <!-- HERO -->
 <section class="hero-section" aria-label="Welcome to Kalpavruksha">
-  <div class="hero-bg" role="img" aria-label="Bharatanatyam dancer in Kalakshetra pose"></div>
+  <div class="hero-bg" role="presentation"></div>
   <div class="hero-overlay"></div>
+
+  <!-- Decorative SVG dancer illustration -->
+  <div class="hero-dancer-illustration" aria-hidden="true">
+    <svg viewBox="0 0 320 500" xmlns="http://www.w3.org/2000/svg" width="320" height="500">
+      <!-- Decorative background circle -->
+      <circle cx="160" cy="250" r="200" fill="rgba(245,200,66,0.04)" stroke="rgba(245,200,66,0.12)" stroke-width="1"/>
+      <circle cx="160" cy="250" r="155" fill="rgba(245,200,66,0.03)" stroke="rgba(245,200,66,0.08)" stroke-width="0.5"/>
+      <!-- Mandala-style decorative ring -->
+      <g opacity="0.18">
+        <path d="M160 60 L170 90 L160 80 L150 90Z" fill="#F5C842"/>
+        <path d="M220 90 L220 120 L200 108 L200 98Z" fill="#F5C842"/>
+        <path d="M260 150 L255 180 L238 163 L248 155Z" fill="#F5C842"/>
+        <path d="M270 220 L255 245 L243 225 L258 218Z" fill="#F5C842"/>
+        <path d="M250 295 L228 312 L225 290 L242 288Z" fill="#F5C842"/>
+        <path d="M205 350 L183 355 L188 334 L205 335Z" fill="#F5C842"/>
+        <path d="M155 375 L145 350 L165 350 L155 375Z" fill="#F5C842"/>
+        <path d="M100 355 L95 330 L113 336 L107 354Z" fill="#F5C842"/>
+        <path d="M60 305 L65 280 L80 292 L68 305Z" fill="#F5C842"/>
+        <path d="M48 235 L60 215 L70 230 L55 240Z" fill="#F5C842"/>
+        <path d="M60 162 L75 145 L82 162 L65 168Z" fill="#F5C842"/>
+        <path d="M105 105 L122 95 L124 113 L106 118Z" fill="#F5C842"/>
+      </g>
+      <!-- Dancer body - Bharatanatyam Aramandi pose -->
+      <!-- Head with bun -->
+      <ellipse cx="160" cy="98" rx="22" ry="24" fill="rgba(255,220,180,0.85)"/>
+      <!-- Hair bun -->
+      <ellipse cx="160" cy="77" rx="14" ry="10" fill="rgba(60,30,15,0.8)"/>
+      <ellipse cx="160" cy="72" rx="9" ry="6" fill="rgba(80,40,20,0.7)"/>
+      <!-- Flower in hair -->
+      <circle cx="170" cy="74" r="5" fill="rgba(245,200,66,0.9)"/>
+      <circle cx="170" cy="74" r="3" fill="rgba(255,240,180,0.9)"/>
+      <!-- Neck -->
+      <rect x="154" y="120" width="12" height="16" rx="4" fill="rgba(255,220,180,0.85)"/>
+      <!-- Necklace -->
+      <ellipse cx="160" cy="136" rx="16" ry="4" fill="none" stroke="rgba(245,200,66,0.8)" stroke-width="2"/>
+      <circle cx="160" cy="140" r="3" fill="rgba(245,200,66,0.9)"/>
+      <!-- Costume torso - classical silambam top -->
+      <path d="M135 135 Q130 145 128 165 Q128 180 130 190 Q145 196 160 196 Q175 196 190 190 Q192 180 192 165 Q190 145 185 135 Q175 130 160 130 Q145 130 135 135Z" fill="rgba(150,30,60,0.9)"/>
+      <!-- Gold border on costume -->
+      <path d="M135 135 Q130 145 128 165" fill="none" stroke="rgba(245,200,66,0.7)" stroke-width="3"/>
+      <path d="M185 135 Q190 145 192 165" fill="none" stroke="rgba(245,200,66,0.7)" stroke-width="3"/>
+      <!-- Arms - Bharatanatyam gesture: right arm raised, mudra -->
+      <!-- Right arm raised up with katakamukha mudra -->
+      <line x1="184" y1="145" x2="230" y2="108" stroke="rgba(255,220,180,0.85)" stroke-width="10" stroke-linecap="round"/>
+      <!-- Right hand - katakamukha -->
+      <ellipse cx="234" cy="103" rx="12" ry="9" fill="rgba(255,220,180,0.85)"/>
+      <line x1="228" y1="97" x2="238" y2="92" stroke="rgba(255,220,180,0.85)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="232" y1="94" x2="240" y2="90" stroke="rgba(255,220,180,0.85)" stroke-width="3" stroke-linecap="round"/>
+      <!-- Right bangles -->
+      <ellipse cx="210" cy="124" rx="9" ry="5" fill="none" stroke="rgba(245,200,66,0.8)" stroke-width="2" transform="rotate(-30 210 124)"/>
+      <ellipse cx="207" cy="127" rx="9" ry="5" fill="none" stroke="rgba(245,200,66,0.6)" stroke-width="1.5" transform="rotate(-30 207 127)"/>
+      <!-- Left arm extended side with alapadma mudra -->
+      <line x1="136" y1="145" x2="88" y2="168" stroke="rgba(255,220,180,0.85)" stroke-width="10" stroke-linecap="round"/>
+      <ellipse cx="82" cy="170" rx="13" ry="9" fill="rgba(255,220,180,0.85)"/>
+      <!-- Fingers spread - alapadma -->
+      <line x1="76" y1="165" x2="70" y2="158" stroke="rgba(255,220,180,0.85)" stroke-width="3" stroke-linecap="round"/>
+      <line x1="80" y1="163" x2="75" y2="155" stroke="rgba(255,220,180,0.85)" stroke-width="3" stroke-linecap="round"/>
+      <line x1="84" y1="162" x2="81" y2="153" stroke="rgba(255,220,180,0.85)" stroke-width="3" stroke-linecap="round"/>
+      <line x1="89" y1="163" x2="88" y2="154" stroke="rgba(255,220,180,0.85)" stroke-width="3" stroke-linecap="round"/>
+      <line x1="93" y1="165" x2="94" y2="157" stroke="rgba(255,220,180,0.85)" stroke-width="3" stroke-linecap="round"/>
+      <!-- Left bangles -->
+      <ellipse cx="108" cy="158" rx="9" ry="5" fill="none" stroke="rgba(245,200,66,0.8)" stroke-width="2" transform="rotate(-20 108 158)"/>
+      <!-- Lower costume - pavadai/skirt in aramandi position -->
+      <path d="M128 188 Q118 200 112 225 Q106 250 108 270 Q118 280 140 284 Q160 286 180 284 Q202 280 212 270 Q214 250 208 225 Q202 200 192 188Z" fill="rgba(150,30,60,0.85)"/>
+      <!-- Gold border on skirt -->
+      <path d="M128 188 Q118 200 112 225 Q106 250 108 270" fill="none" stroke="rgba(245,200,66,0.6)" stroke-width="3"/>
+      <path d="M192 188 Q202 200 208 225 Q214 250 212 270" fill="none" stroke="rgba(245,200,66,0.6)" stroke-width="3"/>
+      <!-- Skirt pleats -->
+      <line x1="140" y1="188" x2="132" y2="280" stroke="rgba(245,200,66,0.2)" stroke-width="1"/>
+      <line x1="150" y1="190" x2="146" y2="283" stroke="rgba(245,200,66,0.2)" stroke-width="1"/>
+      <line x1="160" y1="192" x2="160" y2="285" stroke="rgba(245,200,66,0.3)" stroke-width="1.5"/>
+      <line x1="170" y1="190" x2="174" y2="283" stroke="rgba(245,200,66,0.2)" stroke-width="1"/>
+      <line x1="180" y1="188" x2="188" y2="280" stroke="rgba(245,200,66,0.2)" stroke-width="1"/>
+      <!-- Legs in aramandi (half-sit stance) -->
+      <!-- Left leg -->
+      <line x1="130" y1="270" x2="105" y2="340" stroke="rgba(255,220,180,0.85)" stroke-width="12" stroke-linecap="round"/>
+      <line x1="105" y1="340" x2="95" y2="390" stroke="rgba(255,220,180,0.85)" stroke-width="10" stroke-linecap="round"/>
+      <!-- Left foot -->
+      <ellipse cx="90" cy="394" rx="18" ry="8" fill="rgba(255,220,180,0.85)"/>
+      <!-- Salangai (ankle bells) left -->
+      <rect x="78" y="383" width="25" height="8" rx="4" fill="rgba(245,200,66,0.9)"/>
+      <circle cx="84" cy="387" r="2" fill="rgba(150,30,60,0.8)"/>
+      <circle cx="90" cy="387" r="2" fill="rgba(150,30,60,0.8)"/>
+      <circle cx="96" cy="387" r="2" fill="rgba(150,30,60,0.8)"/>
+      <!-- Right leg -->
+      <line x1="190" y1="270" x2="215" y2="340" stroke="rgba(255,220,180,0.85)" stroke-width="12" stroke-linecap="round"/>
+      <line x1="215" y1="340" x2="225" y2="390" stroke="rgba(255,220,180,0.85)" stroke-width="10" stroke-linecap="round"/>
+      <!-- Right foot -->
+      <ellipse cx="230" cy="394" rx="18" ry="8" fill="rgba(255,220,180,0.85)"/>
+      <!-- Salangai (ankle bells) right -->
+      <rect x="217" y="383" width="25" height="8" rx="4" fill="rgba(245,200,66,0.9)"/>
+      <circle cx="223" cy="387" r="2" fill="rgba(150,30,60,0.8)"/>
+      <circle cx="229" cy="387" r="2" fill="rgba(150,30,60,0.8)"/>
+      <circle cx="235" cy="387" r="2" fill="rgba(150,30,60,0.8)"/>
+      <!-- Maang tikka -->
+      <line x1="160" y1="80" x2="160" y2="88" stroke="rgba(245,200,66,0.9)" stroke-width="1.5"/>
+      <circle cx="160" cy="90" r="4" fill="rgba(245,200,66,0.9)"/>
+      <!-- Earrings -->
+      <line x1="139" y1="105" x2="139" y2="115" stroke="rgba(245,200,66,0.9)" stroke-width="1.5"/>
+      <circle cx="139" cy="118" r="3.5" fill="rgba(245,200,66,0.9)"/>
+      <line x1="181" y1="105" x2="181" y2="115" stroke="rgba(245,200,66,0.9)" stroke-width="1.5"/>
+      <circle cx="181" cy="118" r="3.5" fill="rgba(245,200,66,0.9)"/>
+      <!-- Facial features -->
+      <ellipse cx="153" cy="100" rx="4" ry="5" fill="rgba(80,40,20,0.7)"/>
+      <ellipse cx="167" cy="100" rx="4" ry="5" fill="rgba(80,40,20,0.7)"/>
+      <path d="M154 108 Q160 113 166 108" fill="none" stroke="rgba(150,50,50,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Bindi -->
+      <circle cx="160" cy="94" r="2.5" fill="rgba(200,30,30,0.8)"/>
+    </svg>
+  </div>
+
   <div class="container hero-content">
-    <h1 class="display-xl hero-title fade-up fade-up-2" data-reveal>
-      Kalpavruksha <br><em>School of Fine Arts <br>Dance for everyone</em>
-    </h1>
+    <div class="hero-logo-block fade-up fade-up-1" data-reveal>
+      <h1 class="hero-school-name">Kalpavruksha</h1>
+      <p class="hero-school-sub">School of Fine Arts</p>
+      <p class="hero-tagline">Dance for everyone</p>
+    </div>
     <p class="hero-sub fade-up fade-up-3" data-reveal>
       Authentic classical training under Smt. Deepa Sadasivam,<br>
       Kalakshetra alumna. In-person in Chennai · Online worldwide.
     </p>
-    <div class="ornament fade-up fade-up-1" data-reveal>
+    <div class="ornament fade-up fade-up-2" data-reveal>
       <span class="ornament-dot"></span>
       <span class="section-label" style="color:rgba(248,220,140,0.85)">Est. 2014 · Kalakshetra Style</span>
       <span class="ornament-dot"></span>
@@ -107,7 +222,7 @@
     </div>
     <div class="hero-stats fade-up fade-up-4" data-reveal>
       <div class="hero-stat">
-        <span class="hero-stat-n">10+</span>
+        <span class="hero-stat-n stat-eleven">11+</span>
         <span class="hero-stat-l">Years of Teaching</span>
       </div>
       <div class="hero-stat-div"></div>
@@ -127,6 +242,12 @@
       </div>
     </div>
   </div>
+  
+  <!-- HERO IMAGE PLACEHOLDER -->
+  <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:2;background:rgba(0,0,0,0.55);border:1.5px dashed rgba(255,255,255,0.5);border-radius:4px;padding:8px 20px;text-align:center;pointer-events:none">
+    <span style="font-family:monospace;font-size:0.75rem;color:#F8DC8C;display:block;font-weight:600">hero-bg.jpg</span>
+    <span style="font-size:0.65rem;color:rgba(255,255,255,0.6)">Full-screen hero background · Dancer on stage · 16:9 landscape</span>
+  </div>
   <a href="#about" class="hero-scroll-cue" aria-label="Scroll down">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </a>
@@ -136,34 +257,46 @@
 <section class="quicklinks-bar" aria-label="Quick navigation">
   <div class="container quicklinks-inner">
     <a href="courses.html" class="quicklink">
-      <span class="quicklink-icon" aria-hidden="true">🎓</span>
-      <span>Our Courses</span>
+      <span class="quicklink-icon" aria-hidden="true">🎓</span><span>Our Courses</span>
     </a>
     <a href="guru.html" class="quicklink">
-      <span class="quicklink-icon" aria-hidden="true">🌸</span>
-      <span>Meet the Guru</span>
+      <span class="quicklink-icon" aria-hidden="true">🌸</span><span>Meet the Guru</span>
     </a>
     <a href="online-classes.html" class="quicklink">
-      <span class="quicklink-icon" aria-hidden="true">💻</span>
-      <span>Online Classes</span>
+      <span class="quicklink-icon" aria-hidden="true">💻</span><span>Online Classes</span>
     </a>
     <a href="events.html" class="quicklink">
-      <span class="quicklink-icon" aria-hidden="true">🎭</span>
-      <span>Events &amp; Gallery</span>
+      <span class="quicklink-icon" aria-hidden="true">🎭</span><span>Events &amp; Gallery</span>
     </a>
     <a href="contact.html" class="quicklink quicklink--cta">
-      <span class="quicklink-icon" aria-hidden="true">📋</span>
-      <span>Book Trial Class</span>
+      <span class="quicklink-icon" aria-hidden="true">📋</span><span>Book Trial Class</span>
     </a>
   </div>
 </section>
+
+<!-- IN-PAGE SECTION NAV -->
+<nav class="page-section-nav" aria-label="Page sections">
+  <div class="container">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#how-to-join">Enrol</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+    </ul>
+  </div>
+</nav>
 
 <!-- ABOUT STRIP -->
 <section class="section section--white" id="about" aria-label="About Kalpavruksha">
   <div class="container">
     <div class="about-grid">
       <div class="about-img-col" data-reveal>
-        <div class="about-img-frame" role="img" aria-label="Guru Smt. Deepa Sadasivam teaching students at Kalpavruksha School"></div>
+        <!-- SVG illustration: Bharatanatyam teaching scene -->
+        <div class="about-img-frame" role="img" aria-label="Guru Smt. Deepa Sadasivam teaching students"><div class="img-placeholder">
+    <span class="ph-icon" aria-hidden="true">🖼</span>
+    <span class="ph-filename">about-guru.jpg</span>
+    <span class="ph-label">Guru teaching student · warm classroom moment · portrait 4:5</span>
+  </div></div>
         <div class="about-img-badge">
           <span class="about-badge-n">Kalakshetra</span>
           <span class="about-badge-l">Style</span>
@@ -182,31 +315,19 @@
         <ul class="about-pillars" aria-label="Our teaching pillars">
           <li>
             <span class="pillar-icon" aria-hidden="true">✦</span>
-            <div>
-              <strong>Authentic lineage</strong>
-              <span>Direct transmission of Kalakshetra style</span>
-            </div>
+            <div><strong>Authentic lineage</strong><span>Direct transmission of Kalakshetra style</span></div>
           </li>
           <li>
             <span class="pillar-icon" aria-hidden="true">✦</span>
-            <div>
-              <strong>Personalised attention</strong>
-              <span>Level-based batches for focused learning</span>
-            </div>
+            <div><strong>Personalised attention</strong><span>Level-based batches for focused learning</span></div>
           </li>
           <li>
             <span class="pillar-icon" aria-hidden="true">✦</span>
-            <div>
-              <strong>All ages welcome</strong>
-              <span>Children from age 4+ · Adults of any age</span>
-            </div>
+            <div><strong>All ages welcome</strong><span>Children from age 4+ · Adults of any age</span></div>
           </li>
           <li>
             <span class="pillar-icon" aria-hidden="true">✦</span>
-            <div>
-              <strong>Online worldwide</strong>
-              <span>Live classes via Google Meet for global students</span>
-            </div>
+            <div><strong>Online worldwide</strong><span>Live classes via Google Meet for global students</span></div>
           </li>
         </ul>
         <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:32px">
@@ -218,23 +339,8 @@
   </div>
 </section>
 
-<!-- SALANGAI POOJA HIGHLIGHT -->
-<section class="section section--cream" aria-label="Salangai Pooja milestone">
-  <div class="container">
-    <div class="sp-highlight">
-      <div class="sp-icon" aria-hidden="true">🔔</div>
-      <div class="sp-text">
-        <span class="section-label">A sacred milestone</span>
-        <h2 class="display-md" style="margin-top:8px;margin-bottom:12px">Salangai Pooja — The First Step onto the Stage</h2>
-        <p>Before a student performs their Arangetram, they observe the <strong>Salangai Pooja</strong> — a deeply meaningful ceremony in which the salangai (ankle bells) are formally tied for the first time. This ritual honours the sacred bond between guru and shishya, and marks the student's public debut in classical Bharatanatyam. Kalpavruksha has celebrated over <strong>20+ Salangai Poojas</strong>, each a proud milestone in a student's artistic journey.</p>
-        <a href="events.html" class="btn btn-secondary" style="margin-top:20px">View Events &amp; Gallery →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- HOW TO JOIN -->
-<section class="section section--saffron-pale" aria-label="Enrollment process">
+<section class="section section--saffron-pale" id="how-to-join" aria-label="Enrollment process">
   <div class="container">
     <div class="section-head" data-reveal>
       <span class="section-label">Simple process</span>
@@ -266,7 +372,7 @@
 </section>
 
 <!-- COURSES PREVIEW -->
-<section class="section section--white" aria-label="Our courses">
+<section class="section section--white" id="courses" aria-label="Our courses">
   <div class="container">
     <div class="section-head" data-reveal>
       <span class="section-label">What we offer</span>
@@ -275,7 +381,11 @@
     </div>
     <div class="courses-grid">
       <article class="course-card card" data-reveal>
-        <div class="course-img course-img--beginners" role="img" aria-label="Children learning basic Bharatanatyam adavus"></div>
+        <div class="course-img" role="img" aria-label="Children learning Bharatanatyam adavus"><div class="img-placeholder">
+    <span class="ph-icon" aria-hidden="true">🖼</span>
+    <span class="ph-filename">home-card-beginners.jpg</span>
+    <span class="ph-label">Young child in Aramandi/Namaskaram · landscape 4:3</span>
+  </div></div>
         <div class="course-body">
           <span class="course-tag">Ages 4+</span>
           <h3>Beginners</h3>
@@ -283,8 +393,13 @@
           <a href="courses.html#beginners" class="course-link">Learn more →</a>
         </div>
       </article>
+
       <article class="course-card card" data-reveal>
-        <div class="course-img course-img--intermediate" role="img" aria-label="Intermediate Bharatanatyam students practising varnam"></div>
+        <div class="course-img" role="img" aria-label="Intermediate student in varnam pose"><div class="img-placeholder">
+    <span class="ph-icon" aria-hidden="true">🖼</span>
+    <span class="ph-filename">home-card-intermediate.jpg</span>
+    <span class="ph-label">Student in expressive Abhinaya pose · landscape 4:3</span>
+  </div></div>
         <div class="course-body">
           <span class="course-tag">Intermediate</span>
           <h3>Intermediate &amp; Advanced</h3>
@@ -292,8 +407,13 @@
           <a href="courses.html#intermediate" class="course-link">Learn more →</a>
         </div>
       </article>
+
       <article class="course-card card" data-reveal>
-        <div class="course-img course-img--arangetram" role="img" aria-label="Program preparation student performing"></div>
+        <div class="course-img" role="img" aria-label="Arangetram student in full costume on stage"><div class="img-placeholder">
+    <span class="ph-icon" aria-hidden="true">🖼</span>
+    <span class="ph-filename">home-card-arangetram.jpg</span>
+    <span class="ph-label">Full costume on stage · landscape 4:3</span>
+  </div></div>
         <div class="course-body">
           <span class="course-tag">Solo debut</span>
           <h3>Salangai Pooja &amp; Arangetram</h3>
@@ -301,8 +421,13 @@
           <a href="courses.html#arangetram" class="course-link">Learn more →</a>
         </div>
       </article>
+
       <article class="course-card card" data-reveal>
-        <div class="course-img course-img--adults" role="img" aria-label="Adult Bharatanatyam class in progress"></div>
+        <div class="course-img" role="img" aria-label="Adult learner in Bharatanatyam class"><div class="img-placeholder">
+    <span class="ph-icon" aria-hidden="true">🖼</span>
+    <span class="ph-filename">home-card-adults.jpg</span>
+    <span class="ph-label">Adult woman in practice attire · landscape 4:3</span>
+  </div></div>
         <div class="course-body">
           <span class="course-tag">Adults · All levels</span>
           <h3>Adult Beginners</h3>
@@ -317,19 +442,19 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="section section--maroon" aria-label="School achievements and recognition">
+<!-- ACHIEVEMENTS -->
+<section class="section section--maroon" id="achievements" aria-label="School achievements and recognition">
   <div class="container">
     <div class="section-head" style="color:#fff" data-reveal>
       <span class="section-label" style="color:rgba(248,220,140,0.8)">Recognition</span>
       <h2 class="display-md" style="margin-top:10px;color:#fff">A legacy of excellence</h2>
-      <p style="color:rgba(255,255,255,0.65)">A decade of performances, Salangai Poojas, Arangetrams, and artistic milestones</p>
+      <p style="color:rgba(255,255,255,0.65)">Eleven years of performances, Salangai Poojas, Arangetrams, and artistic milestones</p>
     </div>
     <div class="achievements-grid">
       <div class="achievement-item" data-reveal>
         <div class="achievement-icon" aria-hidden="true">🔔</div>
         <h3>20+ Salangai Poojas</h3>
-        <p>Annual ceremonies honouring the sacred bond between teacher and student — the first formal milestone in a student's dance journey</p>
+        <p>The sacred first stage debut — the ceremony where the student's ankle bells are tied for the first time, marking entry into classical Bharatanatyam</p>
       </div>
       <div class="achievement-item" data-reveal>
         <div class="achievement-icon" aria-hidden="true">🎭</div>
@@ -397,7 +522,8 @@
           <li><a href="courses.html#beginners">Beginners (Ages 4+)</a></li>
           <li><a href="courses.html#intermediate">Intermediate</a></li>
           <li><a href="courses.html#advanced">Advanced</a></li>
-          <li><a href="courses.html#arangetram">Salangai Pooja &amp; Arangetram</a></li>
+          <li><a href="courses.html#salangai">Salangai Pooja</a></li>
+          <li><a href="courses.html#arangetram">Arangetram</a></li>
           <li><a href="courses.html#adults">Adult Beginners</a></li>
           <li><a href="online-classes.html">Online Classes</a></li>
         </ul>
@@ -423,8 +549,8 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Kalpavruksha School of Fine Arts. All rights reserved.</p>
-      <p>Bharatanatyam · Kalakshetra Style · Chennai, India | <a href="privacy.html" style="color:rgba(255,255,255,0.45)">Privacy Policy</a></p>
+      <p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p>
+      <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai, India &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.45)">Privacy Policy</a></p>
     </div>
   </div>
 </footer>
@@ -438,121 +564,184 @@
 </a>
 
 <style>
-/* ── QUICKLINKS BAR ─────────────── */
-.quicklinks-bar{background:var(--maroon);padding:0}
-.quicklinks-inner{display:flex;justify-content:center;flex-wrap:wrap;gap:0}
-.quicklink{display:flex;align-items:center;gap:8px;padding:14px 20px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.04em;border-right:1px solid rgba(255,255,255,0.08);transition:background 0.2s,color 0.2s}
-.quicklink:last-child{border-right:none}
-.quicklink:hover{background:rgba(255,255,255,0.1);color:#fff}
-.quicklink--cta{background:var(--gold);color:#fff;font-weight:600}
-.quicklink--cta:hover{background:var(--saffron);color:#fff}
-.quicklink-icon{font-size:1rem}
-@media(max-width:600px){.quicklink{padding:12px 14px;font-size:0.75rem}.quicklink-icon{display:none}}
-
-/* ── HERO ─────────────── */
-.hero-section{min-height:100svh;position:relative;display:flex;align-items:center;overflow:hidden;background:var(--maroon)}
-.hero-bg{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='rgba(184,150,46,0.12)'/%3E%3C/svg%3E") repeat,linear-gradient(135deg,#5c1522 0%,#7B1D2E 40%,#3d0d18 100%)}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(28,10,16,0.7) 0%,rgba(28,10,16,0.2) 60%,transparent 100%)}
-.hero-content{position:relative;z-index:1;padding-top:calc(var(--nav-h,72px) + 40px);padding-bottom:80px;max-width:720px}
-.hero-title{color:#fff;margin-bottom:20px}
-.hero-title em{font-style:italic;color:#F8DC8C}
-.hero-sub{color:rgba(255,255,255,0.75);font-size:1.05rem;line-height:1.7;margin-bottom:36px}
-.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:56px}
-.hero-btn-sec{color:rgba(255,255,255,0.85)!important;border-color:rgba(255,255,255,0.4)!important}
-.hero-btn-sec:hover{background:rgba(255,255,255,0.1)!important;border-color:rgba(255,255,255,0.8)!important}
-.hero-stats{display:flex;gap:0;flex-wrap:wrap}
-.hero-stat{text-align:center;padding:0 24px 0 0}
-.hero-stat-div{width:1px;background:rgba(255,255,255,0.15);margin-right:24px}
-.hero-stat-n{display:block;font-family:var(--font-display);font-size:2rem;font-weight:300;color:#F8DC8C;line-height:1}
-.hero-stat-l{display:block;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:4px}
-.hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.4);animation:bounce 2s infinite}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-
-/* ── SALANGAI HIGHLIGHT ─────────── */
-.sp-highlight{display:flex;gap:32px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:8px;padding:36px;box-shadow:0 2px 16px rgba(0,0,0,0.04)}
-.sp-icon{font-size:3rem;flex-shrink:0;margin-top:4px}
-.sp-text{}
-.sp-text h2{color:var(--maroon)}
-.sp-text p{color:var(--ink-mid);line-height:1.75;font-size:0.95rem}
-
-/* ── ABOUT ─────────────── */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-.about-img-col{position:relative}
-.about-img-frame{width:100%;aspect-ratio:4/5;background:linear-gradient(135deg,var(--saffron-light) 0%,var(--maroon-light) 100%);border-radius:4px;border:1px solid var(--border)}
-.about-img-badge{position:absolute;bottom:-16px;right:-16px;background:var(--gold);color:#fff;padding:16px 20px;border-radius:4px;text-align:center;line-height:1.2}
-.about-badge-n{display:block;font-family:var(--font-display);font-size:1.1rem;font-weight:600}
-.about-badge-l{display:block;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;opacity:0.85}
-.about-pillars{list-style:none;margin-top:24px;display:flex;flex-direction:column;gap:14px}
-.about-pillars li{display:flex;align-items:flex-start;gap:12px}
-.pillar-icon{color:var(--gold);font-size:0.7rem;margin-top:6px;flex-shrink:0}
-.about-pillars li div{display:flex;flex-direction:column;gap:2px}
-.about-pillars li strong{font-size:0.9rem;color:var(--ink)}
-.about-pillars li span{font-size:0.82rem;color:var(--ink-soft)}
-.btn-outline{background:transparent;border:1px solid var(--border-strong);color:var(--ink);padding:10px 20px;border-radius:3px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center}
-.btn-outline:hover{background:var(--saffron-pale)}
-
-/* ── STEPS ─────────────── */
-.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative}
-.step-card{background:#fff;border:1px solid var(--border);padding:36px 28px;text-align:center;position:relative}
-.step-card:first-child{border-radius:4px 0 0 4px}
-.step-card:last-child{border-radius:0 4px 4px 0}
-.step-num{font-family:var(--font-display);font-size:3rem;font-weight:300;color:var(--saffron);opacity:0.25;line-height:1;margin-bottom:12px}
-.step-card h3{font-family:var(--font-display);font-size:1.3rem;margin-bottom:12px;color:var(--ink)}
-.step-card p{font-size:0.88rem;color:var(--ink-soft);line-height:1.65}
-.step-link{display:inline-block;margin-top:16px;font-size:0.8rem;letter-spacing:0.08em;color:var(--saffron);text-transform:uppercase}
-
-/* ── COURSES ────────────── */
-.courses-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.course-img{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saffron-light),var(--maroon-light));position:relative;overflow:hidden}
-.course-img--beginners{background:linear-gradient(135deg,#FBF4EC,#F5E6D3)}
-.course-img--intermediate{background:linear-gradient(135deg,#F3E8EB,#F5E6D3)}
-.course-img--arangetram{background:linear-gradient(135deg,#F7EFD2,#F3E8EB)}
-.course-img--adults{background:linear-gradient(135deg,#E1F5EE,#FBF4EC)}
-.course-body{padding:20px}
-.course-tag{font-size:0.68rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--saffron)}
-.course-body h3{font-family:var(--font-display);font-size:1.2rem;margin:6px 0 10px;color:var(--ink)}
-.course-body p{font-size:0.83rem;color:var(--ink-soft);line-height:1.65}
-.course-link{display:inline-block;margin-top:14px;font-size:0.78rem;letter-spacing:0.08em;color:var(--maroon);text-transform:uppercase;font-weight:500}
-
-/* ── ACHIEVEMENTS ───────────── */
-.achievements-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
-.achievement-item{text-align:center}
-.achievement-icon{font-size:2rem;margin-bottom:16px;display:block}
-.achievement-item h3{font-family:var(--font-display);font-size:1.1rem;color:#fff;margin-bottom:10px}
-.achievement-item p{font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.65}
-
-/* ── CTA BANNER ─────────────── */
-.cta-banner{background:var(--ink)}
-.cta-banner-inner{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
-.cta-banner-actions{display:flex;gap:16px;flex-wrap:wrap;flex-shrink:0}
-
-/* ── RESPONSIVE ─────────────── */
-@media(max-width:1100px){
-  .courses-grid{grid-template-columns:repeat(2,1fr)}
-  .achievements-grid{grid-template-columns:repeat(2,1fr)}
-  .about-grid{grid-template-columns:1fr;gap:48px}
-  .about-img-badge{right:16px}
+/* ══ SHARED NAV FIX ══ */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: rgba(92,21,34,0.97);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: box-shadow 0.3s;
 }
-@media(max-width:768px){
-  .steps-grid{grid-template-columns:1fr;gap:16px}
-  .step-card{border-radius:4px!important}
-  .courses-grid{grid-template-columns:1fr 1fr}
-  .achievements-grid{grid-template-columns:1fr 1fr}
-  .cta-banner-inner{flex-direction:column;text-align:center}
-  .cta-banner-actions{justify-content:center}
-  .hero-stats{gap:16px}
-  .hero-stat-div{display:none}
-  .hero-stat{padding:0}
-  .sp-highlight{flex-direction:column;gap:16px}
-  .sp-icon{font-size:2rem}
+.site-nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; height: 68px;
 }
-@media(max-width:480px){
-  .courses-grid{grid-template-columns:1fr}
-  .achievements-grid{grid-template-columns:1fr}
-  .hero-content{padding-top:calc(var(--nav-h,72px) + 24px);padding-bottom:48px}
+.nav-logo { text-decoration: none; display: flex; flex-direction: column; line-height: 1.15; }
+.nav-logo-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #F8DC8C; font-weight: 600; letter-spacing: 0.02em; }
+.nav-logo-sub { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+.nav-links { list-style: none; display: flex; align-items: center; gap: 4px; }
+.nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em; padding: 8px 12px; border-radius: 3px; transition: color 0.2s, background 0.2s; white-space: nowrap; }
+.nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.1); }
+.nav-links a.active { color: #F8DC8C; background: transparent; }
+.nav-cta { background: rgba(200,98,26,0.85) !important; color: #fff !important; border-radius: 3px; }
+.nav-cta:hover { background: rgba(200,98,26,1) !important; }
+.nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 22px; height: 2px; background: rgba(255,255,255,0.8); border-radius: 2px; transition: all 0.3s; }
+body { padding-top: 68px; }
+@media(max-width:840px){
+  .nav-toggle { display: flex; }
+  .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; background: rgba(70,15,25,0.98); flex-direction: column; align-items: stretch; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 9998; }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 12px 24px; border-radius: 0; font-size: 0.9rem; }
 }
+
+/* ══ IN-PAGE SECTION NAV ══ */
+.page-section-nav { background: #fff; border-bottom: 1px solid var(--border,#E8DDD4); position: sticky; top: 68px; z-index: 100; }
+.page-section-nav .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.page-section-nav ul { list-style: none; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+.page-section-nav ul::-webkit-scrollbar { display: none; }
+.page-section-nav a { display: block; padding: 11px 18px; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft,#7A6558); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+.page-section-nav a:hover { color: var(--maroon,#7B1D2E); border-color: var(--maroon,#7B1D2E); }
+.page-section-nav a.active { color: var(--maroon,#7B1D2E); border-color: var(--maroon,#7B1D2E); }
+
+/* ══ HERO ══ */
+.hero-section { min-height: 100svh; position: relative; display: flex; align-items: center; overflow: hidden; background: #5c1522; }
+.hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #5c1522 0%, #7B1D2E 45%, #3d0d18 100%); }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(28,10,16,0.75) 0%, rgba(28,10,16,0.3) 55%, transparent 80%); }
+.hero-dancer-illustration { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); opacity: 0.82; pointer-events: none; z-index: 1; }
+.hero-content { position: relative; z-index: 2; padding: 40px 0 80px; max-width: 640px; }
+.hero-logo-block { margin-bottom: 24px; }
+.hero-school-name { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 700; color: #F8DC8C; line-height: 1; letter-spacing: -0.01em; margin: 0; }
+.hero-school-sub { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 400; color: rgba(255,255,255,0.85); letter-spacing: 0.06em; margin: 4px 0 0; }
+.hero-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1rem, 2vw, 1.3rem); color: rgba(248,220,140,0.75); margin-top: 8px; letter-spacing: 0.02em; }
+.hero-sub { color: rgba(255,255,255,0.75); font-size: 1rem; line-height: 1.7; margin-bottom: 32px; }
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; }
+.hero-btn-sec { color: rgba(255,255,255,0.85) !important; border-color: rgba(255,255,255,0.4) !important; }
+.hero-btn-sec:hover { background: rgba(255,255,255,0.1) !important; border-color: rgba(255,255,255,0.8) !important; }
+.hero-stats { display: flex; gap: 0; flex-wrap: wrap; }
+.hero-stat { text-align: center; padding: 0 24px 0 0; }
+.hero-stat-div { width: 1px; background: rgba(255,255,255,0.15); margin-right: 24px; }
+.hero-stat-n { display: block; font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: #F8DC8C; line-height: 1; }
+/* Fix for 11+ — use wider letterform in serif so 1s don't look like I */
+.stat-eleven { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; letter-spacing: 0.08em; color: #F8DC8C; }
+.hero-stat-l { display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.hero-scroll-cue { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.4); animation: bounce 2s infinite; z-index: 2; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+.ornament { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.ornament-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(248,220,140,0.5); }
+@media(max-width:900px){ .hero-dancer-illustration { display: none; } }
+@media(max-width:600px){ .hero-stats { gap: 14px; } .hero-stat-div { display: none; } .hero-stat { padding: 0; } }
+
+/* ══ QUICKLINKS ══ */
+.quicklinks-bar { background: var(--maroon,#7B1D2E); padding: 0; }
+.quicklinks-inner { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; }
+.quicklink { display: flex; align-items: center; gap: 8px; padding: 13px 20px; color: rgba(255,255,255,0.72); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em; border-right: 1px solid rgba(255,255,255,0.08); transition: background 0.2s, color 0.2s; }
+.quicklink:last-child { border-right: none; }
+.quicklink:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.quicklink--cta { background: rgba(200,98,26,0.8); color: #fff; font-weight: 600; }
+.quicklink--cta:hover { background: rgba(200,98,26,1); }
+.quicklink-icon { font-size: 0.95rem; }
+@media(max-width:600px){ .quicklink { padding: 11px 13px; font-size: 0.73rem; } .quicklink-icon { display: none; } }
+
+/* ══ ABOUT ══ */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.about-img-col { position: relative; }
+.about-img-frame { width: 100%; aspect-ratio: 4/5; border-radius: 4px; border: 1px solid var(--border,#E8DDD4); overflow: hidden; background: #FBF4EC; }
+.about-img-badge { position: absolute; bottom: -16px; right: -16px; background: var(--gold,#B8962E); color: #fff; padding: 16px 20px; border-radius: 4px; text-align: center; line-height: 1.2; }
+.about-badge-n { display: block; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; }
+.about-badge-l { display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; opacity: 0.85; }
+.about-pillars { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+.about-pillars li { display: flex; align-items: flex-start; gap: 12px; }
+.pillar-icon { color: var(--gold,#B8962E); font-size: 0.7rem; margin-top: 6px; flex-shrink: 0; }
+.about-pillars li div { display: flex; flex-direction: column; gap: 2px; }
+.about-pillars li strong { font-size: 0.9rem; color: var(--ink,#1E1009); }
+.about-pillars li span { font-size: 0.82rem; color: var(--ink-soft,#7A6558); }
+.btn-outline { background: transparent; border: 1px solid var(--border-strong,#C4AFA5); color: var(--ink,#1E1009); padding: 10px 20px; border-radius: 3px; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; transition: background 0.2s; }
+.btn-outline:hover { background: rgba(200,98,26,0.06); }
+
+/* ══ STEPS ══ */
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.step-card { background: #fff; border: 1px solid var(--border,#E8DDD4); padding: 36px 28px; text-align: center; }
+.step-card:first-child { border-radius: 4px 0 0 4px; }
+.step-card:last-child { border-radius: 0 4px 4px 0; }
+.step-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 300; color: var(--saffron,#C8621A); opacity: 0.25; line-height: 1; margin-bottom: 12px; }
+.step-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 12px; color: var(--ink,#1E1009); }
+.step-card p { font-size: 0.88rem; color: var(--ink-soft,#7A6558); line-height: 1.65; }
+.step-link { display: inline-block; margin-top: 16px; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--saffron,#C8621A); text-transform: uppercase; }
+
+/* ══ COURSES ══ */
+.courses-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+.course-card { background: #fff; border: 1px solid var(--border,#E8DDD4); border-radius: 4px; overflow: hidden; }
+.course-img { width: 100%; overflow: hidden; background: #FBF4EC; }
+.course-img svg { display: block; }
+.course-body { padding: 20px; }
+.course-tag { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--saffron,#C8621A); }
+.course-body h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin: 6px 0 10px; color: var(--ink,#1E1009); }
+.course-body p { font-size: 0.83rem; color: var(--ink-soft,#7A6558); line-height: 1.65; }
+.course-link { display: inline-block; margin-top: 14px; font-size: 0.78rem; letter-spacing: 0.08em; color: var(--maroon,#7B1D2E); text-transform: uppercase; font-weight: 500; }
+
+/* ══ ACHIEVEMENTS ══ */
+.achievements-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; }
+.achievement-item { text-align: center; }
+.achievement-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+.achievement-item h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; margin-bottom: 10px; }
+.achievement-item p { font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+/* ══ CTA BANNER ══ */
+.cta-banner { background: var(--ink,#1E1009); }
+.cta-banner-inner { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
+.cta-banner-actions { display: flex; gap: 16px; flex-wrap: wrap; flex-shrink: 0; }
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1100px){ .courses-grid{grid-template-columns:repeat(2,1fr)} .achievements-grid{grid-template-columns:repeat(2,1fr)} .about-grid{grid-template-columns:1fr;gap:48px} .about-img-badge{right:16px} }
+@media(max-width:768px){ .steps-grid{grid-template-columns:1fr;gap:16px} .step-card{border-radius:4px!important} .courses-grid{grid-template-columns:1fr 1fr} .achievements-grid{grid-template-columns:1fr 1fr} .cta-banner-inner{flex-direction:column;text-align:center} .cta-banner-actions{justify-content:center} .hero-stats{gap:16px} .hero-stat-div{display:none} .hero-stat{padding:0} }
+@media(max-width:480px){ .courses-grid{grid-template-columns:1fr} .achievements-grid{grid-template-columns:1fr} }
 </style>
 
-<script src="js/main.js" defer></script>
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('site-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // Mobile nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (toggle && navLinks) {
+    toggle.addEventListener('click', () => {
+      const exp = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!exp));
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // FAQ accordion (if present)
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.closest('.faq-item').querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded','false'));
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
+
+  // Section nav highlight on scroll
+  const sectionLinks = document.querySelectorAll('.page-section-nav a');
+  if(sectionLinks.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          sectionLinks.forEach(a => a.classList.remove('active'));
+          const id = entry.target.getAttribute('id');
+          const link = document.querySelector(`.page-section-nav a[href="#${id}"]`);
+          if(link) link.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('section[id], div[id]').forEach(el => observer.observe(el));
+  }
+</script>
 </body>
 </html>

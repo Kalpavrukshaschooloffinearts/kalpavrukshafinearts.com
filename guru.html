@@ -4,54 +4,169 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guru Smt. Deepa Sadasivam | Kalakshetra Bharatanatyam Teacher Chennai</title>
-  <meta name="description" content="Meet Smt. Deepa Sadasivam — alumna of Kalakshetra Foundation, founder of Kalpavruksha School of Fine Arts, Chennai. Teaching Bharatanatyam since 2014 through Kalpavruksha, with prior visiting faculty experience from 2012.">
-  <meta name="keywords" content="Deepa Sadasivam Bharatanatyam teacher, Kalakshetra alumna Chennai, Bharatanatyam guru Kodambakkam, classical dance teacher Chennai">
+  <meta name="description" content="Meet Smt. Deepa Sadasivam — alumna of Kalakshetra Foundation, founder of Kalpavruksha School of Fine Arts, Chennai. Teaching Bharatanatyam since 2014.">
   <link rel="canonical" href="https://kalpavrukshafinearts.com/guru.html">
   <meta property="og:title" content="Guru Smt. Deepa Sadasivam | Kalpavruksha School of Fine Arts">
   <meta property="og:description" content="Kalakshetra alumna, solo performer, and dedicated Bharatanatyam teacher. Founder of Kalpavruksha School of Fine Arts, Chennai.">
   <meta property="og:url" content="https://kalpavrukshafinearts.com/guru.html">
-  <meta property="og:image" content="https://kalpavrukshafinearts.com/images/og-guru.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Smt. Deepa Sadasivam",
     "jobTitle": "Bharatanatyam Teacher and Choreographer",
-    "description": "Alumna of Kalakshetra Foundation, Chennai. Founder of Kalpavruksha School of Fine Arts (2014). Expert in Kalakshetra-style Bharatanatyam.",
-    "alumniOf": { "@type": "EducationalOrganization", "name": "Kalakshetra Foundation", "address": { "@type": "PostalAddress", "addressLocality": "Chennai", "addressRegion": "Tamil Nadu" } },
+    "alumniOf": { "@type": "EducationalOrganization", "name": "Kalakshetra Foundation" },
     "worksFor": { "@type": "Organization", "name": "Kalpavruksha School of Fine Arts", "url": "https://kalpavrukshafinearts.com" },
-    "knowsAbout": ["Bharatanatyam", "Kalakshetra tradition", "Abhinaya", "Natya Shastra", "Bharatanatyam choreography"],
-    "knowsLanguage": ["Tamil", "English"],
-    "address": { "@type": "PostalAddress", "addressLocality": "Chennai", "addressRegion": "Tamil Nadu", "addressCountry": "IN" }
+    "knowsAbout": ["Bharatanatyam", "Kalakshetra tradition", "Abhinaya", "Natya Shastra"]
   }
   </script>
+    <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8L108BFGM2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-8L108BFGM2');
+    gtag('config', 'G-8L108BFGM2', { send_page_view: true });
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/style.css">
+  
+<style>
+/* ══ NAV FIX - STICKY WITH SOLID BACKGROUND ══ */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: rgba(92,21,34,0.97);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: box-shadow 0.3s;
+}
+.site-nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
+.nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:68px; }
+.nav-logo { text-decoration:none; display:flex; flex-direction:column; line-height:1.15; }
+.nav-logo-name { font-family:'Playfair Display',serif; font-size:1.15rem; color:#F8DC8C; font-weight:600; letter-spacing:0.02em; }
+.nav-logo-sub { font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.55); }
+.nav-links { list-style:none; display:flex; align-items:center; gap:4px; }
+.nav-links a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.82rem; font-weight:500; letter-spacing:0.04em; padding:8px 12px; border-radius:3px; transition:color 0.2s,background 0.2s; white-space:nowrap; }
+.nav-links a:hover,.nav-links a.active { color:#fff; background:rgba(255,255,255,0.1); }
+.nav-links a.active { color:#F8DC8C; background:transparent; }
+.nav-cta { background:rgba(200,98,26,0.85)!important; color:#fff!important; border-radius:3px; }
+.nav-cta:hover { background:rgba(200,98,26,1)!important; }
+.nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px; }
+.nav-toggle span { display:block; width:22px; height:2px; background:rgba(255,255,255,0.8); border-radius:2px; transition:all 0.3s; }
+body { padding-top:68px; }
+@media(max-width:840px){
+  .nav-toggle { display:flex; }
+  .nav-links { display:none; position:absolute; top:68px; left:0; right:0; background:rgba(70,15,25,0.98); flex-direction:column; align-items:stretch; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.1); z-index:9998; }
+  .nav-links.open { display:flex; }
+  .nav-links a { padding:12px 24px; border-radius:0; font-size:0.9rem; }
+}
+
+/* ══ IN-PAGE SECTION NAV ══ */
+.page-section-nav { background:#fff; border-bottom:1px solid var(--border,#E8DDD4); position:sticky; top:68px; z-index:100; }
+.page-section-nav .container { max-width:1200px; margin:0 auto; padding:0 24px; }
+.page-section-nav ul { list-style:none; display:flex; gap:0; overflow-x:auto; scrollbar-width:none; }
+.page-section-nav ul::-webkit-scrollbar { display:none; }
+.page-section-nav a { display:block; padding:11px 18px; font-size:0.78rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft,#7A6558); text-decoration:none; border-bottom:2px solid transparent; white-space:nowrap; transition:color 0.2s,border-color 0.2s; }
+.page-section-nav a:hover,.page-section-nav a.active { color:var(--maroon,#7B1D2E); border-color:var(--maroon,#7B1D2E); }
+</style>
+  <style>
+.guru-grid{display:grid;grid-template-columns:300px 1fr;gap:64px;align-items:start}
+.guru-sidebar{position:sticky;top:calc(68px + 48px + 24px)}
+.guru-portrait-wrap{width:100%;border-radius:4px;overflow:hidden;margin-bottom:24px;border:1px solid var(--border);background:linear-gradient(135deg,#fdf5d8,#f5e6c0)}
+.guru-portrait-wrap svg{display:block;width:100%;height:auto}
+.guru-quick-facts{border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.guru-fact{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
+.guru-fact:last-child{border-bottom:none}
+.gf-label{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft)}
+.gf-value{font-size:0.88rem;color:var(--ink)}
+.guru-quote{border-left:3px solid var(--gold);padding:20px 24px;background:var(--gold-light,#fdf5d8);border-radius:0 4px 4px 0;margin-bottom:36px}
+.guru-quote blockquote{font-family:var(--font-display);font-size:1.15rem;font-style:italic;color:var(--ink);line-height:1.6}
+.guru-quote cite{display:block;margin-top:10px;font-size:0.8rem;color:var(--ink-soft);font-style:normal}
+.lineage-box{background:var(--saffron-pale);border:1px solid var(--border);border-radius:4px;padding:24px}
+.lineage-chain{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px}
+.lineage-node{text-align:center;background:#fff;border:1px solid var(--border);border-radius:4px;padding:12px 20px;width:100%;max-width:420px}
+.lineage-node strong{display:block;font-size:0.9rem;color:var(--ink)}
+.lineage-node span{display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:2px}
+.lineage-node--highlight{border-color:var(--maroon);background:var(--maroon-light)}
+.lineage-node--highlight strong{color:var(--maroon)}
+.lineage-arrow{font-size:1.2rem;color:var(--border-strong)}
+.perf-list{list-style:none;margin-top:0;display:flex;flex-direction:column;gap:10px}
+.perf-list li{font-size:0.88rem;color:var(--ink-mid);padding-left:18px;position:relative;line-height:1.6}
+.perf-list li::before{content:'✦';position:absolute;left:0;font-size:0.6rem;color:var(--gold);top:5px}
+.video-embed-placeholder{background:#fff;border:1px solid var(--border);border-radius:4px;padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.video-play-icon{width:56px;height:56px;border-radius:50%;background:var(--maroon);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+@media(max-width:900px){.guru-grid{grid-template-columns:1fr}.guru-sidebar{position:static}}
+  
+/* ── IMAGE PLACEHOLDERS ── */
+.img-placeholder {
+  width: 100%; height: 100%;
+  background: #f5ede8;
+  border: 2px dashed #c8b4a8;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 120px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.img-placeholder .ph-icon {
+  font-size: 2rem;
+  opacity: 0.45;
+}
+.img-placeholder .ph-filename {
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #7B1D2E;
+  background: rgba(123,29,46,0.08);
+  padding: 3px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+.img-placeholder .ph-label {
+  font-size: 0.72rem;
+  color: #7a6558;
+  text-align: center;
+  line-height: 1.4;
+  max-width: 200px;
+}
+</style>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
-<nav class="site-nav" role="navigation" aria-label="Main navigation">
+<nav class="site-nav" role="navigation" aria-label="Main navigation" id="site-nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School — Home">
+    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School of Fine Arts — Home">
       <span class="nav-logo-name">Kalpavruksha</span>
       <span class="nav-logo-sub">School of Fine Arts</span>
     </a>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <ul class="nav-links">
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="list">
       <li><a href="index.html">Home</a></li>
       <li><a href="courses.html">Courses</a></li>
-      <li><a href="guru.html" class="active">Our Guru</a></li>
+      <li><a href="guru.html" class="active" aria-current="page">Our Guru</a></li>
       <li><a href="online-classes.html">Online Classes</a></li>
       <li><a href="events.html">Events &amp; Gallery</a></li>
       <li><a href="contact.html" class="nav-cta">Book Trial Class</a></li>
+    </ul>
+  </div>
+</nav>
+
+<nav class="page-section-nav" aria-label="Page sections">
+  <div class="container">
+    <ul role="list">
+      <li><a href="#bio">Biography</a></li>
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#lineage">Lineage</a></li>
+      <li><a href="#performances">Performances</a></li>
+      <li><a href="#watch">Watch</a></li>
     </ul>
   </div>
 </nav>
@@ -62,49 +177,29 @@
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Our Guru</span></nav>
     <span class="section-label">The teacher</span>
     <h1 class="display-lg" style="margin-top:8px">Smt. Deepa Sadasivam</h1>
-    <p>Kalakshetra alumna · Performer · Teacher · Founder, Kalpavruksha School of Fine Arts</p>
+    <p>Kalakshetra alumna &middot; Performer &middot; Teacher &middot; Founder, Kalpavruksha School of Fine Arts</p>
   </div>
 </div>
 
 <!-- GURU MAIN BIO -->
-<section class="section section--white">
+<section class="section section--white" id="bio">
   <div class="container">
     <div class="guru-grid">
       <aside class="guru-sidebar">
-        <div class="guru-photo" role="img" aria-label="Smt. Deepa Sadasivam, Bharatanatyam teacher and founder of Kalpavruksha School of Fine Arts"></div>
+        <div class="guru-portrait-wrap" role="img" aria-label="Smt. Deepa Sadasivam"><div class="img-placeholder">
+    <span class="ph-icon" aria-hidden="true">🖼</span>
+    <span class="ph-filename">guru-portrait.jpg</span>
+    <span class="ph-label">Formal portrait of Smt. Deepa Sadasivam · classical attire · portrait 3:4</span>
+  </div></div>
         <div class="guru-quick-facts" aria-label="Guru quick facts">
-          <div class="guru-fact">
-            <span class="gf-label">Training</span>
-            <span class="gf-value">Kalakshetra Foundation, Chennai</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">Style</span>
-            <span class="gf-value">Kalakshetra bani Bharatanatyam</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">Visiting faculty</span>
-            <span class="gf-value">From 2012</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">School founded</span>
-            <span class="gf-value">Kalpavruksha — 2014</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">Students guided</span>
-            <span class="gf-value">200+ (Chennai &amp; worldwide)</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">Salangai Poojas</span>
-            <span class="gf-value">20+ guided</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">Arangetrams</span>
-            <span class="gf-value">5+ guided</span>
-          </div>
-          <div class="guru-fact">
-            <span class="gf-label">Languages</span>
-            <span class="gf-value">Tamil, English</span>
-          </div>
+          <div class="guru-fact"><span class="gf-label">Training</span><span class="gf-value">Kalakshetra Foundation, Chennai</span></div>
+          <div class="guru-fact"><span class="gf-label">Style</span><span class="gf-value">Kalakshetra bani Bharatanatyam</span></div>
+          <div class="guru-fact"><span class="gf-label">Visiting faculty</span><span class="gf-value">From 2012</span></div>
+          <div class="guru-fact"><span class="gf-label">School founded</span><span class="gf-value">Kalpavruksha — 2014</span></div>
+          <div class="guru-fact"><span class="gf-label">Students guided</span><span class="gf-value">200+ (Chennai &amp; worldwide)</span></div>
+          <div class="guru-fact"><span class="gf-label">Salangai Poojas</span><span class="gf-value">20+ guided</span></div>
+          <div class="guru-fact"><span class="gf-label">Arangetrams</span><span class="gf-value">5+ guided</span></div>
+          <div class="guru-fact"><span class="gf-label">Languages</span><span class="gf-value">Tamil, English</span></div>
         </div>
         <a href="contact.html" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:24px">Learn Under Guru Deepa →</a>
       </aside>
@@ -125,20 +220,20 @@
           After completing her training, Deepa built a reputation as a compelling solo performer, presenting Bharatanatyam recitals at sabhas and cultural festivals across Tamil Nadu. Her performances are marked by the hallmarks of the Kalakshetra style — impeccable technique, luminous stage presence, and abhinaya of extraordinary emotional depth.
         </p>
         <p style="margin-top:16px;color:var(--ink-mid);line-height:1.8">
-          She began her teaching journey as a <strong>visiting faculty member from 2012</strong>, sharing her knowledge of Kalakshetra-style Bharatanatyam at various institutions. In <strong>2014</strong>, driven by a vision to give students a dedicated space of authentic classical learning, she founded <strong>Kalpavruksha School of Fine Arts</strong> in Kodambakkam, Chennai — a school she has built and nurtured ever since.
+          She began her teaching journey as a <strong>visiting faculty member from 2012</strong>, sharing her knowledge at various institutions. In <strong>2014</strong>, driven by a vision to give students a dedicated space of authentic classical learning, she founded <strong>Kalpavruksha School of Fine Arts</strong> in Kodambakkam, Chennai.
         </p>
 
-        <h3 style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink)">Teaching philosophy</h3>
+        <h3 id="philosophy" style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink);scroll-margin-top:120px">Teaching philosophy</h3>
         <p style="color:var(--ink-mid);line-height:1.8">
-          Deepa's teaching is guided by the guru-shishya parampara — the ancient tradition of direct, personal transmission from teacher to student. Each correction must be specific to each body, each temperament, each student's unique path.
+          Deepa's teaching is guided by the guru-shishya parampara — the ancient tradition of direct, personal transmission from teacher to student. Each correction is specific to each body, each temperament, each student's unique path.
         </p>
         <p style="margin-top:16px;color:var(--ink-mid);line-height:1.8">
-          She teaches in <strong>Tamil and English</strong>, making classical dance accessible to students from diverse backgrounds. She teaches Bharatanatyam as a complete art — not just technique, but theory, mythology, music, and the philosophical underpinnings of the Natyashastra. Students leave Kalpavruksha not merely as dancers, but as informed, thoughtful artists who understand the tradition they carry forward.
+          She teaches in <strong>Tamil and English</strong>, making classical dance accessible to students from diverse backgrounds — treating Bharatanatyam not just as technique, but as theory, mythology, music, and the philosophical underpinnings of the Natyashastra. Students leave Kalpavruksha not merely as dancers, but as informed, thoughtful artists who understand the tradition they carry forward.
         </p>
 
-        <h3 style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink)">The Kalakshetra lineage</h3>
+        <h3 id="lineage" style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink);scroll-margin-top:120px">The Kalakshetra lineage</h3>
         <div class="lineage-box" aria-label="Artistic lineage">
-          <p style="font-size:0.88rem;color:var(--ink-mid);margin-bottom:16px">The Kalakshetra tradition traces its origins to the vision of Rukmini Devi Arundale, who dedicated her life to restoring Bharatanatyam to its classical dignity after it had been marginalised during the colonial era.</p>
+          <p style="font-size:0.88rem;color:var(--ink-mid);margin-bottom:16px">The Kalakshetra tradition traces its origins to Rukmini Devi Arundale, who dedicated her life to restoring Bharatanatyam to its classical dignity.</p>
           <div class="lineage-chain" aria-label="Guru lineage chain">
             <div class="lineage-node"><strong>Rukmini Devi Arundale</strong><span>Founder, Kalakshetra Foundation (1936)</span></div>
             <div class="lineage-arrow" aria-hidden="true">↓</div>
@@ -150,7 +245,7 @@
           </div>
         </div>
 
-        <h3 style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink)">Recognition &amp; performances</h3>
+        <h3 id="performances" style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink);scroll-margin-top:120px">Recognition &amp; performances</h3>
         <ul class="perf-list">
           <li>Solo performances at prominent Chennai sabhas during the Margazhi festival season</li>
           <li>Cultural performances at government and corporate events across Tamil Nadu</li>
@@ -165,14 +260,14 @@
 </section>
 
 <!-- VIDEO SECTION -->
-<section class="section section--saffron-pale" aria-label="Watch Guru Deepa perform">
+<section class="section section--saffron-pale" id="watch" aria-label="Watch Guru Deepa perform">
   <div class="container" style="text-align:center;max-width:800px">
     <span class="section-label">Watch &amp; learn</span>
     <h2 class="display-md" style="margin-top:10px;margin-bottom:16px">Performances &amp; tutorials</h2>
     <p style="color:var(--ink-soft);margin-bottom:36px">Watch Guru Deepa's performances and student tutorials on the Kalpavruksha YouTube channel</p>
-    <div class="video-embed-placeholder" role="img" aria-label="YouTube channel preview — click to visit channel">
+    <div class="video-embed-placeholder">
       <div class="video-play-icon" aria-hidden="true">▶</div>
-      <p>Visit the <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" style="color:var(--saffron)">Kalpavruksha YouTube Channel</a> to watch performances, tutorials, and recitals.</p>
+      <p>Visit the <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" style="color:var(--saffron)">Kalpavruksha YouTube Channel</a> to watch performances, tutorials, and student recitals.</p>
     </div>
   </div>
 </section>
@@ -191,49 +286,91 @@
 <footer class="site-footer" role="contentinfo">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><div class="nav-logo"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div><p>Authentic Bharatanatyam training in the Kalakshetra tradition. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p><div class="footer-socials"><a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" aria-label="Facebook">fb</a><a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" aria-label="YouTube">yt</a><a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" aria-label="Instagram">ig</a></div></div>
-      <div class="footer-col"><h4>Courses</h4><ul><li><a href="courses.html#beginners">Beginners (Ages 4+)</a></li><li><a href="courses.html#intermediate">Intermediate</a></li><li><a href="courses.html#salangai">Salangai Pooja</a></li><li><a href="courses.html#arangetram">Arangetram</a></li><li><a href="courses.html#adults">Adult Beginners</a></li><li><a href="online-classes.html">Online Classes</a></li></ul></div>
-      <div class="footer-col"><h4>School</h4><ul><li><a href="guru.html">Our Guru</a></li><li><a href="events.html">Events</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917200095585">+91 72000 95585</a></li><li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li><li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai</a></li></ul></div>
+      <div class="footer-brand">
+        <div class="nav-logo"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div>
+        <p>Authentic Bharatanatyam training in the Kalakshetra tradition. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" aria-label="Facebook">fb</a>
+          <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" aria-label="YouTube">yt</a>
+          <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Courses</h4><ul>
+        <li><a href="courses.html#beginners">Beginners (Ages 4+)</a></li>
+        <li><a href="courses.html#intermediate">Intermediate</a></li>
+        <li><a href="courses.html#salangai">Salangai Pooja</a></li>
+        <li><a href="courses.html#arangetram">Arangetram</a></li>
+        <li><a href="courses.html#adults">Adult Beginners</a></li>
+        <li><a href="online-classes.html">Online Classes</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>School</h4><ul>
+        <li><a href="guru.html">Our Guru</a></li>
+        <li><a href="events.html">Events &amp; Gallery</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="contact.html#faq">FAQ</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul>
+        <li><a href="tel:+917200095585">+91 72000 95585</a></li>
+        <li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li>
+        <li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai<br>Tamil Nadu 600024</a></li>
+      </ul>
+      <p style="margin-top:16px;font-size:0.78rem;color:rgba(255,255,255,0.35)">Classes: Mon–Fri mornings<br>Online: By arrangement</p></div>
     </div>
-    <div class="footer-bottom"><p>© 2026 Kalpavruksha School of Fine Arts. All rights reserved.</p><p>Bharatanatyam · Kalakshetra tradition · Chennai | <a href="privacy.html" style="color:rgba(255,255,255,0.4)">Privacy Policy</a></p></div>
+    <div class="footer-bottom">
+      <p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p>
+      <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai, India &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.45)">Privacy Policy</a></p>
+    </div>
   </div>
 </footer>
-<a class="wa-float" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes+at+Kalpavruksha.+Please+share+details." target="_blank" rel="noopener" aria-label="WhatsApp us">
+<a class="wa-float" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes+at+Kalpavruksha.+Please+share+more+details." target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
   <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   <span>Chat with us</span>
 </a>
-
-<style>
-.guru-grid{display:grid;grid-template-columns:300px 1fr;gap:64px;align-items:start}
-.guru-sidebar{position:sticky;top:calc(var(--nav-h,72px) + 24px)}
-.guru-photo{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,var(--saffron-light),var(--maroon-light));border-radius:4px;margin-bottom:24px;border:1px solid var(--border)}
-.guru-quick-facts{border:1px solid var(--border);border-radius:4px;overflow:hidden}
-.guru-fact{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
-.guru-fact:last-child{border-bottom:none}
-.gf-label{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft)}
-.gf-value{font-size:0.88rem;color:var(--ink)}
-.guru-quote{border-left:3px solid var(--gold);padding:20px 24px;background:var(--gold-light,#fdf5d8);border-radius:0 4px 4px 0;margin-bottom:36px}
-.guru-quote blockquote{font-family:var(--font-display);font-size:1.15rem;font-style:italic;color:var(--ink);line-height:1.6}
-.guru-quote cite{display:block;margin-top:10px;font-size:0.8rem;color:var(--ink-soft);font-style:normal}
-.lineage-box{background:var(--saffron-pale);border:1px solid var(--border);border-radius:4px;padding:24px}
-.lineage-chain{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px}
-.lineage-node{text-align:center;background:#fff;border:1px solid var(--border);border-radius:4px;padding:12px 20px;width:100%;max-width:420px}
-.lineage-node strong{display:block;font-size:0.9rem;color:var(--ink)}
-.lineage-node span{display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:2px}
-.lineage-node--highlight{border-color:var(--maroon);background:var(--maroon-light)}
-.lineage-node--highlight strong{color:var(--maroon)}
-.lineage-arrow{font-size:1.2rem;color:var(--border-strong)}
-.perf-list{list-style:none;margin-top:0;display:flex;flex-direction:column;gap:10px}
-.perf-list li{font-size:0.88rem;color:var(--ink-mid);padding-left:18px;position:relative;line-height:1.6}
-.perf-list li::before{content:'✦';position:absolute;left:0;font-size:0.6rem;color:var(--gold);top:5px}
-.video-embed-placeholder{background:#fff;border:1px solid var(--border);border-radius:4px;padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:16px}
-.video-play-icon{width:56px;height:56px;border-radius:50%;background:var(--maroon);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
-@media(max-width:900px){
-  .guru-grid{grid-template-columns:1fr}
-  .guru-sidebar{position:static}
-}
-</style>
-<script src="js/main.js" defer></script>
+<script>
+  // Nav scroll effect — solid background always, shadow on scroll
+  const nav = document.getElementById('site-nav');
+  if(nav) {
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 10), { passive: true });
+  }
+  // Mobile nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if(toggle && navLinks) {
+    toggle.addEventListener('click', () => {
+      const exp = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!exp));
+      navLinks.classList.toggle('open');
+    });
+    // Close on link click (mobile)
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+    }));
+  }
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded','false'));
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
+  // Section nav highlight
+  const sectionLinks = document.querySelectorAll('.page-section-nav a');
+  if(sectionLinks.length) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting) {
+          sectionLinks.forEach(a => a.classList.remove('active'));
+          const id = e.target.getAttribute('id');
+          const link = document.querySelector(`.page-section-nav a[href="#${id}"]`);
+          if(link) link.classList.add('active');
+        }
+      });
+    }, { threshold: 0.25 });
+    document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+  }
+</script>
 </body>
 </html>

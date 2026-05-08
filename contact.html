@@ -5,39 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact &amp; Book Trial Class | Kalpavruksha School of Fine Arts</title>
   <meta name="description" content="Book a free trial Bharatanatyam class at Kalpavruksha School of Fine Arts, Kodambakkam, Chennai. Enquire about batch timings, fees, and courses. Online and in-person available.">
-  <meta name="keywords" content="contact Kalpavruksha, book trial Bharatanatyam class Chennai, Bharatanatyam enquiry, dance school Kodambakkam contact, free trial dance class Chennai">
   <link rel="canonical" href="https://kalpavrukshafinearts.com/contact.html">
   <meta property="og:title" content="Book a Free Trial Class | Kalpavruksha School of Fine Arts">
   <meta property="og:description" content="Book a free trial Bharatanatyam class. Enquire about batches, timings, and fees. In-person in Chennai or online worldwide.">
   <meta property="og:url" content="https://kalpavrukshafinearts.com/contact.html">
-  <meta property="og:image" content="https://kalpavrukshafinearts.com/images/og-contact.jpg">
+    <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8L108BFGM2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-8L108BFGM2');
+    gtag('config', 'G-8L108BFGM2', { send_page_view: true });
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/style.css">
+  
+<style>
+/* ══ NAV FIX - STICKY WITH SOLID BACKGROUND ══ */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: rgba(92,21,34,0.97);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: box-shadow 0.3s;
+}
+.site-nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
+.nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:68px; }
+.nav-logo { text-decoration:none; display:flex; flex-direction:column; line-height:1.15; }
+.nav-logo-name { font-family:'Playfair Display',serif; font-size:1.15rem; color:#F8DC8C; font-weight:600; letter-spacing:0.02em; }
+.nav-logo-sub { font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.55); }
+.nav-links { list-style:none; display:flex; align-items:center; gap:4px; }
+.nav-links a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.82rem; font-weight:500; letter-spacing:0.04em; padding:8px 12px; border-radius:3px; transition:color 0.2s,background 0.2s; white-space:nowrap; }
+.nav-links a:hover,.nav-links a.active { color:#fff; background:rgba(255,255,255,0.1); }
+.nav-links a.active { color:#F8DC8C; background:transparent; }
+.nav-cta { background:rgba(200,98,26,0.85)!important; color:#fff!important; border-radius:3px; }
+.nav-cta:hover { background:rgba(200,98,26,1)!important; }
+.nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px; }
+.nav-toggle span { display:block; width:22px; height:2px; background:rgba(255,255,255,0.8); border-radius:2px; transition:all 0.3s; }
+body { padding-top:68px; }
+@media(max-width:840px){
+  .nav-toggle { display:flex; }
+  .nav-links { display:none; position:absolute; top:68px; left:0; right:0; background:rgba(70,15,25,0.98); flex-direction:column; align-items:stretch; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.1); z-index:9998; }
+  .nav-links.open { display:flex; }
+  .nav-links a { padding:12px 24px; border-radius:0; font-size:0.9rem; }
+}
+
+/* ══ IN-PAGE SECTION NAV ══ */
+.page-section-nav { background:#fff; border-bottom:1px solid var(--border,#E8DDD4); position:sticky; top:68px; z-index:100; }
+.page-section-nav .container { max-width:1200px; margin:0 auto; padding:0 24px; }
+.page-section-nav ul { list-style:none; display:flex; gap:0; overflow-x:auto; scrollbar-width:none; }
+.page-section-nav ul::-webkit-scrollbar { display:none; }
+.page-section-nav a { display:block; padding:11px 18px; font-size:0.78rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft,#7A6558); text-decoration:none; border-bottom:2px solid transparent; white-space:nowrap; transition:color 0.2s,border-color 0.2s; }
+.page-section-nav a:hover,.page-section-nav a.active { color:var(--maroon,#7B1D2E); border-color:var(--maroon,#7B1D2E); }
+</style>
+  <style>
+.contact-grid{display:grid;grid-template-columns:1fr 380px;gap:64px;align-items:start}
+.contact-info-card{background:var(--saffron-pale);border:1px solid var(--border);border-radius:4px;padding:20px 24px}
+.contact-info-card h3{font-family:var(--font-display);font-size:1.1rem;color:var(--ink);margin-bottom:14px}
+.contact-methods{display:flex;flex-direction:column;gap:0}
+.contact-method{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--ink);transition:color 0.2s}
+.contact-method:last-child{border-bottom:none}
+.contact-method:hover{color:var(--saffron)}
+.contact-method strong{display:block;font-size:0.85rem;color:inherit}
+.contact-method span{display:block;font-size:0.78rem;color:var(--ink-soft)}
+.contact-method--wa{color:#1A7A41}
+.contact-method--wa:hover{color:#15623A}
+.cm-arrow{margin-left:auto;color:var(--ink-soft);font-size:0.9rem}
+.map-embed{border-radius:4px;overflow:hidden;margin-top:12px}
+.hours-table{width:100%;font-size:0.83rem;border-collapse:collapse}
+.hours-table td{padding:7px 0;border-bottom:1px solid var(--border);color:var(--ink-mid)}
+.hours-table td:last-child{text-align:right;color:var(--saffron)}
+.hours-table tr:last-child td{border-bottom:none}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-label{font-size:0.8rem;font-weight:500;color:var(--ink-mid);letter-spacing:0.03em}
+.form-input{width:100%;padding:11px 14px;font-family:var(--font-body);font-size:0.9rem;color:var(--ink);background:#fff;border:1px solid var(--border-strong);border-radius:3px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;box-sizing:border-box}
+.form-input:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(200,98,26,0.1)}
+.form-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A6558' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.form-textarea{min-height:100px;resize:vertical;line-height:1.6}
+.form-radio-group{display:flex;gap:20px;flex-wrap:wrap}
+.form-radio{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--ink-mid);cursor:pointer}
+.form-radio input{accent-color:var(--saffron);width:16px;height:16px;flex-shrink:0}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
-<nav class="site-nav" role="navigation" aria-label="Main navigation">
+<nav class="site-nav" role="navigation" aria-label="Main navigation" id="site-nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School — Home">
+    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School of Fine Arts — Home">
       <span class="nav-logo-name">Kalpavruksha</span>
       <span class="nav-logo-sub">School of Fine Arts</span>
     </a>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <ul class="nav-links">
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="list">
       <li><a href="index.html">Home</a></li>
       <li><a href="courses.html">Courses</a></li>
       <li><a href="guru.html">Our Guru</a></li>
       <li><a href="online-classes.html">Online Classes</a></li>
       <li><a href="events.html">Events &amp; Gallery</a></li>
-      <li><a href="contact.html" class="active nav-cta">Book Trial Class</a></li>
+      <li><a href="contact.html" class="nav-cta">Book Trial Class</a></li>
+    </ul>
+  </div>
+</nav>
+
+<nav class="page-section-nav" aria-label="Page sections">
+  <div class="container">
+    <ul role="list">
+      <li><a href="#enquiry">Enquiry form</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#faq">FAQ</a></li>
     </ul>
   </div>
 </nav>
@@ -53,7 +135,7 @@
 </div>
 
 <!-- CONTACT SECTION -->
-<section class="section section--white">
+<section class="section section--white" id="enquiry">
   <div class="container">
     <div class="contact-grid">
 
@@ -118,7 +200,7 @@
       </div>
 
       <!-- SIDEBAR -->
-      <aside class="contact-sidebar">
+      <aside class="contact-sidebar" id="location">
         <div class="contact-info-card">
           <h3>Reach us directly</h3>
           <div class="contact-methods">
@@ -189,13 +271,13 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">What are the batch timings and classes per week?</button>
-        <div class="faq-a"><p>Regular classes are held on weekday mornings for children and weekday evenings for adult batches. Classes meet <strong>2 times per week</strong> in general, with each session lasting <strong>1 hour</strong>. There are no weekend batches currently. Exact timings are confirmed at enrolment based on availability. Please WhatsApp us for the current schedule.</p></div>
+        <button class="faq-q" aria-expanded="false">What are the batch timings and sessions per week?</button>
+        <div class="faq-a"><p>Regular classes are held on weekday mornings for children and weekday evenings for adult batches. Classes meet <strong>2 sessions per week</strong> in general, with each session lasting <strong>1 hour</strong>. There are no weekend batches currently. Exact timings are confirmed at enrolment based on availability. Please WhatsApp us for the current schedule.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">What is a Salangai Pooja?</button>
-        <div class="faq-a"><p>The <strong>Salangai Pooja</strong> is a sacred ceremony in which the student's ankle bells (salangai) are formally tied for the first time by the Guru. It is a deeply significant milestone — the student's first formal public performance — observed with traditional rituals, blessings, and celebration. At Kalpavruksha, this is an annual event, and the school has proudly guided over <strong>20+ Salangai Poojas</strong>. It is an important prerequisite before the Arangetram journey begins.</p></div>
+        <div class="faq-a"><p>The <strong>Salangai Pooja</strong> is a sacred ceremony in which the student's ankle bells (salangai) are formally tied for the first time by the Guru. It is a deeply significant milestone — the student's first formal public performance — observed with traditional rituals, blessings, and celebration. At Kalpavruksha, the school has proudly guided over <strong>20+ Salangai Poojas</strong>. It is an important prerequisite before the Arangetram journey begins. The timing of a student's Salangai Pooja is decided by the Guru based on readiness, not a fixed annual schedule.</p></div>
       </div>
 
       <div class="faq-item">
@@ -205,7 +287,7 @@
 
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">What about programme and performance batches?</button>
-        <div class="faq-a"><p>Regular students participate in programmes like the annual Salangai Pooja, temple performances, and festival events as they progress. Salangai Pooja preparation, Arangetram preparation, and other intensive programme batches are <strong>planned individually</strong> based on the student's readiness and programme needs — these are not part of the regular batch schedule and are discussed separately with the Guru.</p></div>
+        <div class="faq-a"><p>Regular students participate in temple performances, festival events, and other school programmes as they progress. Salangai Pooja preparation, Arangetram preparation, and other intensive programme batches are <strong>planned individually</strong> based on the student's readiness — these are discussed separately with the Guru.</p></div>
       </div>
 
       <div class="faq-item">
@@ -225,7 +307,7 @@
 
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Is there a performance or examination system?</button>
-        <div class="faq-a"><p>Yes. Students perform at the annual Salangai Pooja ceremony and other school and temple events. We also prepare students for graded examinations under recognised dance boards if they wish to pursue certifications.</p></div>
+        <div class="faq-a"><p>Yes. Students perform at school events, temple programmes, and festival performances as they progress. We also prepare students for graded examinations under recognised dance boards if they wish to pursue certifications.</p></div>
       </div>
 
     </div>
@@ -236,51 +318,105 @@
 <footer class="site-footer" role="contentinfo">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><div class="nav-logo"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div><p>Authentic Bharatanatyam training in the Kalakshetra tradition. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p><div class="footer-socials"><a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" aria-label="Facebook">fb</a><a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" aria-label="YouTube">yt</a><a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" aria-label="Instagram">ig</a></div></div>
-      <div class="footer-col"><h4>Courses</h4><ul><li><a href="courses.html#beginners">Beginners (Ages 4+)</a></li><li><a href="courses.html#intermediate">Intermediate</a></li><li><a href="courses.html#salangai">Salangai Pooja</a></li><li><a href="courses.html#arangetram">Arangetram</a></li><li><a href="courses.html#adults">Adult Beginners</a></li><li><a href="online-classes.html">Online Classes</a></li></ul></div>
-      <div class="footer-col"><h4>School</h4><ul><li><a href="guru.html">Our Guru</a></li><li><a href="events.html">Events</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917200095585">+91 72000 95585</a></li><li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li><li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai</a></li></ul></div>
+      <div class="footer-brand">
+        <div class="nav-logo"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div>
+        <p>Authentic Bharatanatyam training in the Kalakshetra tradition. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" aria-label="Facebook">fb</a>
+          <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" aria-label="YouTube">yt</a>
+          <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Courses</h4><ul>
+        <li><a href="courses.html#beginners">Beginners (Ages 4+)</a></li>
+        <li><a href="courses.html#intermediate">Intermediate</a></li>
+        <li><a href="courses.html#salangai">Salangai Pooja</a></li>
+        <li><a href="courses.html#arangetram">Arangetram</a></li>
+        <li><a href="courses.html#adults">Adult Beginners</a></li>
+        <li><a href="online-classes.html">Online Classes</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>School</h4><ul>
+        <li><a href="guru.html">Our Guru</a></li>
+        <li><a href="events.html">Events &amp; Gallery</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="contact.html#faq">FAQ</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul>
+        <li><a href="tel:+917200095585">+91 72000 95585</a></li>
+        <li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li>
+        <li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai<br>Tamil Nadu 600024</a></li>
+      </ul>
+      <p style="margin-top:16px;font-size:0.78rem;color:rgba(255,255,255,0.35)">Classes: Mon–Fri mornings<br>Online: By arrangement</p></div>
     </div>
-    <div class="footer-bottom"><p>© 2026 Kalpavruksha School of Fine Arts. All rights reserved.</p><p>Bharatanatyam · Kalakshetra tradition · Chennai | <a href="privacy.html" style="color:rgba(255,255,255,0.4)">Privacy Policy</a></p></div>
+    <div class="footer-bottom">
+      <p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p>
+      <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai, India &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.45)">Privacy Policy</a></p>
+    </div>
   </div>
 </footer>
-<a class="wa-float" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+learning+Bharatanatyam+at+Kalpavruksha.+Please+share+more+details." target="_blank" rel="noopener" aria-label="WhatsApp us">
+<a class="wa-float" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes+at+Kalpavruksha.+Please+share+more+details." target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
   <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   <span>Chat with us</span>
 </a>
-
-<style>
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-.contact-grid{display:grid;grid-template-columns:1fr 380px;gap:64px;align-items:start}
-.contact-info-card{background:var(--saffron-pale);border:1px solid var(--border);border-radius:4px;padding:20px 24px}
-.contact-info-card h3{font-family:var(--font-display);font-size:1.1rem;color:var(--ink);margin-bottom:14px}
-.contact-methods{display:flex;flex-direction:column;gap:0}
-.contact-method{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--ink);transition:color 0.2s}
-.contact-method:last-child{border-bottom:none}
-.contact-method:hover{color:var(--saffron)}
-.contact-method strong{display:block;font-size:0.85rem;color:inherit}
-.contact-method span{display:block;font-size:0.78rem;color:var(--ink-soft)}
-.contact-method--wa{color:#1A7A41}
-.contact-method--wa:hover{color:#15623A}
-.cm-arrow{margin-left:auto;color:var(--ink-soft);font-size:0.9rem}
-.map-embed{border-radius:4px;overflow:hidden;margin-top:12px}
-.hours-table{width:100%;font-size:0.83rem;border-collapse:collapse}
-.hours-table td{padding:7px 0;border-bottom:1px solid var(--border);color:var(--ink-mid)}
-.hours-table td:last-child{text-align:right;color:var(--saffron)}
-.hours-table tr:last-child td{border-bottom:none}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-.form-label{font-size:0.8rem;font-weight:500;color:var(--ink-mid);letter-spacing:0.03em}
-.form-input{width:100%;padding:11px 14px;font-family:var(--font-body);font-size:0.9rem;color:var(--ink);background:#fff;border:1px solid var(--border-strong);border-radius:3px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;box-sizing:border-box}
-.form-input:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(200,98,26,0.1)}
-.form-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A6558' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-.form-textarea{min-height:100px;resize:vertical;line-height:1.6}
-.form-radio-group{display:flex;gap:20px;flex-wrap:wrap}
-.form-radio{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--ink-mid);cursor:pointer}
-.form-radio input{accent-color:var(--saffron);width:16px;height:16px;flex-shrink:0}
-@media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.form-row{grid-template-columns:1fr}}
-</style>
-<script src="js/main.js" defer></script>
+<script>
+  // Nav scroll effect — solid background always, shadow on scroll
+  const nav = document.getElementById('site-nav');
+  if(nav) {
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 10), { passive: true });
+  }
+  // Mobile nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if(toggle && navLinks) {
+    toggle.addEventListener('click', () => {
+      const exp = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!exp));
+      navLinks.classList.toggle('open');
+    });
+    // Close on link click (mobile)
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+    }));
+  }
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded','false'));
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
+  // Section nav highlight
+  const sectionLinks = document.querySelectorAll('.page-section-nav a');
+  if(sectionLinks.length) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting) {
+          sectionLinks.forEach(a => a.classList.remove('active'));
+          const id = e.target.getAttribute('id');
+          const link = document.querySelector(`.page-section-nav a[href="#${id}"]`);
+          if(link) link.classList.add('active');
+        }
+      });
+    }, { threshold: 0.25 });
+    document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+  }
+</script>
+<script>
+  // WhatsApp form submission
+  document.getElementById('enquiry-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value || '';
+    const phone = document.getElementById('phone').value || '';
+    const course = document.getElementById('course').value || '';
+    const mode = document.querySelector('input[name="mode"]:checked')?.value || '';
+    const exp = document.getElementById('experience').value || '';
+    const timing = document.getElementById('timing').value || '';
+    const msg = `Hello, I would like to enquire about Bharatanatyam classes at Kalpavruksha.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0ACourse interest: ${encodeURIComponent(course)}%0AMode: ${encodeURIComponent(mode)}%0ABackground: ${encodeURIComponent(exp)}%0APreferred timing: ${encodeURIComponent(timing)}`;
+    window.open(`https://wa.me/917200095585?text=${msg}`, '_blank');
+  });
+</script>
 </body>
 </html>
