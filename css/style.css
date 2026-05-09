@@ -255,3 +255,11 @@ button{cursor:pointer;font-family:inherit;}
 .breadcrumb a{color:rgba(255,255,255,0.60);text-decoration:none;}
 .breadcrumb a:hover{color:#F8DC8C;}
 .breadcrumb-sep{color:rgba(255,255,255,0.30);}
+
+/* FOCUS VISIBLE — keyboard navigation (WCAG 2.4.7) */
+:focus-visible{outline:3px solid #B8962E;outline-offset:3px;}
+a:focus-visible,button:focus-visible,input:focus-visible,
+select:focus-visible,textarea:focus-visible{
+  outline:3px solid #B8962E;outline-offset:3px;border-radius:2px;
+}
+.skip:focus{top:0;outline:3px solid #B8962E;}
