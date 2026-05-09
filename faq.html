@@ -70,46 +70,30 @@ button{cursor:pointer;font-family:inherit;}
 .curriculum-box li::before{content:'›';position:absolute;left:0;color:var(--saffron);}
 @media(max-width:600px){.container{padding:0 16px;}.section{padding:52px 0;}.meta-grid{grid-template-columns:1fr;}}
 
+
 .site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#5c1522;border-bottom:1px solid rgba(255,255,255,0.10);box-shadow:0 2px 12px rgba(0,0,0,0.30);height:68px;}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;position:relative;}
 .nav-logo{text-decoration:none;display:flex;align-items:center;gap:10px;}
-.nav-logo-ph{width:36px;height:36px;border-radius:50%;background:rgba(248,220,140,0.12);border:1.5px dashed rgba(248,220,140,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.50rem;color:rgba(248,220,140,0.50);text-align:center;line-height:1.2;}
 .nav-logo-text{display:flex;flex-direction:column;line-height:1.15;}
 .nav-logo-name{font-family:'Playfair Display',serif;font-size:1.12rem;color:#F8DC8C;font-weight:600;letter-spacing:0.02em;}
 .nav-logo-sub{font-size:0.60rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.48);}
-.nav-links{list-style:none;display:flex;align-items:center;gap:2px;}
-.nav-links>li{position:relative;}
-.nav-links>li>a{color:rgba(255,255,255,0.78);text-decoration:none;font-size:0.80rem;font-weight:500;letter-spacing:0.04em;padding:8px 11px;border-radius:3px;display:flex;align-items:center;gap:4px;transition:color 0.2s,background 0.2s;white-space:nowrap;}
+.nav-links{list-style:none;display:flex;align-items:center;gap:2px;height:68px;}
+.nav-links>li{position:relative;height:100%;display:flex;align-items:center;}
+.nav-links>li>a{color:rgba(255,255,255,0.78);text-decoration:none;font-size:0.80rem;font-weight:500;letter-spacing:0.04em;padding:8px 11px;border-radius:3px;display:flex;align-items:center;gap:4px;transition:color 0.2s,background 0.2s;white-space:nowrap;height:100%;}
 .nav-links>li>a:hover,.nav-links>li>a.active{color:#fff;background:rgba(255,255,255,0.10);}
 .nav-links>li>a.active{color:#F8DC8C;background:transparent;}
 .nav-cta{background:rgba(200,98,26,0.88)!important;color:#fff!important;border-radius:3px;}
 .nav-cta:hover{background:rgba(200,98,26,1)!important;}
 .nav-arrow{font-size:0.58rem;opacity:0.55;transition:transform 0.2s;margin-top:1px;}
 .nav-links>li:hover .nav-arrow{transform:rotate(180deg);}
-.nav-dd{display:none;position:absolute;top:calc(100% + 1px);left:0;background:#3d0d18;border:1px solid rgba(255,255,255,0.10);border-radius:0 0 4px 4px;min-width:196px;box-shadow:0 8px 24px rgba(0,0,0,0.35);z-index:9999;padding:6px 0;}
+.nav-dd{display:none;position:absolute;top:68px;left:0;background:#3d0d18;border:1px solid rgba(255,255,255,0.10);border-top:none;border-radius:0 0 4px 4px;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.35);z-index:10000;padding:6px 0;}
 .nav-links>li:hover .nav-dd{display:block;}
 .nav-dd a{display:block;padding:9px 16px;font-size:0.78rem;color:rgba(255,255,255,0.68);text-decoration:none;transition:background 0.15s,color 0.15s;white-space:nowrap;}
 .nav-dd a:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.nav-dd-div{height:1px;background:rgba(255,255,255,0.08);margin:4px 0;}
 .nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
 .nav-toggle span{display:block;width:22px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:all 0.3s;}
-.wa-float{position:fixed;bottom:24px;right:24px;z-index:8000;background:#25D366;color:#fff;border-radius:50px;display:flex;align-items:center;gap:8px;padding:12px 18px 12px 14px;text-decoration:none;box-shadow:0 4px 16px rgba(37,211,102,0.38);transition:all 0.2s;font-size:0.82rem;font-weight:500;}
-.wa-float:hover{background:#1ebe59;transform:translateY(-2px);}
-.site-footer{background:#1C0A0F;color:rgba(255,255,255,0.55);padding:56px 0 0;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;}
-.footer-brand p{font-size:0.82rem;line-height:1.7;color:rgba(255,255,255,0.45);margin-top:0;}
-.f-social{width:30px;height:30px;border:1px solid rgba(255,255,255,0.15);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.68rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:all 0.2s;}
-.f-social:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
-.footer-col h4{font-family:'Playfair Display',serif;font-size:0.88rem;color:#fff;margin-bottom:14px;font-weight:500;}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
-.footer-col a{font-size:0.80rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s;}
-.footer-col a:hover{color:#F8DC8C;}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding:18px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-.footer-bottom p{font-size:0.76rem;color:rgba(255,255,255,0.28);}
-.img-ph{width:100%;height:100%;min-height:180px;background:#f5ede8;border:2px dashed #c8b0a4;border-radius:4px;display:flex;align-items:center;justify-content:center;}
-.img-ph::after{content:'';display:block;width:28px;height:28px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8b0a4' stroke-width='1.5'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpath d='m21 15-5-5L5 21'/%3E%3C/svg%3E") center/contain no-repeat;opacity:0.55;}
-@media(max-width:900px){.nav-toggle{display:flex;}.nav-links{display:none;position:absolute;top:68px;left:0;right:0;background:#3d0d18;flex-direction:column;align-items:stretch;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.10);z-index:9998;max-height:calc(100vh - 68px);overflow-y:auto;}.nav-links.open{display:flex;}.nav-links>li>a{padding:12px 20px;border-radius:0;font-size:0.88rem;}.nav-dd{display:none!important;}.nav-arrow{display:none;}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}}
-@media(max-width:540px){.footer-grid{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;text-align:center;}.wa-float span{display:none;}.wa-float{padding:14px;border-radius:50%;}}
+@media(max-width:900px){.nav-toggle{display:flex;}.nav-links{height:auto;display:none;position:absolute;top:68px;left:0;right:0;background:#3d0d18;flex-direction:column;align-items:stretch;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.10);z-index:9998;max-height:calc(100vh - 68px);overflow-y:auto;}.nav-links.open{display:flex;}.nav-links>li{height:auto;}.nav-links>li>a{padding:12px 20px;border-radius:0;font-size:0.88rem;height:auto;}.nav-dd{display:none!important;}.nav-arrow{display:none;}}
+.footer-bottom{flex-direction:column;text-align:center;}.wa-float span{display:none;}.wa-float{padding:14px;border-radius:50%;}}
 
 .faq-page{max-width:760px;margin:0 auto;}
 .faq-cat{margin-bottom:44px;}
@@ -121,11 +105,11 @@ button{cursor:pointer;font-family:inherit;}
 <nav class="site-nav" id="site-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo" aria-label="Kalpavruksha home">
-      <div class="nav-logo-ph" title="Add logo">Logo</div>
+      <img src="images/logo.png" alt="Kalpavruksha School of Fine Arts logo" loading="lazy" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
       <div class="nav-logo-text"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div>
     </a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <ul class="nav-links"><li><a href="index.html">Home <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="#about">About Us</a><a href="#courses">Course Overview</a><a href="#how-to-join">How to Join</a><a href="#recognition">Recognition</a></div></li><li><a href="courses.html">Courses <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li><li><a href="guru.html">Our Guru <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li><li><a href="online-classes.html">Online Classes <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#testimonials">Student Stories</a><a href="online-classes.html#faq">FAQ</a></div></li><li><a href="events.html">Events & Gallery <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li><li><a href="faq.html" class="active" aria-current="page">FAQ</a></li><li><a href="contact.html" class="nav-cta">Book Trial Class</a></li></ul>
+    <ul class="nav-links"><li><a href="index.html">Home <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="index.html#about">About Us</a><a href="index.html#courses">Course Overview</a><a href="index.html#how-to-join">How to Join</a><a href="index.html#recognition">Recognition</a></div></li><li><a href="courses.html">Courses <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li><li><a href="guru.html">Our Guru <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li><li><a href="online-classes.html">Online Classes <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#faq">FAQ</a><a href="online-classes.html#testimonials">Student Stories</a></div></li><li><a href="events.html">Events & Gallery <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li><li><a href="faq.html" class="active" aria-current="page">FAQ</a></li><li><a href="contact.html" class="nav-cta">Book Trial Class</a></li></ul>
   </div>
 </nav>
 <main id="main">
@@ -141,22 +125,23 @@ button{cursor:pointer;font-family:inherit;}
   <div class="faq-cat" id="general"><h2 class="faq-cat-title">General</h2><div class="faq-list">
     <div class="faq-item"><button class="faq-q">What age can my child start?</button><div class="faq-a"><p>We welcome children from <strong>age 4 onwards</strong>. Focus at this stage is posture, rhythm, and making dance joyful.</p></div></div>
     <div class="faq-item"><button class="faq-q">Do you teach adults who have never danced?</button><div class="faq-a"><p>Yes — we have a dedicated <strong>Adult Beginners batch</strong> with no upper age limit. Many students begin in their 30s and 40s. <a href="courses.html#adults">Learn more →</a></p></div></div>
-    <div class="faq-item"><button class="faq-q">Is Bharatanatyam only for girls?</button><div class="faq-a"><p>Not at all. Bharatanatyam is open to everyone — boys, girls, men, women. Dance for everyone is our motto.</p></div></div>
     <div class="faq-item"><button class="faq-q">What style do you teach?</button><div class="faq-a"><p>The <strong>Kalakshetra bani</strong> — established by Rukmini Devi Arundale. Known for refined aesthetics, devotional purity, and adherence to Natyashastra. Guru Smt. Deepa Sadasivam is a Kalakshetra alumna.</p></div></div>
   </div></div>
 
   <div class="faq-cat" id="classes"><h2 class="faq-cat-title">Classes &amp; Schedule</h2><div class="faq-list">
-    <div class="faq-item"><button class="faq-q">How many sessions per week?</button><div class="faq-a"><p><strong>2 sessions per week</strong>, each 1 hour. Intermediate and advanced students may attend 2–3 sessions.</p></div></div>
+    <div class="faq-item"><button class="faq-q">How many sessions per week?</button><div class="faq-a"><p>Classes meet <strong>2 sessions per week</strong>, each lasting 1 hour. Any changes to frequency will be communicated directly by the Guru.</p></div></div>
     <div class="faq-item"><button class="faq-q">Where are classes held?</button><div class="faq-a"><p>In-person at our studio in <strong>Kodambakkam, Chennai</strong>. Online via Google Meet. Exact address shared upon enrolment.</p></div></div>
     <div class="faq-item"><button class="faq-q">What are the timings?</button><div class="faq-a"><p>Morning batches available on weekdays. Exact timings confirmed at enrolment. <a href="contact.html">Contact us</a> for current availability.</p></div></div>
-    <div class="faq-item"><button class="faq-q">What should my child wear to class?</button><div class="faq-a"><p>Comfortable cotton salwar or churidar for beginners. Practice saree introduced as students progress. Bharatanatyam is practised barefoot — no special footwear needed.</p></div></div>
+    <div class="faq-item"><button class="faq-q">What should my child wear to class?</button><div class="faq-a"><p>Kalpavruksha has a <strong>school uniform</strong> which students are required to wear for class. The uniform can be purchased after joining. Details on the uniform and where to purchase it will be shared upon enrolment. Bharatanatyam is practised barefoot — no special footwear is needed.</p></div></div>
   </div></div>
 
   <div class="faq-cat" id="progress"><h2 class="faq-cat-title">Courses &amp; Progress</h2><div class="faq-list">
     <div class="faq-item"><button class="faq-q">How long to complete the beginner level?</button><div class="faq-a"><p>Typically <strong>1–2 years</strong> depending on age, practice frequency, and aptitude. Progression is assessed personally by Guru Deepa.</p></div></div>
-    <div class="faq-item"><button class="faq-q">When is a student ready for Intermediate?</button><div class="faq-a"><p>Determined solely by Guru Deepa based on mastery of foundational adavus, posture, and rhythm. There is no fixed exam.</p></div></div>
+    <div class="faq-item"><button class="faq-q">When is a student ready for Intermediate?</button><div class="faq-a"><p>Progression is determined entirely by Guru Smt. Deepa Sadasivam through close observation in class. Students also participate in <strong>Bridge Grade Exams</strong> — an external assessment programme that helps evaluate progress at each level. This gives both students and parents a clear, structured benchmark of where the student stands. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn about Bridge Grade Exams →</a></p></div></div>
     <div class="faq-item"><button class="faq-q">Can my child join with prior experience?</button><div class="faq-a"><p>Yes. Students with prior experience are assessed individually. Please mention prior training when you <a href="contact.html">enquire</a>.</p></div></div>
-  </div></div>
+  </div>
+    <div class="faq-item"><button class="faq-q">What are Bridge Grade Exams?</button><div class="faq-a"><p>Kalpavruksha regularly sends students for <strong>Bridge Grade Exams</strong> — a structured external examination programme that assesses a student's progress at each stage of classical dance. These exams provide an independent, standardised benchmark for students and parents. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn more about Bridge Grade Exams →</a></p></div></div>
+  </div>
 
   <div class="faq-cat" id="milestones"><h2 class="faq-cat-title">Salangai Pooja &amp; Arangetram</h2><div class="faq-list">
     <div class="faq-item"><button class="faq-q">What is a Salangai Pooja?</button><div class="faq-a"><p>The <strong>Salangai Pooja</strong> is the sacred ceremony in which the student's ankle bells are formally tied for the first time — a public performance marking their initiation as a classical dancer. <a href="courses.html#salangai">Learn more →</a></p></div></div>
@@ -167,7 +152,7 @@ button{cursor:pointer;font-family:inherit;}
 
   <div class="faq-cat" id="online"><h2 class="faq-cat-title">Online Classes</h2><div class="faq-list">
     <div class="faq-item"><button class="faq-q">Which platform for online classes?</button><div class="faq-a"><p>All live online classes via <strong>Google Meet</strong>. A free Google account is all you need.</p></div></div>
-    <div class="faq-item"><button class="faq-q">Is online as effective as in-person?</button><div class="faq-a"><p>For regular curriculum training, yes — especially at beginner and intermediate levels. The primary limitation is the inability to physically correct posture, which matters more at advanced stages.</p></div></div>
+    <div class="faq-item"><button class="faq-q">Is online learning as effective?</button><div class="faq-a"><p>Online learning at Kalpavruksha is designed to be thorough and personal. Students submit weekly practice videos, which Guru Deepa reviews and provides detailed corrections on. This structured video feedback, combined with live sessions, ensures consistent progress. Students across the UK, USA, and India have progressed excellently through this format.</p></div></div>
     <div class="faq-item"><button class="faq-q">Which countries do you serve online?</button><div class="faq-a"><p>Currently India, UK, and USA. Contact us with your location for other time zones.</p></div></div>
     <div class="faq-item"><button class="faq-q">Can online students do Salangai Pooja or Arangetram?</button><div class="faq-a"><p>These milestone events require in-person participation. We plan individually when an online student reaches readiness.</p></div></div>
   </div></div>
@@ -188,13 +173,16 @@ button{cursor:pointer;font-family:inherit;}
 </main>
 <footer class="site-footer"><div class="container"><div class="footer-grid">
   <div class="footer-brand">
-    <div class="nav-logo" style="margin-bottom:14px"><div class="nav-logo-ph">Logo</div><div class="nav-logo-text"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div></div>
+    <a href="index.html" class="nav-logo" style="margin-bottom:14px;text-decoration:none">
+      <img src="images/logo.png" alt="Kalpavruksha logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
+      <div class="nav-logo-text"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div>
+    </a>
     <p>Authentic Bharatanatyam in the Kalakshetra style. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
     <div style="display:flex;gap:8px;margin-top:14px"><a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" class="f-social">fb</a><a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="f-social">yt</a><a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" class="f-social">ig</a></div>
   </div>
   <div class="footer-col"><h4>Courses</h4><ul><li><a href="courses.html#beginners">Beginners (Age 4+)</a></li><li><a href="courses.html#intermediate">Intermediate</a></li><li><a href="courses.html#salangai">Salangai Pooja</a></li><li><a href="courses.html#arangetram">Arangetram</a></li><li><a href="courses.html#adults">Adult Beginners</a></li><li><a href="online-classes.html">Online Classes</a></li></ul></div>
   <div class="footer-col"><h4>School</h4><ul><li><a href="guru.html">Our Guru</a></li><li><a href="events.html">Events &amp; Gallery</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
-  <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917200095585">+91 72000 95585</a></li><li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li><li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai 600024</a></li></ul><p style="margin-top:12px;font-size:0.76rem;color:rgba(255,255,255,0.30)">Mon–Fri mornings · Online by arrangement</p></div>
+  <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917200095585">+91 72000 95585</a></li><li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li><li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai 600024</a></li></ul><p style="margin-top:12px;font-size:0.76rem;color:rgba(255,255,255,0.30)">Evening batches · Online by arrangement</p></div>
 </div><div class="footer-bottom"><p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p><p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35)">Privacy</a></p></div></div></footer>
 <a class="wa-float" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes." target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>Chat with us</span></a>
 <script>
