@@ -218,7 +218,14 @@ button{cursor:pointer;font-family:inherit;}
 .lineage-arrow-d{font-size:1.2rem;color:var(--bdr-s);}
 @media(max-width:860px){.guru-grid{grid-template-columns:1fr;}.guru-sidebar{position:static;}}
 
+/* SCROLL OFFSET */
+/* Default: account for fixed nav (68px) + 12px breathing room */
 [id]{scroll-margin-top:80px;}
+/* Sections with page-section-nav below nav: nav(68) + sec-nav(44) + 8px = 120px */
+.faq-cat{scroll-margin-top:120px;}
+.timeline-item[id]{scroll-margin-top:120px;}
+/* Page top anchors: no offset needed */
+#main,#top{scroll-margin-top:0;}
 
 /* COMPATIBILITY ALIASES for old-class pages */
 .page-hero{background:linear-gradient(135deg,#1C0A0F 0%,#3D0F1C 60%,#7B1D2E 100%);padding:44px 0 52px;}
