@@ -37,7 +37,7 @@
 /* ══ NAV FIX - STICKY WITH SOLID BACKGROUND ══ */
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
-  background: rgba(92,21,34,0.97);
+  background: #5c1522;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   transition: box-shadow 0.3s;
@@ -139,23 +139,14 @@ body { padding-top:68px; }
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
-<nav class="site-nav" role="navigation" aria-label="Main navigation" id="site-nav">
+<nav class="site-nav" id="site-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School of Fine Arts — Home">
-      <span class="nav-logo-name">Kalpavruksha</span>
-      <span class="nav-logo-sub">School of Fine Arts</span>
+    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha home">
+      <div class="nav-logo-ph" title="Add logo">Logo</div>
+      <div class="nav-logo-text"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div>
     </a>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links" role="list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="courses.html">Courses</a></li>
-      <li><a href="guru.html" class="active" aria-current="page">Our Guru</a></li>
-      <li><a href="online-classes.html">Online Classes</a></li>
-      <li><a href="events.html">Events &amp; Gallery</a></li>
-      <li><a href="contact.html" class="nav-cta">Book Trial Class</a></li>
-    </ul>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links"><li><a href="index.html">Home <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="#about">About Us</a><a href="#courses">Course Overview</a><a href="#how-to-join">How to Join</a><a href="#recognition">Recognition</a></div></li><li><a href="courses.html">Courses <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li><li><a href="guru.html" class="active" aria-current="page">Our Guru <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li><li><a href="online-classes.html">Online Classes <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#testimonials">Student Stories</a><a href="online-classes.html#faq">FAQ</a></div></li><li><a href="events.html">Events & Gallery <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html" class="nav-cta">Book Trial Class</a></li></ul>
   </div>
 </nav>
 
@@ -186,15 +177,11 @@ body { padding-top:68px; }
   <div class="container">
     <div class="guru-grid">
       <aside class="guru-sidebar">
-        <div class="guru-portrait-wrap" role="img" aria-label="Smt. Deepa Sadasivam"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">guru-portrait.jpg</span>
-    <span class="ph-label">Formal portrait of Smt. Deepa Sadasivam · classical attire · portrait 3:4</span>
-  </div></div>
+        <div class="guru-portrait-wrap" role="img" aria-label="Smt. Deepa Sadasivam"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <div class="guru-quick-facts" aria-label="Guru quick facts">
           <div class="guru-fact"><span class="gf-label">Training</span><span class="gf-value">Kalakshetra Foundation, Chennai</span></div>
           <div class="guru-fact"><span class="gf-label">Style</span><span class="gf-value">Kalakshetra bani Bharatanatyam</span></div>
-          <div class="guru-fact"><span class="gf-label">Visiting faculty</span><span class="gf-value">From 2012</span></div>
+          <div class="guru-fact"><span class="gf-label">Faculty (outreach)</span><span class="gf-value">2012, before founding Kalpavruksha</span></div>
           <div class="guru-fact"><span class="gf-label">School founded</span><span class="gf-value">Kalpavruksha — 2014</span></div>
           <div class="guru-fact"><span class="gf-label">Students guided</span><span class="gf-value">200+ (Chennai &amp; worldwide)</span></div>
           <div class="guru-fact"><span class="gf-label">Salangai Poojas</span><span class="gf-value">20+ guided</span></div>
@@ -220,7 +207,7 @@ body { padding-top:68px; }
           After completing her training, Deepa built a reputation as a compelling solo performer, presenting Bharatanatyam recitals at sabhas and cultural festivals across Tamil Nadu. Her performances are marked by the hallmarks of the Kalakshetra style — impeccable technique, luminous stage presence, and abhinaya of extraordinary emotional depth.
         </p>
         <p style="margin-top:16px;color:var(--ink-mid);line-height:1.8">
-          She began her teaching journey as a <strong>visiting faculty member from 2012</strong>, sharing her knowledge at various institutions. In <strong>2014</strong>, driven by a vision to give students a dedicated space of authentic classical learning, she founded <strong>Kalpavruksha School of Fine Arts</strong> in Kodambakkam, Chennai.
+          She began sharing her expertise as a faculty member in an outreach capacity from 2012, sharing her knowledge at various institutions. In <strong>2014</strong>, driven by a vision to give students a dedicated space of authentic classical learning, she founded <strong>Kalpavruksha School of Fine Arts</strong> in Kodambakkam, Chennai.
         </p>
 
         <h3 id="philosophy" style="font-family:var(--font-display);font-size:1.4rem;margin:36px 0 16px;color:var(--ink);scroll-margin-top:120px">Teaching philosophy</h3>
@@ -251,7 +238,7 @@ body { padding-top:68px; }
           <li>Cultural performances at government and corporate events across Tamil Nadu</li>
           <li>Nattuvanar (conductor) for multiple Salangai Pooja and Arangetram productions</li>
           <li>Choreographer for group productions and thematic dance dramas</li>
-          <li>Visiting faculty at institutions from 2012 before founding Kalpavruksha in 2014</li>
+          <li>Faculty member in outreach capacity from 2012 before founding Kalpavruksha in 2014</li>
           <li>Student performances at Bridge Margazhi Festival (2021, 2022, 2023)</li>
         </ul>
       </div>

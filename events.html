@@ -26,7 +26,7 @@
 /* ══ NAV FIX - STICKY WITH SOLID BACKGROUND ══ */
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
-  background: rgba(92,21,34,0.97);
+  background: #5c1522;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   transition: box-shadow 0.3s;
@@ -133,23 +133,14 @@ body { padding-top:68px; }
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
-<nav class="site-nav" role="navigation" aria-label="Main navigation" id="site-nav">
+<nav class="site-nav" id="site-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha School of Fine Arts — Home">
-      <span class="nav-logo-name">Kalpavruksha</span>
-      <span class="nav-logo-sub">School of Fine Arts</span>
+    <a href="index.html" class="nav-logo" aria-label="Kalpavruksha home">
+      <div class="nav-logo-ph" title="Add logo">Logo</div>
+      <div class="nav-logo-text"><span class="nav-logo-name">Kalpavruksha</span><span class="nav-logo-sub">School of Fine Arts</span></div>
     </a>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links" role="list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="courses.html">Courses</a></li>
-      <li><a href="guru.html">Our Guru</a></li>
-      <li><a href="online-classes.html">Online Classes</a></li>
-      <li><a href="events.html" class="active" aria-current="page">Events &amp; Gallery</a></li>
-      <li><a href="contact.html" class="nav-cta">Book Trial Class</a></li>
-    </ul>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links"><li><a href="index.html">Home <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="#about">About Us</a><a href="#courses">Course Overview</a><a href="#how-to-join">How to Join</a><a href="#recognition">Recognition</a></div></li><li><a href="courses.html">Courses <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li><li><a href="guru.html">Our Guru <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li><li><a href="online-classes.html">Online Classes <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#testimonials">Student Stories</a><a href="online-classes.html#faq">FAQ</a></div></li><li><a href="events.html" class="active" aria-current="page">Events & Gallery <span class="nav-arrow">▾</span></a><div class="nav-dd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html" class="nav-cta">Book Trial Class</a></li></ul>
   </div>
 </nav>
 
@@ -369,51 +360,27 @@ body { padding-top:68px; }
     </div>
     <div class="gallery-grid" role="list" aria-label="Photo gallery">
       <figure class="gallery-item gallery-item--wide" role="listitem">
-        <div class="gallery-img-placeholder" role="img" aria-label="Arangetram performance on stage" tabindex="0"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">gallery-arangetram-stage.jpg</span>
-    <span class="ph-label">Arangetram on stage · full costume · wide · landscape 4:3</span>
-  </div></div>
+        <div class="gallery-img-placeholder" role="img" aria-label="Arangetram performance on stage" tabindex="0"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <figcaption>Arangetram debut — solo classical performance</figcaption>
       </figure>
       <figure class="gallery-item" role="listitem">
-        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#f5e6c0,#e8d4a0)" role="img" aria-label="Morning class in session — children learning adavus" tabindex="0"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">gallery-morning-class.jpg</span>
-    <span class="ph-label">Morning class in session · candid · landscape 4:3</span>
-  </div></div>
+        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#f5e6c0,#e8d4a0)" role="img" aria-label="Morning class in session — children learning adavus" tabindex="0"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <figcaption>Morning class in session — adavu training</figcaption>
       </figure>
       <figure class="gallery-item" role="listitem">
-        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#fdf5d8,#f0e8c0)" role="img" aria-label="Group performance at Margazhi festival" tabindex="0"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">gallery-margazhi.jpg</span>
-    <span class="ph-label">Students performing at sabha/festival · landscape 4:3</span>
-  </div></div>
+        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#fdf5d8,#f0e8c0)" role="img" aria-label="Group performance at Margazhi festival" tabindex="0"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <figcaption>Margazhi festival performance</figcaption>
       </figure>
       <figure class="gallery-item gallery-item--wide" role="listitem">
-        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#f0e8d0,#e8dac0)" role="img" aria-label="Bridge Margazhi Festival group performance 2021" tabindex="0"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">gallery-bridge-margazhi.jpg</span>
-    <span class="ph-label">Group on stage · Bridge Margazhi 2021 · landscape 4:3 wide</span>
-  </div></div>
+        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#f0e8d0,#e8dac0)" role="img" aria-label="Bridge Margazhi Festival group performance 2021" tabindex="0"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <figcaption>Bridge Margazhi Festival · 2021</figcaption>
       </figure>
       <figure class="gallery-item" role="listitem">
-        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#fdf5d8,#e8d4a0)" role="img" aria-label="Intermediate students rehearsing varnam" tabindex="0"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">gallery-rehearsal.jpg</span>
-    <span class="ph-label">Students rehearsing · expressive · landscape 4:3</span>
-  </div></div>
+        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#fdf5d8,#e8d4a0)" role="img" aria-label="Intermediate students rehearsing varnam" tabindex="0"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <figcaption>Intermediate students — abhinaya rehearsal</figcaption>
       </figure>
       <figure class="gallery-item" role="listitem">
-        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#f8f0e0,#f0e0c0)" role="img" aria-label="Arangetram stage performance" tabindex="0"><div class="img-placeholder">
-    <span class="ph-icon" aria-hidden="true">🖼</span>
-    <span class="ph-filename">gallery-salangai-ceremony.jpg</span>
-    <span class="ph-label">Salangai Pooja group ceremony photo · landscape 4:3</span>
-  </div></div>
+        <div class="gallery-img-placeholder" style="background:linear-gradient(135deg,#f8f0e0,#f0e0c0)" role="img" aria-label="Arangetram stage performance" tabindex="0"><div class="img-ph" role="img" aria-label="Image placeholder"></div></div>
         <figcaption>Arangetram performance · stage debut</figcaption>
       </figure>
     </div>
