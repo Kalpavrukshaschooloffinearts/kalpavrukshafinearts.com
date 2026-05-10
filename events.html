@@ -14,33 +14,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>.events-list{display:flex;flex-direction:column;gap:2px}
-.event-card{display:flex;align-items:stretch;background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.event-card{display:flex;align-items:stretch;background:#fff;border:1px solid var(--bdr);border-radius:4px;overflow:hidden}
 .event-date{flex-shrink:0;width:90px;background:var(--maroon);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 12px;text-align:center}
 .event-month{font-size:0.7rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7}
-.event-day{font-family:var(--font-display);font-size:1.6rem;font-weight:300;line-height:1}
+.event-day{font-family:var(--fd);font-size:1.6rem;font-weight:300;line-height:1}
 .event-body{flex:1;padding:20px 24px}
 .event-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--saffron);margin-bottom:6px}
-.event-body h3{font-family:var(--font-display);font-size:1.2rem;color:var(--ink);margin-bottom:8px}
+.event-body h3{font-family:var(--fd);font-size:1.2rem;color:var(--ink);margin-bottom:8px}
 .event-body p{font-size:0.85rem;color:var(--ink-mid);line-height:1.65;margin-bottom:10px}
 .event-cta{font-size:0.78rem;letter-spacing:0.06em;color:var(--saffron);text-transform:uppercase}
 .event-note{font-size:0.78rem;color:var(--ink-soft);font-style:italic}
 .timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:56px}
-.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:var(--border-strong)}
+.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:var(--bdr-s)}
 .timeline-item{position:relative;padding-bottom:32px}
 .timeline-item:last-child{padding-bottom:0}
-.timeline-year{position:absolute;left:-56px;width:40px;height:40px;border-radius:50%;background:var(--maroon);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:0.65rem;text-align:center;line-height:1.2;font-weight:600;flex-shrink:0}
-.timeline-content{background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px 24px}
-.timeline-content h3{font-family:var(--font-display);font-size:1.1rem;color:var(--ink);margin-bottom:8px}
+.timeline-year{position:absolute;left:-56px;width:40px;height:40px;border-radius:50%;background:var(--maroon);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:0.65rem;text-align:center;line-height:1.2;font-weight:600;flex-shrink:0}
+.timeline-content{background:#fff;border:1px solid var(--bdr);border-radius:4px;padding:20px 24px}
+.timeline-content h3{font-family:var(--fd);font-size:1.1rem;color:var(--ink);margin-bottom:8px}
 .timeline-content p{font-size:0.85rem;color:var(--ink-mid);line-height:1.65}
 .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .gallery-item--wide{grid-column:span 2}
 .gallery-item{position:relative}
-.gallery-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saffron-light),var(--maroon-light));border-radius:4px;cursor:zoom-in;border:1px solid var(--border);transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.gallery-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saffron-l),var(--maroon-l));border-radius:4px;cursor:zoom-in;border:1px solid var(--bdr);transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .gallery-img-placeholder svg{width:90%;height:90%;object-fit:contain}
 .gallery-img-placeholder:hover{opacity:0.85}
 .gallery-item figcaption{font-size:0.75rem;color:var(--ink-soft);margin-top:6px;padding-left:2px}
 .press-badge{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:0.82rem;padding:8px 18px;border-radius:20px}
-.event-illus{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--border);background:linear-gradient(135deg,var(--saffron-light),#f0e8d0)}
+.event-illus{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--bdr);background:linear-gradient(135deg,var(--saffron-l),#f0e8d0)}
 .event-illus svg{display:block;width:100%;height:auto}
 @media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr)}.gallery-item--wide{grid-column:span 2}}
 @media(max-width:480px){.gallery-grid{grid-template-columns:1fr}.gallery-item--wide{grid-column:span 1}.event-card{flex-direction:column}.event-date{width:100%;flex-direction:row;gap:8px;padding:12px 20px;justify-content:flex-start}}
@@ -236,8 +236,8 @@
     <div style="text-align:center;margin-top:36px">
       <p style="font-size:0.85rem;color:var(--ink-soft);margin-bottom:16px">More photos from our events &amp; performances on our social channels</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-        <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="btn btn-secondary">Watch videos on YouTube →</a>
-        <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" class="btn btn-secondary">Photos on Instagram →</a>
+        <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="btn bs">Watch videos on YouTube →</a>
+        <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" class="btn bs">Photos on Instagram →</a>
       </div>
     </div>
   </div>
@@ -255,7 +255,7 @@
     </div>
     <p style="color:rgba(255,255,255,0.55);font-size:0.85rem;margin-top:32px">Kalpavruksha students and Guru Deepa have performed at and been featured in these prestigious platforms.</p>
     <div style="margin-top:36px">
-      <a href="contact.html" class="btn btn-gold">Join the School →</a>
+      <a href="contact.html" class="btn bg">Join the School →</a>
     </div>
   </div>
 </section>
