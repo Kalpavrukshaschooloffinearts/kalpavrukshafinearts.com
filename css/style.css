@@ -37,37 +37,44 @@
 
 /* ROOT */
 :root{
-  /* ── Primary brand — Royal Blue (KALPAVRUKSHA title on signboard) ── */
-  --blue:     #1E4FA0;   /* royal blue — primary brand colour            */
-  --blue-d:   #163782;   /* dark blue  — nav bg, dark sections           */
-  --blue-l:   #E8EEF8;   /* light blue — hover tints, card backgrounds   */
+  /* ── BRAND COLOURS (from 12-year signboard identity) ────────────
+     Yellow board BG → nav/accent backgrounds
+     Royal Blue text → headings, logo, nav links, CTAs
+     Maroon italic   → "School of Fine Arts" subheadings
+     Saffron orange  → "Guru. DEEPA SADASIVAM" labels & warm accents
+  ──────────────────────────────────────────────────────────────── */
 
-  /* ── Heritage accent — Maroon ("School of Fine Arts" on signboard) ── */
-  --maroon:   #7B1D2E;   /* maroon — decorative headings, italic accents */
-  --maroon-d: #5c1522;   /* dark maroon — kept for any legacy uses       */
+  /* Primary — Royal Blue (KALPAVRUKSHA title on yellow board) */
+  --blue:     #1E4FA0;   /* royal blue — headings, logo, nav text, CTAs  */
+  --blue-d:   #163782;   /* darker blue — hover states, deep accents     */
+  --blue-l:   #E8EEF8;   /* light blue tint — hover bg, card highlights  */
+
+  /* Background — Board Yellow (the board colour that makes blue pop) */
+  --board:    #C8C870;   /* olive yellow-green — nav bg, hero accents    */
+  --board-d:  #9EA832;   /* darker olive — borders on yellow surfaces    */
+  --board-l:  #F5F5DC;   /* light cream-yellow — section bg tint         */
+
+  /* Heritage — Maroon ("School of Fine Arts" italic on signboard)  */
+  --maroon:   #8B1A2E;   /* maroon — decorative sub-headings             */
+  --maroon-d: #5c1522;   /* dark maroon — deep accent                    */
   --maroon-l: #F5E6EB;   /* light maroon tint                            */
 
-  /* ── Warm accent — Saffron ("Guru. DEEPA SADASIVAM" on signboard) ── */
-  --saffron:  #C8621A;   /* saffron/orange — section labels, links, CTAs */
-  --saffron-l:#FBF4EC;   /* light saffron — section bg, hover states     */
+  /* Warm accent — Saffron ("Guru. DEEPA SADASIVAM" text colour)    */
+  --saffron:  #C8621A;   /* saffron — section labels, warm CTAs          */
+  --saffron-l:#FBF4EC;   /* light saffron bg                             */
 
-  /* ── Gold — decorative dividers, stat numbers ─────────────────────── */
+  /* Gold — decorative dividers, stat highlight numbers             */
   --gold:     #B8962E;
   --gold-l:   #fdf5d8;
 
-  /* ── Olive — subtle accent from board background ──────────────────── */
-  --olive:    #9EA832;   /* use sparingly: badges, highlights            */
-  --olive-l:  #F4F5DC;   /* light olive tint                             */
-
-  /* ── Neutral text & borders — blue-tinted for harmony ─────────────── */
+  /* Text — blue-tinted neutrals for harmony with blue brand        */
   --ink:      #0E1B2E;   /* near-black with blue tint — body text        */
-  --ink-mid:  #2D3F5E;   /* mid blue-grey — secondary text               */
-  --ink-soft: #5A6880;   /* soft blue-grey — captions, meta              */
-  --bdr:      #D4DCE8;   /* light blue-grey border                       */
+  --ink-mid:  #2D3F5E;   /* mid — secondary text                         */
+  --ink-soft: #5A6880;   /* soft — captions, meta text                   */
+  --bdr:      #D4DCE8;   /* border — cool grey-blue                      */
   --bdr-s:    #9AAAC4;   /* stronger border                              */
-  --cream:    #F2F5FA;   /* cool blue-white — cream section bg           */
+  --cream:    #F2F5FA;   /* section background — cool white              */
 
-  /* ── Typography & layout ─────────────────────────────────────────── */
   --fd: 'Playfair Display', Georgia, serif;
   --fb: 'DM Sans', -apple-system, sans-serif;
   --mw: 1200px;
@@ -79,7 +86,7 @@ img,svg{display:block;max-width:100%;}
 a{color:inherit;}
 ul,ol{list-style:none;}
 button{cursor:pointer;font-family:inherit;}
-.skip{position:absolute;top:-100%;left:16px;background:var(--blue);color:#fff;padding:8px 16px;border-radius:0 0 4px 4px;font-size:0.82rem;z-index:99999;text-decoration:none;}
+.skip{position:absolute;top:-100%;left:16px;background:#1E4FA0;color:#fff;padding:8px 16px;border-radius:0 0 4px 4px;font-size:0.82rem;z-index:99999;text-decoration:none;}
 .skip:focus{top:0;}
 
 /* LAYOUT */
@@ -88,7 +95,7 @@ button{cursor:pointer;font-family:inherit;}
 .sec-w{background:#fff;}
 .sec-c{background:var(--cream);}
 .sec-s{background:var(--saffron-l);}
-.sec-m{background:var(--blue-d);}
+.sec-m{background:#0E1B2E;}
 .sec-k{background:var(--ink);}
 .lbl{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--saffron);}
 .sh{text-align:center;max-width:640px;margin:0 auto 48px;}
@@ -147,28 +154,28 @@ button{cursor:pointer;font-family:inherit;}
 .cb li::before{content:'›';position:absolute;left:0;color:var(--saffron);}
 
 /* NAV — solid always */
-.site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#163782;border-bottom:1px solid rgba(255,255,255,0.12);box-shadow:0 2px 16px rgba(14,27,46,0.40);height:68px;}
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C8C870;border-bottom:2px solid #9EA832;box-shadow:0 2px 12px rgba(14,27,46,0.18);height:68px;}
 .ni{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;}
 .nl a.logo{text-decoration:none;display:flex;align-items:center;gap:10px;}
 .nl a.logo img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;}
 .logo-t{display:flex;flex-direction:column;line-height:1.15;}
-.logo-n{font-family:'Playfair Display',serif;font-size:1.12rem;color:#F8DC8C;font-weight:600;letter-spacing:0.02em;}
-.logo-s{font-size:0.60rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.48);}
+.logo-n{font-family:'Playfair Display',serif;font-size:1.12rem;color:#1E4FA0;font-weight:700;letter-spacing:0.02em;}
+.logo-s{font-size:0.60rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(30,79,160,0.65);}
 .nm{list-style:none;display:flex;align-items:center;gap:2px;height:68px;}
 .nm>li{position:relative;height:100%;display:flex;align-items:center;}
-.nm>li>a{color:rgba(255,255,255,0.78);text-decoration:none;font-size:0.80rem;font-weight:500;letter-spacing:0.04em;padding:8px 11px;border-radius:3px;display:flex;align-items:center;gap:4px;transition:color 0.2s,background 0.2s;white-space:nowrap;height:100%;}
-.nm>li>a:hover,.nm>li>a.on{color:#fff;background:rgba(255,255,255,0.10);}
-.nm>li>a.on{color:#F8DC8C;background:transparent;}
-.ncta{background:rgba(200,98,26,0.88)!important;color:#fff!important;border-radius:3px;}
-.ncta:hover{background:rgba(200,98,26,1)!important;}
-.narr{font-size:0.58rem;opacity:0.55;transition:transform 0.2s;margin-top:1px;}
+.nm>li>a{color:#1E4FA0;text-decoration:none;font-size:0.80rem;font-weight:500;letter-spacing:0.04em;padding:8px 11px;border-radius:3px;display:flex;align-items:center;gap:4px;transition:color 0.2s,background 0.2s;white-space:nowrap;height:100%;}
+.nm>li>a:hover,.nm>li>a.on{color:#163782;background:rgba(14,27,46,0.08);}
+.nm>li>a.on{color:#163782;background:rgba(14,27,46,0.10);font-weight:700;}
+.ncta{background:#1E4FA0!important;color:#fff!important;border-radius:3px;border:none!important;}
+.ncta:hover{background:#163782!important;}
+.narr{font-size:0.58rem;color:#1E4FA0;opacity:0.7;transition:transform 0.2s;margin-top:1px;}
 .nm>li:hover .narr{transform:rotate(180deg);}
-.ndd{display:none;position:absolute;top:68px;left:0;background:#112d6e;border:1px solid rgba(255,255,255,0.10);border-top:none;border-radius:0 0 4px 4px;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.35);z-index:10000;padding:6px 0;}
+.ndd{display:none;position:absolute;top:68px;left:0;background:#B8B850;border:1px solid #9EA832;border-top:none;border-radius:0 0 4px 4px;min-width:200px;box-shadow:0 8px 24px rgba(14,27,46,0.28);z-index:10000;padding:6px 0;}
 .nm>li:hover .ndd{display:block;}
-.ndd a{display:block;padding:9px 16px;font-size:0.78rem;color:rgba(255,255,255,0.68);text-decoration:none;transition:background 0.15s,color 0.15s;white-space:nowrap;}
-.ndd a:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.ndd a{display:block;padding:9px 16px;font-size:0.78rem;color:#1E4FA0;text-decoration:none;transition:background 0.15s,color 0.15s;white-space:nowrap;}
+.ndd a:hover{background:rgba(14,27,46,0.12);color:#163782;}
 .ntog{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
-.ntog span{display:block;width:22px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;}
+.ntog span{display:block;width:22px;height:2px;background:#1E4FA0;border-radius:2px;}
 
 /* FOOTER */
 .ft{background:#0E1B2E;color:rgba(255,255,255,0.55);padding:56px 0 0;}
@@ -194,10 +201,10 @@ button{cursor:pointer;font-family:inherit;}
 /* RESPONSIVE */
 @media(max-width:900px){
   .ntog{display:flex;}
-  .nm{height:auto;display:none;position:absolute;top:68px;left:0;right:0;background:#112d6e;flex-direction:column;align-items:stretch;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.10);z-index:9998;max-height:calc(100vh - 68px);overflow-y:auto;}
+  .nm{height:auto;display:none;position:absolute;top:68px;left:0;right:0;background:#C8C870;flex-direction:column;align-items:stretch;padding:8px 0;border-bottom:2px solid #9EA832;z-index:9998;max-height:calc(100vh - 68px);overflow-y:auto;}
   .nm.open{display:flex;}
   .nm>li{height:auto;}
-  .nm>li>a{padding:12px 20px;border-radius:0;font-size:0.88rem;height:auto;}
+  .nm>li>a{color:#1E4FA0;padding:12px 20px;border-radius:0;font-size:0.88rem;height:auto;}
   .ndd{display:none!important;}
   .narr{display:none;}
   .fg{grid-template-columns:1fr 1fr;gap:28px;}
@@ -221,7 +228,7 @@ button{cursor:pointer;font-family:inherit;}
 .section--white{background:#fff;}
 .section--cream{background:#FAF4EF;}
 .section--saffron-pale,.section--saffron{background:#FBF4EC;}
-.section--maroon{background:#163782;}
+.section--maroon{background:#0E1B2E;}
 .section--ink,.sec-k{background:#0E1B2E;}
 .section-head{text-align:center;max-width:640px;margin:0 auto 48px;}
 .section-head p{color:#7A6558;margin-top:10px;}
@@ -285,7 +292,7 @@ button{cursor:pointer;font-family:inherit;}
 .section--white{background:#fff;}
 .section--cream{background:#FAF4EF;}
 .section--saffron-pale,.section--saffron{background:#FBF4EC;}
-.section--maroon{background:#163782;}
+.section--maroon{background:#0E1B2E;}
 .section--ink,.sec-k{background:#0E1B2E;}
 .section-head{text-align:center;max-width:640px;margin:0 auto 48px;}
 .section-head p{color:#7A6558;margin-top:10px;}
