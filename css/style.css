@@ -154,19 +154,19 @@ button{cursor:pointer;font-family:inherit;}
 .cb li::before{content:'›';position:absolute;left:0;color:var(--saffron);}
 
 /* NAV — solid always */
-.site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C8C870;border-bottom:2px solid #9EA832;box-shadow:0 2px 12px rgba(14,27,46,0.18);height:68px;}
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C8C870!important;border-bottom:2px solid #9EA832!important;box-shadow:0 2px 12px rgba(14,27,46,0.18)!important;height:68px;}
 .ni{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;}
 .nl a.logo{text-decoration:none;display:flex;align-items:center;gap:10px;}
 .nl a.logo img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;}
 .logo-t{display:flex;flex-direction:column;line-height:1.15;}
-.logo-n{font-family:'Playfair Display',serif;font-size:1.12rem;color:#1E4FA0;font-weight:700;letter-spacing:0.02em;}
-.logo-s{font-size:0.60rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(30,79,160,0.65);}
+.logo-n{font-family:'Playfair Display',serif;font-size:1.12rem;color:#1E4FA0!important;font-weight:700;letter-spacing:0.02em;}
+.logo-s{font-size:0.60rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(30,79,160,0.65)!important;}
 .nm{list-style:none;display:flex;align-items:center;gap:2px;height:68px;}
 .nm>li{position:relative;height:100%;display:flex;align-items:center;}
-.nm>li>a{color:#1E4FA0;text-decoration:none;font-size:0.80rem;font-weight:500;letter-spacing:0.04em;padding:8px 11px;border-radius:3px;display:flex;align-items:center;gap:4px;transition:color 0.2s,background 0.2s;white-space:nowrap;height:100%;}
+.nm>li>a{color:#1E4FA0!important;text-decoration:none;font-size:0.80rem;font-weight:500;letter-spacing:0.04em;padding:8px 11px;border-radius:3px;display:flex;align-items:center;gap:4px;transition:color 0.2s,background 0.2s;white-space:nowrap;height:100%;}
 .nm>li>a:hover,.nm>li>a.on{color:#163782;background:rgba(14,27,46,0.08);}
 .nm>li>a.on{color:#163782;background:rgba(14,27,46,0.10);font-weight:700;}
-.ncta{background:#1E4FA0!important;color:#fff!important;border-radius:3px;border:none!important;}
+.ncta{background:#1E4FA0!important;color:#fff!important;border-radius:3px!important;border:none!important;}
 .ncta:hover{background:#163782!important;}
 .narr{font-size:0.58rem;color:#1E4FA0;opacity:0.7;transition:transform 0.2s;margin-top:1px;}
 .nm>li:hover .narr{transform:rotate(180deg);}
@@ -175,7 +175,7 @@ button{cursor:pointer;font-family:inherit;}
 .ndd a{display:block;padding:9px 16px;font-size:0.78rem;color:#1E4FA0;text-decoration:none;transition:background 0.15s,color 0.15s;white-space:nowrap;}
 .ndd a:hover{background:rgba(14,27,46,0.12);color:#163782;}
 .ntog{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
-.ntog span{display:block;width:22px;height:2px;background:#1E4FA0;border-radius:2px;}
+.ntog span{display:block;width:22px;height:2px;background:#1E4FA0!important;border-radius:2px;}
 
 /* FOOTER */
 .ft{background:#0E1B2E;color:rgba(255,255,255,0.55);padding:56px 0 0;}
@@ -319,3 +319,44 @@ select:focus-visible,textarea:focus-visible{
   outline:3px solid #1E4FA0;outline-offset:3px;border-radius:2px;
 }
 .skip:focus{top:0;outline:3px solid #B8962E;}
+
+/* ═══════════════════════════════════════════════════════════════
+   BRAND COLOUR OVERRIDES — added at end of file for cascade priority
+   Ensures the yellow nav appears on ALL pages regardless of any
+   inline <style> blocks in individual HTML files.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Navigation — board yellow background, royal blue text */
+.site-nav,
+nav.site-nav {
+  background: #C8C870 !important;
+  border-bottom: 2px solid #9EA832 !important;
+}
+.nm > li > a {
+  color: #1E4FA0 !important;
+}
+.nm > li > a:hover,
+.nm > li > a.on {
+  color: #163782 !important;
+  background: rgba(14,27,46,0.10) !important;
+}
+.logo-n { color: #1E4FA0 !important; }
+.logo-s { color: rgba(30,79,160,0.65) !important; }
+.ntog span { background: #1E4FA0 !important; }
+.narr { color: #1E4FA0 !important; }
+.ndd {
+  background: #B8B850 !important;
+  border-color: #9EA832 !important;
+}
+.ndd a { color: #1E4FA0 !important; }
+.ndd a:hover {
+  background: rgba(14,27,46,0.12) !important;
+  color: #163782 !important;
+}
+
+/* Mobile nav — also yellow */
+@media(max-width:900px) {
+  .nm.open,
+  .nm { background: #C8C870 !important; border-bottom: 2px solid #9EA832 !important; }
+  .nm > li > a { color: #1E4FA0 !important; }
+}
