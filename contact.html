@@ -87,63 +87,46 @@
       <div class="contact-form-col">
         <span class="section-label">Enquiry form</span>
         <h2 class="display-md" style="margin-top:8px;margin-bottom:8px">Tell us about yourself</h2>
-        <p style="color:var(--ink-soft);margin-bottom:32px;font-size:0.9rem">We'll get back to you within 24 hours via WhatsApp or phone.</p>
+        <p style="color:var(--ink-soft);margin-bottom:24px;font-size:0.9rem">Fill the form below — we will get back to you within 24 hours via WhatsApp or phone. Your trial class is completely free.</p>
 
-        <form id="enquiry-form" novalidate aria-label="Enquiry and trial class booking form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name" class="form-label">Your name <span aria-label="required" style="color:var(--saffron)">*</span></label>
-              <input type="text" id="name" name="name" class="form-input" placeholder="E.g., Meena Krishnan" required autocomplete="name">
-            </div>
-            <div class="form-group">
-              <label for="phone" class="form-label">Phone / WhatsApp <span aria-label="required" style="color:var(--saffron)">*</span></label>
-              <input type="tel" id="phone" name="phone" class="form-input" placeholder="+91 9876 543210" required autocomplete="tel">
-            </div>
+        <!-- GOOGLE FORM EMBED -->
+        <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;overflow:hidden;margin-bottom:24px">
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdPq9sQ91obcxQRIx3T2dWRU6nCVrkUm-IS5nJ3u9ghmiGKuw/viewform?embedded=true"
+            width="100%"
+            height="1800"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            title="Book a free trial class at Kalpavruksha School of Fine Arts"
+            style="display:block;border:none">
+            Loading form…
+          </iframe>
+        </div>
+
+        <p style="font-size:0.80rem;color:var(--ink-soft);line-height:1.6;margin-bottom:20px">
+          Your details are used only to respond to your enquiry and schedule your trial class.
+          We do not share your information with third parties.
+          <a href="privacy.html" style="color:var(--saffron)">See our Privacy Policy</a>.
+        </p>
+
+        <div style="background:var(--saffron-l);border:1px solid var(--bdr);border-radius:4px;padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="flex:1;min-width:160px">
+            <strong style="font-size:0.86rem;color:var(--ink);display:block;margin-bottom:4px">Prefer WhatsApp?</strong>
+            <p style="font-size:0.80rem;color:var(--ink-soft);line-height:1.5">Message us directly and we will respond right away.</p>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="email" class="form-label">Email address</label>
-              <input type="email" id="email" name="email" class="form-input" placeholder="you@email.com" autocomplete="email">
-            </div>
-            <div class="form-group">
-              <label for="course" class="form-label">I am interested in <span aria-label="required" style="color:var(--saffron)">*</span></label>
-              <select id="course" name="course" class="form-input form-select" required>
-                <option value="" disabled selected>Select a course…</option>
-                <option value="Beginners Bharatanatyam (child age 4+)">Beginners — Child (age 4+)</option>
-                <option value="Intermediate Bharatanatyam">Intermediate Bharatanatyam</option>
-                <option value="Advanced Bharatanatyam">Advanced Bharatanatyam</option>
-                <option value="Arangetram preparation">Arangetram Preparation</option>
-                <option value="Adult Beginners Bharatanatyam">Adult Beginners</option>
-                <option value="Online Bharatanatyam classes">Online Classes</option>
-                <option value="Not sure — need guidance">Not sure — need guidance</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Preferred class mode</label>
-            <div class="form-radio-group" role="radiogroup">
-              <label class="form-radio"><input type="radio" name="mode" value="In-person (Chennai)"> In-person (Chennai)</label>
-              <label class="form-radio"><input type="radio" name="mode" value="Online"> Online</label>
-              <label class="form-radio"><input type="radio" name="mode" value="Either" checked> Either / Not sure</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="experience" class="form-label">Dance background (if any)</label>
-            <textarea id="experience" name="experience" class="form-input form-textarea" placeholder="E.g., 'My daughter is 6 with no dance experience' or 'I am an adult looking to start Bharatanatyam'"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="timing" class="form-label">Preferred days / timing</label>
-            <input type="text" id="timing" name="timing" class="form-input" placeholder="E.g., weekday mornings">
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;font-size:0.9rem;padding:16px">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Send enquiry via WhatsApp
-          </button>
-          <p style="text-align:center;font-size:0.78rem;color:var(--ink-soft);margin-top:10px">This will open WhatsApp with your details. Alternatively, call us: <a href="tel:+917200095585" style="color:var(--saffron)">+91 72000 95585</a></p>
-        </form>
+          <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+a+free+trial+class+at+Kalpavruksha+School+of+Fine+Arts.+Please+share+details."
+             target="_blank" rel="noopener noreferrer"
+             class="btn bp"
+             style="flex-shrink:0"
+             aria-label="Send trial class enquiry via WhatsApp (opens WhatsApp)">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp Us
+          </a>
+        </div>
       </div>
 
-      <!-- SIDEBAR -->
+            <!-- SIDEBAR -->
       <aside class="contact-sidebar" id="location">
         <div class="contact-info-card">
           <h3>Reach us directly</h3>
