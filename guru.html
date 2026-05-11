@@ -20,9 +20,9 @@
   <style>
     /* Guru page layout */
     .guru-layout{display:grid;grid-template-columns:300px 1fr;gap:52px;align-items:start;padding:52px 0 72px;}
-    .guru-sidebar{position:sticky;top:86px;}
+    .guru-sidebar{position:sticky;top:86px;max-height:calc(100vh - 100px);overflow-y:auto;}
     .guru-portrait{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--bdr);margin-bottom:16px;}
-    .guru-portrait img{width:100%;display:block;}
+    .guru-portrait img{width:100%;display:block;max-height:380px;object-fit:cover;object-position:top;}
     .guru-name-card{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;text-align:center;}
     .guru-name-card h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--maroon);margin-bottom:4px;}
     .guru-name-card .quals{font-size:0.75rem;color:var(--ink-soft);line-height:1.6;}
@@ -198,7 +198,7 @@
         <div class="guru-section" id="bio">
           <h2>Biography</h2>
           <p>Smt. Deepa Sadasivam is a classically trained Bharatanatyam artist and teacher in the <strong>Kalakshetra bani</strong> &mdash; the tradition established by Rukmini Devi Arundale. She completed her Diploma in Fine Arts (Bharatanatyam) at the <strong>Rukmini Devi College of Fine Arts, Kalakshetra Foundation</strong>, Thiruvanmiyur, Chennai (2010&ndash;2014), followed by an <strong>M.A. in Bharatanatyam</strong> from the University of Madras (2014&ndash;2016) and an <strong>M.Phil in Bharatanatyam</strong> from Tamil Nadu Open University, Thanjavur (2018&ndash;2019).</p>
-          <p>In 2014, she founded <strong>Kalpavruksha School of Fine Arts</strong> in Kodambakkam, Chennai &mdash; named after the mythical wish-fulfilling tree. Since its founding, the school has grown to 50+ students, spanning children from age 4 through adult learners and online students in India, the UK, and the USA.</p>
+          <p>In 2014, she founded <strong>Kalpavruksha School of Fine Arts</strong> in Kodambakkam, Chennai &mdash; named after the mythical wish-fulfilling tree. Since its founding, the school has grown to 200+ students, spanning children from age 4 through adult learners and online students in India, the UK, and the USA.</p>
           <p>Guru Deepa is currently deepening her own practice under the guidance of <strong>Smt. Sudharshini Iyer</strong>, continuing the classical tradition of a student always remaining a student.</p>
 
           <div class="milestones-bar" style="margin-top:24px">
@@ -216,9 +216,6 @@
               <tr><th>Qualification</th><th>Institution</th><th>Year</th></tr>
             </thead>
             <tbody>
-              <tr><td>X Standard</td><td>The Ashram Matriculation Higher Secondary School, Guindy, Chennai</td><td class="yr">2008</td></tr>
-              <tr><td>XII Standard</td><td>Shri Ahobila Matt Oriental Higher Secondary School, West Mambalam, Chennai</td><td class="yr">2010</td></tr>
-              <tr><td>B.Com (Correspondence)</td><td>University of Madras</td><td class="yr">2010&ndash;2013</td></tr>
               <tr><td>Diploma in Fine Arts &mdash; Bharatanatyam</td><td>Rukmini Devi College of Fine Arts, Kalakshetra Foundation, Thiruvanmiyur, Chennai</td><td class="yr">2010&ndash;2014</td></tr>
               <tr><td>M.A. Bharatanatyam</td><td>University of Madras</td><td class="yr">2014&ndash;2016</td></tr>
               <tr><td>M.Phil Bharatanatyam</td><td>Tamil Nadu Open University, Thanjavur</td><td class="yr">2018&ndash;2019</td></tr>
@@ -264,7 +261,7 @@
             <div class="lineage-arrow" aria-hidden="true"></div>
             <div class="lineage-node lineage-node--hl"><strong>Smt. Deepa Sadasivam</strong><span>Kalakshetra Foundation Alumna · Currently learning from Smt. Sudharshini Iyer</span></div>
             <div class="lineage-arrow" aria-hidden="true"></div>
-            <div class="lineage-node"><strong>Kalpavruksha Students</strong><span>50+ students · Chennai &amp; worldwide · Est. 2014</span></div>
+            <div class="lineage-node"><strong>Kalpavruksha Students</strong><span>200+ students · Chennai &amp; worldwide · Est. 2014</span></div>
           </div>
         </div>
 
@@ -279,7 +276,7 @@
               <div class="exp-body">
                 <div class="exp-tag">Founder &amp; Principal Guru</div>
                 <h3>Kalpavruksha School of Fine Arts, Kodambakkam, Chennai</h3>
-                <p>Founded and continues to run the school. 50+ students. In-person batches in Chennai and live online classes for students in India, UK, and USA. 30+ Salangai Poojas and 4 Arangetrams guided.</p>
+                <p>Founded and continues to run the school. 200+ students. In-person batches in Chennai and live online classes for students in India, UK, and USA. 30+ Salangai Poojas and 4 Arangetrams guided.</p>
               </div>
             </div>
 
@@ -356,6 +353,25 @@
           <p>Guru Deepa&rsquo;s Arangetram was performed at Vani Mahal, T. Nagar (2007) under Guru Smt. Subhashree Anirudhan. She has since performed extensively across India and internationally.</p>
 
           <div style="margin-top:16px">
+            <div class="exp-tag" style="margin-bottom:10px">Dance dramas &amp; special productions</div>
+            <div class="perf-grid">
+              <div class="perf-item">Dance drama: Sundara Kandam</div>
+              <div class="perf-item">Dance drama: Nachiyar Thirumozhi</div>
+              <div class="perf-item">Nattuvangam &amp; vocal support &mdash; Thiruvaiyaru Festival</div>
+              <div class="perf-item">Nattuvangam &amp; vocal &mdash; Kerala performances</div>
+              <div class="perf-item">Nattuvangam &mdash; multiple sabhas &amp; temples</div>
+            </div>
+          </div>
+
+          <div style="margin-top:24px">
+            <div class="exp-tag" style="margin-bottom:10px">International performances</div>
+            <div class="perf-grid">
+              <div class="perf-item">Malaysia &mdash; Kalai Sangaman, Batu Caves</div>
+              <div class="perf-item">Singapore (2018)</div>
+            </div>
+          </div>
+
+          <div style="margin-top:24px">
             <div class="exp-tag" style="margin-bottom:10px">Selected stages &amp; festivals</div>
             <div class="perf-grid">
               <div class="perf-item">Vani Mahal, T. Nagar</div>
@@ -372,30 +388,16 @@
               <div class="perf-item">Chennayil Thiruvaiyaru</div>
               <div class="perf-item">Thirupathi Bhramotsavam</div>
               <div class="perf-item">Chennai Cultural Academy</div>
-              <div class="perf-item">Sivarathri Concerts, Kachapeshwarar Temple, Kanchi</div>
+              <div class="perf-item">Kachapeshwarar Temple, Kanchipuram</div>
               <div class="perf-item">Tiruvallur Sivan Temple</div>
-              <div class="perf-item">Chidambaram</div>
               <div class="perf-item">Vallakottam</div>
               <div class="perf-item">Thirumayilai (Kapaleeshwarar)</div>
               <div class="perf-item">Thiruporur</div>
               <div class="perf-item">Parthasarathy Temple, Triplicane</div>
               <div class="perf-item">Ashtalakshmi Temple</div>
               <div class="perf-item">Ekambaranathar Temple, Kanchipuram</div>
-              <div class="perf-item">Malaysia &mdash; Kalai Sangaman, Batu Caves</div>
-              <div class="perf-item">Singapore (2018)</div>
               <div class="perf-item">Kanchipuram Athi Varadar Natyanjali (2019)</div>
-              <div class="perf-item">Bridge Margazhi Festival (2021, 2022, 2023)</div>
-            </div>
-          </div>
-
-          <div style="margin-top:24px">
-            <div class="exp-tag" style="margin-bottom:10px">Dance dramas &amp; special productions</div>
-            <div class="perf-grid">
-              <div class="perf-item">Dance drama: Sundara Kandam</div>
-              <div class="perf-item">Dance drama: Nachiyar Thirumozhi</div>
-              <div class="perf-item">Nattuvangam &amp; vocal support &mdash; Thiruvaiyaru Festival</div>
-              <div class="perf-item">Nattuvangam &amp; vocal &mdash; Kerala performances</div>
-              <div class="perf-item">Nattuvangam &mdash; multiple sabhas &amp; temples</div>
+              <div class="perf-item">Bridge Margazhi Festival (2021&ndash;2023)</div>
             </div>
           </div>
         </div>
