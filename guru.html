@@ -18,25 +18,24 @@
   <noscript><link rel="stylesheet" href="css/style.css"></noscript>
 
   <style>
-    /* Guru page layout */
-    .guru-layout{display:grid;grid-template-columns:300px 1fr;gap:52px;align-items:start;padding:52px 0 72px;}
-    .guru-sidebar{position:sticky;top:86px;max-height:calc(100vh - 100px);overflow-y:auto;}
-    .guru-portrait{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--bdr);margin-bottom:16px;}
-    .guru-portrait img{width:100%;display:block;max-height:380px;object-fit:cover;object-position:top;}
+    /* Guru page layout — tightened spacing */
+    .guru-layout{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:start;padding:32px 0 56px;}
+
+    /* Portrait pinned sticky independently; name card scrolls with page */
+    .guru-sidebar{display:flex;flex-direction:column;gap:16px;}
+    .guru-portrait-sticky{position:sticky;top:158px;/* skip(34)+nav(68)+secnav(44)+12 */}
+    .guru-portrait{width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--bdr);}
+    .guru-portrait img{width:100%;display:block;aspect-ratio:4/5;object-fit:cover;object-position:top;}
     .guru-name-card{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;text-align:center;}
     .guru-name-card h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--maroon);margin-bottom:4px;}
     .guru-name-card .quals{font-size:0.75rem;color:var(--ink-soft);line-height:1.6;}
     .guru-name-card .founded{font-size:0.72rem;color:#C8621A;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;margin-top:8px;}
 
-    /* Sidebar nav */
-    .psn{margin-top:20px;}
-    .psn ul{list-style:none;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;}
-    .psn ul li a{display:block;padding:10px 14px;font-size:0.78rem;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--bdr);transition:all 0.16s;}
-    .psn ul li:last-child a{border-bottom:none;}
-    .psn ul li a:hover,.psn ul li a.on{background:var(--maroon-l);color:var(--maroon);font-weight:500;}
+    /* Hide sidebar nav — top bar handles it */
+    .psn{display:none;}
 
-    /* Content sections */
-    .guru-section{margin-bottom:52px;padding-top:8px;}
+    /* Content sections — tighter gaps */
+    .guru-section{margin-bottom:40px;padding-top:4px;}
     .guru-section h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--maroon);margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid var(--bdr);}
     .guru-section p{font-size:0.92rem;color:var(--ink);line-height:1.8;margin-bottom:12px;}
     .guru-section p:last-child{margin-bottom:0;}
@@ -99,22 +98,26 @@
     .yt-link:hover{background:var(--maroon-l);}
     .yt-icon{width:32px;height:32px;background:#ff0000;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-    /* Skip link — always visible accessibility bar */
-    .skip{position:static!important;top:auto!important;display:block;background:var(--ink);color:rgba(255,255,255,0.55);padding:5px 24px;font-size:0.70rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;text-align:center;border-bottom:1px solid rgba(255,255,255,0.08);position:fixed!important;top:0!important;left:0;right:0;z-index:10000;height:34px;line-height:24px;}
-    .skip:hover{color:#F8DC8C;}
-    .skip:focus{outline:3px solid #B8962E;color:#F8DC8C;}
-    body{padding-top:102px;}/* 34px skip bar + 68px nav */
-    .site-nav{top:34px!important;}
-    .page-section-nav{top:102px!important;}
-    .guru-sidebar{top:120px!important;}
+    /* Skip link — slim always-visible bar */
+    .skip{display:block;position:fixed!important;top:0!important;left:0;right:0;z-index:10000;height:28px;line-height:28px;background:#0e0608;color:rgba(255,255,255,0.45);font-size:0.68rem;letter-spacing:0.10em;text-transform:uppercase;text-decoration:none;text-align:center;border-bottom:1px solid rgba(255,255,255,0.07);}
+    .skip:hover,.skip:focus{color:#F8DC8C;outline:none;}
 
-    /* Hide sidebar psn on desktop — top bar handles nav */
-    .psn{display:none;}
+    /* Push everything down: skip(28) + nav(68) = 96px */
+    body{padding-top:96px;}
+    .site-nav{top:28px!important;}
+    .page-section-nav{top:96px!important;}
 
-    /* Sections need extra scroll margin for skip(34) + nav(68) + section-nav(44) */
-    .guru-section[id]{scroll-margin-top:156px;}
+    /* Scroll margin: skip(28)+nav(68)+secnav(44)+8 = 148px */
+    .guru-section[id]{scroll-margin-top:148px;}
 
-    @media(max-width:900px){.guru-layout{grid-template-columns:1fr;}.guru-sidebar{position:static;}.milestones-bar{grid-template-columns:repeat(3,1fr);}}
+    /* Section wrapper — remove default 72px padding */
+    #guru-main{padding-top:0;padding-bottom:0;}
+
+    @media(max-width:900px){
+      .guru-layout{grid-template-columns:1fr;padding:24px 0 48px;}
+      .guru-portrait-sticky{position:static;}
+      .milestones-bar{grid-template-columns:repeat(3,1fr);}
+    }
     @media(max-width:480px){.milestones-bar{grid-template-columns:1fr;}}
   </style>
 
@@ -147,7 +150,7 @@
   <meta property="og:image:alt" content="Smt. Deepa Sadasivam, Bharatanatyam Guru and founder of Kalpavruksha School of Fine Arts">
 </head>
 <body>
-<a href="#main" class="skip" id="skip-link">Skip to main content</a>
+<a href="#bio" class="skip" id="skip-link">Skip to main content</a>
 
 <nav class="site-nav" id="site-nav" role="navigation" aria-label="Main navigation">
   <div class="ni">
@@ -190,22 +193,24 @@
   </div>
 </nav>
 
-<section class="sec sec-w" id="guru-main">
+<section class="sec sec-w" id="guru-main" style="padding-top:0;padding-bottom:0;">
   <div class="container">
     <div class="guru-layout">
 
       <!-- SIDEBAR -->
       <aside class="guru-sidebar">
-        <div class="guru-portrait">
-          <picture>
-            <source srcset="images/guru-portrait-600w.webp 600w, images/guru-portrait.webp 1200w" sizes="(max-width:900px) 90vw, 300px" type="image/webp">
-            <img src="images/guru-portrait.webp" alt="Smt. Deepa Sadasivam performing Bharatanatyam" width="600" height="750" loading="eager" decoding="async" style="width:100%;display:block;">
-          </picture>
-        </div>
-        <div class="guru-name-card">
-          <h1>Smt. Deepa Sadasivam</h1>
-          <div class="quals">M.Phil Bharatanatyam<br>M.A. Bharatanatyam<br>B.Com &middot; Alumna Kalakshetra</div>
-          <div class="founded">Founder &middot; Kalpavruksha 2014</div>
+        <div class="guru-portrait-sticky">
+          <div class="guru-portrait">
+            <picture>
+              <source srcset="images/guru-portrait-600w.webp 600w, images/guru-portrait.webp 1200w" sizes="(max-width:900px) 90vw, 300px" type="image/webp">
+              <img src="images/guru-portrait.webp" alt="Smt. Deepa Sadasivam performing Bharatanatyam" width="600" height="750" loading="eager" decoding="async">
+            </picture>
+          </div>
+          <div class="guru-name-card">
+            <h1>Smt. Deepa Sadasivam</h1>
+            <div class="quals">M.Phil Bharatanatyam<br>M.A. Bharatanatyam<br>B.Com &middot; Alumna Kalakshetra</div>
+            <div class="founded">Founder &middot; Kalpavruksha 2014</div>
+          </div>
         </div>
         <nav class="psn" aria-label="Guru page sections">
           <ul>
