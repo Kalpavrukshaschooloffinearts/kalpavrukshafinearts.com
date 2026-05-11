@@ -18,48 +18,43 @@
   <noscript><link rel="stylesheet" href="css/style.css"></noscript>
 
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'DM Sans',-apple-system,sans-serif;color:#0E1B2E;background:#fff;padding-top:68px;}
-    .site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C8C870;border-bottom:2px solid #9EA832;height:68px;}
-    .skip{position:absolute;top:-100%;left:16px;background:#1E4FA0;color:#fff;padding:8px 16px;border-radius:0 0 4px 4px;font-size:0.82rem;z-index:99999;text-decoration:none;}
-    .skip:focus{top:0;}
 
     .events-list{display:flex;flex-direction:column;gap:2px}
     .event-card{display:flex;align-items:stretch;background:#fff;border:1px solid var(--bdr);border-radius:4px;overflow:hidden}
-    .event-date{flex-shrink:0;width:90px;background:#1E4FA0;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 12px;text-align:center}
+    .event-date{flex-shrink:0;width:90px;background:var(--maroon);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 12px;text-align:center}
     .event-month{font-size:0.7rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7}
     .event-day{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;line-height:1}
     .event-body{flex:1;padding:20px 24px}
     .event-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#C8621A;margin-bottom:6px}
-    .event-body h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:#0E1B2E;margin-bottom:8px}
-    .event-body p{font-size:0.85rem;color:#5A6880;line-height:1.65;margin-bottom:10px}
+    .event-body h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ink);margin-bottom:8px}
+    .event-body p{font-size:0.85rem;color:var(--ink-soft);line-height:1.65;margin-bottom:10px}
     .event-cta{font-size:0.78rem;letter-spacing:0.06em;color:#C8621A;text-transform:uppercase;text-decoration:none}
 
     /* TIMELINE */
     .timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:56px}
-    .timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:#D4DCE8}
+    .timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:var(--bdr)}
     .timeline-item{position:relative;padding-bottom:32px}
     .timeline-item:last-child{padding-bottom:0}
-    .timeline-year{position:absolute;left:-56px;width:40px;height:40px;border-radius:50%;background:#1E4FA0;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:0.65rem;text-align:center;line-height:1.2;font-weight:600;flex-shrink:0}
-    .timeline-content{background:#fff;border:1px solid #D4DCE8;border-radius:4px;padding:20px 24px}
-    .timeline-content h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:#0E1B2E;margin-bottom:8px}
-    .timeline-content p{font-size:0.85rem;color:#5A6880;line-height:1.65}
+    .timeline-year{position:absolute;left:-56px;width:40px;height:40px;border-radius:50%;background:var(--maroon);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:0.65rem;text-align:center;line-height:1.2;font-weight:600;flex-shrink:0}
+    .timeline-content{background:#fff;border:1px solid var(--bdr);border-radius:4px;padding:20px 24px}
+    .timeline-content h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);margin-bottom:8px}
+    .timeline-content p{font-size:0.85rem;color:var(--ink-soft);line-height:1.65}
     .timeline-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#C8621A;margin-bottom:6px;display:block}
-    .tl-highlight{border-left:3px solid #1E4FA0;background:#F2F5FA}
+    .tl-highlight{border-left:3px solid var(--maroon);background:var(--maroon-l)}
 
     /* Milestones count strip */
-    .ms-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#1E4FA0;border-radius:4px;overflow:hidden;margin-bottom:48px}
+    .ms-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--maroon);border-radius:4px;overflow:hidden;margin-bottom:48px}
     .ms-strip-item{text-align:center;padding:22px 16px;border-right:1px solid rgba(255,255,255,0.12)}
     .ms-strip-item:last-child{border-right:none}
-    .ms-strip-n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:300;color:#C8C870;line-height:1}
+    .ms-strip-n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:300;color:#F8DC8C;line-height:1}
     .ms-strip-l{font-size:0.62rem;letter-spacing:0.10em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-top:5px}
 
     /* Gallery grid */
     .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
     .gallery-item--wide{grid-column:span 2}
     .gallery-item{position:relative}
-    .gallery-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#E8EEF8,#D4DCE8);border-radius:4px;border:1px solid #D4DCE8;display:flex;align-items:center;justify-content:center;color:#5A6880;font-size:0.78rem;font-style:italic}
-    .gallery-item figcaption{font-size:0.75rem;color:#5A6880;margin-top:6px;padding-left:2px}
+    .gallery-img-placeholder{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--maroon-l),var(--bdr));border-radius:4px;border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:0.78rem;font-style:italic}
+    .gallery-item figcaption{font-size:0.75rem;color:var(--ink-soft);margin-top:6px;padding-left:2px}
 
     .press-badge{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:0.82rem;padding:8px 18px;border-radius:20px}
 
@@ -142,39 +137,31 @@
     <!-- Salangai Pooja list (years only, no names per request) -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px">
       <div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#1E4FA0;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #D4DCE8">Salangai Poojas guided</h3>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--maroon);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--bdr)">Salangai Poojas guided</h3>
         <table style="width:100%;font-size:0.84rem;border-collapse:collapse">
-          <thead><tr><th style="background:#1E4FA0;color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Year</th><th style="background:#1E4FA0;color:#fff;padding:8px 12px;text-align:center;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Count</th></tr></thead>
+          <thead><tr><th style="background:var(--maroon);color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Year</th><th style="background:var(--maroon);color:#fff;padding:8px 12px;text-align:center;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Count</th></tr></thead>
           <tbody>
-            <tr><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#2D3F5E">2017</td><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600;text-align:center">1</td></tr>
-            <tr style="background:#F2F5FA"><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#2D3F5E">2018</td><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600;text-align:center">2</td></tr>
-            <tr><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#2D3F5E">2019</td><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600;text-align:center">2</td></tr>
-            <tr style="background:#F2F5FA"><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#2D3F5E">2023</td><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600;text-align:center">6</td></tr>
-            <tr><td style="padding:8px 12px;color:#2D3F5E">2026</td><td style="padding:8px 12px;color:#C8621A;font-weight:600;text-align:center">19</td></tr>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:var(--ink)">2017</td><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:#C8621A;font-weight:600;text-align:center">1</td></tr>
+            <tr style="background:var(--cream)"><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:var(--ink)">2018</td><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:#C8621A;font-weight:600;text-align:center">2</td></tr>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:var(--ink)">2019</td><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:#C8621A;font-weight:600;text-align:center">2</td></tr>
+            <tr style="background:var(--cream)"><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:var(--ink)">2023</td><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:#C8621A;font-weight:600;text-align:center">6</td></tr>
+            <tr><td style="padding:8px 12px;color:var(--ink)">2026</td><td style="padding:8px 12px;color:#C8621A;font-weight:600;text-align:center">19</td></tr>
           </tbody>
         </table>
-        <p style="font-size:0.74rem;color:#5A6880;margin-top:8px;font-style:italic">Total: 30+ Salangai Poojas since 2017</p>
+        <p style="font-size:0.74rem;color:var(--ink-soft);margin-top:8px;font-style:italic">Total: 30+ Salangai Poojas since 2017</p>
       </div>
       <div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#1E4FA0;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #D4DCE8">Arangetrams guided</h3>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--maroon);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--bdr)">Arangetrams guided</h3>
         <table style="width:100%;font-size:0.84rem;border-collapse:collapse">
-          <thead><tr><th style="background:#1E4FA0;color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Year</th><th style="background:#1E4FA0;color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Notes</th></tr></thead>
+          <thead><tr><th style="background:var(--maroon);color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Year</th><th style="background:var(--maroon);color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Notes</th></tr></thead>
           <tbody>
-            <tr><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600">2023</td><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#2D3F5E">Arangetram 1</td></tr>
-            <tr style="background:#F2F5FA"><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600">2024</td><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#2D3F5E">Arangetrams 2, 3 &amp; 4</td></tr>
+            <tr><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:#C8621A;font-weight:600">2023</td><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:var(--ink)">Arangetram 1</td></tr>
+            <tr style="background:var(--cream)"><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:#C8621A;font-weight:600">2024</td><td style="padding:8px 12px;border-bottom:1px solid var(--bdr);color:var(--ink)">Arangetrams 2, 3 &amp; 4</td></tr>
           </tbody>
         </table>
-        <p style="font-size:0.74rem;color:#5A6880;margin-top:8px;font-style:italic">4 Arangetrams completed. More in preparation.</p>
+        <p style="font-size:0.74rem;color:var(--ink-soft);margin-top:8px;font-style:italic">4 Arangetrams completed. More in preparation.</p>
 
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#1E4FA0;margin:24px 0 16px;padding-bottom:10px;border-bottom:2px solid #D4DCE8">Student solo recitals</h3>
-        <table style="width:100%;font-size:0.84rem;border-collapse:collapse">
-          <thead><tr><th style="background:#1E4FA0;color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">Year</th></tr></thead>
-          <tbody>
-            <tr><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600">2019 (2 recitals)</td></tr>
-            <tr style="background:#F2F5FA"><td style="padding:8px 12px;border-bottom:1px solid #D4DCE8;color:#C8621A;font-weight:600">2022 (1 recital)</td></tr>
-            <tr><td style="padding:8px 12px;color:#C8621A;font-weight:600">2023 (1 recital)</td></tr>
-          </tbody>
-        </table>
+
       </div>
     </div>
   </div>
@@ -306,17 +293,17 @@
       <!-- Gallery images will be added here when photos are available -->
     </div>
     <div style="text-align:center;margin-top:36px">
-      <p style="font-size:0.85rem;color:#5A6880;margin-bottom:16px">More photos from our events &amp; performances on our social channels</p>
+      <p style="font-size:0.85rem;color:var(--ink-soft);margin-bottom:16px">More photos from our events &amp; performances on our social channels</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
         <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="btn bs">Watch videos on YouTube &rarr;</a>
-        <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" class="btn bs">Photos on Instagram &rarr;</a>
+        <a href="https://www.instagram.com/kalpavruksha_schooloffinearts/" target="_blank" rel="noopener" class="btn bs">Photos on Instagram &rarr;</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- RECOGNITION -->
-<section class="sec" style="background:#0E1B2E" id="recognition" aria-label="Recognition">
+<section class="sec" style="background:var(--ink)" id="recognition" aria-label="Recognition">
   <div class="container" style="text-align:center;max-width:700px">
     <span class="section-label" style="color:rgba(200,200,112,0.8)">Recognition</span>
     <h2 class="display-md" style="margin-top:10px;color:#fff;margin-bottom:32px">Featured &amp; recognised</h2>
@@ -345,7 +332,7 @@
     <div style="display:flex;gap:8px;margin-top:14px">
       <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Facebook (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
       <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on YouTube (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      <a href="https://www.instagram.com/kalpavruksha_schooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
     </div>
   </div>
   <div class="fcol"><h4>Courses</h4><ul>

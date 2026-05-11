@@ -57,11 +57,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{font-size:16px;scroll-behavior:smooth;}
-    body{font-family:'DM Sans',-apple-system,sans-serif;color:#0E1B2E;background:#fff;padding-top:68px;-webkit-font-smoothing:antialiased;}
-    .site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C8C870;border-bottom:2px solid #9EA832;height:68px;}
-    .skip{position:absolute;top:-100%;left:16px;background:#1E4FA0;color:#fff;padding:8px 16px;border-radius:0 0 4px 4px;font-size:0.82rem;z-index:99999;text-decoration:none;}
-    .skip:focus{top:0;}
-    .hero{min-height:100svh;background:#0E1B2E;}
+    .hero{min-height:100svh;background:var(--ink);}
   </style>
 
   <!--
@@ -108,37 +104,37 @@
 .aimg{width:100%;aspect-ratio:4/5;border-radius:4px;overflow:hidden;position:relative;}
 .apil{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
 .apil li{display:flex;gap:10px;font-size:0.86rem;align-items:flex-start;}
-.apil-dot{color:#1E4FA0;flex-shrink:0;font-size:0.60rem;margin-top:5px;}
+.apil-dot{color:var(--saffron);flex-shrink:0;font-size:0.60rem;margin-top:5px;}
 /* BRIDGE NOTE */
 .bridge-note{background:#fdf5d8;border:1px solid #B8962E;border-left:3px solid #B8962E;border-radius:0 4px 4px 0;padding:14px 18px;margin-top:20px;}
 .bridge-note strong{display:block;font-size:0.86rem;color:#1C0A0F;margin-bottom:5px;}
 .bridge-note p{font-size:0.82rem;color:#4A2B33;line-height:1.6;}
-.bridge-note a{color:#1E4FA0;}
+.bridge-note a{color:var(--saffron);}
 /* COURSES */
-.cog{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #D4DCE8;border-radius:4px;overflow:hidden;}
-.coc{text-decoration:none;color:#1C0A0F;display:flex;flex-direction:column;border-right:1px solid #D4DCE8;transition:background 0.2s;}
+.cog{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;}
+.coc{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;border-right:1px solid var(--bdr);transition:background 0.2s;}
 .coc:last-child{border-right:none;}
 .coc:hover{background:#F5F5DC;}
 .coc-img{width:100%;aspect-ratio:4/3;overflow:hidden;flex-shrink:0;}
 .coc-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .coc-body{padding:18px 16px;flex:1;display:flex;flex-direction:column;}
 .coc-tag{font-size:0.66rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#C8621A;}
-.coc-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:#1E4FA0;margin:5px 0 7px;}
+.coc-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--maroon);margin:5px 0 7px;}
 .coc-body p{font-size:0.78rem;color:#7A6558;line-height:1.5;flex:1;}
 .coc-arr{display:inline-block;margin-top:12px;font-size:0.74rem;color:#C8621A;letter-spacing:0.05em;}
 /* STEPS */
 .stg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.stc{background:#fff;border:1px solid #D4DCE8;padding:30px 22px;text-align:center;}
-.stn{font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:#1E4FA0;line-height:1;margin-bottom:10px;}
+.stc{background:#fff;border:1px solid var(--bdr);padding:30px 22px;text-align:center;}
+.stn{font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:var(--maroon);line-height:1;margin-bottom:10px;}
 .stc h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:8px;}
 .stc p{font-size:0.83rem;color:#7A6558;line-height:1.65;}
-.stl{display:inline-block;margin-top:12px;font-size:0.74rem;letter-spacing:0.08em;color:#1E4FA0;text-transform:uppercase;text-decoration:none;}
+.stl{display:inline-block;margin-top:12px;font-size:0.74rem;letter-spacing:0.08em;color:var(--saffron);text-transform:uppercase;text-decoration:none;}
 /* CTA BAND */
-.ctab{background:#0E1B2E;}
+.ctab{background:var(--ink);}
 .ctai{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;padding:60px 0;}
 .ctab-btns{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0;}
 /* RESPONSIVE */
-@media(max-width:1000px){.ag{grid-template-columns:1fr;gap:40px;}.cog{grid-template-columns:1fr 1fr;}.coc:nth-child(2){border-right:none;}.coc:nth-child(odd){border-right:1px solid #D4DCE8;}}
+@media(max-width:1000px){.ag{grid-template-columns:1fr;gap:40px;}.cog{grid-template-columns:1fr 1fr;}.coc:nth-child(2){border-right:none;}.coc:nth-child(odd){border-right:1px solid var(--bdr);}}
 @media(max-width:700px){.stg{grid-template-columns:1fr;gap:12px;}.ctai{flex-direction:column;text-align:center;}.ctab-btns{justify-content:center;}.hsd{display:none;}.hstat{padding:0 14px 0 0;}}
 @media(max-width:480px){.cog{grid-template-columns:1fr;}.coc{border-right:none!important;border-bottom:1px solid #E8DDD4;}.coc:last-child{border-bottom:none;}}
   </style>
@@ -185,7 +181,7 @@
         "sameAs": [
           "https://www.facebook.com/kalpavrukshaschooloffinearts/",
           "https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw",
-          "https://www.instagram.com/kalpavruksha_schooloffinearts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+          "https://www.instagram.com/kalpavruksha_schooloffinearts/"
         ],
         "founder": {
           "@type": "Person",
@@ -324,8 +320,8 @@
         </picture>
       </div>
       <div style="text-align:center;padding:10px 0 0">
-        <strong style="display:block;font-family:'Playfair Display',serif;font-size:1rem;color:#0E1B2E">Smt. Deepa Sadasivam</strong>
-        <span style="display:block;font-size:0.74rem;color:#5A6880;margin-top:3px">Founder &middot; Kalpavruksha School of Fine Arts</span>
+        <strong style="display:block;font-family:'Playfair Display',serif;font-size:1rem;color:var(--ink)">Smt. Deepa Sadasivam</strong>
+        <span style="display:block;font-size:0.74rem;color:var(--ink-soft);margin-top:3px">Founder &middot; Kalpavruksha School of Fine Arts</span>
       </div>
     </div>
     <div>
@@ -333,7 +329,7 @@
       <h2 class="dmd" style="margin-top:8px;margin-bottom:14px">A living lineage of classical Bharatanatyam</h2>
       <hr class="hr" style="margin-bottom:18px">
       <p class="blg">Founded in 2014 by <strong>Smt. Deepa Sadasivam</strong>, a Kalakshetra Foundation alumna. Like the mythical Kalpavruksha &mdash; the wish-fulfilling tree &mdash; this school nourishes every student&rsquo;s artistic aspirations.</p>
-      <p style="margin-top:12px;color:#5A6880;line-height:1.75">We follow the <em>Kalakshetra bani</em> &mdash; defined by devotional purity, sculptural precision, and adherence to the Natyashastra.</p>
+      <p style="margin-top:12px;color:var(--ink-soft);line-height:1.75">We follow the <em>Kalakshetra bani</em> &mdash; defined by devotional purity, sculptural precision, and adherence to the Natyashastra.</p>
       <ul class="apil">
         <li><span class="apil-dot">&#10022;</span><div><strong>Authentic lineage</strong> &mdash; Direct transmission of Kalakshetra style</div></li>
         <li><span class="apil-dot">&#10022;</span><div><strong>All ages welcome</strong> &mdash; Children from age 4 &middot; Adults of any age</div></li>
@@ -487,7 +483,7 @@
     <div style="display:flex;gap:8px;margin-top:14px">
       <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Facebook (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
       <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on YouTube (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="https://www.instagram.com/kalpavruksha_schooloffinearts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      <a href="https://www.instagram.com/kalpavruksha_schooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
     </div>
   </div>
   <div class="fcol"><h4>Courses</h4><ul>
