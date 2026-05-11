@@ -1,118 +1,74 @@
 <!DOCTYPE html>
-<!-- v2026-05-10 -->
+<!-- v2026-05-10 r4 — correct brand: yellow nav + blue text -->
 <html lang="en-IN">
 <head>
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="vN2-0iQwr74Br4yqT1xNynjvGHpnbKhBjR1G0NXU9Yg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAQ | Kalpavruksha School of Fine Arts</title>
-  <meta name="description" content="Frequently asked questions about Bharatanatyam — age to start, how long to learn, Kalakshetra style, Arangetram cost, online classes, fees, timings and more. Kalpavruksha, Chennai.">
+  <meta name="description" content="Frequently asked questions about Bharatanatyam — age to start, how long to learn, Kalakshetra style, Arangetram cost, online classes, fees, and class timings. Kalpavruksha, Chennai.">
   <link rel="canonical" href="https://kalpavrukshafinearts.com/faq.html">
-
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z66NRXP98K"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Z66NRXP98K',{send_page_view:true});</script>
-
-  <!-- Fonts — identical to all other pages -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-
-  <!-- Shared site stylesheet -->
   <link rel="stylesheet" href="css/style.css">
-
-  <!-- Page-only additions: search bar + category pills + section headings -->
   <style>
-/* ── FAQ page-section nav (sticky tab bar) ─────── */
-.faq-section-nav{background:#fff;border-bottom:1px solid var(--bdr);position:sticky;top:68px;z-index:100;overflow-x:auto;scrollbar-width:none;}
-.faq-section-nav::-webkit-scrollbar{display:none;}
-.faq-section-nav ul{display:flex;gap:0;min-width:max-content;}
-.faq-section-nav a{display:block;padding:10px 16px;font-size:0.74rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.2s,border-color 0.2s;}
-.faq-section-nav a:hover,.faq-section-nav a.on{color:var(--maroon);border-color:var(--maroon);}
+/* FAQ page-specific additions — only what is not already in style.css */
 
-/* ── Search bar ────────────────────────────────── */
-.faq-search-wrap{margin-bottom:40px;}
-.faq-search-wrap label{display:block;font-size:0.68rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}
-#faq-search{width:100%;padding:12px 44px 12px 16px;font-family:var(--fb);font-size:0.88rem;color:var(--ink);border:1px solid var(--bdr-s);border-radius:4px;background:#fff;outline:none;transition:border-color 0.2s;}
+/* Sticky in-page section nav — same pattern as .psn in style.css */
+.faq-sec-nav{background:#fff;border-bottom:1px solid var(--bdr);position:sticky;top:68px;z-index:100;}
+.faq-sec-nav ul{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 24px;}
+.faq-sec-nav ul::-webkit-scrollbar{display:none;}
+.faq-sec-nav a{display:block;padding:10px 16px;font-size:0.74rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.2s,border-color 0.2s;}
+.faq-sec-nav a:hover,.faq-sec-nav a.on{color:var(--blue);border-color:var(--blue);}
+
+/* Search bar */
+.faq-search-wrap{position:relative;margin-bottom:36px;max-width:560px;}
+.faq-search-wrap label{display:block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+#faq-search{width:100%;padding:11px 40px 11px 14px;font-family:var(--fb);font-size:0.88rem;color:var(--ink);border:1px solid var(--bdr-s);border-radius:4px;outline:none;background:#fff;transition:border-color 0.2s;}
 #faq-search::placeholder{color:var(--ink-soft);}
-#faq-search:focus{border-color:var(--maroon);}
-.faq-search-icon{display:inline-block;margin-top:-32px;float:right;margin-right:14px;color:var(--ink-soft);font-size:0.9rem;pointer-events:none;position:relative;z-index:1;}
-#faq-no-results{display:none;text-align:center;padding:40px 0;font-size:0.88rem;color:var(--ink-soft);font-style:italic;}
-#faq-no-results a{color:var(--saffron);}
+#faq-search:focus{border-color:var(--blue);}
+.search-icon{position:absolute;right:12px;bottom:11px;color:var(--ink-soft);font-size:0.88rem;pointer-events:none;}
+#no-results{display:none;padding:28px 0;font-family:var(--fd);font-size:1rem;color:var(--ink-soft);font-style:italic;}
+#no-results a{color:var(--blue);}
 
-/* ── FAQ category group headings ───────────────── */
-.faq-group{margin-bottom:56px;}
-.faq-group:last-child{margin-bottom:0;}
-.faq-group-head{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--bdr);}
-.faq-group-icon{font-size:1rem;line-height:1;}
-.faq-group-title{font-family:var(--fd);font-size:1.15rem;font-weight:600;color:var(--maroon);}
-.faq-group-count{font-size:0.70rem;font-weight:500;letter-spacing:0.08em;background:var(--saffron-l);color:var(--saffron);padding:2px 8px;border-radius:10px;margin-left:auto;}
+/* FAQ group / section header */
+.faq-group{margin-top:52px;}
+.faq-group:first-child{margin-top:0;}
+.faq-group-head{display:flex;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:4px;border-bottom:2px solid var(--bdr);}
+.faq-group-head h2{font-family:var(--fd);font-size:1.15rem;font-weight:500;color:var(--blue);margin:0;}
+.faq-group-icon{font-size:1rem;line-height:1;flex-shrink:0;}
 
-/* ── New (organic) section badge ───────────────── */
-.faq-group--organic .faq-group-head{border-bottom-color:var(--gold);background:var(--gold-l);padding:10px 14px;border-radius:4px;margin-left:-14px;margin-right:-14px;}
-.faq-new-badge{font-size:0.60rem;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;background:var(--gold);color:#fff;padding:2px 8px;border-radius:10px;}
+/* "In depth" organic section accent */
+.faq-group--organic{background:var(--gold-l);border:1px solid var(--bdr);border-radius:4px;padding:20px 24px 4px;margin-top:52px;}
+.faq-group--organic .faq-group-head{border-bottom-color:var(--blue);}
+.badge-new{font-size:0.60rem;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;background:var(--blue);color:#fff;padding:2px 8px;border-radius:10px;flex-shrink:0;}
 
-/* ── Hidden states for search ──────────────────── */
+/* Hidden by search */
 .faq-item.faq-hidden{display:none;}
 .faq-group.group-hidden{display:none;}
 
-/* ── Still-have-questions card ─────────────────── */
-.faq-contact-card{background:var(--saffron-l);border:1px solid var(--bdr);border-radius:4px;padding:28px 28px 24px;margin-top:56px;}
-.faq-contact-card h3{font-family:var(--fd);font-size:1.1rem;color:var(--maroon);margin-bottom:8px;}
-.faq-contact-card p{font-size:0.86rem;color:var(--ink-mid);margin-bottom:20px;line-height:1.7;}
-.faq-contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
-.faq-contact-item{background:#fff;border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;display:flex;align-items:center;gap:10px;}
-.faq-contact-item-icon{font-size:1rem;flex-shrink:0;}
-.faq-contact-item-text small{display:block;font-size:0.66rem;font-weight:500;letter-spacing:0.10em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px;}
-.faq-contact-item-text a{font-size:0.83rem;font-weight:500;color:var(--maroon);text-decoration:none;}
-.faq-contact-item-text a:hover{text-decoration:underline;}
-
-/* ── CTA strip ─────────────────────────────────── */
-.faq-cta-strip{background:var(--maroon);border-radius:4px;padding:32px 28px;margin-top:24px;text-align:center;}
-.faq-cta-strip p{color:rgba(255,255,255,0.7);font-size:0.86rem;margin-bottom:18px;}
-.faq-cta-strip .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+/* Still-have-questions card */
+.still-card{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:28px 32px;margin-top:52px;}
+.still-card h3{font-family:var(--fd);font-size:1.1rem;color:var(--blue);margin-bottom:8px;}
+.still-card p{font-size:0.88rem;color:var(--ink-mid);line-height:1.7;margin-bottom:20px;}
+.still-contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;}
+.still-contact-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border:1px solid var(--bdr);border-radius:4px;}
+.still-contact-icon{width:34px;height:34px;border-radius:50%;background:var(--saffron-l);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.still-contact-item small{display:block;font-size:0.65rem;font-weight:500;letter-spacing:0.10em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px;}
+.still-contact-item a{font-size:0.82rem;font-weight:500;color:var(--blue);text-decoration:none;}
+.still-contact-item a:hover{text-decoration:underline;}
   </style>
 
-  <!-- FAQPage schema — all Q&As for Google rich results -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {"@type":"Question","name":"What age can my child start Bharatanatyam?","acceptedAnswer":{"@type":"Answer","text":"We welcome children from age 4 onwards. At this stage the focus is on posture, rhythm, simple mudras, and making dance joyful. Children who start at 4–5 years typically reach their Salangai Pooja around age 7–8 and their Arangetram in their early teens."}},
-      {"@type":"Question","name":"Do you teach adults who have never danced?","acceptedAnswer":{"@type":"Answer","text":"Yes — we have a dedicated Adult Beginners batch with no upper age limit. Many students begin in their 30s and 40s."}},
-      {"@type":"Question","name":"What style do you teach?","acceptedAnswer":{"@type":"Answer","text":"The Kalakshetra bani — established by Rukmini Devi Arundale. Known for refined aesthetics, devotional purity, and adherence to the Natyashastra. Guru Smt. Deepa Sadasivam is a Kalakshetra Foundation alumna."}},
-      {"@type":"Question","name":"How many sessions per week?","acceptedAnswer":{"@type":"Answer","text":"Classes meet 2 sessions per week, each lasting 1 hour. Intermediate and advanced students may attend 2–3 sessions per week."}},
-      {"@type":"Question","name":"What are the class timings?","acceptedAnswer":{"@type":"Answer","text":"In-person classes in Chennai run in the evening between 4 PM and 9 PM on weekdays. Representative batch slots include 4:30–5:30 PM, 5:30–6:30 PM, 6:30–7:30 PM, and 7:30–8:30 PM. Online classes are scheduled in the morning or afternoon IST to suit UK (BST/GMT) and USA (EST/PST) students. Exact batch slot is confirmed at enrolment."}},
-      {"@type":"Question","name":"Is the trial class free?","acceptedAnswer":{"@type":"Answer","text":"Yes — completely free. No commitment, no fees. Simply come and experience Bharatanatyam."}},
-      {"@type":"Question","name":"What are the monthly fees?","acceptedAnswer":{"@type":"Answer","text":"Fees vary by batch level and frequency. Contact us or WhatsApp +91 72000 95585 for the current fee structure. Fees are collected per term in advance."}},
-      {"@type":"Question","name":"What is a Salangai Pooja?","acceptedAnswer":{"@type":"Answer","text":"The Salangai Pooja is the sacred ceremony in which the student's ankle bells are formally tied for the first time by the Guru — a public performance marking initiation as a classical dancer. Kalpavruksha has guided over 20 Salangai Poojas since 2014."}},
-      {"@type":"Question","name":"What is an Arangetram?","acceptedAnswer":{"@type":"Answer","text":"The Arangetram is the full-length classical solo debut, typically 2.5–3 hours, presenting the complete margam with live orchestra. It is the pinnacle milestone of a Bharatanatyam journey."}},
-      {"@type":"Question","name":"How many years does it take to learn Bharatanatyam?","acceptedAnswer":{"@type":"Answer","text":"A complete journey from first class to Arangetram typically takes 6–10 years of regular training. Beginners: 1–2 years; Intermediate: 2–3 years; Arangetram preparation: 1–2 intensive years. Most students reach Arangetram after 4–6 years of consistent classes."}},
-      {"@type":"Question","name":"What is the Kalakshetra style of Bharatanatyam?","acceptedAnswer":{"@type":"Answer","text":"The Kalakshetra bani, established by Rukmini Devi Arundale in 1936, is defined by devotional purity, sculptural precision, restrained abhinaya, and strict adherence to the Natyashastra. It is considered one of the most internationally respected Bharatanatyam traditions. Guru Smt. Deepa Sadasivam is a Kalakshetra Foundation alumna."}},
-      {"@type":"Question","name":"Is Bharatanatyam good for children? What are the benefits?","acceptedAnswer":{"@type":"Answer","text":"Bharatanatyam improves posture, coordination, balance, and flexibility. It develops memory and concentration through complex sequences, teaches emotional expression through abhinaya, connects children to classical Indian literature and mythology, and builds discipline that enriches all areas of life."}},
-      {"@type":"Question","name":"Can adults learn Bharatanatyam with no experience? Is it too late to start?","acceptedAnswer":{"@type":"Answer","text":"Not at all. Adults bring emotional depth and intellectual curiosity to the art form. At Kalpavruksha our Adult Beginners batch has no upper age limit. Students have started at 30, 40, and 50 and progressed to a high level of artistry. The course is systematic, conceptual, and at a pace suited to adult learners."}},
-      {"@type":"Question","name":"What is the cost of an Arangetram in Chennai?","acceptedAnswer":{"@type":"Answer","text":"Costs vary by scale. A modest Arangetram: Rs 1–2 lakhs. Mid-scale at a sabha hall with full orchestra: Rs 3–5 lakhs. Elaborate productions: Rs 6–10 lakhs or more. Kalpavruksha guides families through every component to plan an Arangetram within budget."}},
-      {"@type":"Question","name":"Can I learn Bharatanatyam online?","acceptedAnswer":{"@type":"Answer","text":"Yes. Kalpavruksha has offered live online Bharatanatyam classes via Google Meet since 2020. Classes are live and personal — not pre-recorded — with students in India, UK, and USA. Students also submit weekly practice videos for detailed corrections between live sessions."}},
-      {"@type":"Question","name":"What is the difference between Bharatanatyam styles?","acceptedAnswer":{"@type":"Answer","text":"The main banis are: Kalakshetra (refined, devotional, sculptural), Pandanallur (strong geometric footwork, minimal abhinaya), Vazhuvoor (lyrical, Tamil folk-influenced), and Mysore/Thanjavur (elaborate abhinaya, court tradition). Kalpavruksha teaches exclusively in the Kalakshetra bani."}},
-      {"@type":"Question","name":"What does Bharatanatyam mean?","acceptedAnswer":{"@type":"Answer","text":"Bharatanatyam is an acronym: Bha (Bhava — expression), Ra (Raga — melody), Ta (Tala — rhythm), Natyam (dance/drama). It also honours Bharata Muni, author of the ancient Natyashastra. It is one of India's eight classical dance forms, rooted in the Devadasi tradition of Tamil Nadu and revived as a concert form in the 20th century."}},
-      {"@type":"Question","name":"Can NRI or diaspora students learn Bharatanatyam online?","acceptedAnswer":{"@type":"Answer","text":"Yes. Since 2020, Kalpavruksha teaches students in the UK, USA, and across India via live Google Meet sessions. NRI and diaspora families choose Kalpavruksha specifically for authentic Kalakshetra-tradition training — not a watered-down online version. UK (BST/GMT) and USA (EST/PST) time zones are accommodated."}}
-    ]
-  }
-  </script>
+  <!-- FAQPage Schema -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What age can my child start Bharatanatyam?","acceptedAnswer":{"@type":"Answer","text":"We welcome children from age 4 onwards. Focus at this stage is posture, rhythm, and making dance joyful. Children who start at 4-5 years typically reach their Salangai Pooja around age 7-8 and their Arangetram in their early teens."}},{"@type":"Question","name":"How many years does it take to learn Bharatanatyam?","acceptedAnswer":{"@type":"Answer","text":"A complete journey from first class to Arangetram typically spans 6-10 years. The Beginner stage takes 1-2 years, Intermediate 2-3 years, and Arangetram preparation another 1-2 years of intensive work. Most students reach Arangetram after 4-6 years of regular classes."}},{"@type":"Question","name":"What is the Kalakshetra style of Bharatanatyam?","acceptedAnswer":{"@type":"Answer","text":"The Kalakshetra bani is a classical school established by Rukmini Devi Arundale at the Kalakshetra Foundation in Chennai in 1936. It is defined by devotional purity, sculptural precision, restrained abhinaya, and strict adherence to the Natyashastra."}},{"@type":"Question","name":"What is an Arangetram?","acceptedAnswer":{"@type":"Answer","text":"The Arangetram is a student's first full-length classical solo performance, typically 2.5-3 hours, marking the transition from student to independent artist. Kalpavruksha provides complete Arangetram support: training, music coordination, orchestra, costume guidance, and ceremonial protocols."}},{"@type":"Question","name":"What is a Salangai Pooja?","acceptedAnswer":{"@type":"Answer","text":"The Salangai Pooja is the sacred ceremony in which the student's ankle bells are tied for the first time by the Guru. It involves a public performance of 1-1.5 hours and typically takes place after 1-2 years of training. Kalpavruksha has guided over 30 Salangai Poojas since 2014."}},{"@type":"Question","name":"What are the class timings?","acceptedAnswer":{"@type":"Answer","text":"In-person classes in Chennai run between 4 PM and 9 PM on weekdays. Representative batch slots: 4:30-5:30 PM, 5:30-6:30 PM, 6:30-7:30 PM, 7:30-8:30 PM. Online classes are in the morning or afternoon IST, scheduled to suit UK and USA time zones."}},{"@type":"Question","name":"Is Bharatanatyam good for children?","acceptedAnswer":{"@type":"Answer","text":"Yes. Bharatanatyam improves posture, coordination, balance, and flexibility. It develops memory through complex sequences, teaches emotional expression through abhinaya, connects children to classical Indian culture, and builds discipline."}},{"@type":"Question","name":"Can adults learn Bharatanatyam with no experience?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. Our Adult Beginners batch has no upper age limit. Many students start in their 30s and 40s. The course is taught at a pace suited to adult learners in a warm, non-judgmental atmosphere."}},{"@type":"Question","name":"What is the cost of an Arangetram in Chennai?","acceptedAnswer":{"@type":"Answer","text":"Costs vary by scale: a modest event is Rs 1-2 lakhs, mid-scale Rs 3-5 lakhs, and an elaborate production Rs 6-10 lakhs or more. Kalpavruksha guides families through every component to plan within budget."}},{"@type":"Question","name":"Can I learn Bharatanatyam online?","acceptedAnswer":{"@type":"Answer","text":"Yes. Kalpavruksha has offered live online classes via Google Meet since 2020. Classes are live and personal, not pre-recorded, with the same curriculum as in-person students. We have students in India, UK, and USA."}},{"@type":"Question","name":"Is the trial class free?","acceptedAnswer":{"@type":"Answer","text":"Yes - completely free. No commitment, no fees."}},{"@type":"Question","name":"What are the monthly fees?","acceptedAnswer":{"@type":"Answer","text":"Fees vary by batch level and frequency. Contact us or WhatsApp +91 72000 95585 for the current fee structure. Fees are collected per term in advance."}}]}</script>
+  <!-- LocalBusiness schema -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":["LocalBusiness","EducationalOrganization"],"name":"Kalpavruksha School of Fine Arts","url":"https://kalpavrukshafinearts.com","telephone":"+917200095585","email":"info@kalpavrukshafinearts.com","address":{"@type":"PostalAddress","streetAddress":"Kodambakkam","addressLocality":"Chennai","addressRegion":"Tamil Nadu","postalCode":"600024","addressCountry":"IN"},"sameAs":["https://www.facebook.com/kalpavrukshaschooloffinearts/","https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw","https://www.instagram.com/kalpavruksha_finearts/"]}</script>
+  <!-- BreadcrumbList -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://kalpavrukshafinearts.com/"},{"@type":"ListItem","position":2,"name":"FAQ","item":"https://kalpavrukshafinearts.com/faq.html"}]}</script>
 
-  <!-- LocalBusiness schema (inner page) -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":["LocalBusiness","EducationalOrganization"],"name":"Kalpavruksha School of Fine Arts","url":"https://kalpavrukshafinearts.com","telephone":"+917200095585","email":"info@kalpavrukshafinearts.com","address":{"@type":"PostalAddress","streetAddress":"Kodambakkam","addressLocality":"Chennai","addressRegion":"Tamil Nadu","postalCode":"600024","addressCountry":"IN"},"sameAs":["https://www.facebook.com/kalpavrukshaschooloffinearts/","https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw","https://www.instagram.com/kalpavruksha_schooloffinearts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="]}
-  </script>
-
-  <!-- BreadcrumbList schema -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://kalpavrukshafinearts.com/"},{"@type":"ListItem","position":2,"name":"FAQ","item":"https://kalpavrukshafinearts.com/faq.html"}]}
-  </script>
-
-  <meta property="og:title" content="FAQ | Kalpavruksha School of Fine Arts">
-  <meta property="og:description" content="All your questions about Bharatanatyam classes — age, fees, timings, Arangetram, online classes and more.">
   <meta property="og:image" content="https://kalpavrukshafinearts.com/images/arangetram.webp">
   <meta property="og:image:width" content="1400">
   <meta property="og:image:height" content="934">
@@ -121,588 +77,445 @@
 <body>
 <a href="#main" class="skip">Skip to main content</a>
 
-<!-- ═══════════════════════════════════════════════════════
-     NAV — exact copy of events.html nav
-════════════════════════════════════════════════════════ -->
+<!-- NAV — byte-for-byte identical structure to events.html -->
 <nav class="site-nav" id="site-nav" role="navigation" aria-label="Main navigation">
   <div class="ni">
-    <div class="nl">
-      <a href="index.html" class="logo" aria-label="Kalpavruksha home">
-        <img src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
-        <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
-      </a>
-    </div>
+    <div class="nl"><a href="index.html" class="logo" aria-label="Kalpavruksha home"><img src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0"><div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div></a></div>
     <button class="ntog" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="nm">
-      <li><a href="index.html">Home <span class="narr">▾</span></a><div class="ndd"><a href="index.html#about">About Us</a><a href="index.html#courses">Course Overview</a><a href="index.html#how-to-join">How to Join</a></div></li>
-      <li><a href="courses.html">Courses <span class="narr">▾</span></a><div class="ndd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li>
-      <li><a href="guru.html">Our Guru <span class="narr">▾</span></a><div class="ndd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li>
-      <li><a href="online-classes.html">Online Classes <span class="narr">▾</span></a><div class="ndd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#faq">FAQ</a><a href="online-classes.html#testimonials">Student Stories</a></div></li>
-      <li><a href="events.html">Events &amp; Gallery <span class="narr">▾</span></a><div class="ndd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li>
+      <li><a href="index.html">Home <span class="narr">&#9662;</span></a><div class="ndd"><a href="index.html#about">About Us</a><a href="index.html#courses">Course Overview</a><a href="index.html#how-to-join">How to Join</a></div></li>
+      <li><a href="courses.html">Courses <span class="narr">&#9662;</span></a><div class="ndd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li>
+      <li><a href="guru.html">Our Guru <span class="narr">&#9662;</span></a><div class="ndd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li>
+      <li><a href="online-classes.html">Online Classes <span class="narr">&#9662;</span></a><div class="ndd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#faq">FAQ</a><a href="online-classes.html#testimonials">Student Stories</a></div></li>
+      <li><a href="events.html">Events &amp; Gallery <span class="narr">&#9662;</span></a><div class="ndd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li>
       <li><a href="faq.html" class="on" aria-current="page">FAQ</a></li>
       <li><a href="contact.html" class="ncta">Book Trial Class</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════════
-     MAIN
-════════════════════════════════════════════════════════ -->
 <main id="main">
 
-  <!-- PAGE HERO — identical pattern to events.html -->
-  <div class="page-hero">
-    <div class="container">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="index.html">Home</a>
-        <span class="breadcrumb-sep" aria-hidden="true">›</span>
-        <span aria-current="page">FAQ</span>
-      </nav>
-      <span class="section-label">Answers</span>
-      <h1 class="display-lg" style="margin-top:8px">Frequently Asked Questions</h1>
-      <p>Everything you need to know before joining Kalpavruksha.</p>
-    </div>
-  </div>
-
-  <!-- STICKY SECTION NAV — same pattern as courses/guru pages -->
-  <nav class="faq-section-nav" aria-label="Jump to FAQ section">
-    <div class="container">
-      <ul>
-        <li><a href="#about-bharatanatyam">About Bharatanatyam</a></li>
-        <li><a href="#general">General</a></li>
-        <li><a href="#classes">Classes &amp; Schedule</a></li>
-        <li><a href="#progress">Courses &amp; Progress</a></li>
-        <li><a href="#milestones">Salangai Pooja &amp; Arangetram</a></li>
-        <li><a href="#online">Online Classes</a></li>
-        <li><a href="#fees">Fees &amp; Enrolment</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- FAQ CONTENT -->
-  <section class="sec sec-w" id="faq-main" aria-label="FAQ content">
-    <div class="container" style="max-width:820px">
-
-      <!-- Search bar -->
-      <div class="faq-search-wrap">
-        <label for="faq-search">Search questions</label>
-        <input type="search" id="faq-search"
-          placeholder="e.g. age to start, timings, Arangetram cost, online classes…"
-          aria-label="Search all FAQ questions"
-          autocomplete="off" />
-        <span class="faq-search-icon" aria-hidden="true">🔍</span>
-      </div>
-      <p id="faq-no-results" role="status" aria-live="polite">
-        No questions matched your search. <a href="contact.html">Ask us directly →</a>
-      </p>
-  
-      <!-- ── ABOUT BHARATANATYAM (organic search) ── -->
-      <div class="faq-group faq-group--organic" id="about-bharatanatyam" aria-labelledby="grp-organic">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">🌿</span>
-          <h2 class="faq-group-title" id="grp-organic">About Bharatanatyam</h2>
-          <span class="faq-new-badge">In depth</span>
-          <span class="faq-group-count" style="margin-left:8px">9 questions</span>
-        </div>
-        <div class="faq-list">
-          <div class="faq-item" data-text="what does bharatanatyam mean meaning name origin word">
-            <button class="faq-q">What does Bharatanatyam mean? Where does the name come from?</button>
-            <div class="faq-a">
-              <p>The name <strong>Bharatanatyam</strong> is a Sanskrit acronym:</p>
-              <p>• <strong>Bha</strong> — Bhava (expression, emotion)<br>
-              • <strong>Ra</strong> — Raga (melody, music)<br>
-              • <strong>Ta</strong> — Tala (rhythm, beat)<br>
-              • <strong>Natyam</strong> — dance, drama, performance</p>
-              <p>The name also honours <strong>Bharata Muni</strong>, the ancient sage who authored the Natyashastra — the foundational treatise on classical performing arts (approx. 200 BCE–200 CE). Bharatanatyam is one of India's eight classical dance forms, rooted in the Devadasi tradition of Tamil Nadu and revived as a concert form in the 20th century.</p>
-            </div>
-          </div>
-          <div class="faq-item" data-text="how many years does it take to learn bharatanatyam how long duration">
-            <button class="faq-q">How many years does it take to learn Bharatanatyam?</button>
-            <div class="faq-a">
-              <p>A complete Bharatanatyam journey — from the very first class through to Arangetram (solo debut) — typically spans <strong>6–10 years</strong> of regular training:</p>
-              <p>• <strong>Beginner stage:</strong> 1–2 years — adavus, mudras, Alarippu, Jatiswaram, Salangai Pooja<br>
-              • <strong>Intermediate stage:</strong> 2–3 years — Varnam, Padam, Javali, Thillana, deep abhinaya<br>
-              • <strong>Arangetram preparation:</strong> 1–2 years of intensive full-margam training</p>
-              <p>Most students who begin at age 4–5 reach their Arangetram in their early teens. Consistency — attending 2 classes per week and practising at home — is the single biggest factor in pace of progress. At Kalpavruksha, Guru Deepa assesses each student individually and advances them only when they are genuinely ready.</p>
-            </div>
-          </div>
-         
-          <div class="faq-item" data-text="difference between bharatanatyam styles schools bani pandanallur vazhuvoor">
-            <button class="faq-q">What are the different Bharatanatyam styles (banis)?</button>
-            <div class="faq-a">
-              <p>Bharatanatyam has several distinct schools or <em>banis</em>, each with a different lineage and aesthetic emphasis:</p>
-              <p>• <strong>Kalakshetra bani</strong> — refined, devotional, sculptural, internationally recognised<br>
-              • <strong>Pandanallur bani</strong> — strong geometric footwork (nritta), relatively minimal abhinaya<br>
-              • <strong>Vazhuvoor bani</strong> — lyrical, flowing, Tamil folk-influenced, expressive<br>
-              • <strong>Mysore/Thanjavur tradition</strong> — elaborate abhinaya rooted in the Bhakti court tradition</p>
-              <p>Kalpavruksha teaches exclusively in the <strong>Kalakshetra bani</strong>, widely regarded as the most academically rigorous and devotionally pure form of the art.</p>
-            </div>
-          </div>
-          
-          <div class="faq-item" data-text="what is kalakshetra style bharatanatyam bani rukmini devi explained tradition">
-            <button class="faq-q">What is the Kalakshetra style of Bharatanatyam?</button>
-            <div class="faq-a">
-              <p>The <strong>Kalakshetra bani</strong> is a classical school of Bharatanatyam established by <strong>Rukmini Devi Arundale</strong> at the Kalakshetra Foundation, Chennai, in 1936. Rukmini Devi is credited with restoring Bharatanatyam's dignity as a classical art form after it had been marginalised during the colonial era.</p>
-              <p>The Kalakshetra style is defined by: <strong>devotional purity</strong> — movements offered as a spiritual act; <strong>sculptural precision</strong> — each posture mirrors temple sculpture; <strong>restrained abhinaya</strong> — controlled, refined emotional expression; and <strong>strict adherence to the Natyashastra</strong>. It is considered one of the most internationally respected and academically documented Bharatanatyam traditions.</p>
-              <p>Guru Smt. Deepa Sadasivam of Kalpavruksha is a Kalakshetra Foundation alumna and teaches exclusively in this tradition.</p>
-            </div>
-          </div>
-
-          
-          <div class="faq-item" data-text="is bharatanatyam good for children kids benefits physical mental cultural">
-            <button class="faq-q">Is Bharatanatyam good for children? What are the benefits?</button>
-            <div class="faq-a">
-              <p>Yes — Bharatanatyam is widely recognised as one of the most comprehensive classical disciplines for a child's development:</p>
-              <p>• <strong>Physical:</strong> Improves posture, coordination, balance, and flexibility. Strengthens leg and core muscles through the Aramandi (half-sit) posture<br>
-              • <strong>Cognitive:</strong> Develops memory and concentration through memorising complex adavu sequences, compositions, and rhythmic patterns<br>
-              • <strong>Emotional:</strong> Teaches children to express a full range of emotions through abhinaya (expressive storytelling), building emotional intelligence<br>
-              • <strong>Cultural:</strong> Connects children to classical Indian literature, mythology, music, and philosophy in a living, embodied way<br>
-              • <strong>Discipline:</strong> Regular structured training from a young age builds work ethic and commitment that enriches academic and professional life</p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="can adults learn bharatanatyam no experience too old late start 30 40 50">
-            <button class="faq-q">Can adults learn Bharatanatyam with no experience? Is it too late to start?</button>
-            <div class="faq-a">
-              <p>Not at all. Adults bring emotional depth, intellectual curiosity, and the capacity to understand the philosophy and literature behind the art form — strengths children do not yet have.</p>
-              <p>At Kalpavruksha, our <strong>Adult Beginners batch</strong> has no upper age limit. Students have started at 30, 40, and 50 with no prior dance background and progressed to a high level of artistry. The course is conceptual, systematic, and in a warm non-judgmental atmosphere at a pace suited to adult learners. <a href="courses.html#adults">Learn about the Adult Beginners course →</a></p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="what is cost arangetram Chennai how much price budget organise">
-            <button class="faq-q">What is the cost of an Arangetram in Chennai?</button>
-            <div class="faq-a">
-              <p>Arangetram costs in Chennai vary by scale of event, venue, orchestra size, costume, and catering:</p>
-              <p>• <strong>Modest Arangetram</strong> (small hall, minimal décor): ₹1–2 lakhs<br>
-              • <strong>Mid-scale</strong> (sabha hall, full orchestra, professional décor): ₹3–5 lakhs<br>
-              • <strong>Elaborate</strong> (large venue, professional videography, reception): ₹6–10 lakhs+</p>
-              <p>At Kalpavruksha, we guide families through every component — training, music direction, orchestra, costume, venue, and ceremonial protocols — to plan an Arangetram that is meaningful and within budget. <a href="contact.html">Contact us</a> to discuss.</p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="can learn bharatanatyam online NRI diaspora UK USA India worldwide">
-            <button class="faq-q">Can NRI or diaspora students learn Bharatanatyam online?</button>
-            <div class="faq-a">
-              <p>Yes — this is one of Kalpavruksha's core offerings. Since 2020, we have been teaching students in the UK, USA, and across India via live Google Meet sessions. NRI and diaspora families choose Kalpavruksha specifically for <strong>authentic Kalakshetra Bharatanatyam</strong> — not a watered-down online version.</p>
-              <p>Our online classes are live and personal, with the same curriculum and rigour as in-person students in Chennai. We accommodate UK (BST/GMT) and USA (EST/PST) time zones with morning and afternoon IST slots. <a href="online-classes.html">Learn more about online classes →</a></p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="does bharatanatyam have exams formal certification qualifications grade">
-            <button class="faq-q">Does Bharatanatyam have formal examinations or certifications?</button>
-            <div class="faq-a">
-              <p>Yes. Kalpavruksha regularly prepares and sends students for <strong>Grade Examinations</strong> — a structured external assessment programme evaluating progress at each stage of classical dance. These provide an independent, nationally recognised benchmark beyond the Guru's in-class assessment. Certifications are issued by the external examination body.</p>
-              <p>In addition, the <strong>Salangai Pooja</strong> and <strong>Arangetram</strong> are themselves recognised public milestones in the classical dance community. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn more about Grade Exams →</a></p>
-            </div>
-          </div>
-     
-        </div>
-      </div>
-      <!-- ── GENERAL ─────────────────────────────── -->
-      <div class="faq-group" id="general" aria-labelledby="grp-general">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">🎭</span>
-          <h2 class="faq-group-title" id="grp-general">General</h2>
-          <span class="faq-group-count">3 questions</span>
-        </div>
-        <div class="faq-list">
-
-          <div class="faq-item" data-text="age child start 4 five young">
-            <button class="faq-q">What age can my child start?</button>
-            <div class="faq-a"><p>We welcome children from <strong>age 4 onwards</strong>. Focus at this stage is posture, rhythm, and making dance joyful. Children who start at age 4–5 typically reach their Salangai Pooja around age 7–8 and their Arangetram in their early teens.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="adults teach never danced adult beginners no experience">
-            <button class="faq-q">Do you teach adults who have never danced?</button>
-            <div class="faq-a"><p>Yes — we have a dedicated <strong>Adult Beginners batch</strong> with no upper age limit. Many students begin in their 30s and 40s. <a href="courses.html#adults">Learn more →</a></p></div>
-          </div>
-
-          <div class="faq-item" data-text="style teach kalakshetra bani tradition">
-            <button class="faq-q">What style do you teach?</button>
-            <div class="faq-a"><p>The <strong>Kalakshetra bani</strong> — established by Rukmini Devi Arundale. Known for refined aesthetics, devotional purity, and strict adherence to the Natyashastra. Guru Smt. Deepa Sadasivam is a Kalakshetra Foundation alumna and teaches exclusively in this tradition.</p></div>
-          </div>
-
-        </div>
-      </div>
-    
-      <!-- ── CLASSES & SCHEDULE ──────────────────── -->
-      <div class="faq-group" id="classes" aria-labelledby="grp-classes">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">📅</span>
-          <h2 class="faq-group-title" id="grp-classes">Classes &amp; Schedule</h2>
-          <span class="faq-group-count">4 questions</span>
-        </div>
-        <div class="faq-list">
-
-          <div class="faq-item" data-text="sessions per week how often frequency">
-            <button class="faq-q">How many sessions per week?</button>
-            <div class="faq-a"><p>Classes meet <strong>2 sessions per week</strong>, each lasting 1 hour. Intermediate and advanced students may attend 2–3 sessions per week. Any changes to frequency are communicated directly by the Guru.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="where classes held location studio address kodambakkam">
-            <button class="faq-q">Where are classes held?</button>
-            <div class="faq-a"><p>In-person at our studio in <strong>Kodambakkam, Chennai</strong>. Online students attend via Google Meet from anywhere in the world. The exact studio address is shared upon enrolment.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="timings class time evening morning 4pm 9pm batch slots when">
-            <button class="faq-q">What are the class timings?</button>
-            <div class="faq-a">
-              <p><strong>In-person (Chennai):</strong> All in-person batches run in the evening between <strong>4&nbsp;PM and 9&nbsp;PM on weekdays</strong>. Representative batch slots: 4:30–5:30&nbsp;PM, 5:30–6:30&nbsp;PM, 6:30–7:30&nbsp;PM, 7:30–8:30&nbsp;PM. Exact slot confirmed at enrolment based on the student's level and availability.</p>
-              <p><strong>Online classes:</strong> Morning or afternoon IST, scheduled to suit your time zone — including slots compatible with UK (BST/GMT) and USA (EST/PST).</p>
-              <p><a href="contact.html">Contact us</a> to check current batch availability.</p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="wear uniform costume dress child">
-            <button class="faq-q">What should my child wear to class?</button>
-            <div class="faq-a"><p>Kalpavruksha has a <strong>school uniform</strong> which students are required to wear for class. The uniform can be purchased after joining — details and purchase information are shared at enrolment. Bharatanatyam is practised barefoot; no special footwear is needed.</p></div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── COURSES & PROGRESS ──────────────────── -->
-      <div class="faq-group" id="progress" aria-labelledby="grp-progress">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">📈</span>
-          <h2 class="faq-group-title" id="grp-progress">Courses &amp; Progress</h2>
-          <span class="faq-group-count">4 questions</span>
-        </div>
-        <div class="faq-list">
-
-          <div class="faq-item" data-text="how long complete beginner level years duration">
-            <button class="faq-q">How long does it take to complete the Beginner level?</button>
-            <div class="faq-a"><p>Typically <strong>1–2 years</strong>, depending on the student's age, practice frequency, and aptitude. Progression is assessed personally by Guru Deepa — there is no fixed cut-off date.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="when ready intermediate progression assessment">
-            <button class="faq-q">When is a student ready for Intermediate?</button>
-            <div class="faq-a"><p>Progression is determined entirely by Guru Smt. Deepa Sadasivam through close observation in class. Students also participate in <strong>Grade Exams</strong> — an external assessment programme that provides an independent, structured benchmark of where the student stands at each level. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn about Grade Exams →</a></p></div>
-          </div>
-
-          <div class="faq-item" data-text="join prior experience previous training other school">
-            <button class="faq-q">Can my child join with prior dance experience?</button>
-            <div class="faq-a"><p>Yes. Students with prior experience are assessed individually by Guru Deepa and placed in the appropriate batch. Please mention prior training and the style learned when you <a href="contact.html">enquire</a>.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="grade exams certification examination external assessment">
-            <button class="faq-q">What are Grade Exams?</button>
-            <div class="faq-a"><p>Kalpavruksha regularly prepares and sends students for <strong>Grade Examinations</strong> — a structured external assessment programme evaluating a student's progress at each stage of classical dance. These exams provide a nationally recognised, standardised benchmark for both students and parents, independent of the teacher's own assessment. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn more →</a></p></div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── SALANGAI POOJA & ARANGETRAM ─────────── -->
-      <div class="faq-group" id="milestones" aria-labelledby="grp-milestones">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">🎊</span>
-          <h2 class="faq-group-title" id="grp-milestones">Salangai Pooja &amp; Arangetram</h2>
-          <span class="faq-group-count">4 questions</span>
-        </div>
-        <div class="faq-list">
-
-          <div class="faq-item" data-text="what is salangai pooja ceremony ankle bells first stage">
-            <button class="faq-q">What is a Salangai Pooja?</button>
-            <div class="faq-a">
-              <p>The <strong>Salangai Pooja</strong> is the sacred ceremony in which the student's ankle bells (salangai) are formally tied for the first time by the Guru — a deeply spiritual milestone marking the student's initiation as a classical dancer. It involves a public performance of approximately 1–1.5 hours.</p>
-              <p>It typically takes place after 1–2 years of training, when Guru Deepa determines the student is ready. Kalpavruksha has guided over <strong>20 Salangai Poojas</strong> since 2014. <a href="courses.html#salangai">Learn more →</a></p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="what is arangetram solo debut performance stage margam">
-            <button class="faq-q">What is an Arangetram?</button>
-            <div class="faq-a">
-              <p>The <strong>Arangetram</strong> (arangu + etram, meaning "ascending the stage") is a student's first full-length classical solo performance, typically 2.5–3 hours — the transition from student to independent artist. It is the pinnacle milestone of a Bharatanatyam journey.</p>
-              <p>The performance presents the complete margam — Pushpanjali, Alarippu, Jatiswaram, Shabdam, Varnam, Padams, Thillana, and Mangalam — with a live orchestra. <a href="courses.html#arangetram">Learn more →</a></p>
-            </div>
-          </div>
-
-          <div class="faq-item" data-text="how many years arangetram how long before training needed">
-            <button class="faq-q">How many years of training before Arangetram?</button>
-            <div class="faq-a"><p>Typically <strong>4–6 years</strong> of consistent training. The Salangai Pooja must be completed first. Readiness is assessed by Guru Deepa alone — based on technical mastery, abhinaya depth, stamina, and overall artistic maturity. The Arangetram preparation phase itself is 1–2 years of intensive training.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="kalpavruksha help organise arangetram support music orchestra costume">
-            <button class="faq-q">Does Kalpavruksha help organise the Arangetram?</button>
-            <div class="faq-a"><p>Yes — completely. We provide support across all aspects: dance training, music coordination, orchestra guidance, costume planning, ceremonial protocols, and rehearsals. We have guided <strong>4+ Arangetrams</strong> at Kalpavruksha. <a href="contact.html">Contact us to discuss your plans →</a></p></div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── ONLINE CLASSES ──────────────────────── -->
-      <div class="faq-group" id="online" aria-labelledby="grp-online">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">💻</span>
-          <h2 class="faq-group-title" id="grp-online">Online Classes</h2>
-          <span class="faq-group-count">4 questions</span>
-        </div>
-        <div class="faq-list">
-
-          <div class="faq-item" data-text="platform online classes google meet app">
-            <button class="faq-q">Which platform do you use for online classes?</button>
-            <div class="faq-a"><p>All live online classes are conducted via <strong>Google Meet</strong>. A free Google account is all you need. Classes are live and personal — not pre-recorded — with the same curriculum and corrections as in-person students in Chennai.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="is online learning effective quality bharatanatyam online">
-            <button class="faq-q">Is online Bharatanatyam learning as effective?</button>
-            <div class="faq-a"><p>Online learning at Kalpavruksha is designed to be thorough and personal. Students submit <strong>weekly practice videos</strong> which Guru Deepa reviews and provides detailed corrections on. This structured video feedback, combined with live sessions, ensures consistent progress. Students across the UK, USA, and India have progressed excellently through this format.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="which countries serve online UK USA india NRI international">
-            <button class="faq-q">Which countries do you serve for online classes?</button>
-            <div class="faq-a"><p>Currently <strong>India, UK, and USA</strong>. We schedule sessions in IST slots compatible with UK (BST/GMT) and USA (EST/PST). Contact us with your location and we will check time zone availability for other regions.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="online students salangai pooja arangetram milestone in-person">
-            <button class="faq-q">Can online students do Salangai Pooja or Arangetram?</button>
-            <div class="faq-a"><p>These milestone events require in-person participation. When an online student reaches readiness, we plan the milestone individually — often coordinating the student's visit to Chennai for the ceremony and performance.</p></div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── FEES & ENROLMENT ────────────────────── -->
-      <div class="faq-group" id="fees" aria-labelledby="grp-fees">
-        <div class="faq-group-head">
-          <span class="faq-group-icon" aria-hidden="true">💰</span>
-          <h2 class="faq-group-title" id="grp-fees">Fees &amp; Enrolment</h2>
-          <span class="faq-group-count">3 questions</span>
-        </div>
-        <div class="faq-list">
-
-          <div class="faq-item" data-text="trial class free cost no commitment first class">
-            <button class="faq-q">Is the trial class free?</button>
-            <div class="faq-a"><p>Yes — <strong>completely free</strong>. No commitment, no fees. Simply come and experience Bharatanatyam. Your trial class gives you a full hour with Guru Deepa to ask all your questions about courses, timings, and fees.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="monthly fees how much cost fee structure price">
-            <button class="faq-q">What are the monthly fees?</button>
-            <div class="faq-a"><p>Fees vary by batch level and frequency. <a href="contact.html">Contact us</a> or WhatsApp <a href="https://wa.me/917200095585">+91&nbsp;72000&nbsp;95585</a> for the current fee structure. Fees are collected per term in advance. The first trial class is completely free.</p></div>
-          </div>
-
-          <div class="faq-item" data-text="how do i enrol enroll sign up join admission process">
-            <button class="faq-q">How do I enrol?</button>
-            <div class="faq-a"><p><a href="contact.html">Book a free trial class</a>. After the trial, Guru Deepa confirms your batch, timing, and fees directly. No lengthy admission process — typically just one visit and a WhatsApp conversation.</p></div>
-          </div>
-
-        </div>
-      </div>
-
-     
-
-      <!-- Still have questions card -->
-      <div class="faq-contact-card">
-        <h3>Still have questions?</h3>
-        <p>We are happy to answer anything. Reach us via WhatsApp, phone, or email.</p>
-        <div class="faq-contact-grid">
-          <div class="faq-contact-item">
-            <span class="faq-contact-item-icon">💬</span>
-            <div class="faq-contact-item-text">
-              <small>Fastest response</small>
-              <a href="https://wa.me/917200095585?text=Hello%2C+I+have+a+question+about+Kalpavruksha+classes." target="_blank" rel="noopener" aria-label="WhatsApp Kalpavruksha (opens in new tab)">WhatsApp +91 72000 95585</a>
-            </div>
-          </div>
-          <div class="faq-contact-item">
-            <span class="faq-contact-item-icon">📞</span>
-            <div class="faq-contact-item-text">
-              <small>Call us</small>
-              <a href="tel:+917200095585">+91 72000 95585</a>
-            </div>
-          </div>
-          <div class="faq-contact-item">
-            <span class="faq-contact-item-icon">✉️</span>
-            <div class="faq-contact-item-text">
-              <small>Email</small>
-              <a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CTA strip -->
-      <div class="faq-cta-strip">
-        <p>First class is completely free — no commitment, no fees.</p>
-        <div class="btn-row">
-          <a href="contact.html" class="btn bp">Book Free Trial Class</a>
-          <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+a+free+trial+class+at+Kalpavruksha." class="btn bw" target="_blank" rel="noopener" aria-label="WhatsApp us (opens in new tab)">WhatsApp Us</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-</main>
-
-<!-- ═══════════════════════════════════════════════════════
-     FOOTER — exact copy of events.html footer
-════════════════════════════════════════════════════════ -->
-<footer class="ft">
-  <div class="c">
-    <div class="fg">
-      <div class="fb-brand">
-        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          <img src="images/logo.webp" alt="Kalpavruksha logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
-          <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
-        </a>
-        <p>Authentic Bharatanatyam in the Kalakshetra style. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
-        <div style="display:flex;gap:8px;margin-top:14px">
-          <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Facebook (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-          <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on YouTube (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-          <a href="https://www.instagram.com/kalpavruksha_schooloffinearts?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-        </div>
-      </div>
-      <div class="fcol"><h4>Courses</h4><ul>
-        <li><a href="courses.html#beginners">Beginners (Age 4+)</a></li>
-        <li><a href="courses.html#intermediate">Intermediate</a></li>
-        <li><a href="courses.html#salangai">Salangai Pooja</a></li>
-        <li><a href="courses.html#arangetram">Arangetram</a></li>
-        <li><a href="courses.html#adults">Adult Beginners</a></li>
-        <li><a href="online-classes.html">Online Classes</a></li>
-      </ul></div>
-      <div class="fcol"><h4>School</h4><ul>
-        <li><a href="guru.html">Our Guru</a></li>
-        <li><a href="events.html">Events &amp; Gallery</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-      </ul></div>
-      <div class="fcol"><h4>Contact</h4><ul>
-        <li><a href="tel:+917200095585">+91 72000 95585</a></li>
-        <li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li>
-        <li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai 600024</a></li>
-      </ul>
-      <p style="margin-top:12px;font-size:0.76rem;color:rgba(255,255,255,0.30)">Evening batches · Online: morning/afternoon</p></div>
-    </div>
-    <div class="fb-bot">
-      <p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p>
-      <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35)">Privacy</a></p>
-    </div>
-  </div>
-</footer>
-
-<div style="background:#111;padding:20px 0">
-  <div class="c">
-    <p style="font-size:0.72rem;color:rgba(255,255,255,0.30);text-align:center;line-height:1.8;max-width:800px;margin:0 auto">
-      &copy; 2026 Kalpavruksha School of Fine Arts. All rights reserved. &nbsp;|&nbsp;
-      All content on this website — including text, images, course descriptions, curriculum structure, and teaching methodology — is the intellectual property of Kalpavruksha School of Fine Arts and may not be reproduced, copied, or distributed without written permission.
-      &nbsp;|&nbsp; Unauthorised use of our name, logo, or branding is prohibited.
-      &nbsp;|&nbsp; Student photographs are published with consent and may not be used elsewhere.
-      &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.40)">Privacy Policy</a>
-    </p>
+<!-- PAGE HERO — identical pattern to events.html -->
+<div class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">FAQ</span></nav>
+    <span class="section-label">Answers</span>
+    <h1 class="display-lg" style="margin-top:8px">Frequently Asked Questions</h1>
+    <p>Everything you need to know before joining Kalpavruksha &mdash; from age and fees to Arangetram preparation.</p>
   </div>
 </div>
 
-<!-- WhatsApp float — exact copy from events.html -->
-<a class="wa" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  <span>Chat with us</span>
-</a>
+<!-- STICKY IN-PAGE SECTION NAV -->
+<div class="faq-sec-nav" role="navigation" aria-label="Jump to FAQ section">
+  <ul>
+    <li><a href="#general">General</a></li>
+    <li><a href="#classes">Classes &amp; Schedule</a></li>
+    <li><a href="#progress">Courses &amp; Progress</a></li>
+    <li><a href="#milestones">Milestones</a></li>
+    <li><a href="#online">Online Classes</a></li>
+    <li><a href="#fees">Fees &amp; Enrolment</a></li>
+    <li><a href="#about-bharatanatyam">About Bharatanatyam</a></li>
+  </ul>
+</div>
 
-<!-- ═══════════════════════════════════════════════════════
-     SCRIPTS — identical pattern to events.html
-════════════════════════════════════════════════════════ -->
+<!-- FAQ CONTENT -->
+<section class="sec sec-w">
+  <div class="c">
+
+    <!-- Search -->
+    <div class="faq-search-wrap">
+      <label for="faq-search">Search questions</label>
+      <input type="search" id="faq-search" placeholder="e.g. age to start, Arangetram cost, timings&#8230;" aria-label="Search FAQ" autocomplete="off">
+      <span class="search-icon" aria-hidden="true">&#128269;</span>
+    </div>
+    <p id="no-results">No questions matched your search. <a href="contact.html">Ask us directly &#8594;</a></p>
+
+    <!-- GENERAL -->
+    <div class="faq-group" id="general">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#127917;</span>
+        <h2>General</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-q="age child start children 4">
+          <button class="faq-q">What age can my child start?</button>
+          <div class="faq-a"><p>We welcome children from <strong>age 4 onwards</strong>. Focus at this stage is posture, rhythm, and making dance joyful. Children who start at 4&#8211;5 years typically reach their Salangai Pooja around age 7&#8211;8 and their Arangetram in their early teens.</p></div>
+        </div>
+        <div class="faq-item" data-q="adults never danced adult beginners no experience">
+          <button class="faq-q">Do you teach adults who have never danced?</button>
+          <div class="faq-a"><p>Yes &mdash; we have a dedicated <strong>Adult Beginners batch</strong> with no upper age limit. Many students begin in their 30s and 40s. <a href="courses.html#adults">Learn more &#8594;</a></p></div>
+        </div>
+        <div class="faq-item" data-q="what style teach kalakshetra bani tradition">
+          <button class="faq-q">What style do you teach?</button>
+          <div class="faq-a"><p>The <strong>Kalakshetra bani</strong> &mdash; established by Rukmini Devi Arundale. Known for refined aesthetics, devotional purity, and adherence to the Natyashastra. Guru Smt. Deepa Sadasivam is a Kalakshetra Foundation alumna.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLASSES & SCHEDULE -->
+    <div class="faq-group" id="classes">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#128197;</span>
+        <h2>Classes &amp; Schedule</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-q="how many sessions per week frequency">
+          <button class="faq-q">How many sessions per week?</button>
+          <div class="faq-a"><p>Classes meet <strong>2 sessions per week</strong>, each lasting 1 hour. Intermediate and advanced students may attend 2&#8211;3 sessions. Any changes are communicated directly by the Guru.</p></div>
+        </div>
+        <div class="faq-item" data-q="where classes held location studio kodambakkam address">
+          <button class="faq-q">Where are classes held?</button>
+          <div class="faq-a"><p>In-person at our studio in <strong>Kodambakkam, Chennai</strong>. Online via Google Meet. Exact address shared upon enrolment.</p></div>
+        </div>
+        <div class="faq-item" data-q="timings class times evening 4pm 9pm batch slots when schedule">
+          <button class="faq-q">What are the class timings?</button>
+          <div class="faq-a">
+            <p><strong>In-person (Chennai):</strong> All in-person batches run in the evening between <strong>4&thinsp;PM and 9&thinsp;PM on weekdays</strong>. Representative batch slots: 4:30&#8211;5:30&thinsp;PM &middot; 5:30&#8211;6:30&thinsp;PM &middot; 6:30&#8211;7:30&thinsp;PM &middot; 7:30&#8211;8:30&thinsp;PM. Exact slot confirmed at enrolment based on level and availability.</p>
+            <p><strong>Online:</strong> Morning or afternoon IST, scheduled to suit your time zone &mdash; including slots compatible with UK (BST/GMT) and USA (EST/PST). <a href="contact.html">Contact us</a> to check current availability.</p>
+          </div>
+        </div>
+        <div class="faq-item" data-q="what should my child wear uniform costume dress">
+          <button class="faq-q">What should my child wear to class?</button>
+          <div class="faq-a"><p>Kalpavruksha has a <strong>school uniform</strong> which students are required to wear. The uniform can be purchased after joining &mdash; details are shared at enrolment. Bharatanatyam is practised barefoot; no special footwear is needed.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSES & PROGRESS -->
+    <div class="faq-group" id="progress">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#128200;</span>
+        <h2>Courses &amp; Progress</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-q="how long beginner level complete years duration">
+          <button class="faq-q">How long to complete the Beginner level?</button>
+          <div class="faq-a"><p>Typically <strong>1&#8211;2 years</strong> depending on age, practice frequency, and aptitude. Progression is assessed personally by Guru Deepa &mdash; there is no fixed deadline.</p></div>
+        </div>
+        <div class="faq-item" data-q="when ready intermediate progress assessment grade exams">
+          <button class="faq-q">When is a student ready for Intermediate?</button>
+          <div class="faq-a"><p>Progression is determined entirely by Guru Smt. Deepa Sadasivam through close observation in class. Students also participate in <strong>Grade Exams</strong> &mdash; an external assessment programme giving both students and parents a clear, independent benchmark. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn about Grade Exams &#8594;</a></p></div>
+        </div>
+        <div class="faq-item" data-q="child join prior experience previous training">
+          <button class="faq-q">Can my child join with prior dance experience?</button>
+          <div class="faq-a"><p>Yes. Students with prior experience are assessed individually by Guru Deepa. Please mention the style and duration of prior training when you <a href="contact.html">enquire</a>.</p></div>
+        </div>
+        <div class="faq-item" data-q="what are grade exams certification examination structured benchmark">
+          <button class="faq-q">What are Grade Exams?</button>
+          <div class="faq-a"><p>Kalpavruksha regularly sends students for <strong>Grade Examinations</strong> &mdash; a structured external programme evaluating progress at each stage. These provide a nationally recognised, standardised benchmark. Certifications are issued by the external examination body. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn more &#8594;</a></p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALANGAI POOJA & ARANGETRAM -->
+    <div class="faq-group" id="milestones">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#127882;</span>
+        <h2>Salangai Pooja &amp; Arangetram</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-q="what is salangai pooja ceremony ankle bells first initiation">
+          <button class="faq-q">What is a Salangai Pooja?</button>
+          <div class="faq-a"><p>The <strong>Salangai Pooja</strong> is the sacred ceremony in which the student&#8217;s ankle bells are formally tied for the first time by the Guru &mdash; a deeply spiritual milestone marking their initiation as a classical dancer. It involves a public performance of approximately 1&#8211;1.5 hours and typically takes place after 1&#8211;2 years of training. Kalpavruksha has guided over <strong>30 Salangai Poojas</strong> since 2014. <a href="courses.html#salangai">Learn more &#8594;</a></p></div>
+        </div>
+        <div class="faq-item" data-q="what is arangetram solo debut performance stage meaning ascending">
+          <button class="faq-q">What is an Arangetram?</button>
+          <div class="faq-a"><p>The <strong>Arangetram</strong> (meaning &#8220;ascending the stage&#8221;) is a student&#8217;s first full-length classical solo performance &mdash; typically 2.5&#8211;3 hours &mdash; marking the transition from student to independent artist. It presents the complete margam (Pushpanjali, Alarippu, Jatiswaram, Shabdam, Varnam, Padams, Thillana, Mangalam) with a live orchestra. <a href="courses.html#arangetram">Learn more &#8594;</a></p></div>
+        </div>
+        <div class="faq-item" data-q="how many years before arangetram how long training duration">
+          <button class="faq-q">How many years of training before Arangetram?</button>
+          <div class="faq-a"><p>Typically <strong>4&#8211;6 years</strong> of consistent training. The Salangai Pooja must be completed first. Readiness is assessed by Guru Deepa alone &mdash; based on technical mastery, abhinaya depth, and overall artistic maturity.</p></div>
+        </div>
+        <div class="faq-item" data-q="does kalpavruksha help organise arangetram support music orchestra">
+          <button class="faq-q">Does Kalpavruksha help organise the Arangetram?</button>
+          <div class="faq-a"><p>Yes &mdash; completely. We provide support across all aspects: dance training, music coordination, orchestra guidance, costume planning, ceremonial protocols, and rehearsals. We have guided <strong>4 Arangetrams</strong> at Kalpavruksha since 2023, with more in preparation. <a href="contact.html">Contact us to discuss your plans &#8594;</a></p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONLINE CLASSES -->
+    <div class="faq-group" id="online">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#128187;</span>
+        <h2>Online Classes</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-q="which platform online classes google meet">
+          <button class="faq-q">Which platform do you use for online classes?</button>
+          <div class="faq-a"><p>All live online classes are conducted via <strong>Google Meet</strong>. A free Google account is all you need. Classes are live and personal &mdash; not pre-recorded &mdash; with the same corrections and curriculum as in-person students in Chennai.</p></div>
+        </div>
+        <div class="faq-item" data-q="is online learning effective quality bharatanatyam">
+          <button class="faq-q">Is online Bharatanatyam learning as effective?</button>
+          <div class="faq-a"><p>Online learning at Kalpavruksha is designed to be thorough and personal. Students submit weekly practice videos which Guru Deepa reviews and provides detailed corrections on. This structured video feedback, combined with live sessions, ensures consistent progress. Students across the UK, USA, and India have progressed excellently through this format.</p></div>
+        </div>
+        <div class="faq-item" data-q="which countries online serve international NRI UK USA India">
+          <button class="faq-q">Which countries do you serve for online classes?</button>
+          <div class="faq-a"><p>Currently <strong>India, UK, and USA</strong>. Contact us with your location and we will check time zone compatibility for other regions.</p></div>
+        </div>
+        <div class="faq-item" data-q="online students salangai pooja arangetram milestone in person">
+          <button class="faq-q">Can online students do Salangai Pooja or Arangetram?</button>
+          <div class="faq-a"><p>These milestone events require in-person participation. When an online student reaches readiness, we plan the milestone individually &mdash; often coordinating the student&#8217;s visit to Chennai for the ceremony and performance.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEES & ENROLMENT -->
+    <div class="faq-group" id="fees">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#128176;</span>
+        <h2>Fees &amp; Enrolment</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item" data-q="is trial class free cost no commitment">
+          <button class="faq-q">Is the trial class free?</button>
+          <div class="faq-a"><p>Yes &mdash; <strong>completely free</strong>. No commitment, no fees. Simply come and experience Bharatanatyam. Your trial class gives you a full hour with Guru Deepa to ask all your questions about courses, timings, and fees.</p></div>
+        </div>
+        <div class="faq-item" data-q="monthly fees how much cost bharatanatyam class fee price">
+          <button class="faq-q">What are the monthly fees?</button>
+          <div class="faq-a"><p>Fees vary by batch level and frequency. <a href="contact.html">Contact us</a> or WhatsApp <a href="https://wa.me/917200095585">+91 72000 95585</a> for the current fee structure. Fees are collected per term in advance. The first trial class is completely free.</p></div>
+        </div>
+        <div class="faq-item" data-q="how do i enrol sign up join register">
+          <button class="faq-q">How do I enrol?</button>
+          <div class="faq-a"><p><a href="contact.html">Book a free trial class</a>. After the trial, Guru Deepa confirms your batch, timing, and fees directly. No lengthy admission process.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT BHARATANATYAM — organic search section -->
+    <div class="faq-group faq-group--organic" id="about-bharatanatyam">
+      <div class="faq-group-head">
+        <span class="faq-group-icon" aria-hidden="true">&#127807;</span>
+        <h2>About Bharatanatyam</h2>
+        <span class="badge-new">In depth</span>
+      </div>
+      <div class="faq-list">
+
+        <div class="faq-item" data-q="how many years does it take to learn bharatanatyam how long duration complete">
+          <button class="faq-q">How many years does it take to learn Bharatanatyam?</button>
+          <div class="faq-a">
+            <p>A complete Bharatanatyam journey &mdash; from first class to Arangetram &mdash; typically spans <strong>6&#8211;10 years</strong> of regular training:</p>
+            <p><strong>Beginner stage (1&#8211;2 years):</strong> Adavus, mudras, Alarippu, Jatiswaram, Salangai Pooja.<br><strong>Intermediate stage (2&#8211;3 years):</strong> Varnam, Padam, Javali, Thillana, deep abhinaya.<br><strong>Arangetram preparation (1&#8211;2 years):</strong> Intensive full-margam training and rehearsals.</p>
+            <p>Most students who begin at age 4&#8211;5 reach their Arangetram in their early teens. Adults starting at 25&#8211;30 can reach a high level in 5&#8211;7 years. Consistency &mdash; attending 2 sessions per week and practising at home &mdash; is the single biggest factor in pace of progress. At Kalpavruksha, progression is never rushed; Guru Deepa assesses each student individually.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="what is kalakshetra style bharatanatyam bani rukmini devi explained tradition school">
+          <button class="faq-q">What is the Kalakshetra style of Bharatanatyam?</button>
+          <div class="faq-a">
+            <p>The <strong>Kalakshetra bani</strong> is a classical school of Bharatanatyam established by <strong>Rukmini Devi Arundale</strong> at the Kalakshetra Foundation in Chennai in 1936. Rukmini Devi is credited with restoring Bharatanatyam&#8217;s dignity as a classical art form after it had been marginalised during the colonial era.</p>
+            <p>The Kalakshetra style is defined by:<br>
+            &#10022; <strong>Devotional purity</strong> &mdash; movements offered as a spiritual act<br>
+            &#10022; <strong>Sculptural precision</strong> &mdash; each posture mirrors classical temple sculpture<br>
+            &#10022; <strong>Restrained abhinaya</strong> &mdash; emotional expression is refined, not theatrical<br>
+            &#10022; <strong>Natyashastra adherence</strong> &mdash; every element follows the ancient classical treatise</p>
+            <p>It is one of the most internationally respected and academically documented Bharatanatyam styles. Guru Smt. Deepa Sadasivam is a Kalakshetra Foundation alumna and teaches exclusively in this tradition.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="difference between bharatanatyam styles schools bani pandanallur vazhuvoor comparison">
+          <button class="faq-q">What is the difference between Bharatanatyam styles?</button>
+          <div class="faq-a">
+            <p>Bharatanatyam has several distinct schools, each with a different lineage and aesthetic emphasis:</p>
+            <p>&#10022; <strong>Kalakshetra bani</strong> &mdash; devotional, sculptural, internationally recognised<br>
+            &#10022; <strong>Pandanallur bani</strong> &mdash; strong geometric footwork, relatively minimal abhinaya<br>
+            &#10022; <strong>Vazhuvoor bani</strong> &mdash; lyrical and flowing, Tamil folk influences<br>
+            &#10022; <strong>Mysore / Thanjavur tradition</strong> &mdash; elaborate abhinaya rooted in the Bhakti court tradition</p>
+            <p>Kalpavruksha teaches exclusively in the <strong>Kalakshetra bani</strong>, widely regarded as the most academically rigorous and devotionally pure form of the art.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="is bharatanatyam good for children kids benefits physical mental development">
+          <button class="faq-q">Is Bharatanatyam good for children? What are the benefits?</button>
+          <div class="faq-a">
+            <p>Yes &mdash; Bharatanatyam is one of the most comprehensive disciplines for a child&#8217;s physical and cognitive development:</p>
+            <p>&#10022; <strong>Physical:</strong> Improves posture, coordination, balance, and flexibility. Strengthens legs and core through the Aramandi posture.<br>
+            &#10022; <strong>Cognitive:</strong> Develops memory and concentration through complex adavu sequences and rhythmic patterns.<br>
+            &#10022; <strong>Emotional:</strong> Teaches a full range of emotional expression through abhinaya, building emotional intelligence.<br>
+            &#10022; <strong>Cultural:</strong> Connects children to classical Indian literature, mythology, and music in a living, embodied way.<br>
+            &#10022; <strong>Discipline:</strong> Regular structured training builds work ethic and commitment that carries into academic life.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="can adults learn bharatanatyam no experience too old late start 30 40 50">
+          <button class="faq-q">Can adults learn Bharatanatyam with no experience? Is it too late?</button>
+          <div class="faq-a">
+            <p>Not at all. Adults bring strengths children do not yet have &mdash; emotional depth, intellectual curiosity, and the capacity to understand the art&#8217;s philosophy and literature.</p>
+            <p>Our <strong>Adult Beginners batch</strong> has no upper age limit. Students have started at 30, 40, and 50 with zero prior dance background and progressed to a high level. The course is conceptual, systematic, and conducted in a warm, non-judgmental environment at a pace suited to adult learners.</p>
+            <p>You will develop genuine skill, a deep connection to classical Indian tradition, and a practice that improves physical and mental wellbeing. <a href="courses.html#adults">Learn more about our Adult Beginners course &#8594;</a></p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="what is cost arangetram Chennai how much expensive price budget">
+          <button class="faq-q">What is the cost of an Arangetram in Chennai?</button>
+          <div class="faq-a">
+            <p>Arangetram costs vary by scale, venue, orchestra size, and catering. As a general guide:</p>
+            <p>&#10022; <strong>Modest Arangetram</strong> (small hall, simple d&eacute;cor): &#8377;1&#8211;2 lakhs<br>
+            &#10022; <strong>Mid-scale</strong> (sabha hall, full orchestra, professional d&eacute;cor): &#8377;3&#8211;5 lakhs<br>
+            &#10022; <strong>Elaborate production</strong> (large venue, professional videography): &#8377;6&#8211;10 lakhs+</p>
+            <p>At Kalpavruksha, we guide families through every component &mdash; training, music, orchestra, venue, costume, and ceremony &mdash; to plan an Arangetram that is meaningful, dignified, and within budget. <a href="contact.html">Contact us to discuss &#8594;</a></p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="does bharatanatyam have formal examinations certifications qualifications grade structured">
+          <button class="faq-q">Does Bharatanatyam have formal examinations or certifications?</button>
+          <div class="faq-a">
+            <p>Yes. Kalpavruksha regularly prepares and sends students for <strong>Grade Examinations</strong> &mdash; a structured external assessment providing a nationally recognised, standardised benchmark at each stage. Certifications are issued by the external examination body.</p>
+            <p>In addition, the <strong>Salangai Pooja</strong> and <strong>Arangetram</strong> are recognised public milestones in the classical dance community. <a href="https://bridgeacademy.in/grade-exam/" target="_blank" rel="noopener">Learn more about Grade Exams &#8594;</a></p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="what does bharatanatyam mean meaning name origin etymology history">
+          <button class="faq-q">What does Bharatanatyam mean?</button>
+          <div class="faq-a">
+            <p>The name <strong>Bharatanatyam</strong> is a Sanskrit acronym:</p>
+            <p>&#10022; <strong>Bha</strong> &mdash; Bhava (expression, emotion)<br>
+            &#10022; <strong>Ra</strong> &mdash; Raga (melody, music)<br>
+            &#10022; <strong>Ta</strong> &mdash; Tala (rhythm, beat)<br>
+            &#10022; <strong>Natyam</strong> &mdash; dance, drama, performance</p>
+            <p>The name also honours <strong>Bharata Muni</strong>, the ancient sage who authored the Natyashastra &mdash; the foundational treatise on classical performing arts (approx. 200 BCE&#8211;200 CE). Bharatanatyam is one of India&#8217;s eight classical dance forms, rooted in the Devadasi tradition of Tamil Nadu.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-q="bharatanatyam online classes NRI diaspora UK USA India live authentic">
+          <button class="faq-q">Can NRI or diaspora students learn authentic Bharatanatyam online?</button>
+          <div class="faq-a">
+            <p>Yes &mdash; this is one of Kalpavruksha&#8217;s core offerings. Since 2020, we have been teaching students in the UK, USA, and across India via live Google Meet sessions. NRI and diaspora families who want their children to learn <strong>authentic Kalakshetra Bharatanatyam</strong> &mdash; not a watered-down adaptation &mdash; choose Kalpavruksha specifically for this reason.</p>
+            <p>Our online classes are live and personal, with the same curriculum, corrections, and teaching rigour as in-person Chennai students. We accommodate UK (BST/GMT) and USA (EST/PST) time zones. <a href="online-classes.html">Learn more about online classes &#8594;</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Still have questions -->
+    <div class="still-card">
+      <h3>Still have questions?</h3>
+      <p>We are happy to answer anything &mdash; reach us via WhatsApp, phone, or email, or fill our contact form.</p>
+      <div class="still-contacts">
+        <div class="still-contact-item">
+          <div class="still-contact-icon">&#128172;</div>
+          <div><small>Fastest response</small><a href="https://wa.me/917200095585?text=Hello%2C+I+have+a+question+about+Kalpavruksha+classes.">WhatsApp +91 72000 95585</a></div>
+        </div>
+        <div class="still-contact-item">
+          <div class="still-contact-icon">&#128222;</div>
+          <div><small>Call us</small><a href="tel:+917200095585">+91 72000 95585</a></div>
+        </div>
+        <div class="still-contact-item">
+          <div class="still-contact-icon">&#9993;&#65039;</div>
+          <div><small>Email</small><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BOTTOM CTA — matches site's .sec-m pattern -->
+<section class="sec sec-m" aria-label="Book a trial class">
+  <div class="c" style="text-align:center;max-width:640px">
+    <span class="lbl" style="color:rgba(248,220,140,0.8)">First class is free</span>
+    <h2 class="dmd" style="margin-top:10px;color:#fff;margin-bottom:14px">Begin your Bharatanatyam journey today</h2>
+    <p style="color:rgba(255,255,255,0.62);margin-bottom:32px">No commitment. No fees. Experience classical Bharatanatyam under Guru Deepa&#8217;s guidance &mdash; in person in Chennai or online from anywhere in the world.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="contact.html" class="btn bp">Book Free Trial Class</a>
+      <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+a+free+trial+class+at+Kalpavruksha." class="btn bw" target="_blank" rel="noopener">WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER — identical to events.html -->
+<footer class="ft"><div class="c"><div class="fg">
+  <div class="fb-brand">
+    <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <img src="images/logo.webp" alt="Kalpavruksha logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
+      <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
+    </a>
+    <p>Authentic Bharatanatyam in the Kalakshetra style. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Facebook (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on YouTube (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="https://www.instagram.com/kalpavruksha_finearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram (opens in new tab)"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+    </div>
+  </div>
+  <div class="fcol"><h4>Courses</h4><ul>
+    <li><a href="courses.html#beginners">Beginners (Age 4+)</a></li>
+    <li><a href="courses.html#intermediate">Intermediate</a></li>
+    <li><a href="courses.html#salangai">Salangai Pooja</a></li>
+    <li><a href="courses.html#arangetram">Arangetram</a></li>
+    <li><a href="courses.html#adults">Adult Beginners</a></li>
+    <li><a href="online-classes.html">Online Classes</a></li>
+  </ul></div>
+  <div class="fcol"><h4>School</h4><ul>
+    <li><a href="guru.html">Our Guru</a></li>
+    <li><a href="events.html">Events &amp; Gallery</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+  </ul></div>
+  <div class="fcol"><h4>Contact</h4><ul>
+    <li><a href="tel:+917200095585">+91 72000 95585</a></li>
+    <li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li>
+    <li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai 600024</a></li>
+  </ul>
+  <p style="margin-top:12px;font-size:0.76rem;color:rgba(255,255,255,0.30)">Evening batches &middot; Online: morning/afternoon</p></div>
+</div>
+<div class="fb-bot">
+  <p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p>
+  <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35)">Privacy</a></p>
+</div></div></footer>
+<div style="background:#060F1A;padding:20px 0">
+  <div class="c"><p style="font-size:0.72rem;color:rgba(255,255,255,0.30);text-align:center;line-height:1.8;max-width:800px;margin:0 auto">&copy; 2026 Kalpavruksha School of Fine Arts. All rights reserved. &nbsp;|&nbsp; All content on this website is the intellectual property of Kalpavruksha School of Fine Arts and may not be reproduced without written permission. &nbsp;|&nbsp; Student photographs are published with consent. &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.40)">Privacy Policy</a></p></div>
+</div>
+
+<!-- WhatsApp float — identical to events.html -->
+<a class="wa" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>Chat with us</span></a>
+
 <script>
 (function(){
-
-  /* ── Mobile nav toggle ─────────────────────────── */
-  var t = document.querySelector('.ntog');
-  var m = document.querySelector('.nm');
-  if(t && m){
-    t.addEventListener('click', function(){
-      var o = m.classList.toggle('open');
-      t.setAttribute('aria-expanded', o);
-    });
-    m.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click', function(){
-        m.classList.remove('open');
-        t.setAttribute('aria-expanded','false');
-      });
-    });
+  // Mobile nav — identical to events.html
+  var t=document.querySelector('.ntog'),m=document.querySelector('.nm');
+  if(t&&m){
+    t.addEventListener('click',function(){var o=m.classList.toggle('open');t.setAttribute('aria-expanded',o);});
+    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open');t.setAttribute('aria-expanded','false');});});
   }
 
-  /* ── FAQ accordion — uses site CSS .faq-item + .faq-a ── */
-  document.querySelectorAll('.faq-q').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var item = btn.closest('.faq-item');
-      var isOpen = item.classList.contains('open');
-      /* close all others in the same group */
-      var group = btn.closest('.faq-list');
-      group.querySelectorAll('.faq-item.open').forEach(function(other){
-        other.classList.remove('open');
-        var a = other.querySelector('.faq-a');
-        if(a) a.style.maxHeight = null;
-      });
-      /* toggle this one */
-      if(!isOpen){
-        item.classList.add('open');
-        var ans = item.querySelector('.faq-a');
-        if(ans) ans.style.maxHeight = ans.scrollHeight + 'px';
-      }
+  // FAQ accordion — uses site's own .faq-item / .faq-q / .faq-a classes
+  document.querySelectorAll('.faq-q').forEach(function(b){
+    b.addEventListener('click',function(){
+      var it=b.closest('.faq-item'),op=it.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');var a=i.querySelector('.faq-a');if(a)a.style.maxHeight=null;});
+      if(!op){it.classList.add('open');var a=it.querySelector('.faq-a');if(a)a.style.maxHeight=a.scrollHeight+'px';}
     });
   });
 
-  /* ── Search / filter ───────────────────────────── */
-  var searchInput = document.getElementById('faq-search');
-  var noResults   = document.getElementById('faq-no-results');
-
-  if(searchInput){
-    searchInput.addEventListener('input', function(){
-      var q = this.value.toLowerCase().trim();
-      var anyVisible = false;
-
-      document.querySelectorAll('.faq-group').forEach(function(group){
-        var groupHasMatch = false;
-        group.querySelectorAll('.faq-item').forEach(function(item){
-          var qText = item.querySelector('.faq-q').textContent.toLowerCase();
-          var dText = (item.getAttribute('data-text') || '').toLowerCase();
-          var aText = item.querySelector('.faq-a') ? item.querySelector('.faq-a').textContent.toLowerCase() : '';
-          var match = !q || qText.includes(q) || dText.includes(q) || aText.includes(q);
-          item.classList.toggle('faq-hidden', !match);
-          if(match) groupHasMatch = true;
-        });
-        group.classList.toggle('group-hidden', !groupHasMatch);
-        if(groupHasMatch) anyVisible = true;
+  // Search filter
+  var inp=document.getElementById('faq-search'),nr=document.getElementById('no-results');
+  if(inp){inp.addEventListener('input',function(){
+    var q=this.value.toLowerCase().trim(),any=false;
+    document.querySelectorAll('.faq-group').forEach(function(g){
+      var hit=false;
+      g.querySelectorAll('.faq-item').forEach(function(i){
+        var text=(i.querySelector('.faq-q')||{}).textContent+''+(i.querySelector('.faq-a')||{}).textContent+''+(i.getAttribute('data-q')||'');
+        var m=!q||text.toLowerCase().indexOf(q)>-1;
+        i.classList.toggle('faq-hidden',!m);if(m)hit=true;
       });
-
-      if(noResults){
-        noResults.style.display = (q && !anyVisible) ? 'block' : 'none';
-      }
+      g.classList.toggle('group-hidden',!hit);if(hit)any=true;
     });
+    nr.style.display=(q&&!any)?'block':'none';
+  });}
+
+  // Sticky section nav highlight
+  var links=document.querySelectorAll('.faq-sec-nav a');
+  if(links.length){
+    var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on');});var l=document.querySelector('.faq-sec-nav a[href="#'+e.target.id+'"]');if(l)l.classList.add('on');}});},{rootMargin:'-80px 0px -55% 0px',threshold:0});
+    document.querySelectorAll('.faq-group[id]').forEach(function(el){ob.observe(el);});
   }
 
-  /* ── Sticky section nav active state ──────────── */
-  var navLinks = document.querySelectorAll('.faq-section-nav a');
-  if(navLinks.length){
-    var observer = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          navLinks.forEach(function(a){ a.classList.remove('on'); });
-          var link = document.querySelector('.faq-section-nav a[href="#' + entry.target.id + '"]');
-          if(link) link.classList.add('on');
-        }
-      });
-    }, { rootMargin: '-112px 0px -50% 0px', threshold: 0 });
-
-    document.querySelectorAll('.faq-group[id]').forEach(function(el){
-      observer.observe(el);
-    });
-  }
-
-  /* ── Open group from URL hash ──────────────────── */
-  if(window.location.hash){
-    var target = document.querySelector(window.location.hash);
-    if(target){
-      setTimeout(function(){
-        target.scrollIntoView({ behavior:'smooth', block:'start' });
-        /* open the first question in the target group */
-        var firstQ = target.querySelector('.faq-q');
-        if(firstQ) firstQ.click();
-      }, 300);
-    }
-  }
-
+  // Open from URL hash
+  if(window.location.hash){var tgt=document.querySelector(window.location.hash);if(tgt){setTimeout(function(){tgt.scrollIntoView({behavior:'smooth',block:'start'});var fq=tgt.querySelector('.faq-q');if(fq)fq.click();},300);}}
 })();
 </script>
 </body>

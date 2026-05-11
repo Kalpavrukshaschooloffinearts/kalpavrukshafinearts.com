@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v2026-05-10 perf-optimised -->
+<!-- v2026-05-10 r4 — correct brand: yellow nav + blue text -->
 <html lang="en-IN">
 <head>
   <meta charset="UTF-8">
@@ -10,107 +10,88 @@
   <link rel="canonical" href="https://kalpavrukshafinearts.com/">
 
   <!--
-    ═══════════════════════════════════════════════════════════════
-    PERFORMANCE FIXES (PageSpeed audit 10 May 2026)
-    ───────────────────────────────────────────────────────────────
-    FIX 1 — Script deduplication
-      Previous: gtag() defined twice — once in an inline <script>
-      and once loaded via the async gtag.js loader. Merged into the
-      single recommended snippet below. Saves ~153 KB of duplicate
-      Tag Manager payload and removes one render-blocking request.
+  ═══════════════════════════════════════════════════════════════════
+  IMAGE DELIVERY FIX — PageSpeed "Improve image delivery" (487 KB)
+  ───────────────────────────────────────────────────────────────────
+  ROOT CAUSE: Every image was served at full resolution regardless of
+  the screen size that was actually displaying it. On a 390px mobile
+  screen the hero (1400px wide) downloads ~400 KB it doesn't need.
 
-    FIX 2 — GA4 / gtag deferred
-      Changed the gtag loader from blocking to fully deferred:
-      moved to end of <body> with defer attribute. Saves ~64.6 KB
-      blocking time (PageSpeed: "Reduce unused JavaScript").
+  SOLUTION: srcset + sizes on every significant image.
+  The browser reads the sizes="" value (= the CSS display width for
+  this image at this viewport), picks the closest entry in srcset,
+  and downloads only that file. If only one file exists the browser
+  still uses the sizes hint to understand how large the image will
+  be — which feeds into its LCP prioritisation.
 
-    FIX 3 — Hero image preloaded (LCP fix)
-      Added <link rel="preload"> for hero-bg.webp. Browser now
-      fetches it during head parsing instead of waiting for the
-      parser to reach the <img> tag in the body. Targets LCP 4.7s
-      → expected ~2.5s or below.
-      Also added fetchpriority="high" on the <img> itself.
-      Removed loading="lazy" from the hero image (it was absent but
-      confirmed not present — lazy on the LCP image would be wrong).
+  ── IMAGES YOU NEED TO CREATE (one-time task, use Squoosh.app) ──
+  For each source image, export two WebP variants:
 
-    FIX 4 — CSS preloaded (render-blocking fix, saves 220 ms)
-      Changed <link rel="stylesheet" href="css/style.css"> to use
-      the preload + onload pattern so it no longer blocks the first
-      paint. A <noscript> fallback is included for non-JS browsers.
+  hero-bg.webp         → also create hero-bg-800w.webp  (~80 KB)
+  beginner.webp        → also create beginner-600w.webp  (~30 KB)
+  intermediate.webp    → also create intermediate-600w.webp
+  rev-salangai-pooja.webp → salangai-600w.webp
+  arangetram.webp      → arangetram-600w.webp
+  guru-portrait.webp   → guru-portrait-600w.webp
 
-    FIX 5 — Google Fonts non-blocking (saves 780 ms)
-      Changed Google Fonts from a blocking <link> to the
-      media="print" → onload="this.media='all'" pattern.
-      Added font-display=swap to the URL so text renders
-      immediately in a fallback font while custom fonts load.
-      A <noscript> fallback is included.
+  Squoosh settings: WebP, quality 82, resize to target width.
+  Upload the new files alongside the originals in /images/.
 
-    FIX 6 — Inline critical CSS for above-the-fold content
-      Added a minimal <style> block that covers the nav, hero
-      background colour, and body font-stack so the page is
-      visually correct before style.css or Fonts arrive.
+  Until the extra files exist the browser falls back to the original
+  — so uploading this HTML before creating the resized images is safe.
+  The srcset simply won't offer a smaller option yet.
 
-    FIX 7 — Image width/height attributes
-      All <img> tags now have explicit width and height attributes
-      to prevent Cumulative Layout Shift (CLS) while images load.
-      CLS is already 0 — these protect it from regressing.
-
-    FIX 8 — Missing </style> closing tag
-      The original file had an unclosed <style> block (the tag was
-      missing its closing </style> before the JSON-LD <script>).
-      This caused the browser to treat the entire JSON-LD and all
-      subsequent HTML as CSS text — a silent but serious bug.
-      Fixed here.
-    ═══════════════════════════════════════════════════════════════
+  ── OTHER FIXES IN THIS VERSION ────────────────────────────────
+  • Hero preload updated to use imagesrcset so the preload scanner
+    picks the correct size at the right viewport
+  • Guru portrait: correct HTML dimensions (300×375) instead of
+    generic 600×750 — stops PageSpeed "image displayed at wrong size"
+  • Course card images: sizes="(max-width:480px) 100vw,
+    (max-width:1000px) 50vw, 25vw" — the 4-column grid means each
+    card is ~25% of viewport on desktop
+  • All lazy images: added decoding="async" where missing
+  ═══════════════════════════════════════════════════════════════════
   -->
 
-  <!-- ── CRITICAL INLINE CSS ──────────────────────────────────────
-       Covers nav bg, body font stack, and hero background colour.
-       Prevents a flash of unstyled content before style.css loads.
-  ──────────────────────────────────────────────────────────────── -->
+  <!-- CRITICAL INLINE CSS — nav + hero bg colour; prevents FOUC -->
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{font-size:16px;scroll-behavior:smooth;}
-    body{font-family:'DM Sans',-apple-system,sans-serif;color:#1C0A0F;background:#fff;padding-top:68px;-webkit-font-smoothing:antialiased;}
-    .site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#5c1522;border-bottom:1px solid rgba(255,255,255,0.10);height:68px;}
-    .skip{position:absolute;top:-100%;left:16px;background:#7B1D2E;color:#fff;padding:8px 16px;border-radius:0 0 4px 4px;font-size:0.82rem;z-index:99999;text-decoration:none;}
+    body{font-family:'DM Sans',-apple-system,sans-serif;color:#0E1B2E;background:#fff;padding-top:68px;-webkit-font-smoothing:antialiased;}
+    .site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#C8C870;border-bottom:2px solid #9EA832;height:68px;}
+    .skip{position:absolute;top:-100%;left:16px;background:#1E4FA0;color:#fff;padding:8px 16px;border-radius:0 0 4px 4px;font-size:0.82rem;z-index:99999;text-decoration:none;}
     .skip:focus{top:0;}
-    /* Hero background so there is no white flash before hero-bg.webp arrives */
-    .hero{min-height:100svh;background:#5c1522;}
+    .hero{min-height:100svh;background:#0E1B2E;}
   </style>
 
-  <!-- ── HERO IMAGE PRELOAD — FIX 3 (LCP) ───────────────────────
-       Tells the browser to fetch the LCP image immediately during
-       <head> parsing, rather than discovering it later in the body.
-       imagesrcset not needed here as we serve a single WebP.
-  ──────────────────────────────────────────────────────────────── -->
-  <link rel="preload" as="image" href="images/hero-bg.webp" fetchpriority="high">
+  <!--
+  HERO IMAGE PRELOAD — updated with imagesrcset + imagesizes
+  This tells the preload scanner which file to fetch at which viewport,
+  matching the srcset/sizes on the <picture> element below.
+  -->
+  <link rel="preload" as="image"
+    href="images/hero-bg.webp"
+    imagesrcset="images/hero-bg-800w.webp 800w, images/hero-bg.webp 1400w"
+    imagesizes="100vw"
+    fetchpriority="high">
 
-  <!-- ── STYLESHEET PRELOAD — FIX 4 (render-blocking CSS) ────────
-       Loads style.css asynchronously so it no longer blocks paint.
-       onload switches it to a stylesheet once downloaded.
-       The <noscript> fallback serves non-JS browsers normally.
-  ──────────────────────────────────────────────────────────────── -->
+  <!-- CSS — non-blocking preload -->
   <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="css/style.css"></noscript>
 
-  <!-- ── GOOGLE FONTS — FIX 5 (render-blocking fonts, saves 780ms)
-       media="print" loads the stylesheet without blocking render.
-       onload switches to media="all" once the fonts are ready.
-       font-display=swap in the URL ensures text is always visible.
-  ──────────────────────────────────────────────────────────────── -->
+  <!-- Google Fonts — non-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
 
-  <!-- ── PAGE-SPECIFIC STYLES ─────────────────────────────────── -->
+  <!-- PAGE-SPECIFIC STYLES -->
   <style>
 /* HERO */
 .hero{position:relative;display:flex;align-items:center;overflow:hidden;}
 .hero-img{position:absolute;inset:0;z-index:0;overflow:hidden;}
 .hero-img img{width:100%;height:100%;object-fit:cover;border-radius:0;min-height:100vh;}
-.hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(28,10,16,0.84) 0%,rgba(28,10,16,0.38) 65%,transparent 100%);z-index:1;}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(14,27,46,0.88) 0%,rgba(14,27,46,0.42) 65%,transparent 100%);z-index:1;}
 .hero-ct{position:relative;z-index:2;padding:60px 0 80px;max-width:660px;}
 .ht{color:#fff;margin-bottom:16px;}
 .ht em{font-style:italic;color:#F8DC8C;}
@@ -122,53 +103,47 @@
 .hstat-n{display:block;font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:300;color:#F8DC8C;line-height:1;}
 .hstat-l{display:block;font-size:0.62rem;letter-spacing:0.10em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:3px;}
 .n11{font-weight:700;letter-spacing:0.06em;}
-
 /* ABOUT */
 .ag{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
 .aimg{width:100%;aspect-ratio:4/5;border-radius:4px;overflow:hidden;position:relative;}
 .apil{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
 .apil li{display:flex;gap:10px;font-size:0.86rem;align-items:flex-start;}
-.apil-dot{color:#B8962E;flex-shrink:0;font-size:0.60rem;margin-top:5px;}
-
+.apil-dot{color:#1E4FA0;flex-shrink:0;font-size:0.60rem;margin-top:5px;}
 /* BRIDGE NOTE */
 .bridge-note{background:#fdf5d8;border:1px solid #B8962E;border-left:3px solid #B8962E;border-radius:0 4px 4px 0;padding:14px 18px;margin-top:20px;}
 .bridge-note strong{display:block;font-size:0.86rem;color:#1C0A0F;margin-bottom:5px;}
 .bridge-note p{font-size:0.82rem;color:#4A2B33;line-height:1.6;}
-.bridge-note a{color:#C8621A;}
-
-/* COURSES OVERVIEW */
-.cog{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #E8DDD4;border-radius:4px;overflow:hidden;}
-.coc{text-decoration:none;color:#1C0A0F;display:flex;flex-direction:column;border-right:1px solid #E8DDD4;transition:background 0.2s;}
+.bridge-note a{color:#1E4FA0;}
+/* COURSES */
+.cog{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #D4DCE8;border-radius:4px;overflow:hidden;}
+.coc{text-decoration:none;color:#1C0A0F;display:flex;flex-direction:column;border-right:1px solid #D4DCE8;transition:background 0.2s;}
 .coc:last-child{border-right:none;}
-.coc:hover{background:#FBF4EC;}
+.coc:hover{background:#F5F5DC;}
 .coc-img{width:100%;aspect-ratio:4/3;overflow:hidden;flex-shrink:0;}
 .coc-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .coc-body{padding:18px 16px;flex:1;display:flex;flex-direction:column;}
 .coc-tag{font-size:0.66rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#C8621A;}
-.coc-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:#7B1D2E;margin:5px 0 7px;}
+.coc-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:#1E4FA0;margin:5px 0 7px;}
 .coc-body p{font-size:0.78rem;color:#7A6558;line-height:1.5;flex:1;}
 .coc-arr{display:inline-block;margin-top:12px;font-size:0.74rem;color:#C8621A;letter-spacing:0.05em;}
-
 /* STEPS */
 .stg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.stc{background:#fff;border:1px solid #E8DDD4;padding:30px 22px;text-align:center;}
-.stn{font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:#C8621A;line-height:1;margin-bottom:10px;}
+.stc{background:#fff;border:1px solid #D4DCE8;padding:30px 22px;text-align:center;}
+.stn{font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:#1E4FA0;line-height:1;margin-bottom:10px;}
 .stc h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:8px;}
 .stc p{font-size:0.83rem;color:#7A6558;line-height:1.65;}
-.stl{display:inline-block;margin-top:12px;font-size:0.74rem;letter-spacing:0.08em;color:#C8621A;text-transform:uppercase;text-decoration:none;}
-
+.stl{display:inline-block;margin-top:12px;font-size:0.74rem;letter-spacing:0.08em;color:#1E4FA0;text-transform:uppercase;text-decoration:none;}
 /* CTA BAND */
-.ctab{background:#1C0A0F;}
+.ctab{background:#0E1B2E;}
 .ctai{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;padding:60px 0;}
 .ctab-btns{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0;}
-
 /* RESPONSIVE */
-@media(max-width:1000px){.ag{grid-template-columns:1fr;gap:40px;}.cog{grid-template-columns:1fr 1fr;}.coc:nth-child(2){border-right:none;}.coc:nth-child(odd){border-right:1px solid #E8DDD4;}}
+@media(max-width:1000px){.ag{grid-template-columns:1fr;gap:40px;}.cog{grid-template-columns:1fr 1fr;}.coc:nth-child(2){border-right:none;}.coc:nth-child(odd){border-right:1px solid #D4DCE8;}}
 @media(max-width:700px){.stg{grid-template-columns:1fr;gap:12px;}.ctai{flex-direction:column;text-align:center;}.ctab-btns{justify-content:center;}.hsd{display:none;}.hstat{padding:0 14px 0 0;}}
 @media(max-width:480px){.cog{grid-template-columns:1fr;}.coc{border-right:none!important;border-bottom:1px solid #E8DDD4;}.coc:last-child{border-bottom:none;}}
   </style>
 
-  <!-- ── STRUCTURED DATA ──────────────────────────────────────── -->
+  <!-- STRUCTURED DATA -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -222,34 +197,10 @@
           "@type": "OfferCatalog",
           "name": "Bharatanatyam Courses",
           "itemListElement": [
-            {
-              "@type": "Course",
-              "name": "Beginners Bharatanatyam",
-              "description": "Foundation Bharatanatyam for children from age 4. Adavus, mudras, rhythm, Alarippu, Jatiswaram.",
-              "url": "https://kalpavrukshafinearts.com/courses.html#beginners",
-              "provider": { "@type": "Organization", "name": "Kalpavruksha School of Fine Arts" }
-            },
-            {
-              "@type": "Course",
-              "name": "Intermediate Bharatanatyam",
-              "description": "Varnam, Padams, Javalis, Thillana and deep abhinaya training.",
-              "url": "https://kalpavrukshafinearts.com/courses.html#intermediate",
-              "provider": { "@type": "Organization", "name": "Kalpavruksha School of Fine Arts" }
-            },
-            {
-              "@type": "Course",
-              "name": "Adult Beginners Bharatanatyam",
-              "description": "Bharatanatyam for adults of any age. No prior experience needed.",
-              "url": "https://kalpavrukshafinearts.com/courses.html#adults",
-              "provider": { "@type": "Organization", "name": "Kalpavruksha School of Fine Arts" }
-            },
-            {
-              "@type": "Course",
-              "name": "Online Bharatanatyam Classes",
-              "description": "Live Kalakshetra-style Bharatanatyam via Google Meet for students worldwide.",
-              "url": "https://kalpavrukshafinearts.com/online-classes.html",
-              "provider": { "@type": "Organization", "name": "Kalpavruksha School of Fine Arts" }
-            }
+            {"@type":"Course","name":"Beginners Bharatanatyam","description":"Foundation Bharatanatyam for children from age 4.","url":"https://kalpavrukshafinearts.com/courses.html#beginners","provider":{"@type":"Organization","name":"Kalpavruksha School of Fine Arts"}},
+            {"@type":"Course","name":"Intermediate Bharatanatyam","description":"Varnam, Padams, Javalis, Thillana and deep abhinaya training.","url":"https://kalpavrukshafinearts.com/courses.html#intermediate","provider":{"@type":"Organization","name":"Kalpavruksha School of Fine Arts"}},
+            {"@type":"Course","name":"Adult Beginners Bharatanatyam","description":"Bharatanatyam for adults of any age. No prior experience needed.","url":"https://kalpavrukshafinearts.com/courses.html#adults","provider":{"@type":"Organization","name":"Kalpavruksha School of Fine Arts"}},
+            {"@type":"Course","name":"Online Bharatanatyam Classes","description":"Live Kalakshetra-style Bharatanatyam via Google Meet for students worldwide.","url":"https://kalpavrukshafinearts.com/online-classes.html","provider":{"@type":"Organization","name":"Kalpavruksha School of Fine Arts"}}
           ]
         }
       }
@@ -263,23 +214,11 @@
   <meta property="og:image:alt" content="Bharatanatyam performance at Kalpavruksha School of Fine Arts">
 
   <!--
-    NOTE FOR SERVER / CLOUDFLARE SETUP
-    ─────────────────────────────────────────────────────────────
-    PageSpeed flagged "Use efficient cache lifetimes — 523 KB savings".
-    This requires server-side Cache-Control headers, not HTML changes.
-    Add the following in Cloudflare (Cache Rules) or .htaccess:
-
-      # Images — cache 1 year
-      Cache-Control: public, max-age=31536000, immutable
-      (applies to: *.webp, *.jpg, *.png, *.svg, *.ico)
-
-      # CSS / JS — cache 1 month
-      Cache-Control: public, max-age=2592000
-      (applies to: *.css, *.js)
-
-    If using Cloudflare free tier:
-      Dashboard → Caching → Cache Rules → match *.webp, *.css etc
-      → Edge TTL: 1 year for images, 1 month for CSS/JS.
+  ── CACHE-CONTROL REMINDER (server/Cloudflare, not HTML) ──────────
+  Add these headers via Cloudflare Cache Rules or .htaccess:
+    *.webp *.jpg *.png *.svg  →  Cache-Control: public, max-age=31536000, immutable
+    *.css *.js                →  Cache-Control: public, max-age=2592000
+  This resolves the "Use efficient cache lifetimes — 523 KB" warning.
   -->
 </head>
 <body>
@@ -288,7 +227,14 @@
 <!-- NAV -->
 <nav class="site-nav" id="site-nav" role="navigation" aria-label="Main navigation">
   <div class="ni">
-    <div class="nl"><a href="index.html" class="logo" aria-label="Kalpavruksha home"><img src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo" width="40" height="40" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0"><div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div></a></div>
+    <div class="nl">
+      <a href="index.html" class="logo" aria-label="Kalpavruksha home">
+        <img src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo"
+          width="40" height="40"
+          style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
+        <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
+      </a>
+    </div>
     <button class="ntog" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="nm">
       <li><a href="index.html" class="on" aria-current="page">Home <span class="narr">&#9662;</span></a><div class="ndd"><a href="index.html#about">About Us</a><a href="index.html#courses">Course Overview</a><a href="index.html#how-to-join">How to Join</a></div></li>
@@ -304,20 +250,34 @@
 
 <main id="main">
 
-<!-- HERO — FIX 3: fetchpriority="high", no loading="lazy", explicit dimensions -->
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+     <picture> with srcset lets the browser choose:
+       - hero-bg-800w.webp  for screens ≤ 800px  (~80 KB)
+       - hero-bg.webp       for screens > 800px   (~400 KB)
+     sizes="100vw" tells the browser the image fills 100%
+     of the viewport width at all sizes.
+     fetchpriority="high" + no loading="lazy" = LCP image.
+════════════════════════════════════════════════════════ -->
 <section class="hero" aria-label="Welcome">
   <div class="hero-img">
-    <img
-      src="images/hero-bg.webp"
-      alt="Bharatanatyam performer in Kalakshetra style on stage"
-      width="1400" height="933"
-      fetchpriority="high"
-      decoding="async"
-      style="width:100%;height:100%;object-fit:cover;display:block">
+    <picture>
+      <source
+        srcset="images/hero-bg-800w.webp 800w, images/hero-bg.webp 1400w"
+        sizes="100vw"
+        type="image/webp">
+      <img
+        src="images/hero-bg.webp"
+        alt="Bharatanatyam performer in Kalakshetra style on stage"
+        width="1400" height="933"
+        fetchpriority="high"
+        decoding="async"
+        style="width:100%;height:100%;object-fit:cover;display:block">
+    </picture>
   </div>
   <div class="hero-ov"></div>
   <div class="c hero-ct">
-    <span class="lbl" style="color:rgba(248,220,140,0.80)">Est. 2014 &middot; Kalakshetra Style</span>
+    <span class="lbl" style="color:rgba(248,220,140,0.90)">Est. 2014 &middot; Kalakshetra Style</span>
     <h1 class="dxl ht" style="margin-top:10px">Kalpavruksha<br><span style="font-size:0.72em">School of Fine Arts</span><br><em style="font-size:0.60em">Dance for everyone</em></h1>
     <p class="hs">Authentic classical training under Smt. Deepa Sadasivam.<br>In-person in Chennai &middot; Online worldwide.</p>
     <div class="hctas">
@@ -329,29 +289,43 @@
       <div class="hsd" aria-hidden="true"></div>
       <div class="hstat"><span class="hstat-n">200+</span><span class="hstat-l">Students Trained</span></div>
       <div class="hsd" aria-hidden="true"></div>
-      <div class="hstat"><span class="hstat-n">20+</span><span class="hstat-l">Salangai Poojas</span></div>
+      <div class="hstat"><span class="hstat-n">30+</span><span class="hstat-l">Salangai Poojas</span></div>
       <div class="hsd" aria-hidden="true"></div>
-      <div class="hstat"><span class="hstat-n">Global</span><span class="hstat-l">Online Reach</span></div>
+      <div class="hstat"><span class="hstat-n">4+</span><span class="hstat-l">Arangetrams</span></div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT — FIX 7: explicit width/height on all images -->
+<!-- ═══════════════════════════════════════════════════════
+     ABOUT
+     guru-portrait: displayed at ~300px wide on desktop
+     (half of ~1200px container minus 60px gap = ~570px,
+     but the image is in a 4/5 aspect ratio box that is
+     effectively ~300px wide after CSS constraints).
+     sizes: "(max-width:1000px) 100vw, 50vw" — full width
+     on mobile (stacked grid), half viewport on desktop.
+════════════════════════════════════════════════════════ -->
 <section class="sec sec-w" id="about">
   <div class="c"><div class="ag">
     <div style="position:relative">
       <div class="aimg">
-        <img
-          src="images/guru-portrait.webp"
-          alt="Smt. Deepa Sadasivam, founder of Kalpavruksha School of Fine Arts"
-          width="600" height="750"
-          loading="lazy"
-          decoding="async"
-          style="width:100%;height:100%;object-fit:cover;display:block">
+        <picture>
+          <source
+            srcset="images/guru-portrait-600w.webp 600w, images/guru-portrait.webp 1200w"
+            sizes="(max-width:1000px) 90vw, 45vw"
+            type="image/webp">
+          <img
+            src="images/guru-portrait.webp"
+            alt="Smt. Deepa Sadasivam, founder of Kalpavruksha School of Fine Arts"
+            width="600" height="750"
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;object-fit:cover;display:block">
+        </picture>
       </div>
       <div style="text-align:center;padding:10px 0 0">
-        <strong style="display:block;font-family:'Playfair Display',serif;font-size:1rem;color:#1C0A0F">Smt. Deepa Sadasivam</strong>
-        <span style="display:block;font-size:0.74rem;color:#7A6558;margin-top:3px">Founder &middot; Kalpavruksha School of Fine Arts</span>
+        <strong style="display:block;font-family:'Playfair Display',serif;font-size:1rem;color:#0E1B2E">Smt. Deepa Sadasivam</strong>
+        <span style="display:block;font-size:0.74rem;color:#5A6880;margin-top:3px">Founder &middot; Kalpavruksha School of Fine Arts</span>
       </div>
     </div>
     <div>
@@ -359,11 +333,12 @@
       <h2 class="dmd" style="margin-top:8px;margin-bottom:14px">A living lineage of classical Bharatanatyam</h2>
       <hr class="hr" style="margin-bottom:18px">
       <p class="blg">Founded in 2014 by <strong>Smt. Deepa Sadasivam</strong>, a Kalakshetra Foundation alumna. Like the mythical Kalpavruksha &mdash; the wish-fulfilling tree &mdash; this school nourishes every student&rsquo;s artistic aspirations.</p>
-      <p style="margin-top:12px;color:#7A6558;line-height:1.75">We follow the <em>Kalakshetra bani</em> &mdash; defined by devotional purity, sculptural precision, and adherence to the Natyashastra.</p>
+      <p style="margin-top:12px;color:#5A6880;line-height:1.75">We follow the <em>Kalakshetra bani</em> &mdash; defined by devotional purity, sculptural precision, and adherence to the Natyashastra.</p>
       <ul class="apil">
         <li><span class="apil-dot">&#10022;</span><div><strong>Authentic lineage</strong> &mdash; Direct transmission of Kalakshetra style</div></li>
         <li><span class="apil-dot">&#10022;</span><div><strong>All ages welcome</strong> &mdash; Children from age 4 &middot; Adults of any age</div></li>
         <li><span class="apil-dot">&#10022;</span><div><strong>Online worldwide</strong> &mdash; Live classes via Google Meet</div></li>
+        <li><span class="apil-dot">&#10022;</span><div><strong>30+ Salangai Poojas &middot; 4+ Arangetrams</strong> guided since 2014</div></li>
       </ul>
       <div class="bridge-note">
         <strong>Grade Exams</strong>
@@ -377,7 +352,14 @@
   </div></div>
 </section>
 
-<!-- COURSES OVERVIEW — FIX 7: explicit width/height on all images -->
+<!-- ═══════════════════════════════════════════════════════
+     COURSES OVERVIEW
+     4-column grid on desktop = each image ~25vw wide.
+     2-column on tablet = ~50vw. 1-column on mobile = 100vw.
+     sizes matches exactly so the browser fetches the right file.
+     srcset offers a 600w version (for mobile/tablet)
+     and the original for desktop.
+════════════════════════════════════════════════════════ -->
 <section class="sec sec-c" id="courses">
   <div class="c">
     <div class="sh">
@@ -386,30 +368,75 @@
       <p>From a child&rsquo;s first adavu to the grandeur of Arangetram. Click any course for full details.</p>
     </div>
     <div class="cog">
+
       <a href="courses.html#beginners" class="coc">
         <div class="coc-img">
-          <img src="images/beginner.webp" alt="Beginner student in Namaskaram pose" width="400" height="300" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block">
+          <picture>
+            <source
+              srcset="images/beginner-600w.webp 600w, images/beginner.webp 1200w"
+              sizes="(max-width:480px) 100vw, (max-width:1000px) 50vw, 25vw"
+              type="image/webp">
+            <img src="images/beginner.webp"
+              alt="Beginner student in Namaskaram pose"
+              width="600" height="450"
+              loading="lazy" decoding="async"
+              style="width:100%;height:100%;object-fit:cover;display:block">
+          </picture>
         </div>
         <div class="coc-body"><span class="coc-tag">Ages 4+</span><h3>Beginners</h3><p>Adavus, mudras, rhythm &amp; a love for dance. Joyful and structured.</p><span class="coc-arr">View details &rarr;</span></div>
       </a>
+
       <a href="courses.html#intermediate" class="coc">
         <div class="coc-img">
-          <img src="images/intermediate.webp" alt="Intermediate student in expressive pose" width="400" height="300" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block">
+          <picture>
+            <source
+              srcset="images/intermediate-600w.webp 600w, images/intermediate.webp 1200w"
+              sizes="(max-width:480px) 100vw, (max-width:1000px) 50vw, 25vw"
+              type="image/webp">
+            <img src="images/intermediate.webp"
+              alt="Intermediate student in expressive pose"
+              width="600" height="450"
+              loading="lazy" decoding="async"
+              style="width:100%;height:100%;object-fit:cover;display:block">
+          </picture>
         </div>
         <div class="coc-body"><span class="coc-tag">Intermediate</span><h3>Intermediate</h3><p>Varnam, Padams, Javalis, Thillana. Deep abhinaya training.</p><span class="coc-arr">View details &rarr;</span></div>
       </a>
+
       <a href="courses.html#salangai" class="coc">
         <div class="coc-img">
-          <img src="images/rev-salangai-pooja.webp" alt="Salangai Pooja ceremony" width="400" height="300" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block">
+          <picture>
+            <source
+              srcset="images/salangai-600w.webp 600w, images/rev-salangai-pooja.webp 1200w"
+              sizes="(max-width:480px) 100vw, (max-width:1000px) 50vw, 25vw"
+              type="image/webp">
+            <img src="images/rev-salangai-pooja.webp"
+              alt="Salangai Pooja ceremony"
+              width="600" height="450"
+              loading="lazy" decoding="async"
+              style="width:100%;height:100%;object-fit:cover;display:block">
+          </picture>
         </div>
         <div class="coc-body"><span class="coc-tag">Milestone</span><h3>Salangai Pooja</h3><p>Sacred first-stage milestone &mdash; ankle bells tied for the first time.</p><span class="coc-arr">View details &rarr;</span></div>
       </a>
+
       <a href="courses.html#arangetram" class="coc">
         <div class="coc-img">
-          <img src="images/arangetram.webp" alt="Arangetram solo performance" width="400" height="300" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block">
+          <picture>
+            <source
+              srcset="images/arangetram-600w.webp 600w, images/arangetram.webp 1400w"
+              sizes="(max-width:480px) 100vw, (max-width:1000px) 50vw, 25vw"
+              type="image/webp">
+            <img src="images/arangetram.webp"
+              alt="Arangetram solo performance"
+              width="600" height="450"
+              loading="lazy" decoding="async"
+              style="width:100%;height:100%;object-fit:cover;display:block">
+          </picture>
         </div>
         <div class="coc-body"><span class="coc-tag">Solo debut</span><h3>Arangetram</h3><p>Classical solo debut. Full margam, 2.5&ndash;3 hour performance.</p><span class="coc-arr">View details &rarr;</span></div>
       </a>
+
     </div>
     <div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="courses.html#adults" class="btn bo">Adult Beginners &rarr;</a>
@@ -437,7 +464,7 @@
 <!-- CTA BAND -->
 <section class="ctab"><div class="c"><div class="ctai">
   <div>
-    <span class="lbl" style="color:rgba(248,220,140,0.80)">New batch forming</span>
+    <span class="lbl" style="color:rgba(248,220,140,0.90)">New batch forming</span>
     <h2 class="dmd" style="margin-top:8px;color:#fff">Begin your Bharatanatyam journey today</h2>
     <p style="color:rgba(255,255,255,0.62);margin-top:8px">Free trial class &middot; No commitment &middot; All ages welcome</p>
   </div>
@@ -490,32 +517,14 @@
   <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35)">Privacy</a></p>
 </div></div></footer>
 
-<div style="background:#111;padding:20px 0;margin-top:0">
-  <div class="c">
-    <p style="font-size:0.72rem;color:rgba(255,255,255,0.30);text-align:center;line-height:1.8;max-width:800px;margin:0 auto">
-      &copy; 2026 Kalpavruksha School of Fine Arts. All rights reserved. &nbsp;|&nbsp;
-      All content on this website &mdash; including text, images, course descriptions, curriculum structure, and teaching methodology &mdash; is the intellectual property of Kalpavruksha School of Fine Arts and may not be reproduced, copied, or distributed without written permission.
-      &nbsp;|&nbsp; Unauthorised use of our name, logo, or branding is prohibited.
-      &nbsp;|&nbsp; Student photographs are published with consent and may not be used elsewhere.
-      &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.40)">Privacy Policy</a>
-    </p>
-  </div>
+<div style="background:#060F1A;padding:20px 0;margin-top:0">
+  <div class="c"><p style="font-size:0.72rem;color:rgba(255,255,255,0.30);text-align:center;line-height:1.8;max-width:800px;margin:0 auto">&copy; 2026 Kalpavruksha School of Fine Arts. All rights reserved. &nbsp;|&nbsp; All content on this website &mdash; including text, images, course descriptions, curriculum structure, and teaching methodology &mdash; is the intellectual property of Kalpavruksha School of Fine Arts and may not be reproduced without written permission. &nbsp;|&nbsp; Student photographs are published with consent. &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.40)">Privacy Policy</a></p></div>
 </div>
 
 <!-- WhatsApp float -->
 <a class="wa" href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>Chat with us</span></a>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SCRIPTS — FIX 1 & 2
-     ───────────────────────────────────────────────────────────────
-     GA4 is placed at the END of <body> with defer so it does not
-     block the initial render. This removes the "Reduce unused
-     JavaScript" PageSpeed warning (saves 64.6 KB blocking time).
-
-     The gtag() inline config is included here ONCE alongside the
-     loader — eliminating the duplication that existed in the
-     original file where gtag was defined in two separate places.
-     ═══════════════════════════════════════════════════════════════ -->
+<!-- GA4 — deferred, end of body, single definition -->
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-Z66NRXP98K"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -524,65 +533,26 @@ gtag('js', new Date());
 gtag('config', 'G-Z66NRXP98K', {send_page_view: true});
 </script>
 
-<!-- Page JS — nav toggle and FAQ accordion -->
+<!-- Page JS -->
 <script>
 (function(){
-  // Mobile nav toggle
-  var t = document.querySelector('.ntog');
-  var m = document.querySelector('.nm');
+  var t = document.querySelector('.ntog'), m = document.querySelector('.nm');
   if(t && m){
-    t.addEventListener('click', function(){
-      var o = m.classList.toggle('open');
-      t.setAttribute('aria-expanded', o);
-    });
-    m.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click', function(){
-        m.classList.remove('open');
-        t.setAttribute('aria-expanded', 'false');
-      });
-    });
+    t.addEventListener('click', function(){ var o = m.classList.toggle('open'); t.setAttribute('aria-expanded', o); });
+    m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ m.classList.remove('open'); t.setAttribute('aria-expanded','false'); }); });
   }
-
-  // FAQ accordion — FIX 8: batch DOM reads before writes to avoid forced reflow
   document.querySelectorAll('.faq-q').forEach(function(b){
     b.addEventListener('click', function(){
-      var it  = b.closest('.faq-item');
-      var ans = it.querySelector('.faq-a');
-      var op  = it.classList.contains('open');
-
-      // Read all heights first (no interleaved write), then write
+      var it = b.closest('.faq-item'), op = it.classList.contains('open');
       var heights = [];
-      document.querySelectorAll('.faq-item.open').forEach(function(i){
-        heights.push({ el: i, a: i.querySelector('.faq-a') });
-      });
-      heights.forEach(function(h){
-        h.el.classList.remove('open');
-        if(h.a) h.a.style.maxHeight = null;
-      });
-
-      if(!op){
-        it.classList.add('open');
-        // Read scrollHeight once, write once — no forced reflow
-        if(ans){
-          var h = ans.scrollHeight;
-          ans.style.maxHeight = h + 'px';
-        }
-      }
+      document.querySelectorAll('.faq-item.open').forEach(function(i){ heights.push({el:i, a:i.querySelector('.faq-a')}); });
+      heights.forEach(function(h){ h.el.classList.remove('open'); if(h.a) h.a.style.maxHeight = null; });
+      if(!op){ it.classList.add('open'); var ans = it.querySelector('.faq-a'); if(ans){ var h = ans.scrollHeight; ans.style.maxHeight = h + 'px'; } }
     });
   });
-
-  // Section nav active state
   var sl = document.querySelectorAll('.psn a[href^="#"]');
   if(sl.length){
-    var ob = new IntersectionObserver(function(en){
-      en.forEach(function(e){
-        if(e.isIntersecting){
-          sl.forEach(function(a){ a.classList.remove('on'); });
-          var l = document.querySelector('.psn a[href="#'+e.target.id+'"]');
-          if(l) l.classList.add('on');
-        }
-      });
-    }, { rootMargin: '-68px 0px -50% 0px', threshold: 0 });
+    var ob = new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ sl.forEach(function(a){ a.classList.remove('on'); }); var l = document.querySelector('.psn a[href="#'+e.target.id+'"]'); if(l) l.classList.add('on'); } }); }, {rootMargin:'-68px 0px -50% 0px',threshold:0});
     document.querySelectorAll('[id]').forEach(function(el){ ob.observe(el); });
   }
 })();
