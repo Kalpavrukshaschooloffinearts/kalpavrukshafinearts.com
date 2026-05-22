@@ -111,7 +111,7 @@
 .bridge-note p{font-size:0.82rem;color:#4A2B33;line-height:1.6;}
 .bridge-note a{color:var(--saffron);}
 /* COURSES */
-.cog{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;}
+.cog{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;}
 .coc{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;border-right:1px solid var(--bdr);transition:background 0.2s;}
 .coc:last-child{border-right:none;}
 .coc:hover{background:#F5F5DC;}
@@ -134,7 +134,7 @@
 .ctai{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;padding:60px 0;}
 .ctab-btns{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0;}
 /* RESPONSIVE */
-@media(max-width:1000px){.ag{grid-template-columns:1fr;gap:40px;}.cog{grid-template-columns:1fr 1fr;}.coc:nth-child(2){border-right:none;}.coc:nth-child(odd){border-right:1px solid var(--bdr);}}
+@media(max-width:1000px){.ag{grid-template-columns:1fr;gap:40px;}.cog{grid-template-columns:1fr 1fr;}.coc:nth-child(2n){border-right:none;}.coc:nth-child(odd){border-right:1px solid var(--bdr);}}
 @media(max-width:700px){.stg{grid-template-columns:1fr;gap:12px;}.ctai{flex-direction:column;text-align:center;}.ctab-btns{justify-content:center;}.hsd{display:none;}.hstat{padding:0 14px 0 0;}}
 @media(max-width:480px){.cog{grid-template-columns:1fr;}.coc{border-right:none!important;border-bottom:1px solid #E8DDD4;}.coc:last-child{border-bottom:none;}}
   </style>
@@ -234,7 +234,7 @@
     <button class="ntog" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="nm">
       <li><a href="index.html" class="on" aria-current="page">Home <span class="narr">&#9662;</span></a><div class="ndd"><a href="index.html#about">About Us</a><a href="index.html#courses">Course Overview</a><a href="index.html#how-to-join">How to Join</a></div></li>
-      <li><a href="courses.html">Courses <span class="narr">&#9662;</span></a><div class="ndd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li>
+      <li><a href="courses.html">Courses <span class="narr">&#9662;</span></a><div class="ndd"><a href="courses.html#dance-path">Dance Path</a><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#Advanced">Advanced</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a><a href="courses.html#timings">Timings</a></div></li>
       <li><a href="guru.html">Our Guru <span class="narr">&#9662;</span></a><div class="ndd"><a href="guru.html#bio">Biography</a><a href="guru.html#philosophy">Philosophy</a><a href="guru.html#lineage">Lineage</a><a href="guru.html#performances">Performances</a></div></li>
       <li><a href="online-classes.html">Online Classes <span class="narr">&#9662;</span></a><div class="ndd"><a href="online-classes.html#how-it-works">How It Works</a><a href="online-classes.html#requirements">Requirements</a><a href="online-classes.html#faq">FAQ</a><a href="online-classes.html#testimonials">Student Stories</a></div></li>
       <li><a href="events.html">Events &amp; Gallery <span class="narr">&#9662;</span></a><div class="ndd"><a href="events.html#upcoming">Upcoming Events</a><a href="events.html#highlights">Highlights</a><a href="events.html#gallery">Gallery</a></div></li>
@@ -398,7 +398,22 @@
         </div>
         <div class="coc-body"><span class="coc-tag">Intermediate</span><h3>Intermediate</h3><p>Varnam, Padams, Javalis, Thillana. Deep abhinaya training.</p><span class="coc-arr">View details &rarr;</span></div>
       </a>
-
+<a href="courses.html#Advanced" class="coc">
+        <div class="coc-img">
+          <picture>
+            <source
+              srcset="images/adv-student-600w.webp 600w, images/adv-student.webp 1200w"
+              sizes="(max-width:480px) 100vw, (max-width:1000px) 50vw, 20vw"
+              type="image/webp">
+            <img src="images/adv-student.webp"
+              alt="Advanced Bharatanatyam student in performance pose"
+              width="600" height="450"
+              loading="lazy" decoding="async"
+              style="width:100%;height:100%;object-fit:cover;display:block">
+          </picture>
+        </div>
+        <div class="coc-body"><span class="coc-tag">5–10 yrs exp</span><h3>Advanced</h3><p>Full margam, Varnam, Padams, Thillana &amp; concert-level training.</p><span class="coc-arr">View details &rarr;</span></div>
+      </a>
       <a href="courses.html#salangai" class="coc">
         <div class="coc-img">
           <picture>
@@ -489,6 +504,7 @@
   <div class="fcol"><h4>Courses</h4><ul>
     <li><a href="courses.html#beginners">Beginners (Age 4+)</a></li>
     <li><a href="courses.html#intermediate">Intermediate</a></li>
+    <li><a href="courses.html#Advanced">Advanced</a></li>
     <li><a href="courses.html#salangai">Salangai Pooja</a></li>
     <li><a href="courses.html#arangetram">Arangetram</a></li>
     <li><a href="courses.html#adults">Adult Beginners</a></li>
