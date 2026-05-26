@@ -68,6 +68,10 @@ button{cursor:pointer;font-family:inherit;}
 .ph{background:linear-gradient(135deg,#1C0A0F 0%,#3D0F1C 60%,#7B1D2E 100%);padding:44px 0 52px;}
 .ph h1{color:#fff;}.ph p{color:rgba(255,255,255,0.68);margin-top:10px;font-size:1rem;}
 
+/* HOME HERO — ensures dancer stays visible on right across all viewports */
+.hero-img img{object-position:right center;}
+@media(max-width:700px){.hero-img img{object-position:75% center;}}
+
 /* SECTION NAV */
 .psn{background:#fff;border-bottom:1px solid var(--bdr);position:sticky;top:68px;z-index:100;}
 .psn .c{padding:0 24px;}
