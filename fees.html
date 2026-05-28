@@ -262,7 +262,7 @@
             <div class="fg-field">
               <label for="ex-roll">Roll Number *</label>
               <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ex-roll-wrap">
-                <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL</span>
+                <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
                 <input type="text" id="ex-roll" placeholder="10101" autocomplete="off" inputmode="numeric"
                   oninput="resetExistingLookup()"
                   onkeydown="if(event.key==='Enter'){event.preventDefault();lookupStudent();}"
@@ -380,7 +380,7 @@
               <div class="fg-field">
                 <label for="ws-roll">Roll Number *</label>
                 <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ws-roll-wrap">
-                  <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL</span>
+                  <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
                   <input type="text" id="ws-roll" placeholder="10101" autocomplete="off" inputmode="numeric"
                     oninput="resetWsLookup()"
                     onkeydown="if(event.key==='Enter'){event.preventDefault();lookupWsStudent();}"
@@ -717,7 +717,7 @@ function lookupStudent() {
     return;
   }
 
-  var roll = 'KAL' + rawRoll.toUpperCase();
+  var roll = 'KAL01' + rawRoll.toUpperCase();
   btn.disabled = true;
   btn.textContent = 'Finding…';
   msg.textContent = '';
@@ -834,11 +834,11 @@ function lookupByDetails() {
     results.style.display = 'block';
 
     matches.forEach(function(s) {
-      var rollNum = (s['Roll No'] || '').replace(/^KAL/i, '');
+      var rollNum = (s['Roll No'] || '').replace(/^KAL01/i, '');
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.style.cssText = 'display:block;width:100%;text-align:left;padding:10px 14px;margin-bottom:8px;background:#fff;border:1px solid var(--bdr-s);border-radius:3px;cursor:pointer;font-family:var(--fb);font-size:0.86rem;color:var(--ink);transition:background 0.15s;';
-      btn.innerHTML = '<strong>' + s['Student Name'] + '</strong> &nbsp;<span style="color:var(--ink-soft);font-size:0.78rem;">KAL' + rollNum + '</span>';
+      btn.innerHTML = '<strong>' + s['Student Name'] + '</strong> &nbsp;<span style="color:var(--ink-soft);font-size:0.78rem;">KAL01' + rollNum + '</span>';
       btn.onmouseover = function(){ this.style.background = 'var(--maroon-l)'; };
       btn.onmouseout  = function(){ this.style.background = '#fff'; };
       btn.onclick = function() { confirmFallbackStudent(s); };
@@ -854,7 +854,7 @@ function lookupByDetails() {
 }
 
 function confirmFallbackStudent(student) {
-  var rollNum = (student['Roll No'] || '').replace(/^KAL/i, '');
+  var rollNum = (student['Roll No'] || '').replace(/^KAL01/i, '');
   document.getElementById('ex-roll').value = rollNum;
   document.getElementById('fb-msg').textContent = 'Found! Confirming…';
   document.getElementById('fb-msg').className = 'hint ok';
@@ -942,7 +942,7 @@ function resetWsLookup() {
 }
 
 function lookupWsStudent() {
-  var roll = 'KAL' + document.getElementById('ws-roll').value.trim().toUpperCase();
+  var roll = 'KAL01' + document.getElementById('ws-roll').value.trim().toUpperCase();
   var msg  = document.getElementById('ws-roll-msg');
   if (!roll) { msg.textContent = 'Please enter your Roll No.'; msg.className = 'hint err'; return; }
 
