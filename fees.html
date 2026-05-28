@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<!-- fees.html v1.0 — Kalpavruksha School of Fine Arts Fee Payment Portal -->
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Payment | Kalpavruksha School of Fine Arts</title>
+  <meta name="description" content="Pay your Bharatanatyam class fees or workshop registration fees online. Secure payment via Razorpay.">
+  <link rel="canonical" href="https://kalpavrukshafinearts.com/fees.html">
+  <meta name="robots" content="noindex">
+
+  <!-- CRITICAL INLINE — prevent FOUC -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{font-size:16px;scroll-behavior:smooth;}
+  </style>
+
+  <!-- Shared stylesheet -->
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+
+  <!-- Google Fonts — non-blocking -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+
+  <!-- PAGE-SPECIFIC STYLES -->
+  <style>
+/* ── FEE PAGE ── */
+
+/* Notice banner */
+.fee-notice{background:#fdf5d8;border-bottom:2px solid #B8962E;padding:10px 0;text-align:center;}
+.fee-notice p{font-size:0.80rem;color:#4A2B33;line-height:1.6;}
+.fee-notice strong{color:#7B1D2E;}
+
+/* Layout */
+.fee-wrap{max-width:680px;margin:0 auto;}
+
+/* Tabs */
+.ftabs{display:flex;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;margin-bottom:32px;}
+.ftab{flex:1;padding:13px 10px;background:#fff;border:none;font-family:var(--fb);font-size:0.78rem;font-weight:500;letter-spacing:0.04em;color:var(--ink-soft);cursor:pointer;transition:all 0.2s;text-align:center;border-right:1px solid var(--bdr);}
+.ftab:last-child{border-right:none;}
+.ftab.active{background:var(--maroon);color:#fff;}
+.ftab:hover:not(.active){background:var(--maroon-l);color:var(--maroon);}
+.ftab-icon{display:block;font-size:1.1rem;margin-bottom:3px;}
+
+/* Panels */
+.fpanel{display:none;}
+.fpanel.active{display:block;}
+
+/* Form card */
+.fee-card{background:#fff;border:1px solid var(--bdr);border-radius:4px;padding:28px 32px;}
+@media(max-width:540px){.fee-card{padding:20px 18px;}}
+
+/* Field groups */
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:500px){.fg-row{grid-template-columns:1fr;}}
+.fg-field{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.fg-field label{font-size:0.74rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);}
+.fg-field input,.fg-field select{width:100%;padding:10px 13px;border:1px solid var(--bdr-s);border-radius:3px;font-family:var(--fb);font-size:0.9rem;color:var(--ink);background:#fff;transition:border-color 0.2s;}
+.fg-field input:focus,.fg-field select:focus{outline:none;border-color:var(--maroon);}
+.fg-field input[readonly],.fg-field select[disabled]{background:var(--cream);color:var(--ink-soft);cursor:default;}
+.fg-field .hint{font-size:0.73rem;color:var(--ink-soft);margin-top:3px;}
+.fg-field .hint.err{color:#C0392B;}
+.fg-field .hint.ok{color:#2E7D32;}
+
+/* Amount display */
+.amount-box{background:var(--cream);border:1px solid var(--bdr);border-radius:3px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.amount-box .ab-label{font-size:0.74rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);}
+.amount-box .ab-value{font-family:var(--fd);font-size:1.5rem;color:var(--maroon);font-weight:600;}
+.amount-box.hidden{display:none;}
+
+/* Lookup row */
+.lookup-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:16px;}
+.lookup-row .fg-field{flex:1;margin-bottom:0;}
+.lookup-btn{padding:10px 16px;background:var(--maroon);color:#fff;border:none;border-radius:3px;font-family:var(--fb);font-size:0.80rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:background 0.2s;flex-shrink:0;}
+.lookup-btn:hover{background:var(--maroon-d);}
+.lookup-btn:disabled{background:var(--bdr-s);cursor:default;}
+
+/* Confirmed name chip */
+.name-chip{display:none;align-items:center;gap:8px;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:3px;padding:9px 13px;margin-bottom:16px;font-size:0.86rem;color:#1B5E20;}
+.name-chip.show{display:flex;}
+.name-chip .nc-icon{font-size:1.0rem;}
+
+/* Pay button */
+.pay-btn{width:100%;padding:14px;background:var(--saffron);color:#fff;border:none;border-radius:3px;font-family:var(--fd);font-size:1.05rem;font-weight:500;cursor:pointer;transition:background 0.2s;letter-spacing:0.02em;}
+.pay-btn:hover{background:#a85016;}
+.pay-btn:disabled{background:var(--bdr-s);cursor:default;}
+
+/* Refund note */
+.refund-note{margin-top:14px;font-size:0.76rem;color:var(--ink-soft);text-align:center;line-height:1.6;}
+.refund-note strong{color:var(--maroon);}
+
+/* Workshop fee reveal */
+.ws-fee-reveal{background:var(--saffron-l);border:1px solid var(--bdr);border-radius:3px;padding:12px 16px;margin-bottom:16px;display:none;}
+.ws-fee-reveal.show{display:block;}
+.ws-fee-reveal .wfr-name{font-size:0.78rem;font-weight:500;color:var(--ink-soft);}
+.ws-fee-reveal .wfr-amount{font-family:var(--fd);font-size:1.3rem;color:var(--maroon);margin-top:2px;}
+.ws-fee-reveal .wfr-desc{font-size:0.76rem;color:var(--ink-soft);margin-top:4px;}
+
+/* Section divider */
+.form-divider{height:1px;background:var(--bdr);margin:20px 0;}
+
+/* Loading spinner */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-left:8px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Success overlay */
+.success-screen{display:none;text-align:center;padding:40px 20px;}
+.success-screen.show{display:block;}
+.success-icon{font-size:3rem;margin-bottom:16px;}
+.success-screen h2{font-family:var(--fd);font-size:1.5rem;color:var(--maroon);margin-bottom:10px;}
+.success-screen p{font-size:0.88rem;color:var(--ink-soft);line-height:1.7;}
+.success-screen .back-link{display:inline-block;margin-top:20px;font-size:0.80rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--saffron);text-decoration:none;}
+  </style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- NAV — exact match to site -->
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="ni">
+    <div class="nl">
+      <a href="index.html" class="logo" aria-label="Kalpavruksha home">
+        <img src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo"
+          width="40" height="40"
+          style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
+        <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
+      </a>
+    </div>
+    <button class="ntog" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nm">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="courses.html">Courses <span class="narr">&#9662;</span></a><div class="ndd"><a href="courses.html#beginners">Beginners (Age 4+)</a><a href="courses.html#intermediate">Intermediate</a><a href="courses.html#Advanced">Advanced</a><a href="courses.html#salangai">Salangai Pooja</a><a href="courses.html#arangetram">Arangetram</a><a href="courses.html#adults">Adult Beginners</a></div></li>
+      <li><a href="guru.html">Our Guru</a></li>
+      <li><a href="online-classes.html">Online Classes</a></li>
+      <li><a href="events.html">Events &amp; Gallery</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html" class="ncta">Book Trial Class</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- DOMESTIC NOTICE BANNER -->
+<div class="fee-notice">
+  <div class="c">
+    <p>This portal is for <strong>domestic students only.</strong> International students please <a href="mailto:info@kalpavrukshafinearts.com" style="color:var(--saffron)">contact us directly.</a></p>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="ph">
+  <div class="c">
+    <nav class="bc" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="bc-sep" aria-hidden="true">›</span>
+      <span>Fee Payment</span>
+    </nav>
+    <span class="lbl" style="color:rgba(248,220,140,0.80)">Secure Online Payment</span>
+    <h1 class="dlg" style="color:#fff;margin-top:8px">Fee Payment Portal</h1>
+    <p>Pay your monthly tuition or workshop registration fee securely.</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="sec sec-c">
+  <div class="c">
+    <div class="fee-wrap">
+
+      <!-- TAB SELECTOR -->
+      <div class="ftabs" role="tablist" aria-label="Payment type">
+        <button class="ftab active" role="tab" aria-selected="true"  aria-controls="panel-new"      id="tab-new"      onclick="switchTab('new')">
+          <span class="ftab-icon">🌱</span>New Student
+        </button>
+        <button class="ftab"        role="tab" aria-selected="false" aria-controls="panel-existing" id="tab-existing" onclick="switchTab('existing')">
+          <span class="ftab-icon">🎓</span>Existing Student
+        </button>
+        <button class="ftab"        role="tab" aria-selected="false" aria-controls="panel-workshop" id="tab-workshop" onclick="switchTab('workshop')">
+          <span class="ftab-icon">✨</span>Workshop
+        </button>
+      </div>
+
+      <!-- ═══════════════════════════
+           PANEL 1 — NEW STUDENT
+      ═══════════════════════════ -->
+      <div class="fpanel active fee-card" id="panel-new" role="tabpanel" aria-labelledby="tab-new">
+        <div id="new-form-wrap">
+          <span class="lbl">New Student Registration Fee</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">First Payment</h2>
+
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="new-name">Student Name *</label>
+              <input type="text" id="new-name" placeholder="Full name" autocomplete="off" required>
+            </div>
+            <div class="fg-field">
+              <label for="new-parent">Parent / Guardian Name *</label>
+              <input type="text" id="new-parent" placeholder="Full name" autocomplete="off" required>
+            </div>
+          </div>
+
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="new-phone">Mobile Number *</label>
+              <input type="tel" id="new-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
+            </div>
+            <div class="fg-field">
+              <label for="new-email">Email Address *</label>
+              <input type="email" id="new-email" placeholder="you@email.com" required>
+            </div>
+          </div>
+
+          <div class="fg-field">
+            <label for="new-amount">Fee Amount (₹) *</label>
+            <input type="number" id="new-amount" placeholder="Enter amount" inputmode="numeric" required>
+            <span class="hint" id="new-amount-hint">Enter the fee amount communicated by the school</span>
+          </div>
+
+          <div class="form-divider"></div>
+          <button class="pay-btn" id="new-pay-btn" onclick="initiatePayment('new')">Pay Registration Fee</button>
+          <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+        </div>
+        <div class="success-screen" id="new-success">
+          <div class="success-icon">🙏</div>
+          <h2>Payment Received</h2>
+          <p>Thank you for registering with Kalpavruksha School of Fine Arts.<br>We will be in touch shortly to confirm your batch details.</p>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════
+           PANEL 2 — EXISTING STUDENT
+      ═══════════════════════════ -->
+      <div class="fpanel fee-card" id="panel-existing" role="tabpanel" aria-labelledby="tab-existing">
+        <div id="existing-form-wrap">
+          <span class="lbl">Monthly Tuition Fee</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Existing Student</h2>
+
+          <!-- Roll no lookup -->
+          <div class="lookup-row">
+            <div class="fg-field">
+              <label for="ex-roll">Roll Number *</label>
+              <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ex-roll-wrap">
+                <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL</span>
+                <input type="text" id="ex-roll" placeholder="10101" autocomplete="off" inputmode="numeric"
+                  oninput="resetExistingLookup()"
+                  onfocus="document.getElementById('ex-roll-wrap').style.borderColor='var(--maroon)'"
+                  onblur="document.getElementById('ex-roll-wrap').style.borderColor='var(--bdr-s)'"
+                  required style="border:none;outline:none;flex:1;min-width:0;padding:10px 13px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);background:transparent;">
+              </div>
+            </div>
+            <button class="lookup-btn" id="ex-lookup-btn" onclick="lookupStudent()">Find</button>
+          </div>
+          <div id="ex-roll-hint" class="fg-field" style="margin-top:-10px;margin-bottom:10px;">
+            <span class="hint" id="ex-roll-msg"></span>
+          </div>
+
+          <!-- Confirmed name chip -->
+          <div class="name-chip" id="ex-name-chip">
+            <span class="nc-icon">✔</span>
+            <span id="ex-name-display"></span>
+          </div>
+
+          <!-- Rest of form — shown after successful lookup -->
+          <div id="ex-rest" style="display:none;">
+            <div class="fg-row">
+              <div class="fg-field">
+                <label for="ex-parent">Parent / Guardian Name *</label>
+                <input type="text" id="ex-parent" placeholder="Full name" autocomplete="off" required>
+              </div>
+              <div class="fg-field">
+                <label for="ex-phone">Mobile Number *</label>
+                <input type="tel" id="ex-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
+              </div>
+            </div>
+
+            <div class="fg-field">
+              <label for="ex-email">Email Address *</label>
+              <input type="email" id="ex-email" placeholder="you@email.com" required>
+            </div>
+
+            <div class="fg-field">
+              <label for="ex-month">Fee Month *</label>
+              <select id="ex-month" required>
+                <option value="">— Select month —</option>
+                <!-- Populated from CONFIG_FEE_MONTHS in JS -->
+              </select>
+            </div>
+
+            <!-- Amount shown silently after month selected — no display to user -->
+            <input type="hidden" id="ex-amount">
+
+            <div class="form-divider"></div>
+            <button class="pay-btn" id="ex-pay-btn" onclick="initiatePayment('existing')">Pay Monthly Fee</button>
+            <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+          </div>
+        </div>
+        <div class="success-screen" id="existing-success">
+          <div class="success-icon">🙏</div>
+          <h2>Payment Received</h2>
+          <p>Your fee for <span id="existing-success-month"></span> has been recorded.<br>Thank you!</p>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════
+           PANEL 3 — WORKSHOP
+      ═══════════════════════════ -->
+      <div class="fpanel fee-card" id="panel-workshop" role="tabpanel" aria-labelledby="tab-workshop">
+        <div id="ws-form-wrap">
+          <span class="lbl">Workshop Registration</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Workshop Fee</h2>
+
+          <!-- Workshop selector -->
+          <div class="fg-field">
+            <label for="ws-select">Select Workshop *</label>
+            <select id="ws-select" onchange="onWorkshopChange()" required>
+              <option value="">— Select a workshop —</option>
+              <!-- Populated from WORKSHOPS in JS -->
+            </select>
+          </div>
+
+          <!-- Fee reveal (for outside students and guidance) -->
+          <div class="ws-fee-reveal" id="ws-fee-reveal">
+            <div class="wfr-name" id="wfr-name"></div>
+            <div class="wfr-amount" id="wfr-amount"></div>
+            <div class="wfr-desc" id="wfr-desc"></div>
+          </div>
+
+          <!-- Student type toggle -->
+          <div class="fg-field" id="ws-type-wrap" style="display:none;">
+            <label>Are you a Kalpavruksha student?</label>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.88rem;cursor:pointer;">
+                <input type="radio" name="ws-type" value="kv" onchange="onWsTypeChange()"> Yes — I have a Roll No
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.88rem;cursor:pointer;">
+                <input type="radio" name="ws-type" value="outside" onchange="onWsTypeChange()"> No — Outside Student
+              </label>
+            </div>
+          </div>
+
+          <!-- KV student sub-form -->
+          <div id="ws-kv-wrap" style="display:none;">
+            <div class="lookup-row">
+              <div class="fg-field">
+                <label for="ws-roll">Roll Number *</label>
+                <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ws-roll-wrap">
+                  <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL</span>
+                  <input type="text" id="ws-roll" placeholder="10101" autocomplete="off" inputmode="numeric"
+                    oninput="resetWsLookup()"
+                    onfocus="document.getElementById('ws-roll-wrap').style.borderColor='var(--maroon)'"
+                    onblur="document.getElementById('ws-roll-wrap').style.borderColor='var(--bdr-s)'"
+                    required style="border:none;outline:none;flex:1;min-width:0;padding:10px 13px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);background:transparent;">
+                </div>
+              </div>
+              <button class="lookup-btn" id="ws-lookup-btn" onclick="lookupWsStudent()">Check</button>
+            </div>
+            <div id="ws-roll-hint-wrap" style="margin-top:-10px;margin-bottom:10px;">
+              <span class="hint" id="ws-roll-msg"></span>
+            </div>
+            <div class="name-chip" id="ws-name-chip">
+              <span class="nc-icon">✔</span>
+              <span id="ws-name-display"></span>
+            </div>
+
+            <div id="ws-kv-rest" style="display:none;">
+              <div class="fg-field">
+                <label for="ws-kv-parent">Parent / Guardian Name *</label>
+                <input type="text" id="ws-kv-parent" placeholder="Full name" autocomplete="off" required>
+              </div>
+              <div class="fg-row">
+                <div class="fg-field">
+                  <label for="ws-kv-phone">Mobile Number *</label>
+                  <input type="tel" id="ws-kv-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
+                </div>
+                <div class="fg-field">
+                  <label for="ws-kv-email">Email Address *</label>
+                  <input type="email" id="ws-kv-email" placeholder="you@email.com" required>
+                </div>
+              </div>
+              <input type="hidden" id="ws-kv-amount">
+              <div class="form-divider"></div>
+              <button class="pay-btn" id="ws-kv-pay-btn" onclick="initiatePayment('ws-kv')">Pay Workshop Fee</button>
+              <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+            </div>
+          </div>
+
+          <!-- Outside student sub-form -->
+          <div id="ws-out-wrap" style="display:none;">
+            <div class="fg-row">
+              <div class="fg-field">
+                <label for="ws-out-name">Your Name *</label>
+                <input type="text" id="ws-out-name" placeholder="Full name" autocomplete="off" required>
+              </div>
+              <div class="fg-field">
+                <label for="ws-out-phone">Mobile Number *</label>
+                <input type="tel" id="ws-out-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
+              </div>
+            </div>
+            <div class="fg-field">
+              <label for="ws-out-email">Email Address *</label>
+              <input type="email" id="ws-out-email" placeholder="you@email.com" required>
+            </div>
+            <input type="hidden" id="ws-out-amount">
+            <div class="form-divider"></div>
+            <button class="pay-btn" id="ws-out-pay-btn" onclick="initiatePayment('ws-out')">Pay Workshop Fee</button>
+            <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+          </div>
+
+        </div>
+        <div class="success-screen" id="workshop-success">
+          <div class="success-icon">🙏</div>
+          <h2>Registration Confirmed</h2>
+          <p>Your workshop registration fee has been received.<br>We look forward to seeing you at the workshop!</p>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+      </div>
+      <!-- end panels -->
+
+    </div><!-- end fee-wrap -->
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER — exact match -->
+<footer class="ft"><div class="c"><div class="fg">
+  <div class="fb-brand">
+    <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <img src="images/logo.webp" alt="Kalpavruksha logo" width="40" height="40" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
+      <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
+    </a>
+    <p>Authentic Bharatanatyam in the Kalakshetra style. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <a href="https://www.facebook.com/kalpavrukshaschooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      <a href="https://www.youtube.com/channel/UCljUDGBZsBAb4ENWV3Zk0Pw" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on YouTube"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="https://www.instagram.com/kalpavruksha_schooloffinearts/" target="_blank" rel="noopener" class="fsoc" aria-label="Kalpavruksha on Instagram"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+    </div>
+  </div>
+  <div class="fcol"><h4>Courses</h4><ul>
+    <li><a href="courses.html#beginners">Beginners (Age 4+)</a></li>
+    <li><a href="courses.html#intermediate">Intermediate</a></li>
+    <li><a href="courses.html#Advanced">Advanced</a></li>
+    <li><a href="courses.html#salangai">Salangai Pooja</a></li>
+    <li><a href="courses.html#arangetram">Arangetram</a></li>
+    <li><a href="courses.html#adults">Adult Beginners</a></li>
+    <li><a href="online-classes.html">Online Classes</a></li>
+  </ul></div>
+  <div class="fcol"><h4>School</h4><ul>
+    <li><a href="guru.html">Our Guru</a></li>
+    <li><a href="events.html">Events &amp; Gallery</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+  </ul></div>
+  <div class="fcol"><h4>Contact</h4><ul>
+    <li><a href="tel:+917200095585">+91 72000 95585</a></li>
+    <li><a href="mailto:info@kalpavrukshafinearts.com">info@kalpavrukshafinearts.com</a></li>
+    <li><a href="https://maps.google.com/?q=Kodambakkam+Chennai" target="_blank" rel="noopener">Kodambakkam, Chennai 600024</a></li>
+  </ul></div>
+</div>
+<div class="fb-bot">
+  <p>Kalpavruksha School of Fine Arts &mdash; Est. 2014</p>
+  <p>Bharatanatyam &middot; Kalakshetra Style &middot; Chennai &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.35)">Privacy</a></p>
+</div></div></footer>
+
+<div style="background:#060F1A;padding:20px 0;margin-top:0">
+  <div class="c"><p style="font-size:0.72rem;color:rgba(255,255,255,0.30);text-align:center;line-height:1.8;max-width:800px;margin:0 auto">&copy; 2026 Kalpavruksha School of Fine Arts. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html" style="color:rgba(255,255,255,0.40)">Privacy Policy</a></p></div>
+</div>
+
+<!-- WhatsApp float -->
+<a class="wa" href="https://wa.me/917200095585?text=Hello%2C+I+have+a+question+about+fee+payment." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>Chat with us</span></a>
+
+<!-- GA4 -->
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-Z66NRXP98K"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Z66NRXP98K', {send_page_view: true});
+</script>
+
+<!-- Razorpay SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CONFIGURATION — edit this section only
+     
+     GOOGLE SHEET SETUP:
+     1. Create a Google Sheet with 3 tabs: Students, Workshops, Config
+     2. File → Share → Publish to web → as CSV (one URL per tab)
+     3. Paste the CSV URLs below for each tab
+     
+     RAZORPAY KEY:
+     Replace YOUR_RAZORPAY_KEY_HERE with your rzp_live_... key
+═══════════════════════════════════════════════════════════════ -->
+<script>
+// ── RAZORPAY ──────────────────────────────────────────────────────
+var RZP_KEY = 'rzp_live_SugHvICbLDgYOZ'; // ← paste rzp_live_... here
+
+// ── GOOGLE SHEET CSV URLS ─────────────────────────────────────────
+// Publish each tab: File → Share → Publish to web → Tab → CSV → copy URL
+var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=0&single=true&output=csv';
+var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1173273235&single=true&output=csv';
+var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=466810564&single=true&output=csv';
+
+// ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
+var NEW_STUDENT_FEE = 3000;
+
+// ── In-memory cache after fetch ───────────────────────────────────
+var DATA = { students: [], workshops: [], config: {} };
+var dataLoaded = false;
+
+// ─────────────────────────────────────────────────────────────────
+// CSV parser (handles quoted fields)
+// ─────────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  var lines = text.trim().split('\n');
+  if (!lines.length) return [];
+  var headers = lines[0].split(',').map(function(h){ return h.trim().replace(/^"|"$/g,''); });
+  return lines.slice(1).map(function(line) {
+    var cols = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim());
+    var obj = {};
+    headers.forEach(function(h, i){ obj[h] = (cols[i] || '').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Load all sheet data on page load
+// ─────────────────────────────────────────────────────────────────
+function fetchSheet(url) {
+  return fetch(url).then(function(r){ return r.text(); });
+}
+
+function loadAllData() {
+  if (dataLoaded) return Promise.resolve();
+  return Promise.all([
+    fetchSheet(SHEET_STUDENTS_CSV),
+    fetchSheet(SHEET_WORKSHOPS_CSV),
+    fetchSheet(SHEET_CONFIG_CSV)
+  ]).then(function(results) {
+    DATA.students  = parseCSV(results[0]);
+    DATA.workshops = parseCSV(results[1]);
+    var cfgRows    = parseCSV(results[2]);
+    cfgRows.forEach(function(r){ DATA.config[r['Key']] = r['Value']; });
+    dataLoaded = true;
+    populateWorkshopDropdown();
+    populateMonthDropdown();
+  }).catch(function(e){
+    console.warn('Sheet data unavailable — running in offline/test mode', e);
+    dataLoaded = true; // allow page to work with empty data
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Populate dropdowns
+// ─────────────────────────────────────────────────────────────────
+function populateWorkshopDropdown() {
+  var sel = document.getElementById('ws-select');
+  DATA.workshops.forEach(function(ws) {
+    if ((ws['Active'] || '').toLowerCase() !== 'yes') return;
+    var opt = document.createElement('option');
+    opt.value = ws['Name'];
+    opt.textContent = ws['Name'] + (ws['Description'] ? ' — ' + ws['Description'] : '');
+    sel.appendChild(opt);
+  });
+}
+
+function populateMonthDropdown() {
+  var sel = document.getElementById('ex-month');
+  var from = DATA.config['Fee Month From'] || 'June 2026';
+  var to   = DATA.config['Fee Month To']   || 'March 2027';
+  var months = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+  function parseMonthYear(s) {
+    var p = s.split(' ');
+    return { m: months.indexOf(p[0]), y: parseInt(p[1]) };
+  }
+  var f = parseMonthYear(from), t = parseMonthYear(to);
+  var cur = { m: f.m, y: f.y };
+  while (cur.y < t.y || (cur.y === t.y && cur.m <= t.m)) {
+    var label = months[cur.m] + ' ' + cur.y;
+    var opt = document.createElement('option');
+    opt.value = label;
+    opt.textContent = label;
+    sel.appendChild(opt);
+    cur.m++;
+    if (cur.m > 11) { cur.m = 0; cur.y++; }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Tab switching
+// ─────────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.ftab').forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  document.querySelectorAll('.fpanel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-' + name).setAttribute('aria-selected','true');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// EXISTING STUDENT — roll number lookup
+// ─────────────────────────────────────────────────────────────────
+var foundStudent = null;
+
+function resetExistingLookup() {
+  foundStudent = null;
+  document.getElementById('ex-name-chip').classList.remove('show');
+  document.getElementById('ex-rest').style.display = 'none';
+  document.getElementById('ex-roll-msg').textContent = '';
+  document.getElementById('ex-roll-msg').className = 'hint';
+}
+
+function lookupStudent() {
+  var roll = 'KAL' + document.getElementById('ex-roll').value.trim().toUpperCase();
+  var msg  = document.getElementById('ex-roll-msg');
+  if (!roll) { msg.textContent = 'Please enter your Roll No.'; msg.className = 'hint err'; return; }
+
+  var btn = document.getElementById('ex-lookup-btn');
+  btn.disabled = true;
+  btn.textContent = 'Finding…';
+
+  // Ensure data is loaded
+  loadAllData().then(function() {
+    var student = DATA.students.find(function(s){ return s['Roll No'].toUpperCase() === roll; });
+    btn.disabled = false;
+    btn.textContent = 'Find';
+
+    if (!student) {
+      msg.textContent = 'Roll No not recognised. Please contact the school.';
+      msg.className = 'hint err';
+      return;
+    }
+    if ((student['Status'] || '').toLowerCase() !== 'active') {
+      msg.textContent = 'This Roll No is inactive. Please contact the school.';
+      msg.className = 'hint err';
+      return;
+    }
+
+    foundStudent = student;
+    msg.textContent = '';
+    var chip = document.getElementById('ex-name-chip');
+    document.getElementById('ex-name-display').textContent = student['Student Name'] + ' — confirmed';
+    chip.classList.add('show');
+    document.getElementById('ex-amount').value = student['Fee'];
+    document.getElementById('ex-rest').style.display = 'block';
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// WORKSHOP — selectors & KV lookup
+// ─────────────────────────────────────────────────────────────────
+var currentWs = null;
+var foundWsStudent = null;
+
+function onWorkshopChange() {
+  var name = document.getElementById('ws-select').value;
+  currentWs = DATA.workshops.find(function(w){ return w['Name'] === name; }) || null;
+
+  var reveal   = document.getElementById('ws-fee-reveal');
+  var typeWrap = document.getElementById('ws-type-wrap');
+  var kvWrap   = document.getElementById('ws-kv-wrap');
+  var outWrap  = document.getElementById('ws-out-wrap');
+
+  // reset
+  document.querySelectorAll('input[name="ws-type"]').forEach(function(r){ r.checked = false; });
+  kvWrap.style.display  = 'none';
+  outWrap.style.display = 'none';
+  resetWsLookup();
+
+  if (!currentWs) {
+    reveal.classList.remove('show');
+    typeWrap.style.display = 'none';
+    return;
+  }
+
+  // Show workshop details + type choice
+  document.getElementById('wfr-name').textContent    = currentWs['Name'];
+  document.getElementById('wfr-amount').textContent  = ''; // don't reveal fee before type known
+  document.getElementById('wfr-desc').textContent    = currentWs['Description'] || '';
+  reveal.classList.add('show');
+  typeWrap.style.display = 'block';
+}
+
+function onWsTypeChange() {
+  var type = document.querySelector('input[name="ws-type"]:checked');
+  if (!type) return;
+  var kvWrap  = document.getElementById('ws-kv-wrap');
+  var outWrap = document.getElementById('ws-out-wrap');
+  resetWsLookup();
+
+  if (type.value === 'kv') {
+    kvWrap.style.display  = 'block';
+    outWrap.style.display = 'none';
+    // Don't show fee — will be fetched from sheet silently
+    document.getElementById('wfr-amount').textContent = '';
+  } else {
+    kvWrap.style.display  = 'none';
+    outWrap.style.display = 'block';
+    // Show outside fee openly
+    var fee = currentWs ? currentWs['Outside Fee'] : '';
+    document.getElementById('wfr-amount').textContent = fee ? '₹' + fee : '';
+    if (currentWs) document.getElementById('ws-out-amount').value = fee;
+  }
+}
+
+function resetWsLookup() {
+  foundWsStudent = null;
+  document.getElementById('ws-name-chip').classList.remove('show');
+  document.getElementById('ws-kv-rest').style.display = 'none';
+  document.getElementById('ws-roll-msg').textContent = '';
+  document.getElementById('ws-roll-msg').className = 'hint';
+}
+
+function lookupWsStudent() {
+  var roll = 'KAL' + document.getElementById('ws-roll').value.trim().toUpperCase();
+  var msg  = document.getElementById('ws-roll-msg');
+  if (!roll) { msg.textContent = 'Please enter your Roll No.'; msg.className = 'hint err'; return; }
+
+  var btn = document.getElementById('ws-lookup-btn');
+  btn.disabled = true;
+  btn.textContent = 'Checking…';
+
+  loadAllData().then(function() {
+    var student = DATA.students.find(function(s){ return s['Roll No'].toUpperCase() === roll; });
+    btn.disabled = false;
+    btn.textContent = 'Check';
+
+    if (!student) {
+      msg.textContent = 'Roll No not recognised. Please contact the school.';
+      msg.className = 'hint err';
+      return;
+    }
+
+    // For workshop — inactive student pays outside fee
+    if ((student['Status'] || '').toLowerCase() !== 'active') {
+      msg.textContent = 'This Roll No is inactive. Standard fee applies.';
+      msg.className = 'hint err';
+      // Switch to outside fee silently
+      if (currentWs) {
+        document.getElementById('ws-kv-rest').style.display = 'none';
+        document.getElementById('ws-out-wrap').style.display = 'block';
+        document.querySelectorAll('input[name="ws-type"]').forEach(function(r){ r.checked = r.value === 'outside'; });
+        var fee = currentWs['Outside Fee'] || '';
+        document.getElementById('wfr-amount').textContent = fee ? '₹' + fee : '';
+        document.getElementById('ws-out-amount').value = fee;
+      }
+      return;
+    }
+
+    foundWsStudent = student;
+    var fee = currentWs ? (currentWs['KV Fee'] || '') : '';
+    document.getElementById('ws-kv-amount').value = fee;
+    msg.textContent = '';
+    var chip = document.getElementById('ws-name-chip');
+    document.getElementById('ws-name-display').textContent = student['Student Name'] + ' — confirmed';
+    chip.classList.add('show');
+    document.getElementById('ws-kv-rest').style.display = 'block';
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// VALIDATION helpers
+// ─────────────────────────────────────────────────────────────────
+function isValidPhone(v) { return /^[6-9]\d{9}$/.test(v.trim()); }
+function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+function isNotEmpty(v)   { return v.trim().length > 0; }
+
+function showErr(id, msg) {
+  var el = document.getElementById(id);
+  if (el) { el.textContent = msg; el.className = 'hint err'; }
+}
+function clearErr(id) {
+  var el = document.getElementById(id);
+  if (el) { el.textContent = ''; el.className = 'hint'; }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PAYMENT INITIATION
+// ─────────────────────────────────────────────────────────────────
+function initiatePayment(flow) {
+  var name, phone, email, amount, desc, successId;
+
+  if (flow === 'new') {
+    var n   = document.getElementById('new-name').value.trim();
+    var par = document.getElementById('new-parent').value.trim();
+    var ph  = document.getElementById('new-phone').value.trim();
+    var em  = document.getElementById('new-email').value.trim();
+    var amt = parseInt(document.getElementById('new-amount').value, 10);
+    var hint = document.getElementById('new-amount-hint');
+
+    if (!isNotEmpty(n) || !isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em)) {
+      alert('Please fill in all required fields correctly.');
+      return;
+    }
+    if (amt !== NEW_STUDENT_FEE) {
+      hint.textContent = 'Please enter the correct fee amount as communicated by the school';
+      hint.className = 'hint err';
+      document.getElementById('new-amount').focus();
+      return;
+    }
+    hint.textContent = 'Enter the fee amount communicated by Guru Deepa';
+    hint.className = 'hint';
+
+    name      = n;
+    phone     = ph;
+    email     = em;
+    amount    = amt;
+    desc      = 'New Student Registration — ' + n;
+    successId = 'new-success';
+
+  } else if (flow === 'existing') {
+    if (!foundStudent) { alert('Please find your Roll No first.'); return; }
+    var par = document.getElementById('ex-parent').value.trim();
+    var ph  = document.getElementById('ex-phone').value.trim();
+    var em  = document.getElementById('ex-email').value.trim();
+    var mon = document.getElementById('ex-month').value;
+
+    if (!isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em) || !mon) {
+      alert('Please fill in all required fields correctly.');
+      return;
+    }
+
+    var amt = parseInt(document.getElementById('ex-amount').value, 10);
+    if (!amt || amt <= 0) { alert('Fee amount not found. Please contact the school.'); return; }
+
+    document.getElementById('existing-success-month').textContent = mon;
+    name      = foundStudent['Student Name'];
+    phone     = ph;
+    email     = em;
+    amount    = amt;
+    desc      = 'Monthly Fee — ' + name + ' — ' + mon;
+    successId = 'existing-success';
+
+  } else if (flow === 'ws-kv') {
+    if (!foundWsStudent || !currentWs) { alert('Please complete the workshop and Roll No selection first.'); return; }
+    var par = document.getElementById('ws-kv-parent').value.trim();
+    var ph  = document.getElementById('ws-kv-phone').value.trim();
+    var em  = document.getElementById('ws-kv-email').value.trim();
+
+    if (!isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em)) {
+      alert('Please fill in all required fields correctly.');
+      return;
+    }
+
+    var amt = parseInt(document.getElementById('ws-kv-amount').value, 10);
+    if (!amt || amt <= 0) { alert('Workshop fee not found. Please contact the school.'); return; }
+
+    name      = foundWsStudent['Student Name'];
+    phone     = ph;
+    email     = em;
+    amount    = amt;
+    desc      = 'Workshop — ' + currentWs['Name'] + ' — ' + name + ' (KV student)';
+    successId = 'workshop-success';
+
+  } else if (flow === 'ws-out') {
+    var n  = document.getElementById('ws-out-name').value.trim();
+    var ph = document.getElementById('ws-out-phone').value.trim();
+    var em = document.getElementById('ws-out-email').value.trim();
+
+    if (!currentWs) { alert('Please select a workshop first.'); return; }
+    if (!isNotEmpty(n) || !isValidPhone(ph) || !isValidEmail(em)) {
+      alert('Please fill in all required fields correctly.');
+      return;
+    }
+
+    var amt = parseInt(document.getElementById('ws-out-amount').value, 10);
+    if (!amt || amt <= 0) { alert('Workshop fee not found. Please contact the school.'); return; }
+
+    name      = n;
+    phone     = ph;
+    email     = em;
+    amount    = amt;
+    desc      = 'Workshop — ' + currentWs['Name'] + ' — ' + n + ' (outside student)';
+    successId = 'workshop-success';
+  }
+
+  // Open Razorpay
+  var options = {
+    key:         RZP_KEY,
+    amount:      amount * 100,   // paise
+    currency:    'INR',
+    name:        'Kalpavruksha School of Fine Arts',
+    description: desc,
+    image:       'images/logo.webp',
+    prefill: {
+      name:    name,
+      email:   email,
+      contact: phone
+    },
+    theme: { color: '#7B1D2E' },
+    handler: function(response) {
+      // Payment successful
+      document.getElementById(successId.replace('-success','') + '-form-wrap') && 
+        (document.getElementById(successId.replace('-success','') + '-form-wrap').style.display = 'none');
+
+      // map flow to correct form-wrap id
+      var formWrapId = {
+        'new-success':       'new-form-wrap',
+        'existing-success':  'existing-form-wrap',
+        'workshop-success':  'ws-form-wrap'
+      }[successId];
+      if (formWrapId) document.getElementById(formWrapId).style.display = 'none';
+      document.getElementById(successId).classList.add('show');
+    },
+    modal: {
+      ondismiss: function() { /* user closed modal — do nothing */ }
+    }
+  };
+
+  var rzp = new Razorpay(options);
+  rzp.on('payment.failed', function(response){
+    alert('Payment failed. Please try again or contact us at +91 72000 95585.\nError: ' + (response.error.description || 'Unknown error'));
+  });
+  rzp.open();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Nav toggle (same as main site)
+// ─────────────────────────────────────────────────────────────────
+(function(){
+  var t = document.querySelector('.ntog'), m = document.querySelector('.nm');
+  if(t && m){
+    t.addEventListener('click', function(){ var o = m.classList.toggle('open'); t.setAttribute('aria-expanded', o); });
+    m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ m.classList.remove('open'); t.setAttribute('aria-expanded','false'); }); });
+  }
+})();
+
+// Load data immediately on page load
+loadAllData();
+</script>
+</body>
+</html>
