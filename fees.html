@@ -85,6 +85,10 @@
 .name-chip .nc-table td{font-size:0.84rem;padding:3px 0;vertical-align:top;}
 .name-chip .nc-table td:first-child{font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#2E7D32;width:110px;padding-right:10px;}
 .name-chip .nc-table td:last-child{color:#1B5E20;font-weight:500;}
+.copy-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.copy-btn{font-size:0.68rem;padding:2px 7px;background:#fff;border:1px solid #A5D6A7;border-radius:3px;color:#2E7D32;cursor:pointer;font-family:var(--fb);transition:background 0.15s;}
+.copy-btn:hover{background:#C8E6C9;}
+.copy-btn.copied{background:#C8E6C9;color:#1B5E20;}
 
 /* Workshop listing */
 .ws-list{display:grid;gap:10px;margin-bottom:20px;}
@@ -307,6 +311,7 @@
           <!-- Confirmed details — shows Student Name + Parent Name after successful lookup -->
           <div class="name-chip" id="ex-name-chip">
             <table class="nc-table">
+              <tr><td>Roll No</td><td id="ex-roll-display">—</td></tr>
               <tr><td>Student</td><td id="ex-student-name-display">—</td></tr>
               <tr><td>Parent / Guardian</td><td id="ex-parent-name-display">—</td></tr>
             </table>
@@ -562,6 +567,30 @@ function parseCSV(text) {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// Copy roll number to clipboard
+// ─────────────────────────────────────────────────────────────────
+function copyRoll(spanId, btn) {
+  var text = document.getElementById(spanId) ? document.getElementById(spanId).textContent.replace(/[()]/g,'').trim() : '';
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = spanId.includes('short') ? 'Copy short' : 'Copy'; btn.classList.remove('copied'); }, 2000);
+  }).catch(function() {
+    // fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = spanId.includes('short') ? 'Copy short' : 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
 // Load all sheet data on page load
 // ─────────────────────────────────────────────────────────────────
 function fetchSheet(url) {
@@ -701,6 +730,7 @@ var foundStudent = null;
 function resetExistingLookup() {
   foundStudent = null;
   document.getElementById('ex-name-chip').classList.remove('show');
+  document.getElementById('ex-roll-display').innerHTML = '—';
   document.getElementById('ex-rest').style.display = 'none';
   document.getElementById('ex-roll-msg').textContent = '';
   document.getElementById('ex-roll-msg').className = 'hint';
@@ -750,6 +780,15 @@ function lookupStudent() {
 
     foundStudent = student;
     msg.textContent = '';
+    var fullRoll = (student['Roll No'] || '').trim();
+    var shortRoll = fullRoll.replace(/^KAL01/i, '');
+    document.getElementById('ex-roll-display').innerHTML =
+      '<div class="copy-wrap">' +
+      '<span id="ex-roll-full">' + fullRoll + '</span>' +
+      '<button class="copy-btn" onclick="copyRoll(\'ex-roll-full\',this)">Copy</button>' +
+      '<span id="ex-roll-short" style="color:#2E7D32;font-size:0.82rem;">(' + shortRoll + ')</span>' +
+      '<button class="copy-btn" onclick="copyRoll(\'ex-roll-short\',this)">Copy short</button>' +
+      '</div>';
     document.getElementById('ex-student-name-display').textContent = student['Student Name'] || '—';
     document.getElementById('ex-parent-name-display').textContent  = student['Parent Name']  || '—';
     document.getElementById('ex-name-chip').classList.add('show');
@@ -866,6 +905,15 @@ function confirmFallbackStudent(student) {
     document.getElementById('fb-msg').textContent = '';
     document.getElementById('fb-results').style.display = 'none';
     document.getElementById('ex-roll-msg').textContent = '';
+    var fullRoll2 = (student['Roll No'] || '').trim();
+    var shortRoll2 = fullRoll2.replace(/^KAL01/i, '');
+    document.getElementById('ex-roll-display').innerHTML =
+      '<div class="copy-wrap">' +
+      '<span id="ex-roll-full">' + fullRoll2 + '</span>' +
+      '<button class="copy-btn" onclick="copyRoll(\'ex-roll-full\',this)">Copy</button>' +
+      '<span id="ex-roll-short" style="color:#2E7D32;font-size:0.82rem;">(' + shortRoll2 + ')</span>' +
+      '<button class="copy-btn" onclick="copyRoll(\'ex-roll-short\',this)">Copy short</button>' +
+      '</div>';
     document.getElementById('ex-student-name-display').textContent = student['Student Name'] || '—';
     document.getElementById('ex-parent-name-display').textContent  = student['Parent Name']  || '—';
     document.getElementById('ex-name-chip').classList.add('show');
