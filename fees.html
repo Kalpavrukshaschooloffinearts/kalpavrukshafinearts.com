@@ -79,9 +79,25 @@
 .lookup-btn:disabled{background:var(--bdr-s);cursor:default;}
 
 /* Confirmed name chip */
-.name-chip{display:none;align-items:center;gap:8px;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:3px;padding:9px 13px;margin-bottom:16px;font-size:0.86rem;color:#1B5E20;}
-.name-chip.show{display:flex;}
-.name-chip .nc-icon{font-size:1.0rem;}
+.name-chip{display:none;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:3px;padding:12px 16px;margin-bottom:16px;}
+.name-chip.show{display:block;}
+.name-chip .nc-table{width:100%;border-collapse:collapse;}
+.name-chip .nc-table td{font-size:0.84rem;padding:3px 0;vertical-align:top;}
+.name-chip .nc-table td:first-child{font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#2E7D32;width:110px;padding-right:10px;}
+.name-chip .nc-table td:last-child{color:#1B5E20;font-weight:500;}
+
+/* Workshop listing */
+.ws-list{display:grid;gap:10px;margin-bottom:20px;}
+.ws-list-item{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,background 0.2s;}
+.ws-list-item:hover,.ws-list-item.selected{border-color:var(--maroon);background:#fff;}
+.ws-list-item.selected{box-shadow:0 0 0 2px rgba(123,29,46,0.12);}
+.ws-list-item .wli-name{font-family:var(--fd);font-size:1.0rem;color:var(--maroon);margin-bottom:3px;}
+.ws-list-item .wli-desc{font-size:0.78rem;color:var(--ink-soft);margin-bottom:6px;line-height:1.5;}
+.ws-list-item .wli-fees{display:flex;gap:16px;flex-wrap:wrap;}
+.ws-list-item .wli-fee-tag{font-size:0.74rem;color:var(--ink-soft);}
+.ws-list-item .wli-fee-tag strong{color:var(--ink);font-weight:600;}
+.ws-empty{text-align:center;padding:32px 20px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;margin-bottom:20px;}
+.ws-empty p{font-size:0.86rem;color:var(--ink-soft);line-height:1.7;}
 
 /* Pay button */
 .pay-btn{width:100%;padding:14px;background:var(--saffron);color:#fff;border:none;border-radius:3px;font-family:var(--fd);font-size:1.05rem;font-weight:500;cursor:pointer;transition:background 0.2s;letter-spacing:0.02em;}
@@ -223,7 +239,7 @@
 
           <div class="form-divider"></div>
           <button class="pay-btn" id="new-pay-btn" onclick="initiatePayment('new')">Pay Registration Fee</button>
-          <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+          <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
         </div>
         <div class="success-screen" id="new-success">
           <div class="success-icon">🙏</div>
@@ -238,7 +254,7 @@
       ═══════════════════════════ -->
       <div class="fpanel fee-card" id="panel-existing" role="tabpanel" aria-labelledby="tab-existing">
         <div id="existing-form-wrap">
-          <span class="lbl">Monthly Tuition Fee</span>
+          <span class="lbl">Monthly Class Fees</span>
           <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Existing Student</h2>
 
           <!-- Roll no lookup -->
@@ -287,10 +303,12 @@
             <div id="fb-results" style="display:none;margin-top:14px;"></div>
           </div>
 
-          <!-- Confirmed name chip — shows Student Name + Parent Name after successful lookup -->
+          <!-- Confirmed details — shows Student Name + Parent Name after successful lookup -->
           <div class="name-chip" id="ex-name-chip">
-            <span class="nc-icon">✔</span>
-            <span id="ex-name-display"></span>
+            <table class="nc-table">
+              <tr><td>Student</td><td id="ex-student-name-display">—</td></tr>
+              <tr><td>Parent / Guardian</td><td id="ex-parent-name-display">—</td></tr>
+            </table>
           </div>
 
           <!-- Rest of form — shown after successful lookup -->
@@ -310,7 +328,7 @@
 
             <div class="form-divider"></div>
             <button class="pay-btn" id="ex-pay-btn" onclick="initiatePayment('existing')">Pay Monthly Fee</button>
-            <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+            <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
         </div>
         <div class="success-screen" id="existing-success">
@@ -329,14 +347,11 @@
           <span class="lbl">Workshop Registration</span>
           <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Workshop Fee</h2>
 
-          <!-- Workshop selector -->
-          <div class="fg-field">
-            <label for="ws-select">Select Workshop *</label>
-            <select id="ws-select" onchange="onWorkshopChange()" required>
-              <option value="">— Select a workshop —</option>
-              <!-- Populated from WORKSHOPS in JS -->
-            </select>
+          <!-- Workshop listing — populated from sheet -->
+          <div id="ws-list-area">
+            <!-- Cards injected by JS; empty/loading states handled below -->
           </div>
+          <input type="hidden" id="ws-select" value="">
 
           <!-- Fee reveal (for outside students and guidance) -->
           <div class="ws-fee-reveal" id="ws-fee-reveal">
@@ -378,8 +393,10 @@
               <span class="hint" id="ws-roll-msg"></span>
             </div>
             <div class="name-chip" id="ws-name-chip">
-              <span class="nc-icon">✔</span>
-              <span id="ws-name-display"></span>
+              <table class="nc-table">
+                <tr><td>Student</td><td id="ws-student-name-display">—</td></tr>
+                <tr><td>Parent / Guardian</td><td id="ws-parent-name-display">—</td></tr>
+              </table>
             </div>
 
             <div id="ws-kv-rest" style="display:none;">
@@ -390,7 +407,7 @@
               <input type="hidden" id="ws-kv-amount">
               <div class="form-divider"></div>
               <button class="pay-btn" id="ws-kv-pay-btn" onclick="initiatePayment('ws-kv')">Pay Workshop Fee</button>
-              <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+              <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
             </div>
           </div>
 
@@ -413,7 +430,7 @@
             <input type="hidden" id="ws-out-amount">
             <div class="form-divider"></div>
             <button class="pay-btn" id="ws-out-pay-btn" onclick="initiatePayment('ws-out')">Pay Workshop Fee</button>
-            <p class="refund-note"><strong>Note:</strong> Registration fee is non-refundable. Requests for refund will not be entertained.</p>
+            <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
 
         </div>
@@ -573,14 +590,68 @@ function loadAllData() {
 // Populate dropdowns
 // ─────────────────────────────────────────────────────────────────
 function populateWorkshopDropdown() {
-  var sel = document.getElementById('ws-select');
-  DATA.workshops.forEach(function(ws) {
-    if ((ws['Active'] || '').toLowerCase() !== 'yes') return;
-    var opt = document.createElement('option');
-    opt.value = ws['Name'];
-    opt.textContent = ws['Name'] + (ws['Description'] ? ' — ' + ws['Description'] : '');
-    sel.appendChild(opt);
+  var listArea = document.getElementById('ws-list-area');
+  var active = DATA.workshops.filter(function(ws){ return (ws['Active'] || '').toLowerCase() === 'yes'; });
+
+  if (!active.length) {
+    listArea.innerHTML =
+      '<div class="ws-empty">' +
+      '<p>There are no workshops scheduled at this time.<br>' +
+      'Please check back soon or <a href="contact.html">contact us</a> to be notified when new workshops are announced.</p>' +
+      '</div>';
+    // Hide the subsequent student-type/payment sections
+    document.getElementById('ws-fee-reveal').style.display  = 'none';
+    document.getElementById('ws-type-wrap').style.display   = 'none';
+    document.getElementById('ws-kv-wrap').style.display     = 'none';
+    document.getElementById('ws-out-wrap').style.display    = 'none';
+    return;
+  }
+
+  var html = '<div class="ws-list" id="ws-card-list">';
+  active.forEach(function(ws, idx) {
+    var kvFee  = ws['KV Fee']      ? '₹' + ws['KV Fee']      : '';
+    var outFee = ws['Outside Fee'] ? '₹' + ws['Outside Fee'] : '';
+    var fees = '';
+    if (kvFee)  fees += '<span class="wli-fee-tag">KV Students: <strong>' + kvFee + '</strong></span>';
+    if (outFee) fees += '<span class="wli-fee-tag">Outside Students: <strong>' + outFee + '</strong></span>';
+    html +=
+      '<div class="ws-list-item" id="ws-card-' + idx + '" data-idx="' + idx + '" onclick="selectWorkshopCard(this,' + idx + ')">' +
+        '<div class="wli-name">' + ws['Name'] + '</div>' +
+        (ws['Description'] ? '<div class="wli-desc">' + ws['Description'] + '</div>' : '') +
+        (fees ? '<div class="wli-fees">' + fees + '</div>' : '') +
+      '</div>';
   });
+  html += '</div>';
+  listArea.innerHTML = html;
+}
+
+function selectWorkshopCard(el, idx) {
+  // Deselect all cards
+  document.querySelectorAll('.ws-list-item').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+
+  var active = DATA.workshops.filter(function(ws){ return (ws['Active'] || '').toLowerCase() === 'yes'; });
+  currentWs = active[idx];
+
+  // Sync the hidden input so the rest of the flow can read it
+  document.getElementById('ws-select').value = currentWs['Name'];
+
+  // Call the existing reveal/type logic
+  var reveal   = document.getElementById('ws-fee-reveal');
+  var typeWrap = document.getElementById('ws-type-wrap');
+  var kvWrap   = document.getElementById('ws-kv-wrap');
+  var outWrap  = document.getElementById('ws-out-wrap');
+
+  document.querySelectorAll('input[name="ws-type"]').forEach(function(r){ r.checked = false; });
+  kvWrap.style.display  = 'none';
+  outWrap.style.display = 'none';
+  resetWsLookup();
+
+  document.getElementById('wfr-name').textContent   = currentWs['Name'];
+  document.getElementById('wfr-amount').textContent = '';
+  document.getElementById('wfr-desc').textContent   = currentWs['Description'] || '';
+  reveal.classList.add('show');
+  typeWrap.style.display = 'block';
 }
 
 function populateMonthDropdown() {
@@ -677,8 +748,8 @@ function lookupStudent() {
 
     foundStudent = student;
     msg.textContent = '';
-    document.getElementById('ex-name-display').textContent =
-      student['Student Name'] + (student['Parent Name'] ? ' · ' + student['Parent Name'] : '') + ' — confirmed';
+    document.getElementById('ex-student-name-display').textContent = student['Student Name'] || '—';
+    document.getElementById('ex-parent-name-display').textContent  = student['Parent Name']  || '—';
     document.getElementById('ex-name-chip').classList.add('show');
     document.getElementById('ex-amount').value = student['Fee'];
     document.getElementById('ex-phone').value  = student['Phone'] || '';
@@ -793,8 +864,8 @@ function confirmFallbackStudent(student) {
     document.getElementById('fb-msg').textContent = '';
     document.getElementById('fb-results').style.display = 'none';
     document.getElementById('ex-roll-msg').textContent = '';
-    document.getElementById('ex-name-display').textContent =
-      student['Student Name'] + (student['Parent Name'] ? ' · ' + student['Parent Name'] : '') + ' — confirmed';
+    document.getElementById('ex-student-name-display').textContent = student['Student Name'] || '—';
+    document.getElementById('ex-parent-name-display').textContent  = student['Parent Name']  || '—';
     document.getElementById('ex-name-chip').classList.add('show');
     document.getElementById('ex-amount').value = student['Fee'];
     document.getElementById('ex-phone').value  = student['Phone'] || '';
@@ -912,8 +983,8 @@ function lookupWsStudent() {
     document.getElementById('ws-kv-email').value   = student['Email'] || '';
     msg.textContent = '';
     var chip = document.getElementById('ws-name-chip');
-    document.getElementById('ws-name-display').textContent =
-      student['Student Name'] + (student['Parent Name'] ? ' · ' + student['Parent Name'] : '') + ' — confirmed';
+    document.getElementById('ws-student-name-display').textContent = student['Student Name'] || '—';
+    document.getElementById('ws-parent-name-display').textContent  = student['Parent Name']  || '—';
     chip.classList.add('show');
     document.getElementById('ws-kv-rest').style.display = 'block';
   });
