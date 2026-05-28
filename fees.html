@@ -287,7 +287,7 @@
             <div id="fb-results" style="display:none;margin-top:14px;"></div>
           </div>
 
-          <!-- Confirmed name chip -->
+          <!-- Confirmed name chip — shows Student Name + Parent Name after successful lookup -->
           <div class="name-chip" id="ex-name-chip">
             <span class="nc-icon">✔</span>
             <span id="ex-name-display"></span>
@@ -295,22 +295,6 @@
 
           <!-- Rest of form — shown after successful lookup -->
           <div id="ex-rest" style="display:none;">
-            <div class="fg-row">
-              <div class="fg-field">
-                <label for="ex-parent">Parent / Guardian Name *</label>
-                <input type="text" id="ex-parent" placeholder="Full name" autocomplete="off" required>
-              </div>
-              <div class="fg-field">
-                <label for="ex-phone">Mobile Number *</label>
-                <input type="tel" id="ex-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
-              </div>
-            </div>
-
-            <div class="fg-field">
-              <label for="ex-email">Email Address *</label>
-              <input type="email" id="ex-email" placeholder="you@email.com" required>
-            </div>
-
             <div class="fg-field">
               <label for="ex-month">Fee Month *</label>
               <select id="ex-month" required>
@@ -319,8 +303,10 @@
               </select>
             </div>
 
-            <!-- Amount shown silently after month selected — no display to user -->
+            <!-- Amount and contact details stored silently from sheet data -->
             <input type="hidden" id="ex-amount">
+            <input type="hidden" id="ex-phone">
+            <input type="hidden" id="ex-email">
 
             <div class="form-divider"></div>
             <button class="pay-btn" id="ex-pay-btn" onclick="initiatePayment('existing')">Pay Monthly Fee</button>
@@ -397,20 +383,10 @@
             </div>
 
             <div id="ws-kv-rest" style="display:none;">
-              <div class="fg-field">
-                <label for="ws-kv-parent">Parent / Guardian Name *</label>
-                <input type="text" id="ws-kv-parent" placeholder="Full name" autocomplete="off" required>
-              </div>
-              <div class="fg-row">
-                <div class="fg-field">
-                  <label for="ws-kv-phone">Mobile Number *</label>
-                  <input type="tel" id="ws-kv-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
-                </div>
-                <div class="fg-field">
-                  <label for="ws-kv-email">Email Address *</label>
-                  <input type="email" id="ws-kv-email" placeholder="you@email.com" required>
-                </div>
-              </div>
+              <!-- Contact details stored silently from sheet data -->
+              <input type="hidden" id="ws-kv-parent">
+              <input type="hidden" id="ws-kv-phone">
+              <input type="hidden" id="ws-kv-email">
               <input type="hidden" id="ws-kv-amount">
               <div class="form-divider"></div>
               <button class="pay-btn" id="ws-kv-pay-btn" onclick="initiatePayment('ws-kv')">Pay Workshop Fee</button>
@@ -611,8 +587,10 @@ function populateMonthDropdown() {
   var sel = document.getElementById('ex-month');
   var from = DATA.config['Fee Month From'] || 'June 2026';
   var to   = DATA.config['Fee Month To']   || 'March 2027';
-  var months = ['January','February','March','April','May','June',
-                'July','August','September','October','November','December'];
+  var months     = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+  var monthsShort = ['Jan','Feb','Mar','Apr','May','Jun',
+                     'Jul','Aug','Sep','Oct','Nov','Dec'];
   function parseMonthYear(s) {
     var p = s.split(' ');
     return { m: months.indexOf(p[0]), y: parseInt(p[1]) };
@@ -621,9 +599,10 @@ function populateMonthDropdown() {
   var cur = { m: f.m, y: f.y };
   while (cur.y < t.y || (cur.y === t.y && cur.m <= t.m)) {
     var label = months[cur.m] + ' ' + cur.y;
+    var displayLabel = monthsShort[cur.m] + ' ' + cur.y;
     var opt = document.createElement('option');
     opt.value = label;
-    opt.textContent = label;
+    opt.textContent = displayLabel;
     sel.appendChild(opt);
     cur.m++;
     if (cur.m > 11) { cur.m = 0; cur.y++; }
@@ -698,9 +677,12 @@ function lookupStudent() {
 
     foundStudent = student;
     msg.textContent = '';
-    document.getElementById('ex-name-display').textContent = student['Student Name'] + ' — confirmed';
+    document.getElementById('ex-name-display').textContent =
+      student['Student Name'] + (student['Parent Name'] ? ' · ' + student['Parent Name'] : '') + ' — confirmed';
     document.getElementById('ex-name-chip').classList.add('show');
     document.getElementById('ex-amount').value = student['Fee'];
+    document.getElementById('ex-phone').value  = student['Phone'] || '';
+    document.getElementById('ex-email').value  = student['Email'] || '';
     document.getElementById('ex-rest').style.display = 'block';
 
   }).catch(function() {
@@ -811,9 +793,12 @@ function confirmFallbackStudent(student) {
     document.getElementById('fb-msg').textContent = '';
     document.getElementById('fb-results').style.display = 'none';
     document.getElementById('ex-roll-msg').textContent = '';
-    document.getElementById('ex-name-display').textContent = student['Student Name'] + ' — confirmed';
+    document.getElementById('ex-name-display').textContent =
+      student['Student Name'] + (student['Parent Name'] ? ' · ' + student['Parent Name'] : '') + ' — confirmed';
     document.getElementById('ex-name-chip').classList.add('show');
     document.getElementById('ex-amount').value = student['Fee'];
+    document.getElementById('ex-phone').value  = student['Phone'] || '';
+    document.getElementById('ex-email').value  = student['Email'] || '';
     document.getElementById('ex-rest').style.display = 'block';
   }, 800);
 }
@@ -921,10 +906,14 @@ function lookupWsStudent() {
 
     foundWsStudent = student;
     var fee = currentWs ? (currentWs['KV Fee'] || '') : '';
-    document.getElementById('ws-kv-amount').value = fee;
+    document.getElementById('ws-kv-amount').value  = fee;
+    document.getElementById('ws-kv-parent').value  = student['Parent Name'] || '';
+    document.getElementById('ws-kv-phone').value   = student['Phone'] || '';
+    document.getElementById('ws-kv-email').value   = student['Email'] || '';
     msg.textContent = '';
     var chip = document.getElementById('ws-name-chip');
-    document.getElementById('ws-name-display').textContent = student['Student Name'] + ' — confirmed';
+    document.getElementById('ws-name-display').textContent =
+      student['Student Name'] + (student['Parent Name'] ? ' · ' + student['Parent Name'] : '') + ' — confirmed';
     chip.classList.add('show');
     document.getElementById('ws-kv-rest').style.display = 'block';
   });
@@ -982,13 +971,12 @@ function initiatePayment(flow) {
 
   } else if (flow === 'existing') {
     if (!foundStudent) { alert('Please find your Roll No first.'); return; }
-    var par = document.getElementById('ex-parent').value.trim();
     var ph  = document.getElementById('ex-phone').value.trim();
     var em  = document.getElementById('ex-email').value.trim();
     var mon = document.getElementById('ex-month').value;
 
-    if (!isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em) || !mon) {
-      alert('Please fill in all required fields correctly.');
+    if (!mon) {
+      alert('Please select a fee month.');
       return;
     }
 
@@ -1005,14 +993,8 @@ function initiatePayment(flow) {
 
   } else if (flow === 'ws-kv') {
     if (!foundWsStudent || !currentWs) { alert('Please complete the workshop and Roll No selection first.'); return; }
-    var par = document.getElementById('ws-kv-parent').value.trim();
     var ph  = document.getElementById('ws-kv-phone').value.trim();
     var em  = document.getElementById('ws-kv-email').value.trim();
-
-    if (!isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em)) {
-      alert('Please fill in all required fields correctly.');
-      return;
-    }
 
     var amt = parseInt(document.getElementById('ws-kv-amount').value, 10);
     if (!amt || amt <= 0) { alert('Workshop fee not found. Please contact the school.'); return; }
