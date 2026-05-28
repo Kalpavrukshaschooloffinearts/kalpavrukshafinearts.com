@@ -270,23 +270,21 @@
 
           <!-- Fallback form -->
           <div id="fallback-form" style="display:none;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:18px 20px;margin-bottom:16px;">
-            <p style="font-size:0.80rem;color:var(--ink-soft);margin-bottom:14px;line-height:1.6;">Enter your registered details and we&#39;ll find your Roll No.</p>
+            <p style="font-size:0.80rem;color:var(--ink-soft);margin-bottom:14px;line-height:1.6;">Enter your registered mobile and email — we&#39;ll find all students linked to your account.</p>
             <div class="fg-row">
-              <div class="fg-field" style="margin-bottom:12px;">
-                <label for="fb-name">Student Name *</label>
-                <input type="text" id="fb-name" placeholder="As registered" autocomplete="off">
-              </div>
               <div class="fg-field" style="margin-bottom:12px;">
                 <label for="fb-phone">Registered Mobile *</label>
                 <input type="tel" id="fb-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
               </div>
+              <div class="fg-field" style="margin-bottom:12px;">
+                <label for="fb-email">Registered Email *</label>
+                <input type="email" id="fb-email" placeholder="you@email.com">
+              </div>
             </div>
-            <div class="fg-field" style="margin-bottom:12px;">
-              <label for="fb-email">Registered Email *</label>
-              <input type="email" id="fb-email" placeholder="you@email.com">
-            </div>
-            <button class="lookup-btn" onclick="lookupByDetails()" id="fb-lookup-btn" style="width:100%;">Find My Roll No</button>
+            <button class="lookup-btn" onclick="lookupByDetails()" id="fb-lookup-btn" style="width:100%;">Find My Students</button>
             <span class="hint" id="fb-msg" style="display:block;margin-top:8px;"></span>
+            <!-- Results list shown when multiple students found -->
+            <div id="fb-results" style="display:none;margin-top:14px;"></div>
           </div>
 
           <!-- Confirmed name chip -->
@@ -684,7 +682,7 @@ function lookupStudent() {
     }
 
     var student = DATA.students.find(function(s){
-      return (s['Roll No'] || '').trim().toUpperCase() === roll;
+      return (s['Roll No'] || '').toString().trim().toUpperCase() === roll;
     });
 
     if (!student) {
@@ -729,14 +727,14 @@ function toggleFallback() {
 }
 
 function lookupByDetails() {
-  var name  = document.getElementById('fb-name').value.trim().toLowerCase();
   var phone = document.getElementById('fb-phone').value.trim();
   var email = document.getElementById('fb-email').value.trim().toLowerCase();
   var msg   = document.getElementById('fb-msg');
   var btn   = document.getElementById('fb-lookup-btn');
+  var results = document.getElementById('fb-results');
 
-  if (!name || !phone || !email) {
-    msg.textContent = 'Please fill in all three fields.';
+  if (!phone || !email) {
+    msg.textContent = 'Please enter both mobile number and email.';
     msg.className = 'hint err';
     return;
   }
@@ -744,54 +742,80 @@ function lookupByDetails() {
   btn.disabled = true;
   btn.textContent = 'Searching…';
   msg.textContent = '';
+  results.style.display = 'none';
+  results.innerHTML = '';
 
   loadAllData().then(function() {
     btn.disabled = false;
-    btn.textContent = 'Find My Roll No';
+    btn.textContent = 'Find My Students';
 
-    var student = DATA.students.find(function(s) {
-      var nameMatch  = (s['Student Name'] || '').trim().toLowerCase() === name;
-      var phoneMatch = (s['Phone'] || '').toString().trim().replace(/\s/g,'') === phone.replace(/\s/g,'');
-      var emailMatch = (s['Email'] || '').trim().toLowerCase() === email;
-      return nameMatch && phoneMatch && emailMatch;
+    var inputPhone = phone.replace(/[^0-9]/g, '').slice(-10);
+
+    // Find ALL active students matching this phone + email
+    var matches = DATA.students.filter(function(s) {
+      var sheetPhone = (s['Phone'] || '').toString().replace(/[^0-9]/g, '').slice(-10);
+      var sheetEmail = (s['Email'] || '').trim().toLowerCase();
+      return sheetPhone === inputPhone && sheetEmail === email
+             && (s['Status'] || '').toLowerCase() === 'active';
     });
 
-    if (!student) {
+    if (!matches.length) {
       msg.textContent = 'No match found. Please check your details or contact the school.';
       msg.className = 'hint err';
       return;
     }
-    if ((student['Status'] || '').toLowerCase() !== 'active') {
-      msg.textContent = 'Your account is inactive. Please contact the school.';
-      msg.className = 'hint err';
+
+    msg.textContent = '';
+
+    // Single student — auto-confirm directly
+    if (matches.length === 1) {
+      confirmFallbackStudent(matches[0]);
       return;
     }
 
-    // Found — fill in the Roll No field and trigger lookup
-    var rollNum = (student['Roll No'] || '').replace(/^KAL/i, '');
-    document.getElementById('ex-roll').value = rollNum;
-    msg.textContent = 'Found! Your Roll No is KAL' + rollNum + '. Confirming…';
+    // Multiple students — show a list to pick from
+    msg.textContent = matches.length + ' students found on this account. Select one to proceed:';
     msg.className = 'hint ok';
+    results.style.display = 'block';
 
-    // Auto-confirm after short delay
-    setTimeout(function() {
-      document.getElementById('fallback-form').style.display = 'none';
-      document.getElementById('fallback-toggle').textContent = "Don't know your Roll No?";
-      foundStudent = student;
-      document.getElementById('fb-msg').textContent = '';
-      document.getElementById('ex-roll-msg').textContent = '';
-      document.getElementById('ex-name-display').textContent = student['Student Name'] + ' — confirmed';
-      document.getElementById('ex-name-chip').classList.add('show');
-      document.getElementById('ex-amount').value = student['Fee'];
-      document.getElementById('ex-rest').style.display = 'block';
-    }, 1200);
+    matches.forEach(function(s) {
+      var rollNum = (s['Roll No'] || '').replace(/^KAL/i, '');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.style.cssText = 'display:block;width:100%;text-align:left;padding:10px 14px;margin-bottom:8px;background:#fff;border:1px solid var(--bdr-s);border-radius:3px;cursor:pointer;font-family:var(--fb);font-size:0.86rem;color:var(--ink);transition:background 0.15s;';
+      btn.innerHTML = '<strong>' + s['Student Name'] + '</strong> &nbsp;<span style="color:var(--ink-soft);font-size:0.78rem;">KAL' + rollNum + '</span>';
+      btn.onmouseover = function(){ this.style.background = 'var(--maroon-l)'; };
+      btn.onmouseout  = function(){ this.style.background = '#fff'; };
+      btn.onclick = function() { confirmFallbackStudent(s); };
+      results.appendChild(btn);
+    });
 
   }).catch(function() {
     btn.disabled = false;
-    btn.textContent = 'Find My Roll No';
+    btn.textContent = 'Find My Students';
     msg.textContent = 'Unable to connect. Please try again.';
     msg.className = 'hint err';
   });
+}
+
+function confirmFallbackStudent(student) {
+  var rollNum = (student['Roll No'] || '').replace(/^KAL/i, '');
+  document.getElementById('ex-roll').value = rollNum;
+  document.getElementById('fb-msg').textContent = 'Found! Confirming…';
+  document.getElementById('fb-msg').className = 'hint ok';
+
+  setTimeout(function() {
+    document.getElementById('fallback-form').style.display = 'none';
+    document.getElementById('fallback-toggle').textContent = "Don't know your Roll No?";
+    foundStudent = student;
+    document.getElementById('fb-msg').textContent = '';
+    document.getElementById('fb-results').style.display = 'none';
+    document.getElementById('ex-roll-msg').textContent = '';
+    document.getElementById('ex-name-display').textContent = student['Student Name'] + ' — confirmed';
+    document.getElementById('ex-name-chip').classList.add('show');
+    document.getElementById('ex-amount').value = student['Fee'];
+    document.getElementById('ex-rest').style.display = 'block';
+  }, 800);
 }
 
 // ─────────────────────────────────────────────────────────────────
