@@ -1384,7 +1384,7 @@ function initiatePayment(flow) {
     if (!country) { alert('Please select your country.'); return; }
     if (country === 'India' && !batchId) {
       document.getElementById('new-batch-msg').textContent = 'Please select a batch to proceed.';
-      document.getElementById('new-batch-cards').scrollIntoView({ behavior: \'smooth\', block: \'nearest\' });
+      document.getElementById('new-batch-cards').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       return;
     }
     if (!amt || amt <= 0) {
