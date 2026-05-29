@@ -847,7 +847,7 @@ function renderBatchCards(batches) {
     var statusCls = status === 'Full' ? 'status-full' : status === 'Filling Fast' ? 'status-fast' : status === 'Limited' ? 'status-limited' : 'status-open';
     var statusDot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
     html +=
-      '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this,'' + b['Batch ID'].replace(/'/g,"\'") + '')">' +
+      '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this, this.dataset.id)">' +
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
           '<div>' +
             '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:2px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
