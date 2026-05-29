@@ -286,7 +286,7 @@
                 <label for="new-group">Who is joining? *</label>
                 <select id="new-group" onchange="filterBatches()">
                   <option value="">— Select —</option>
-                  <option value="Kids">Child (under 15)</option>
+                  <option value="Kids">Kid (under 15)</option>
                   <option value="Adults">Adult (15 &amp; above)</option>
                 </select>
               </div>
@@ -655,6 +655,35 @@ var NEW_STUDENT_FEE = 3000;
 var DATA = { students: [], workshops: [], config: {}, batches: [] };
 var dataLoaded = false;
 
+
+// ─────────────────────────────────────────────────────────────────
+// Batch CSV parser — skips title/instruction rows, finds real header
+// ─────────────────────────────────────────────────────────────────
+function parseBatchCSV(text) {
+  var lines = text.trim().split('\n');
+  // Find the header row (contains "Batch ID")
+  var headerIdx = -1;
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].indexOf('Batch ID') !== -1) { headerIdx = i; break; }
+  }
+  if (headerIdx === -1) return [];
+  var headers = lines[headerIdx].split(',').map(function(h){ return h.trim().replace(/^"|"$/g,''); });
+  return lines.slice(headerIdx + 1).map(function(line) {
+    if (!line.trim()) return null;
+    var cols = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim());
+    var obj = {};
+    headers.forEach(function(h, i){ obj[h] = (cols[i] || '').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  }).filter(function(r){ return r && r['Batch ID'] && r['Batch ID'] !== 'Batch ID'; });
+}
+
 // ─────────────────────────────────────────────────────────────────
 // CSV parser (handles quoted fields)
 // ─────────────────────────────────────────────────────────────────
@@ -770,6 +799,14 @@ function filterBatches() {
 
   document.getElementById('new-trial-msg').style.display = 'none';
 
+  // If batches not yet loaded, load now then render
+  if (!dataLoaded) {
+    document.getElementById('new-batch-list').innerHTML = '<div style="padding:14px;font-size:0.82rem;color:var(--ink-soft);">Loading batches…</div>';
+    document.getElementById('new-batch-cards').style.display = 'block';
+    loadAllData().then(function() { filterBatches(); });
+    return;
+  }
+
   // Filter batches: Website Level = Beginner, Group Type, Class Type, Is Open = Yes
   var filtered = DATA.batches.filter(function(b) {
     return b['Website Level'] === 'Beginner'
@@ -876,7 +913,7 @@ function loadAllData() {
     DATA.workshops = parseCSV(results[1]);
     var cfgRows    = parseCSV(results[2]);
     cfgRows.forEach(function(r){ DATA.config[r['Key']] = r['Value']; });
-    DATA.batches   = parseCSV(results[3]).filter(function(r){ return r['Batch ID'] && r['Batch ID'] !== 'Batch ID'; });
+    DATA.batches   = parseBatchCSV(results[3]);
     dataLoaded = true;
     populateWorkshopDropdown();
     populateMonthDropdown();
@@ -1478,8 +1515,8 @@ function initiatePayment(flow) {
   }
 })();
 
-// Load data immediately on page load
-loadAllData();
+// Data loaded on demand — not eagerly on page load
+// (called by verifyToken, lookupStudent, lookupByDetails, lookupWsStudent)
 </script>
 </body>
 </html>
