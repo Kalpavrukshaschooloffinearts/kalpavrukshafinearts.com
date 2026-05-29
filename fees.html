@@ -747,12 +747,13 @@ function getWeekdayNums(weekdaysStr) {
   return (weekdaysStr || '').split(',').map(function(d){ return map[d.trim()]; }).filter(function(d){ return d !== undefined; });
 }
 
-function countRemainingSessions(weekdayNums, fromDate, toEndOfMonth) {
-  // Count occurrences of weekdayNums from fromDate (exclusive) to end of toEndOfMonth's month
+function countRemainingSessions(weekdayNums, fromDate) {
+  // Count occurrences of weekdayNums from fromDate (exclusive) to end of fromDate's month
+  if (!fromDate || isNaN(fromDate.getTime())) return 0;
   var count = 0;
   var d = new Date(fromDate);
   d.setDate(d.getDate() + 1); // start from tomorrow
-  var endDate = new Date(toEndOfMonth.getFullYear(), toEndOfMonth.getMonth() + 1, 0); // last day of month
+  var endDate = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 0); // last day of month
   while (d <= endDate) {
     if (weekdayNums.indexOf(d.getDay()) !== -1) count++;
     d.setDate(d.getDate() + 1);
@@ -776,7 +777,8 @@ function calcFirstPayment(batchId) {
 
   // Use enrolment date field if set, otherwise today
   var dateInput = document.getElementById('new-enrol-date');
-  var today = dateInput && dateInput.value ? new Date(dateInput.value + 'T00:00:00') : new Date();
+  var today = (dateInput && dateInput.value) ? new Date(dateInput.value + 'T00:00:00') : new Date();
+  if (isNaN(today.getTime())) today = new Date(); // fallback to today if invalid
   var weekdayNums = getWeekdayNums(batch['Weekdays']);
   var sessions    = countRemainingSessions(weekdayNums, today);
   var curMonth    = months[today.getMonth()] + ' ' + today.getFullYear();
@@ -932,12 +934,17 @@ function filterBatches() {
   }
 
   // Filter batches: Website Level = Beginner, Group Type, Class Type, Is Open = Yes
+  // Debug: log first batch keys to check column names
+  if (DATA.batches.length) { console.log('Batch keys:', Object.keys(DATA.batches[0])); console.log('Sample batch:', DATA.batches[0]); }
   var filtered = DATA.batches.filter(function(b) {
+    // Check Is Open defensively — handle column name variations
+    var isOpen = b['Is Open'] || b['IsOpen'] || 'yes';
     return b['Website Level'] === 'Beginner'
         && b['Group Type']    === group
         && b['Class Type']    === classtype
-        && (b['Is Open'] || '').toLowerCase() === 'yes';
+        && isOpen.toLowerCase() === 'yes';
   });
+  console.log('Filtered batches:', filtered.length, 'for', group, classtype);
 
   renderBatchCards(filtered);
 }
