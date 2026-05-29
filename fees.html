@@ -122,6 +122,13 @@
 /* Section divider */
 .form-divider{height:1px;background:var(--bdr);margin:20px 0;}
 
+
+/* Batch selector cards */
+.batch-card{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;}
+.batch-card:hover{border-color:var(--maroon);background:#fff;}
+.batch-card.selected{border-color:var(--maroon);background:#fff;box-shadow:0 0 0 2px rgba(123,29,46,0.12);}
+.batch-card.selected::after{content:"✓ Selected";display:block;font-size:0.70rem;color:var(--maroon);font-weight:600;margin-top:6px;letter-spacing:0.05em;}
+
 /* Loading spinner */
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-left:8px;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -209,10 +216,37 @@
            PANEL 1 — NEW STUDENT
       ═══════════════════════════ -->
       <div class="fpanel active fee-card" id="panel-new" role="tabpanel" aria-labelledby="tab-new">
-        <div id="new-form-wrap">
-          <span class="lbl">New Student Registration Fee</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">First Payment</h2>
 
+        <!-- STEP 0: Token gate -->
+        <div id="new-token-gate">
+          <span class="lbl">New Student Enrolment</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:6px">New to Kalpavruksha?</h2>
+          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">
+            To enrol, please enter the access code shared by the school.<br>
+            <span style="font-size:0.78rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+enrolling+at+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> to get started.</span>
+          </p>
+          <div class="lookup-row">
+            <div class="fg-field">
+              <label for="new-token">Access Code *</label>
+              <input type="text" id="new-token" placeholder="Enter code" autocomplete="off"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();verifyToken();}"
+                style="text-transform:uppercase;letter-spacing:0.1em;">
+            </div>
+            <button class="lookup-btn" onclick="verifyToken()">Verify</button>
+          </div>
+          <span class="hint err" id="new-token-msg" style="display:block;margin-top:-8px;"></span>
+          <div class="form-divider" style="margin-top:20px;"></div>
+          <p style="font-size:0.76rem;color:var(--ink-soft);text-align:center;line-height:1.6;">
+            🌿 First trial session is <strong>FREE</strong> — <a href="contact.html" style="color:var(--saffron);">Book a trial class</a>
+          </p>
+        </div>
+
+        <!-- STEP 1: Student details + batch selector (shown after token) -->
+        <div id="new-form-wrap" style="display:none;">
+          <span class="lbl">New Student Registration</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Enrolment &amp; Payment</h2>
+
+          <!-- Student details -->
           <div class="fg-row">
             <div class="fg-field">
               <label for="new-name">Student Name *</label>
@@ -223,7 +257,6 @@
               <input type="text" id="new-parent" placeholder="Full name" autocomplete="off" required>
             </div>
           </div>
-
           <div class="fg-row">
             <div class="fg-field">
               <label for="new-phone">Mobile Number *</label>
@@ -234,21 +267,88 @@
               <input type="email" id="new-email" placeholder="you@email.com" required>
             </div>
           </div>
-
           <div class="fg-field">
-            <label for="new-amount">Fee Amount (₹) *</label>
-            <input type="number" id="new-amount" placeholder="Enter amount" inputmode="numeric" required>
-            <span class="hint" id="new-amount-hint">Enter the fee amount communicated by the school</span>
+            <label for="new-country">Country *</label>
+            <select id="new-country" onchange="onCountryChange()">
+              <option value="">— Select —</option>
+              <option value="India">India</option>
+              <option value="International">International (contact school for fee)</option>
+            </select>
           </div>
 
-          <div class="form-divider"></div>
-          <button class="pay-btn" id="new-pay-btn" onclick="initiatePayment('new')">Pay Registration Fee</button>
-          <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
+          <!-- Batch selector — shown after country selected -->
+          <div id="new-batch-wrap" style="display:none;">
+            <div class="form-divider"></div>
+            <p style="font-size:0.80rem;font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:0.03em;">SELECT YOUR BATCH</p>
+
+            <div class="fg-row">
+              <div class="fg-field">
+                <label for="new-group">Who is joining? *</label>
+                <select id="new-group" onchange="filterBatches()">
+                  <option value="">— Select —</option>
+                  <option value="Kids">Child (under 15)</option>
+                  <option value="Adults">Adult (15 &amp; above)</option>
+                </select>
+              </div>
+              <div class="fg-field">
+                <label for="new-classtype">Class Type *</label>
+                <select id="new-classtype" onchange="filterBatches()">
+                  <option value="">— Select —</option>
+                  <option value="Online">Online</option>
+                  <option value="Offline">Offline (Chennai)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="fg-field" id="new-level-wrap" style="display:none;">
+              <label for="new-level">Dance Experience *</label>
+              <select id="new-level" onchange="filterBatches()">
+                <option value="">— Select —</option>
+                <option value="Beginner">Beginner — new to dance, or returning after a long break</option>
+                <option value="Intermediate">Intermediate / Advanced — actively learning, needs assessment</option>
+              </select>
+            </div>
+
+            <!-- Intermediate/Advanced redirect -->
+            <div id="new-trial-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:16px;">
+              <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">
+                <strong>A trial class is required</strong> before joining Intermediate or Advanced batches.<br>
+                <span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>
+              </p>
+              <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+book+a+trial+class+for+Intermediate%2FAdvanced+Bharatanatyam." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Book Trial</a>
+            </div>
+
+            <!-- Available batch cards -->
+            <div id="new-batch-cards" style="display:none;">
+              <div id="new-batch-list" style="display:grid;gap:10px;margin-bottom:16px;"></div>
+              <input type="hidden" id="new-batch-id" value="">
+              <span class="hint err" id="new-batch-msg"></span>
+            </div>
+          </div>
+
+          <!-- Fee + payment -->
+          <div id="new-pay-wrap" style="display:none;">
+            <div class="form-divider"></div>
+            <div class="amount-box" id="new-amount-box">
+              <div><div class="ab-label">Registration Fee</div><div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;">One-time · Non-refundable</div></div>
+              <div class="ab-value" id="new-amount-display">₹1,000</div>
+            </div>
+            <input type="hidden" id="new-amount" value="1000">
+            <button class="pay-btn" id="new-pay-btn" onclick="initiatePayment('new')">Pay Registration Fee</button>
+            <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
+          </div>
         </div>
+
+        <!-- Success screen -->
         <div class="success-screen" id="new-success">
           <div class="success-icon">🙏</div>
           <h2>Payment Received</h2>
-          <p>Thank you for registering with Kalpavruksha School of Fine Arts.<br>We will be in touch shortly to confirm your batch details.</p>
+          <p>Thank you for registering with Kalpavruksha School of Fine Arts.<br>We will be in touch shortly to confirm your batch slot and class details.</p>
+          <div id="new-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
+            <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
+            <span id="new-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
+            <button class="copy-btn" style="margin-top:6px;" onclick="copyTxn('new-txn-id',this)">Copy</button>
+          </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
       </div>
@@ -341,6 +441,11 @@
           <div class="success-icon">🙏</div>
           <h2>Payment Received</h2>
           <p>Your fee for <span id="existing-success-month"></span> has been recorded.<br>Thank you!</p>
+          <div id="existing-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
+            <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
+            <span id="existing-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
+            <button class="copy-btn" style="margin-top:6px;" onclick="copyTxn('existing-txn-id',this)">Copy</button>
+          </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
       </div>
@@ -445,6 +550,11 @@
           <div class="success-icon">🙏</div>
           <h2>Registration Confirmed</h2>
           <p>Your workshop registration fee has been received.<br>We look forward to seeing you at the workshop!</p>
+          <div id="workshop-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
+            <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
+            <span id="workshop-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
+            <button class="copy-btn" style="margin-top:6px;" onclick="copyTxn('workshop-txn-id',this)">Copy</button>
+          </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
       </div>
@@ -536,12 +646,13 @@ var RZP_KEY = 'rzp_live_SugHvICbLDgYOZ'; // ← paste rzp_live_... here
 var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1452201104&single=true&output=csv';
 var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1860368087&single=true&output=csv';
 var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=159984302&single=true&output=csv';
+var SHEET_BATCHES_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
 // ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
 var NEW_STUDENT_FEE = 3000;
 
 // ── In-memory cache after fetch ───────────────────────────────────
-var DATA = { students: [], workshops: [], config: {} };
+var DATA = { students: [], workshops: [], config: {}, batches: [] };
 var dataLoaded = false;
 
 // ─────────────────────────────────────────────────────────────────
@@ -570,24 +681,180 @@ function parseCSV(text) {
 // Copy roll number to clipboard
 // ─────────────────────────────────────────────────────────────────
 function copyRoll(spanId, btn) {
-  var text = document.getElementById(spanId) ? document.getElementById(spanId).textContent.replace(/[()]/g,'').trim() : '';
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(function() {
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(function(){ btn.textContent = spanId.includes('short') ? 'Copy short' : 'Copy'; btn.classList.remove('copied'); }, 2000);
-  }).catch(function() {
-    // fallback for older browsers
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(function(){ btn.textContent = spanId.includes('short') ? 'Copy short' : 'Copy'; btn.classList.remove('copied'); }, 2000);
+  var el = document.getElementById(spanId);
+  copyToClipboard(el ? el.textContent.replace(/[()]/g,'').trim() : '', btn, spanId.includes('short') ? 'Copy short' : 'Copy');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TOKEN GATE
+// ─────────────────────────────────────────────────────────────────
+var NEW_ENROL_TOKEN = 'KFA2014';
+
+function verifyToken() {
+  var val = document.getElementById('new-token').value.trim().toUpperCase();
+  var msg = document.getElementById('new-token-msg');
+  if (!val) { msg.textContent = 'Please enter the access code.'; return; }
+  if (val !== NEW_ENROL_TOKEN) {
+    msg.textContent = 'Invalid code. Please check and try again, or WhatsApp us to get your code.';
+    return;
+  }
+  msg.textContent = '';
+  document.getElementById('new-token-gate').style.display = 'none';
+  document.getElementById('new-form-wrap').style.display = 'block';
+  loadAllData();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// BATCH SELECTOR
+// ─────────────────────────────────────────────────────────────────
+var selectedBatch = null;
+
+function onCountryChange() {
+  var country = document.getElementById('new-country').value;
+  var batchWrap = document.getElementById('new-batch-wrap');
+  if (country === 'India') {
+    batchWrap.style.display = 'block';
+    filterBatches();
+  } else if (country === 'International') {
+    batchWrap.style.display = 'none';
+    document.getElementById('new-pay-wrap').style.display = 'none';
+    // Show info message for international
+    var existing = document.getElementById('new-intl-msg');
+    if (!existing) {
+      var div = document.createElement('div');
+      div.id = 'new-intl-msg';
+      div.style.cssText = 'background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-top:12px;';
+      div.innerHTML = '<p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">For international students, fees are confirmed individually based on your timezone and batch.<br><span style="font-size:0.78rem;color:var(--ink-soft);">Please WhatsApp us to confirm your fee and batch details.</span></p><a href="https://wa.me/917200095585?text=Hello%2C+I+am+an+international+student+interested+in+enrolling+at+Kalpavruksha." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Enquire</a>';
+      document.getElementById('new-country').closest('.fg-field').after(div);
+    }
+    document.getElementById('new-intl-msg').style.display = 'block';
+  } else {
+    batchWrap.style.display = 'none';
+    document.getElementById('new-pay-wrap').style.display = 'none';
+    var intl = document.getElementById('new-intl-msg');
+    if (intl) intl.style.display = 'none';
+  }
+}
+
+function filterBatches() {
+  var group     = document.getElementById('new-group').value;
+  var classtype = document.getElementById('new-classtype').value;
+  var level     = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
+
+  // Show level selector only when group + classtype both chosen
+  var levelWrap = document.getElementById('new-level-wrap');
+  if (group && classtype) {
+    levelWrap.style.display = 'flex';
+  } else {
+    levelWrap.style.display = 'none';
+    document.getElementById('new-batch-cards').style.display = 'none';
+    document.getElementById('new-trial-msg').style.display = 'none';
+    document.getElementById('new-pay-wrap').style.display = 'none';
+    return;
+  }
+
+  if (!level) {
+    document.getElementById('new-batch-cards').style.display = 'none';
+    document.getElementById('new-trial-msg').style.display = 'none';
+    document.getElementById('new-pay-wrap').style.display = 'none';
+    return;
+  }
+
+  // Intermediate/Advanced → trial required
+  if (level === 'Intermediate') {
+    document.getElementById('new-trial-msg').style.display = 'block';
+    document.getElementById('new-batch-cards').style.display = 'none';
+    document.getElementById('new-pay-wrap').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('new-trial-msg').style.display = 'none';
+
+  // Filter batches: Website Level = Beginner, Group Type, Class Type, Is Open = Yes
+  var filtered = DATA.batches.filter(function(b) {
+    return b['Website Level'] === 'Beginner'
+        && b['Group Type']    === group
+        && b['Class Type']    === classtype
+        && (b['Is Open'] || '').toLowerCase() === 'yes';
   });
+
+  renderBatchCards(filtered);
+}
+
+function renderBatchCards(batches) {
+  var container = document.getElementById('new-batch-list');
+  var wrap      = document.getElementById('new-batch-cards');
+  var msg       = document.getElementById('new-batch-msg');
+
+  selectedBatch = null;
+  document.getElementById('new-batch-id').value = '';
+  document.getElementById('new-pay-wrap').style.display = 'none';
+
+  if (!batches.length) {
+    container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:20px;text-align:center;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time.<br><a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
+    wrap.style.display = 'block';
+    return;
+  }
+
+  // Deduplicate by Batch ID (same batch appears on Mon/Wed and Tue/Thu)
+  var seen = {};
+  var unique = batches.filter(function(b) {
+    if (seen[b['Batch ID']]) return false;
+    seen[b['Batch ID']] = true;
+    return true;
+  });
+
+  var html = '';
+  unique.forEach(function(b) {
+    var status   = b['Availability Status'] || 'Available';
+    var statusCls = status === 'Full' ? 'status-full' : status === 'Filling Fast' ? 'status-fast' : status === 'Limited' ? 'status-limited' : 'status-open';
+    var statusDot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
+    html +=
+      '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this,'' + b['Batch ID'].replace(/'/g,"\'") + '')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+          '<div>' +
+            '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:2px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
+            '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; ' + b['Group Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + '</div>' +
+          '</div>' +
+          '<span style="font-size:0.72rem;white-space:nowrap;margin-left:10px;">' + statusDot + ' ' + status + '</span>' +
+        '</div>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+  wrap.style.display = 'block';
+  msg.textContent = '';
+}
+
+function selectBatch(el, batchId) {
+  document.querySelectorAll('.batch-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedBatch = batchId;
+  document.getElementById('new-batch-id').value = batchId;
+  document.getElementById('new-batch-msg').textContent = '';
+  document.getElementById('new-pay-wrap').style.display = 'block';
+  document.getElementById('new-pay-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// COPY HELPERS
+// ─────────────────────────────────────────────────────────────────
+function copyToClipboard(text, btn, label) {
+  if (!text) return;
+  var finish = function() {
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = label; btn.classList.remove('copied'); }, 2000);
+  };
+  if (navigator.clipboard) { navigator.clipboard.writeText(text).then(finish).catch(finish); }
+  else {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); finish();
+  }
+}
+function copyTxn(spanId, btn) {
+  var el = document.getElementById(spanId);
+  copyToClipboard(el ? el.textContent.trim() : '', btn, 'Copy');
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -602,12 +869,14 @@ function loadAllData() {
   return Promise.all([
     fetchSheet(SHEET_STUDENTS_CSV),
     fetchSheet(SHEET_WORKSHOPS_CSV),
-    fetchSheet(SHEET_CONFIG_CSV)
+    fetchSheet(SHEET_CONFIG_CSV),
+    fetchSheet(SHEET_BATCHES_CSV)
   ]).then(function(results) {
     DATA.students  = parseCSV(results[0]);
     DATA.workshops = parseCSV(results[1]);
     var cfgRows    = parseCSV(results[2]);
     cfgRows.forEach(function(r){ DATA.config[r['Key']] = r['Value']; });
+    DATA.batches   = parseCSV(results[3]).filter(function(r){ return r['Batch ID'] && r['Batch ID'] !== 'Batch ID'; });
     dataLoaded = true;
     populateWorkshopDropdown();
     populateMonthDropdown();
@@ -758,7 +1027,7 @@ function lookupStudent() {
     btn.textContent = 'Find';
 
     if (!DATA.students.length) {
-      msg.textContent = 'Unable to connect to student database. Please try again or contact the school.';
+      msg.innerHTML = 'Unable to connect to student database. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
       msg.className = 'hint err';
       return;
     }
@@ -768,12 +1037,12 @@ function lookupStudent() {
     });
 
     if (!student) {
-      msg.textContent = 'Roll No not recognised. Please contact the school.';
+      msg.innerHTML = 'Roll No not recognised. Please check and try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
       msg.className = 'hint err';
       return;
     }
     if ((student['Status'] || '').toLowerCase() !== 'active') {
-      msg.textContent = 'This Roll No is inactive. Please contact the school.';
+      msg.innerHTML = 'This Roll No is inactive. Please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a> for help.';
       msg.className = 'hint err';
       return;
     }
@@ -800,7 +1069,7 @@ function lookupStudent() {
   }).catch(function() {
     btn.disabled = false;
     btn.textContent = 'Find';
-    msg.textContent = 'Unable to connect. Please try again.';
+    msg.innerHTML = 'Unable to connect. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
     msg.className = 'hint err';
   });
 }
@@ -854,7 +1123,7 @@ function lookupByDetails() {
     });
 
     if (!matches.length) {
-      msg.textContent = 'No match found. Please check your details or contact the school.';
+      msg.innerHTML = 'No match found. Please check your details or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
       msg.className = 'hint err';
       return;
     }
@@ -887,7 +1156,7 @@ function lookupByDetails() {
   }).catch(function() {
     btn.disabled = false;
     btn.textContent = 'Find My Students';
-    msg.textContent = 'Unable to connect. Please try again.';
+    msg.innerHTML = 'Unable to connect. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
     msg.className = 'hint err';
   });
 }
@@ -1004,7 +1273,7 @@ function lookupWsStudent() {
     btn.textContent = 'Check';
 
     if (!student) {
-      msg.textContent = 'Roll No not recognised. Please contact the school.';
+      msg.innerHTML = 'Roll No not recognised. Please check and try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
       msg.className = 'hint err';
       return;
     }
@@ -1068,26 +1337,30 @@ function initiatePayment(flow) {
     var ph  = document.getElementById('new-phone').value.trim();
     var em  = document.getElementById('new-email').value.trim();
     var amt = parseInt(document.getElementById('new-amount').value, 10);
-    var hint = document.getElementById('new-amount-hint');
+    var country = document.getElementById('new-country').value;
+    var batchId = document.getElementById('new-batch-id').value;
 
     if (!isNotEmpty(n) || !isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em)) {
       alert('Please fill in all required fields correctly.');
       return;
     }
-    if (amt !== NEW_STUDENT_FEE) {
-      hint.textContent = 'Please enter the correct fee amount as communicated by the school';
-      hint.className = 'hint err';
-      document.getElementById('new-amount').focus();
+    if (!country) { alert('Please select your country.'); return; }
+    if (country === 'India' && !batchId) {
+      document.getElementById('new-batch-msg').textContent = 'Please select a batch to proceed.';
+      document.getElementById('new-batch-cards').scrollIntoView({ behavior: \'smooth\', block: \'nearest\' });
       return;
     }
-    hint.textContent = 'Enter the fee amount communicated by Guru Deepa';
-    hint.className = 'hint';
+    if (!amt || amt <= 0) {
+      alert('Fee amount error. Please try again or contact the school.');
+      return;
+    }
 
     name      = n;
     phone     = ph;
     email     = em;
     amount    = amt;
-    desc      = 'New Student Registration — ' + n;
+    var batchDesc = document.getElementById('new-batch-id').value ? ' [' + document.getElementById('new-batch-id').value + ']' : '';
+    desc      = 'New Student Registration — ' + n + batchDesc;
     successId = 'new-success';
 
   } else if (flow === 'existing') {
@@ -1164,17 +1437,22 @@ function initiatePayment(flow) {
     },
     theme: { color: '#7B1D2E' },
     handler: function(response) {
-      // Payment successful
-      document.getElementById(successId.replace('-success','') + '-form-wrap') && 
-        (document.getElementById(successId.replace('-success','') + '-form-wrap').style.display = 'none');
-
-      // map flow to correct form-wrap id
+      // Show transaction ID
+      var txnPrefix = successId.replace('-success', '');
+      var txnBox  = document.getElementById(txnPrefix + '-txn-box');
+      var txnSpan = document.getElementById(txnPrefix + '-txn-id');
+      if (txnBox && txnSpan && response.razorpay_payment_id) {
+        txnSpan.textContent = response.razorpay_payment_id;
+        txnBox.style.display = 'block';
+      }
+      // Hide form
       var formWrapId = {
         'new-success':       'new-form-wrap',
         'existing-success':  'existing-form-wrap',
         'workshop-success':  'ws-form-wrap'
       }[successId];
       if (formWrapId) document.getElementById(formWrapId).style.display = 'none';
+      document.getElementById('new-token-gate').style.display = 'none';
       document.getElementById(successId).classList.add('show');
     },
     modal: {
