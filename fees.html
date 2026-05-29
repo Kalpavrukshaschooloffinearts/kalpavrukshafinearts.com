@@ -305,7 +305,8 @@
               <select id="new-level" onchange="filterBatches()">
                 <option value="">— Select —</option>
                 <option value="Beginner">Beginner — new to dance, or returning after a long break</option>
-                <option value="Intermediate">Intermediate / Advanced — actively learning, needs assessment</option>
+                <option value="Intermediate">Intermediate — actively learning with consistent practice</option>
+                <option value="Advanced">Advanced — years of training, working towards Arangetram</option>
               </select>
             </div>
 
@@ -315,7 +316,7 @@
                 <strong>A trial class is required</strong> before joining Intermediate or Advanced batches.<br>
                 <span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>
               </p>
-              <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+book+a+trial+class+for+Intermediate%2FAdvanced+Bharatanatyam." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Book Trial</a>
+              <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+book+a+trial+class+for+Bharatanatyam." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Book Trial</a>
             </div>
 
             <!-- Available batch cards -->
@@ -660,7 +661,7 @@ var dataLoaded = false;
 // Batch CSV parser — skips title/instruction rows, finds real header
 // ─────────────────────────────────────────────────────────────────
 function parseBatchCSV(text) {
-  var lines = text.trim().split('\n');
+  var lines = text.trim().replace(/\r/g, '').split('\n');
   // Find the header row (contains "Batch ID")
   var headerIdx = -1;
   for (var i = 0; i < lines.length; i++) {
@@ -790,7 +791,7 @@ function filterBatches() {
   }
 
   // Intermediate/Advanced → trial required
-  if (level === 'Intermediate') {
+  if (level === 'Intermediate' || level === 'Advanced') {
     document.getElementById('new-trial-msg').style.display = 'block';
     document.getElementById('new-batch-cards').style.display = 'none';
     document.getElementById('new-pay-wrap').style.display = 'none';
