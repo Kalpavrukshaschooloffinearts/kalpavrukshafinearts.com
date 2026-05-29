@@ -763,8 +763,16 @@ function countRemainingSessions(weekdayNums, fromDate, toEndOfMonth) {
 function calcFirstPayment(batchId) {
   var months = ['January','February','March','April','May','June',
                 'July','August','September','October','November','December'];
-  var batch = DATA.batches.find(function(b){ return b['Batch ID'] === batchId; });
-  if (!batch) return;
+  // Match on Batch ID — take first match that has Weekdays populated
+  var batch = DATA.batches.find(function(b){ return b['Batch ID'] === batchId && b['Weekdays']; });
+  if (!batch) {
+    // Batch not found — show default amount so pay button still works
+    document.getElementById('new-fee-lines').innerHTML = '<div style="display:flex;justify-content:space-between;"><span>Registration (one-time)</span><span style="color:var(--ink);font-weight:500;">₹1,000</span></div><div style="display:flex;justify-content:space-between;"><span>First month fee</span><span style="color:var(--ink);font-weight:500;">₹2,000</span></div>';
+    document.getElementById('new-amount-display').textContent = '₹3,000';
+    document.getElementById('new-amount').value = 3000;
+    document.getElementById('new-enrol-desc').value = 'Enrolment + First Month — ';
+    return;
+  }
 
   // Use enrolment date field if set, otherwise today
   var dateInput = document.getElementById('new-enrol-date');
@@ -943,12 +951,7 @@ function showTrialBatches(level, group, classtype) {
   var container = document.getElementById('new-trial-batch-list');
   var wrap      = document.getElementById('new-trial-batches');
   if (!filtered.length) { wrap.style.display = 'none'; return; }
-  // Deduplicate
-  var seen = {}, unique = filtered.filter(function(b) {
-    if (seen[b['Batch ID']]) return false;
-    seen[b['Batch ID']] = true; return true;
-  });
-  container.innerHTML = unique.map(function(b) {
+  container.innerHTML = filtered.map(function(b) {
     var status = b['Availability Status'] || 'Available';
     var dot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
     return '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;">' +
@@ -974,28 +977,15 @@ function renderBatchCards(batches) {
     return;
   }
 
-  // Deduplicate by Batch ID (same batch appears on Mon/Wed and Tue/Thu)
-  var seen = {};
-  var unique = batches.filter(function(b) {
-    if (seen[b['Batch ID']]) return false;
-    seen[b['Batch ID']] = true;
-    return true;
-  });
-
   var html = '';
-  unique.forEach(function(b) {
+  batches.forEach(function(b) {
     var status   = b['Availability Status'] || 'Available';
     var statusCls = status === 'Full' ? 'status-full' : status === 'Filling Fast' ? 'status-fast' : status === 'Limited' ? 'status-limited' : 'status-open';
     var statusDot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
     html +=
       '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this, this.dataset.id)">' +
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
-          '<div>' +
-            '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:2px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
-            '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; ' + b['Group Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + '</div>' +
-          '</div>' +
-          '<span style="font-size:0.72rem;white-space:nowrap;margin-left:10px;">' + statusDot + ' ' + status + '</span>' +
-        '</div>' +
+        '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
+        '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' ' + status + '</div>' +
       '</div>';
   });
   container.innerHTML = html;
