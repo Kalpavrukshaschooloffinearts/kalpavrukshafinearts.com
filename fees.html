@@ -267,13 +267,20 @@
               <input type="email" id="new-email" placeholder="you@email.com" required>
             </div>
           </div>
-          <div class="fg-field">
-            <label for="new-country">Country *</label>
-            <select id="new-country" onchange="onCountryChange()">
-              <option value="">— Select —</option>
-              <option value="India">India</option>
-              <option value="International">International (contact school for fee)</option>
-            </select>
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="new-country">Country *</label>
+              <select id="new-country" onchange="onCountryChange()">
+                <option value="">— Select —</option>
+                <option value="India">India</option>
+                <option value="International">International (contact school for fee)</option>
+              </select>
+            </div>
+            <div class="fg-field">
+              <label for="new-enrol-date">Date of Enrolment *</label>
+              <input type="date" id="new-enrol-date" onchange="onEnrolDateChange()" required>
+              <span class="hint">Defaults to today · Change if joining from a different date</span>
+            </div>
           </div>
 
           <!-- Batch selector — shown after country selected -->
@@ -759,9 +766,11 @@ function calcFirstPayment(batchId) {
   var batch = DATA.batches.find(function(b){ return b['Batch ID'] === batchId; });
   if (!batch) return;
 
-  var today       = new Date();
+  // Use enrolment date field if set, otherwise today
+  var dateInput = document.getElementById('new-enrol-date');
+  var today = dateInput && dateInput.value ? new Date(dateInput.value + 'T00:00:00') : new Date();
   var weekdayNums = getWeekdayNums(batch['Weekdays']);
-  var sessions    = countRemainingSessions(weekdayNums, today, today);
+  var sessions    = countRemainingSessions(weekdayNums, today);
   var curMonth    = months[today.getMonth()] + ' ' + today.getFullYear();
   var nextMonthDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
   var nextMonth   = months[nextMonthDate.getMonth()] + ' ' + nextMonthDate.getFullYear();
@@ -814,6 +823,9 @@ function verifyToken() {
   msg.textContent = '';
   document.getElementById('new-token-gate').style.display = 'none';
   document.getElementById('new-form-wrap').style.display = 'block';
+  // Default enrolment date to today
+  var td = new Date(); var mm = String(td.getMonth()+1).padStart(2,'0'); var dd = String(td.getDate()).padStart(2,'0');
+  document.getElementById('new-enrol-date').value = td.getFullYear() + '-' + mm + '-' + dd;
   loadAllData();
 }
 
@@ -821,6 +833,12 @@ function verifyToken() {
 // BATCH SELECTOR
 // ─────────────────────────────────────────────────────────────────
 var selectedBatch = null;
+
+function onEnrolDateChange() {
+  // Recalculate if a batch is already selected
+  var batchId = document.getElementById('new-batch-id').value;
+  if (batchId) calcFirstPayment(batchId);
+}
 
 function onCountryChange() {
   var country = document.getElementById('new-country').value;
@@ -1506,6 +1524,8 @@ function initiatePayment(flow) {
       return;
     }
     if (!country) { alert('Please select your country.'); return; }
+    var enrolDate = document.getElementById('new-enrol-date').value;
+    if (!enrolDate) { alert('Please select a date of enrolment.'); return; }
     if (country === 'India' && !batchId) {
       document.getElementById('new-batch-msg').textContent = 'Please select a batch to proceed.';
       document.getElementById('new-batch-cards').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1521,7 +1541,8 @@ function initiatePayment(flow) {
     email     = em;
     amount    = amt;
     var enrolDesc = document.getElementById('new-enrol-desc').value || 'Enrolment + First Month — ';
-    desc = enrolDesc + n;
+    var enrolDate = document.getElementById('new-enrol-date').value || '';
+    desc = enrolDesc + n + (enrolDate ? ' (from ' + enrolDate + ')' : '');
     successId = 'new-success';
 
   } else if (flow === 'existing') {
