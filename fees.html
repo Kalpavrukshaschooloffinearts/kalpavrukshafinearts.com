@@ -355,18 +355,8 @@
             </div>
 
             <!-- Intermediate/Advanced — show batches, no payment -->
-            <div id="new-trial-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:16px;">
-              <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;" id="new-trial-text">
-                <strong>A trial class is required</strong> before joining Intermediate batches.<br>
-                <span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>
-              </p>
-              <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+book+a+trial+class+for+Bharatanatyam." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Book Trial</a>
-            </div>
-            <!-- Trial batch info — shown for Intermediate/Advanced, no pay button -->
-            <div id="new-trial-batches" style="display:none;">
-              <p style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);letter-spacing:0.04em;margin-bottom:10px;">AVAILABLE BATCH TIMINGS FOR REFERENCE</p>
-              <div id="new-trial-batch-list" style="display:grid;gap:10px;margin-bottom:8px;"></div>
-            </div>
+<!-- trial-msg placeholder -->
+            <div id="new-trial-msg" style="display:none;"></div>
 
             <!-- Available batch cards -->
             <div id="new-batch-cards" style="display:none;">
@@ -384,11 +374,11 @@
                       <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Attend one session at no cost before committing. We will update the trial session status on this page by Friday afternoon.</div>
                     </div>
                   </label>
-                  <label id="new-choice-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
-                    <input type="radio" name="new-proceed" value="enrol" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+                  <label id="new-choice-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;transition:border-color 0.2s;" id="new-choice-enrol-label">
+                    <input type="radio" name="new-proceed" value="enrol" id="new-enrol-radio" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
                     <div>
-                      <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">✅ Enrol &amp; Pay Now</div>
-                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Block your batch seat by paying the registration fee. Monthly class fee applies from your enrolment date.</div>
+                      <div style="font-size:0.88rem;font-weight:600;" id="new-enrol-label-text">✅ Enrol &amp; Pay Now</div>
+                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;" id="new-enrol-label-desc">Block your batch seat by paying the registration fee. Monthly class fee applies from your enrolment date.</div>
                     </div>
                   </label>
                 </div>
@@ -1005,12 +995,8 @@ function onGenderChange() {
   var genderMsg   = document.getElementById('new-gender-msg');
   var classtypeRow = document.getElementById('new-classtype-row');
   var sessionWrap  = document.getElementById('new-sessiontype-wrap');
-  // Reset downstream
+  resetBatchUI();
   document.getElementById('new-level-wrap').style.display = 'none';
-  document.getElementById('new-batch-cards').style.display = 'none';
-  document.getElementById('new-trial-msg').style.display = 'none';
-  document.getElementById('new-trial-batches').style.display = 'none';
-  document.getElementById('new-pay-wrap').style.display = 'none';
   if (gender === 'Male' || gender === 'Other') {
     genderMsg.style.display = 'block';
     classtypeRow.style.display = 'none';
@@ -1121,12 +1107,29 @@ function onProceedChange(radio) {
   var payWrap   = document.getElementById('new-pay-wrap');
   var choiceTrialLabel = document.getElementById('new-choice-trial-label');
   var choiceEnrolLabel = document.getElementById('new-choice-enrol-label');
+  var level = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
+  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced');
+
   if (radio.value === 'trial') {
-    if (trialForm) trialForm.style.display = 'block';
+    if (isTrialLevel) {
+      // Show trial session selector for Intermediate/Advanced
+      var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
+      if (trialForm) trialForm.style.display = 'block';
+      renderTrialSessionCards(classtype);
+    } else {
+      if (trialForm) trialForm.style.display = 'block';
+    }
     if (payWrap)   payWrap.style.display   = 'none';
     if (choiceTrialLabel) choiceTrialLabel.style.borderColor = 'var(--maroon)';
     if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--bdr)';
   } else {
+    // Block enrol if Intermediate/Advanced
+    var enrolRadio = document.getElementById('new-enrol-radio');
+    if (enrolRadio && enrolRadio.disabled) {
+      // Reset — can't enrol yet
+      if (enrolRadio) enrolRadio.checked = false;
+      return;
+    }
     if (trialForm) trialForm.style.display = 'none';
     if (payWrap)   payWrap.style.display   = 'block';
     if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--maroon)';
@@ -1142,23 +1145,16 @@ function onSessionTypeChange() {
   var trialMsg  = document.getElementById('new-trial-msg');
   var trialBatches = document.getElementById('new-trial-batches');
   var payWrap  = document.getElementById('new-pay-wrap');
+  resetBatchUI();
   if (val === 'Individual') {
     indMsg.style.display = 'block';
     levelWrap.style.display = 'none';
-    batchCards.style.display = 'none';
-    trialMsg.style.display = 'none';
-    trialBatches.style.display = 'none';
-    payWrap.style.display = 'none';
   } else if (val === 'Group') {
     indMsg.style.display = 'none';
-    // Re-run filterBatches to show appropriate content
     filterBatches();
   } else {
     indMsg.style.display = 'none';
     levelWrap.style.display = 'none';
-    batchCards.style.display = 'none';
-    trialMsg.style.display = 'none';
-    payWrap.style.display = 'none';
   }
 }
 
@@ -1171,6 +1167,7 @@ function onEnrolDateChange() {
 function onCountryChange() {
   var country = document.getElementById('new-country').value;
   var batchWrap = document.getElementById('new-batch-wrap');
+  resetBatchUI();
   if (country === 'India') {
     batchWrap.style.display = 'block';
     filterBatches();
@@ -1195,57 +1192,64 @@ function onCountryChange() {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────
+// MASTER RESET — clears all downstream batch/trial UI
+// ─────────────────────────────────────────────────────────────────
+function resetBatchUI() {
+  // Batch cards
+  document.getElementById('new-batch-cards').style.display = 'none';
+  document.getElementById('new-batch-list').innerHTML = '';
+  document.getElementById('new-batch-id').value = '';
+  document.getElementById('new-batch-msg').textContent = '';
+  // Trial
+  document.getElementById('new-trial-msg').style.display = 'none';
+  document.getElementById('new-trial-session-cards').innerHTML = '<div style="padding:14px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>';
+  document.getElementById('new-trial-session-id').value = '';
+  document.getElementById('new-trial-session-date').value = '';
+  document.getElementById('new-trial-session-timings').value = '';
+  var ntfw = document.getElementById('new-trial-form-wrap'); if (ntfw) ntfw.style.display = 'none';
+  var tcon = document.getElementById('new-trial-consent'); if (tcon) tcon.checked = false;
+  var tcmsg = document.getElementById('new-trial-consent-msg'); if (tcmsg) tcmsg.textContent = '';
+  // Enrol choice + pay
+  var cd = document.getElementById('new-enrol-choice'); if (cd) { cd.style.display = 'none'; }
+  document.getElementById('new-pay-wrap').style.display = 'none';
+  // Reset radio buttons
+  var radios = document.querySelectorAll('input[name="new-proceed"]');
+  radios.forEach(function(r){ r.checked = false; });
+  var ctl = document.getElementById('new-choice-trial-label'); if (ctl) ctl.style.borderColor = 'var(--bdr)';
+  var cel = document.getElementById('new-choice-enrol-label'); if (cel) cel.style.borderColor = 'var(--bdr)';
+  // Selected batch
+  selectedBatch = null;
+}
+
 function filterBatches() {
   var sessionType = document.getElementById('new-sessiontype') ? document.getElementById('new-sessiontype').value : 'Group';
   if (sessionType === 'Individual' || sessionType === '') return;
+
   var group     = document.getElementById('new-group').value;
-  var classtype = document.getElementById('new-classtype').value;
+  var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
   var level     = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
-
-  // Show level selector only when group + classtype both chosen
   var levelWrap = document.getElementById('new-level-wrap');
-  if (group && classtype) {
-    levelWrap.style.display = 'flex';
-  } else {
+
+  // Always fully reset downstream UI first
+  resetBatchUI();
+
+  // Step 1: Need group + classtype to show level
+  if (!group || !classtype) {
     levelWrap.style.display = 'none';
-    document.getElementById('new-batch-cards').style.display = 'none';
-    document.getElementById('new-trial-msg').style.display = 'none';
-    var ntfw = document.getElementById('new-trial-form-wrap'); if(ntfw) ntfw.style.display='none';
-    document.getElementById('new-pay-wrap').style.display = 'none';
     return;
   }
+  levelWrap.style.display = 'flex';
 
-  if (!level) {
-    document.getElementById('new-batch-cards').style.display = 'none';
-    document.getElementById('new-trial-msg').style.display = 'none';
-    var ntfw = document.getElementById('new-trial-form-wrap'); if(ntfw) ntfw.style.display='none';
-    document.getElementById('new-pay-wrap').style.display = 'none';
-    return;
-  }
+  // Step 2: Need level to show batches
+  if (!level) return;
 
-  // Intermediate/Advanced → show trial message + batch timings (no payment)
-  if (level === 'Intermediate' || level === 'Advanced') {
-    var trialText = document.getElementById('new-trial-text');
-    if (level === 'Intermediate') {
-      trialText.innerHTML = '<strong>A trial class is required</strong> before joining Intermediate batches.<br><span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>';
-    } else {
-      trialText.innerHTML = '<strong>A trial class is required</strong> before joining Advanced batches.<br><span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>';
-    }
-    document.getElementById('new-trial-msg').style.display = 'block';
-    document.getElementById('new-batch-cards').style.display = 'none';
-    document.getElementById('new-pay-wrap').style.display = 'none';
-    // Show batch timings for reference
-    if (!dataLoaded) {
-      loadAllData().then(function() { showTrialBatches(level, group, classtype); });
-    } else {
-      showTrialBatches(level, group, classtype);
-    }
-    return;
-  }
+  // Step 3: Load batches for all levels (Foundation/Intermediate/Advanced)
+  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced');
 
-  document.getElementById('new-trial-msg').style.display = 'none';
+  // Update enrol option appearance based on level
+  setEnrolOption(isTrialLevel);
 
-  // If batches not yet loaded, load now then render
   if (!dataLoaded) {
     document.getElementById('new-batch-list').innerHTML = '<div style="padding:14px;font-size:0.82rem;color:var(--ink-soft);">Loading batches…</div>';
     document.getElementById('new-batch-cards').style.display = 'block';
@@ -1253,26 +1257,38 @@ function filterBatches() {
     return;
   }
 
-  // Filter batches: Website Level = Beginner, Group Type, Class Type, Is Open = Yes
-  // Debug: log first batch keys to check column names
-  if (DATA.batches.length) { console.log('Batch keys:', Object.keys(DATA.batches[0])); console.log('Sample batch:', DATA.batches[0]); }
   var filtered = DATA.batches.filter(function(b) {
-    // Check Is Open defensively — handle column name variations
     var isOpen = b['Is Open'] || b['IsOpen'] || 'yes';
-    return b['Website Level'] === 'Foundation'
+    return b['Website Level'] === level
         && b['Group Type']    === group
         && b['Class Type']    === classtype
         && isOpen.toLowerCase() === 'yes';
   });
-  console.log('Filtered batches:', filtered.length, 'for', group, classtype);
-
   renderBatchCards(filtered);
 }
 
 function showTrialBatches(level, group, classtype) {
-  // Show trial session cards for Intermediate/Advanced
-  document.getElementById('new-trial-msg').style.display = 'block';
   renderTrialSessionCards(classtype);
+}
+
+function setEnrolOption(isTrialLevel) {
+  var enrolRadio = document.getElementById('new-enrol-radio');
+  var enrolLabel = document.getElementById('new-choice-enrol-label');
+  var enrolText  = document.getElementById('new-enrol-label-text');
+  var enrolDesc  = document.getElementById('new-enrol-label-desc');
+  if (!enrolRadio) return;
+  if (isTrialLevel) {
+    enrolRadio.disabled = true;
+    enrolRadio.checked  = false;
+    if (enrolLabel) { enrolLabel.style.opacity = '0.45'; enrolLabel.style.cursor = 'not-allowed'; }
+    if (enrolText)  enrolText.innerHTML = '🔒 Enrol &amp; Pay Now';
+    if (enrolDesc)  enrolDesc.textContent = 'Available after completing a trial class. You will receive an enrolment code from the school.';
+  } else {
+    enrolRadio.disabled = false;
+    if (enrolLabel) { enrolLabel.style.opacity = '1'; enrolLabel.style.cursor = 'pointer'; }
+    if (enrolText)  enrolText.innerHTML = '✅ Enrol &amp; Pay Now';
+    if (enrolDesc)  enrolDesc.textContent = 'Block your batch seat by paying the registration fee. Monthly class fee applies from your enrolment date.';
+  }
 }
 
 function renderBatchCards(batches) {
