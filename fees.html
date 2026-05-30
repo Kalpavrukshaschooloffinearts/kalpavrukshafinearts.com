@@ -308,12 +308,12 @@
             </div>
 
             <div class="fg-field" id="new-level-wrap" style="display:none;">
-              <label for="new-level">Dance Experience *</label>
+              <label for="new-level">Learning Stage *</label>
               <select id="new-level" onchange="filterBatches()">
                 <option value="">— Select —</option>
-                <option value="Beginner">Beginner — new to dance, or returning after a long break</option>
+                <option value="Beginner">Foundation — new to dance, or returning after a long break</option>
                 <option value="Intermediate">Intermediate — actively learning with consistent practice</option>
-                <option value="Advanced">Advanced — years of training, working towards Arangetram</option>
+                <option value="Advanced">Advanced — years of focused training and performance</option>
               </select>
             </div>
 
@@ -321,7 +321,7 @@
             <div id="new-trial-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:16px;">
               <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;" id="new-trial-text">
                 <strong>A trial class is required</strong> before joining Intermediate batches.<br>
-                <span style="font-size:0.78rem;color:var(--ink-soft);">Attend a trial first — we will confirm your batch and share next steps.</span>
+                <span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>
               </p>
               <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+book+a+trial+class+for+Bharatanatyam." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Book Trial</a>
             </div>
@@ -378,8 +378,7 @@
       <div class="fpanel fee-card" id="panel-existing" role="tabpanel" aria-labelledby="tab-existing">
         <div id="existing-form-wrap">
           <span class="lbl">Monthly Class Fees</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:6px">Existing Student</h2>
-          <p style="font-size:0.80rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">Monthly class fee: <strong style="color:var(--ink);">₹2,000 per month</strong> · Enter your Roll Number to proceed.</p>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Existing Student</h2>
 
           <!-- Roll no lookup -->
           <div class="lookup-row">
@@ -907,9 +906,9 @@ function filterBatches() {
   if (level === 'Intermediate' || level === 'Advanced') {
     var trialText = document.getElementById('new-trial-text');
     if (level === 'Intermediate') {
-      trialText.innerHTML = '<strong>A trial class is required</strong> before joining Intermediate batches.<br><span style="font-size:0.78rem;color:var(--ink-soft);">Attend a trial first — we will confirm your batch and share next steps.</span>';
+      trialText.innerHTML = '<strong>A trial class is required</strong> before joining Intermediate batches.<br><span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>';
     } else {
-      trialText.innerHTML = '<strong>A trial class is required</strong> before joining Advanced batches.<br><span style="font-size:0.78rem;color:var(--ink-soft);">Attend a trial first — we will confirm your batch and share next steps.</span>';
+      trialText.innerHTML = '<strong>A trial class is required</strong> before joining Advanced batches.<br><span style="font-size:0.78rem;color:var(--ink-soft);">This helps us place you in the right batch for the best learning experience.</span>';
     }
     document.getElementById('new-trial-msg').style.display = 'block';
     document.getElementById('new-batch-cards').style.display = 'none';
