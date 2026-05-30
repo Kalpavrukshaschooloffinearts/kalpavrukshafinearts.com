@@ -380,7 +380,7 @@
                     <input type="radio" name="new-proceed" value="trial" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
                     <div>
                       <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">🌿 Book a Free Trial Class</div>
-                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Attend one session at no cost before committing. We will confirm your slot on WhatsApp.</div>
+                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Attend one session at no cost before committing. We will update the trial session status on this page by Friday afternoon.</div>
                     </div>
                   </label>
                   <label id="new-choice-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
@@ -488,7 +488,7 @@
               <label for="ex-roll">Roll Number *</label>
               <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ex-roll-wrap">
                 <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
-                <input type="text" id="ex-roll" placeholder="10101" autocomplete="off" inputmode="numeric"
+                <input type="text" id="ex-roll" placeholder="12400001" autocomplete="off" inputmode="numeric"
                   oninput="resetExistingLookup()"
                   onkeydown="if(event.key==='Enter'){event.preventDefault();lookupStudent();}"
                   onfocus="document.getElementById('ex-roll-wrap').style.borderColor='var(--maroon)'"
@@ -612,7 +612,7 @@
                 <label for="ws-roll">Roll Number *</label>
                 <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ws-roll-wrap">
                   <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
-                  <input type="text" id="ws-roll" placeholder="10101" autocomplete="off" inputmode="numeric"
+                  <input type="text" id="ws-roll" placeholder="12400001" autocomplete="off" inputmode="numeric"
                     oninput="resetWsLookup()"
                     onkeydown="if(event.key==='Enter'){event.preventDefault();lookupWsStudent();}"
                     onfocus="document.getElementById('ws-roll-wrap').style.borderColor='var(--maroon)'"
@@ -1091,20 +1091,20 @@ function submitTrialInterest() {
 }
 
 function onProceedChange(radio) {
-  var trialWa  = document.getElementById('new-trial-wa');
-  var payWrap  = document.getElementById('new-pay-wrap');
+  var trialForm = document.getElementById('new-trial-form-wrap');
+  var payWrap   = document.getElementById('new-pay-wrap');
   var choiceTrialLabel = document.getElementById('new-choice-trial-label');
   var choiceEnrolLabel = document.getElementById('new-choice-enrol-label');
   if (radio.value === 'trial') {
-    trialWa.style.display = 'block';
-    payWrap.style.display = 'none';
-    choiceTrialLabel.style.borderColor = 'var(--maroon)';
-    choiceEnrolLabel.style.borderColor = 'var(--bdr)';
+    if (trialForm) trialForm.style.display = 'block';
+    if (payWrap)   payWrap.style.display   = 'none';
+    if (choiceTrialLabel) choiceTrialLabel.style.borderColor = 'var(--maroon)';
+    if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--bdr)';
   } else {
-    trialWa.style.display = 'none';
-    payWrap.style.display = 'block';
-    choiceEnrolLabel.style.borderColor = 'var(--maroon)';
-    choiceTrialLabel.style.borderColor = 'var(--bdr)';
+    if (trialForm) trialForm.style.display = 'none';
+    if (payWrap)   payWrap.style.display   = 'block';
+    if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--maroon)';
+    if (choiceTrialLabel) choiceTrialLabel.style.borderColor = 'var(--bdr)';
   }
 }
 
@@ -1309,7 +1309,7 @@ function selectBatch(el, batchId) {
     // Reset radio selection
     var radios = choiceDiv.querySelectorAll('input[type=radio]');
     radios.forEach(function(r){ r.checked = false; });
-    document.getElementById('new-trial-wa').style.display = 'none';
+    var ntf = document.getElementById('new-trial-form-wrap'); if(ntf) ntf.style.display = 'none';
     document.getElementById('new-pay-wrap').style.display = 'none';
     document.getElementById('new-choice-trial-label').style.borderColor = 'var(--bdr)';
     document.getElementById('new-choice-enrol-label').style.borderColor = 'var(--bdr)';
