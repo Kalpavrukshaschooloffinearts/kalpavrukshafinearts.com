@@ -243,10 +243,7 @@
 
         <!-- STEP 1: Student details + batch selector (shown after token) -->
         <div id="new-form-wrap" style="display:none;">
-          <div id="new-token-confirm" style="display:none;background:#F0FFF4;border:1px solid #A5D6A7;border-radius:4px;padding:10px 16px;margin-bottom:18px;align-items:center;gap:10px;font-size:0.82rem;color:#1B5E20;">
-            <span style="font-size:1.1rem;">✓</span>
-            <span><strong>Thank you.</strong> Enrolment details received. Please complete the form below.</span>
-          </div>
+
           <span class="lbl">New Student Registration</span>
           <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Enrolment &amp; Payment</h2>
 
@@ -399,6 +396,13 @@
                 <div id="new-trial-wa" style="display:none;margin-top:12px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
                   <p style="font-size:0.82rem;font-weight:600;color:var(--ink);margin-bottom:4px;">Confirm Your Trial Interest</p>
                   <p style="font-size:0.76rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;">Please note: Trial sessions are conducted across batches and groups — not specific to the batch selected above.</p>
+                  <div style="margin-bottom:14px;">
+                    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                      <input type="checkbox" id="new-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
+                      <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">I confirm that all details provided are true and accurate to the best of my knowledge. I understand that trial class scheduling is subject to availability and school confirmation, and that the school reserves the right to reassess enrolment if information provided is found to be inaccurate or inconsistent.</span>
+                    </label>
+                    <span class="hint err" id="new-trial-consent-msg" style="display:block;margin-top:4px;"></span>
+                  </div>
                   <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Interest</button>
                 </div>
               </div>
@@ -751,6 +755,7 @@ var RZP_KEY = 'rzp_live_SugHvICbLDgYOZ'; // ← paste rzp_live_... here
 var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1452201104&single=true&output=csv';
 var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1860368087&single=true&output=csv';
 var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=159984302&single=true&output=csv';
+var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbwWBAejyHoNVwrPrFAOFsh-r6BivCRp3yQ3BfjFquzdBecN2BQazgLm6sLie90n-zs/exec';
 var SHEET_BATCHES_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
 // ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
@@ -903,6 +908,23 @@ function calcFirstPayment(batchId) {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// PORTAL SUBMISSION — sends data to Google Sheet via Apps Script
+// ─────────────────────────────────────────────────────────────────
+function submitToPortal(data, callback) {
+  fetch(PORTAL_SUBMIT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    mode: 'no-cors'  // Apps Script requires no-cors
+  }).then(function() {
+    if (callback) callback(true);
+  }).catch(function(err) {
+    console.error('Portal submit error:', err);
+    if (callback) callback(false);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
 // TOKEN GATE
 // ─────────────────────────────────────────────────────────────────
 var NEW_ENROL_TOKEN = 'KFA2014';
@@ -918,9 +940,7 @@ function verifyToken() {
   msg.textContent = '';
   document.getElementById('new-token-gate').style.display = 'none';
   document.getElementById('new-form-wrap').style.display = 'block';
-  // Show confirmation banner
-  var banner = document.getElementById('new-token-confirm');
-  if (banner) { banner.style.display = 'flex'; setTimeout(function(){ banner.style.display = 'none'; }, 4000); }
+  // Banner removed — confirmation shown on success screen only
   // Default enrolment date to today
   var td = new Date(); var mm = String(td.getMonth()+1).padStart(2,'0'); var dd = String(td.getDate()).padStart(2,'0');
   document.getElementById('new-enrol-date').value = td.getFullYear() + '-' + mm + '-' + dd;
@@ -971,17 +991,42 @@ function submitTrialInterest() {
   if (!isValidPhone(ph)) { alert('Please enter a valid 10-digit mobile number starting with 6-9.'); return; }
   if (!isValidEmail(em)) { alert('Please enter a valid email address.'); return; }
   if (!batch) { alert('Please select a batch preference above before confirming trial interest.'); return; }
+  var trialConsent = document.getElementById('new-trial-consent');
+  if (trialConsent && !trialConsent.checked) {
+    document.getElementById('new-trial-consent-msg').textContent = 'Please read and accept the declaration to proceed.';
+    return;
+  }
+  if (trialConsent) document.getElementById('new-trial-consent-msg').textContent = '';
 
   var btn = document.getElementById('new-trial-confirm-btn');
   btn.disabled = true;
   btn.textContent = 'Submitting…';
 
-  // Hide form, show trial success
-  document.getElementById('new-form-wrap').style.display = 'none';
-  document.getElementById('new-trial-success').classList.add('show');
+  var data = {
+    submissionType : 'Trial Interest',
+    studentName    : n,
+    parentName     : par,
+    phone          : ph,
+    email          : em,
+    gender         : document.getElementById('new-gender').value,
+    whoIsJoining   : document.getElementById('new-group').value,
+    country        : document.getElementById('new-country').value,
+    classType      : document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '',
+    sessionType    : document.getElementById('new-sessiontype').value,
+    learningStage  : document.getElementById('new-level') ? document.getElementById('new-level').value : '',
+    batchSelected  : batch,
+    enrolmentDate  : '',
+    amountPaid     : '',
+    transactionId  : '',
+    notes          : 'Trial interest submitted from website'
+  };
 
-  btn.disabled = false;
-  btn.textContent = 'Confirm Trial Interest';
+  submitToPortal(data, function() {
+    document.getElementById('new-form-wrap').style.display = 'none';
+    document.getElementById('new-trial-success').classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Confirm Trial Interest';
+  });
 }
 
 function onProceedChange(radio) {
@@ -1844,6 +1889,29 @@ function initiatePayment(flow) {
         txnSpan.textContent = response.razorpay_payment_id;
         txnBox.style.display = 'block';
       }
+
+      // Submit to Portal Submissions sheet
+      if (successId === 'new-success') {
+        submitToPortal({
+          submissionType : 'New Enrolment',
+          studentName    : name,
+          parentName     : document.getElementById('new-parent').value.trim(),
+          phone          : phone,
+          email          : email,
+          gender         : document.getElementById('new-gender').value,
+          whoIsJoining   : document.getElementById('new-group').value,
+          country        : document.getElementById('new-country').value,
+          classType      : document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '',
+          sessionType    : document.getElementById('new-sessiontype').value,
+          learningStage  : document.getElementById('new-level') ? document.getElementById('new-level').value : '',
+          batchSelected  : document.getElementById('new-batch-id').value,
+          enrolmentDate  : document.getElementById('new-enrol-date').value,
+          amountPaid     : amount,
+          transactionId  : response.razorpay_payment_id || '',
+          notes          : 'Paid via website'
+        });
+      }
+
       // Hide form
       var formWrapId = {
         'new-success':       'new-form-wrap',
