@@ -1210,7 +1210,7 @@ function filterBatches() {
     levelWrap.style.display = 'none';
     document.getElementById('new-batch-cards').style.display = 'none';
     document.getElementById('new-trial-msg').style.display = 'none';
-    document.getElementById('new-trial-batches').style.display = 'none';
+    var ntfw = document.getElementById('new-trial-form-wrap'); if(ntfw) ntfw.style.display='none';
     document.getElementById('new-pay-wrap').style.display = 'none';
     return;
   }
@@ -1218,7 +1218,7 @@ function filterBatches() {
   if (!level) {
     document.getElementById('new-batch-cards').style.display = 'none';
     document.getElementById('new-trial-msg').style.display = 'none';
-    document.getElementById('new-trial-batches').style.display = 'none';
+    var ntfw = document.getElementById('new-trial-form-wrap'); if(ntfw) ntfw.style.display='none';
     document.getElementById('new-pay-wrap').style.display = 'none';
     return;
   }
@@ -1270,23 +1270,9 @@ function filterBatches() {
 }
 
 function showTrialBatches(level, group, classtype) {
-  var filtered = DATA.batches.filter(function(b) {
-    return b['Website Level'] === level
-        && b['Group Type']    === group
-        && b['Class Type']    === classtype;
-  });
-  var container = document.getElementById('new-trial-batch-list');
-  var wrap      = document.getElementById('new-trial-batches');
-  if (!filtered.length) { wrap.style.display = 'none'; return; }
-  container.innerHTML = filtered.map(function(b) {
-    var status = b['Availability Status'] || 'Available';
-    var dot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
-    return '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;">' +
-      '<div style="font-family:var(--fd);font-size:0.92rem;color:var(--maroon);">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
-      '<div style="font-size:0.74rem;color:var(--ink-soft);margin-top:3px;">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + dot + ' ' + status + '</div>' +
-      '</div>';
-  }).join('');
-  wrap.style.display = 'block';
+  // Show trial session cards for Intermediate/Advanced
+  document.getElementById('new-trial-msg').style.display = 'block';
+  renderTrialSessionCards(classtype);
 }
 
 function renderBatchCards(batches) {
