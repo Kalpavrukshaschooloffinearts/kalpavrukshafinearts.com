@@ -365,7 +365,6 @@
             <div id="new-trial-batches" style="display:none;">
               <p style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);letter-spacing:0.04em;margin-bottom:10px;">AVAILABLE BATCH TIMINGS FOR REFERENCE</p>
               <div id="new-trial-batch-list" style="display:grid;gap:10px;margin-bottom:8px;"></div>
-              <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-top:4px;">⚠ Batch allocation is confirmed only after your trial class.</p>
             </div>
 
             <!-- Available batch cards -->
@@ -392,10 +391,13 @@
                     </div>
                   </label>
                 </div>
-                <!-- Trial confirmation form -->
-                <div id="new-trial-wa" style="display:none;margin-top:12px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
-                  <p style="font-size:0.82rem;font-weight:600;color:var(--ink);margin-bottom:4px;">Confirm Your Trial Interest</p>
-                  <p style="font-size:0.76rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;">Please note: Trial sessions are conducted across batches and groups — not specific to the batch selected above.</p>
+                <!-- Trial session form — shown after session selected -->
+                <div id="new-trial-form-wrap" style="display:none;margin-top:14px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
+                  <p id="new-trial-type-note" style="font-size:0.82rem;color:var(--ink);margin-bottom:10px;font-weight:600;"></p>
+                  <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:10px 14px;margin-bottom:14px;">
+                    <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;"><strong>Please check this page by Friday afternoon to confirm your trial session status.</strong> We will update the session status here if there are any changes.</p>
+                  </div>
+                  <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;">Note: Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.</p>
                   <div style="margin-bottom:14px;">
                     <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                       <input type="checkbox" id="new-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
@@ -403,7 +405,7 @@
                     </label>
                     <span class="hint err" id="new-trial-consent-msg" style="display:block;margin-top:4px;"></span>
                   </div>
-                  <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Interest</button>
+                  <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Registration</button>
                 </div>
               </div>
             </div>
@@ -440,9 +442,12 @@
         <!-- Trial interest success -->
         <div class="success-screen" id="new-trial-success">
           <div class="success-icon">🙏</div>
-          <h2>Thank You!</h2>
-          <p>Thank you for showing your interest. We have received your details.<br>You will receive communication regarding the next Trial session shortly.</p>
-          <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:12px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
+          <h2 id="new-trial-success-heading">Thank You!</h2>
+          <p id="new-trial-success-msg">Thank you for showing your interest. We have received your details. You will receive communication regarding the next Trial session shortly.</p>
+          <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 16px;margin:14px auto;max-width:380px;text-align:left;">
+            <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;"><strong>Please check this page by Friday afternoon to confirm your trial session status.</strong> We will update the session status here if there are any changes.</p>
+          </div>
+          <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:8px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
             <strong>Please note:</strong> Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.
           </p>
           <a href="index.html" class="back-link">← Return to Home</a>
@@ -453,6 +458,13 @@
           <div class="success-icon">🙏</div>
           <h2>Enrolment Received</h2>
           <p>Thank you for showing your interest. We have received your enrolment details.<br>Please reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a> in case you need any other information.</p>
+          <!-- Roll Number box -->
+          <div id="new-roll-box" style="display:none;margin:14px auto;max-width:380px;background:#F0FFF4;border:1px solid #A5D6A7;border-radius:4px;padding:14px 16px;text-align:left;">
+            <div style="font-size:0.76rem;font-weight:600;color:#1B5E20;margin-bottom:6px;letter-spacing:0.04em;">YOUR ROLL NUMBER</div>
+            <div id="new-roll-no" style="font-family:monospace;font-size:1.1rem;color:#1B5E20;font-weight:700;margin-bottom:8px;"></div>
+            <div style="font-size:0.72rem;color:#2E7D32;line-height:1.6;">Please save this number. You can use it to pay monthly class fees on this page.<br>
+            You can also verify it anytime under the <strong>Existing Student</strong> tab.</div>
+          </div>
           <div id="new-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
             <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
             <span id="new-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
@@ -755,14 +767,15 @@ var RZP_KEY = 'rzp_live_SugHvICbLDgYOZ'; // ← paste rzp_live_... here
 var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1452201104&single=true&output=csv';
 var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1860368087&single=true&output=csv';
 var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=159984302&single=true&output=csv';
-var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbwWBAejyHoNVwrPrFAOFsh-r6BivCRp3yQ3BfjFquzdBecN2BQazgLm6sLie90n-zs/exec';
+var SHEET_TRIAL_CSV     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=321963845&single=true&output=csv';
+var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbyXvNGmemUhFn9XsWIJYXEYounKFpiPD1pVW4w0vfSNC22GB_lcxtjKljKYLk0I5Oc/exec';
 var SHEET_BATCHES_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
 // ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
 var NEW_STUDENT_FEE = 3000; // Registration (1000) + First month (2000)
 
 // ── In-memory cache after fetch ───────────────────────────────────
-var DATA = { students: [], workshops: [], config: {}, batches: [] };
+var DATA = { students: [], workshops: [], config: {}, batches: [], trialSessions: [] };
 var dataLoaded = false;
 
 
@@ -915,12 +928,39 @@ function submitToPortal(data, callback) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    mode: 'no-cors'  // Apps Script requires no-cors
+    mode: 'no-cors'
   }).then(function() {
-    if (callback) callback(true);
+    // no-cors means we cannot read response body
+    // For enrolment, Roll Number is shown via separate doGet call
+    if (callback) callback({ status: 'success', rollNo: '' });
   }).catch(function(err) {
     console.error('Portal submit error:', err);
-    if (callback) callback(false);
+    if (callback) callback({ status: 'error', rollNo: '' });
+  });
+}
+
+function submitToPortalAndGetRollNo(data, callback) {
+  // Use a JSONP-style approach via GET with encoded data for roll number retrieval
+  // Primary: POST to submit, then GET to read last roll number
+  fetch(PORTAL_SUBMIT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    mode: 'no-cors'
+  }).then(function() {
+    // After submission, fetch Roll Number via GET
+    return fetch(PORTAL_SUBMIT_URL + '?action=getLastRoll&phone=' + encodeURIComponent(data.phone || ''), {
+      method: 'GET',
+      mode: 'cors'
+    });
+  }).then(function(resp) {
+    return resp.json();
+  }).then(function(result) {
+    if (callback) callback(result);
+  }).catch(function(err) {
+    console.error('Portal submit error:', err);
+    // Still show success — roll number will be in sheet even if we cant read it back
+    if (callback) callback({ status: 'success', rollNo: '' });
   });
 }
 
@@ -928,6 +968,12 @@ function submitToPortal(data, callback) {
 // TOKEN GATE
 // ─────────────────────────────────────────────────────────────────
 var NEW_ENROL_TOKEN = 'KFA2014';
+var TRIAL_CODES = {
+  'KFATCF2014': 'Foundation',
+  'KFATCI2014': 'Intermediate',
+  'KFATCA2014': 'Advanced'
+};
+var ALL_VALID_TOKENS = ['KFA2014','KFATCF2014','KFATCI2014','KFATCA2014'];
 
 function verifyToken() {
   var val = document.getElementById('new-token').value.trim().toUpperCase();
@@ -990,7 +1036,17 @@ function submitTrialInterest() {
   if (!isNotEmpty(par)) { alert('Please enter the parent / guardian name.'); return; }
   if (!isValidPhone(ph)) { alert('Please enter a valid 10-digit mobile number starting with 6-9.'); return; }
   if (!isValidEmail(em)) { alert('Please enter a valid email address.'); return; }
-  if (!batch) { alert('Please select a batch preference above before confirming trial interest.'); return; }
+  // For Intermediate/Advanced, validate trial session selected
+  var trialSessionId = document.getElementById('new-trial-session-id') ? document.getElementById('new-trial-session-id').value : '';
+  var trialDate      = document.getElementById('new-trial-session-date') ? document.getElementById('new-trial-session-date').value : '';
+  var trialTimings   = document.getElementById('new-trial-session-timings') ? document.getElementById('new-trial-session-timings').value : '';
+  // For Foundation, batch must be selected
+  var levelVal = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
+  if (levelVal === 'Foundation' && !batch) { alert('Please select a batch preference above before confirming trial interest.'); return; }
+  if ((levelVal === 'Intermediate' || levelVal === 'Advanced') && !trialSessionId) {
+    document.getElementById('new-trial-session-msg').textContent = 'Please select a trial session above.';
+    return;
+  }
   var trialConsent = document.getElementById('new-trial-consent');
   if (trialConsent && !trialConsent.checked) {
     document.getElementById('new-trial-consent-msg').textContent = 'Please read and accept the declaration to proceed.';
@@ -1002,8 +1058,9 @@ function submitTrialInterest() {
   btn.disabled = true;
   btn.textContent = 'Submitting…';
 
+  var isWaitlist = window._kfaTrialWaitlist || false;
   var data = {
-    submissionType : 'Trial Interest',
+    submissionType : isWaitlist ? 'Trial Waitlist' : 'Trial Interest',
     studentName    : n,
     parentName     : par,
     phone          : ph,
@@ -1014,14 +1071,18 @@ function submitTrialInterest() {
     classType      : document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '',
     sessionType    : document.getElementById('new-sessiontype').value,
     learningStage  : document.getElementById('new-level') ? document.getElementById('new-level').value : '',
-    batchSelected  : batch,
-    enrolmentDate  : '',
-    amountPaid     : '',
-    transactionId  : '',
-    notes          : 'Trial interest submitted from website'
+    trialSessionId : trialSessionId || batch,
+    trialDate      : trialDate,
+    trialTimings   : trialTimings,
+    notes          : isWaitlist ? 'Added to waitlist' : 'Trial registration from website'
   };
 
   submitToPortal(data, function() {
+    // Update success heading/message for waitlist
+    if (isWaitlist) {
+      document.getElementById('new-trial-success-heading').textContent = 'Added to Waitlist';
+      document.getElementById('new-trial-success-msg').textContent = 'This trial session is currently full. You have been added to the waitlist. We will reach out to you if a slot becomes available.';
+    }
     document.getElementById('new-form-wrap').style.display = 'none';
     document.getElementById('new-trial-success').classList.add('show');
     btn.disabled = false;
@@ -1301,6 +1362,15 @@ function loadAllData() {
     dataLoaded = true;
     populateWorkshopDropdown();
     populateMonthDropdown();
+    // Pre-select level if trial completion code was used
+    if (window._kfaPresetLevel) {
+      var levelSel = document.getElementById('new-level');
+      if (levelSel) {
+        levelSel.value = window._kfaPresetLevel;
+        // Trigger filter if group and classtype already selected
+        filterBatches();
+      }
+    }
   }).catch(function(e){
     console.warn('Sheet data unavailable — running in offline/test mode', e);
     dataLoaded = true; // allow page to work with empty data
@@ -1890,9 +1960,9 @@ function initiatePayment(flow) {
         txnBox.style.display = 'block';
       }
 
-      // Submit to Portal Submissions sheet
+      // Submit to Portal and get Roll Number
       if (successId === 'new-success') {
-        submitToPortal({
+        var enrolData = {
           submissionType : 'New Enrolment',
           studentName    : name,
           parentName     : document.getElementById('new-parent').value.trim(),
@@ -1909,6 +1979,16 @@ function initiatePayment(flow) {
           amountPaid     : amount,
           transactionId  : response.razorpay_payment_id || '',
           notes          : 'Paid via website'
+        };
+        submitToPortalAndGetRollNo(enrolData, function(result) {
+          if (result && result.rollNo) {
+            var rollBox = document.getElementById('new-roll-box');
+            var rollSpan = document.getElementById('new-roll-no');
+            if (rollBox && rollSpan) {
+              rollSpan.textContent = result.rollNo;
+              rollBox.style.display = 'block';
+            }
+          }
         });
       }
 
