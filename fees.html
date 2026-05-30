@@ -124,7 +124,8 @@
 
 
 /* Batch selector cards */
-.batch-card{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;}
+.batch-card{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;user-select:none;}
+.batch-card *{pointer-events:none;}
 .batch-card:hover{border-color:var(--maroon);background:#fff;}
 .batch-card.selected{border-color:var(--maroon);background:#fff;box-shadow:0 0 0 2px rgba(123,29,46,0.12);}
 .batch-card.selected::after{content:"✓ Selected";display:block;font-size:0.70rem;color:var(--maroon);font-weight:600;margin-top:6px;letter-spacing:0.05em;}
@@ -137,8 +138,8 @@
 .success-screen{display:none;text-align:center;padding:40px 20px;}
 .success-screen.show{display:block;}
 .success-icon{font-size:3rem;margin-bottom:16px;}
-.success-screen h2{font-family:var(--fd);font-size:1.5rem;color:var(--maroon);margin-bottom:10px;}
-.success-screen p{font-size:0.88rem;color:var(--ink-soft);line-height:1.7;}
+.success-screen h2{font-family:var(--fd);font-size:1.8rem;color:var(--maroon);margin-bottom:12px;}
+.success-screen p{font-size:0.94rem;color:var(--ink-soft);line-height:1.8;}
 .success-screen .back-link{display:inline-block;margin-top:20px;font-size:0.80rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--saffron);text-decoration:none;}
   </style>
 </head>
@@ -442,8 +443,9 @@
         <!-- Trial interest success -->
         <div class="success-screen" id="new-trial-success">
           <div class="success-icon">🙏</div>
-          <h2 id="new-trial-success-heading">Thank You!</h2>
-          <p id="new-trial-success-msg">Thank you for showing your interest. We have received your details. You will receive communication regarding the next Trial session shortly.</p>
+          <h2 id="new-trial-success-heading">Trial Registration Confirmed!</h2>
+          <p id="new-trial-success-msg">Thank you for registering for the trial session. Your details have been received.</p>
+          <div id="new-trial-success-date" style="display:none;"></div>
           <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 16px;margin:14px auto;max-width:380px;text-align:left;">
             <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;"><strong>Please check this page by Friday afternoon to confirm your trial session status.</strong> We will update the session status here if there are any changes.</p>
           </div>
@@ -1078,15 +1080,39 @@ function submitTrialInterest() {
   };
 
   submitToPortal(data, function() {
-    // Update success heading/message for waitlist
+    var successScreen = document.getElementById('new-trial-success');
+    var heading = document.getElementById('new-trial-success-heading');
+    var msgEl   = document.getElementById('new-trial-success-msg');
+    var dateEl  = document.getElementById('new-trial-success-date');
+
     if (isWaitlist) {
-      document.getElementById('new-trial-success-heading').textContent = 'Added to Waitlist';
-      document.getElementById('new-trial-success-msg').textContent = 'This trial session is currently full. You have been added to the waitlist. We will reach out to you if a slot becomes available.';
+      heading.textContent = 'Added to Waitlist';
+      msgEl.textContent   = 'This trial session is currently full. You have been added to the waitlist. We will reach out to you if a slot becomes available.';
+    } else {
+      heading.textContent = 'Trial Registration Confirmed!';
+      msgEl.textContent   = 'Thank you for registering for the trial session. Your details have been received.';
     }
+    // Show session date and timing
+    if (dateEl && trialDate && trialTimings) {
+      var d = new Date(trialDate + 'T00:00:00');
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var dateStr = days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+      dateEl.innerHTML =
+        '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin:14px auto;max-width:340px;text-align:left;">' +
+        '<div style="font-size:0.72rem;font-weight:600;color:var(--ink-soft);letter-spacing:0.05em;margin-bottom:6px;">YOUR TRIAL SESSION</div>' +
+        '<div style="font-family:var(--fd);font-size:1rem;color:var(--maroon);margin-bottom:4px;">' + dateStr + '</div>' +
+        '<div style="font-size:0.82rem;color:var(--ink-soft);">' + trialTimings + ' IST</div>' +
+        '</div>';
+      dateEl.style.display = 'block';
+    }
+
     document.getElementById('new-form-wrap').style.display = 'none';
-    document.getElementById('new-trial-success').classList.add('show');
+    successScreen.classList.add('show');
+    // Scroll to top so parent sees the message
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     btn.disabled = false;
-    btn.textContent = 'Confirm Trial Interest';
+    btn.textContent = 'Confirm Trial Registration';
   });
 }
 
@@ -1285,7 +1311,7 @@ function renderBatchCards(batches) {
     var statusCls = status === 'Full' ? 'status-full' : status === 'Filling Fast' ? 'status-fast' : status === 'Limited' ? 'status-limited' : 'status-open';
     var statusDot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
     html +=
-      '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this, this.dataset.id)">' +
+      '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this, this.dataset.id)" style="cursor:pointer;">' +
         '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
         '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' ' + status + '</div>' +
       '</div>';
@@ -1296,12 +1322,15 @@ function renderBatchCards(batches) {
 }
 
 function selectBatch(el, batchId) {
+  var card = el.closest ? el.closest('.batch-card') : el;
+  if (!card) return;
+  var actualId = batchId || card.dataset.id;
   document.querySelectorAll('.batch-card').forEach(function(c){ c.classList.remove('selected'); });
-  el.classList.add('selected');
-  selectedBatch = batchId;
-  document.getElementById('new-batch-id').value = batchId;
+  card.classList.add('selected');
+  selectedBatch = actualId;
+  document.getElementById('new-batch-id').value = actualId;
   document.getElementById('new-batch-msg').textContent = '';
-  calcFirstPayment(batchId);
+  calcFirstPayment(actualId);
   // Show Trial vs Enrol choice
   var choiceDiv = document.getElementById('new-enrol-choice');
   if (choiceDiv) {
@@ -2001,6 +2030,7 @@ function initiatePayment(flow) {
       if (formWrapId) document.getElementById(formWrapId).style.display = 'none';
       document.getElementById('new-token-gate').style.display = 'none';
       document.getElementById(successId).classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     modal: {
       ondismiss: function() { /* user closed modal — do nothing */ }
