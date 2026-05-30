@@ -1202,30 +1202,36 @@ function onCountryChange() {
 // ─────────────────────────────────────────────────────────────────
 // MASTER RESET — clears all downstream batch/trial UI
 // ─────────────────────────────────────────────────────────────────
+function safeSet(id, prop, val) {
+  var el = document.getElementById(id);
+  if (el) el[prop] = val;
+}
+function safeStyle(id, prop, val) {
+  var el = document.getElementById(id);
+  if (el) el.style[prop] = val;
+}
+
 function resetBatchUI() {
-  // Batch cards
-  document.getElementById('new-batch-cards').style.display = 'none';
-  document.getElementById('new-batch-list').innerHTML = '';
-  document.getElementById('new-batch-id').value = '';
-  document.getElementById('new-batch-msg').textContent = '';
-  // Trial
-  document.getElementById('new-trial-msg').style.display = 'none';
-  document.getElementById('new-trial-session-cards').innerHTML = '<div style="padding:14px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>';
-  document.getElementById('new-trial-session-id').value = '';
-  document.getElementById('new-trial-session-date').value = '';
-  document.getElementById('new-trial-session-timings').value = '';
-  var ntfw = document.getElementById('new-trial-form-wrap'); if (ntfw) ntfw.style.display = 'none';
-  var tcon = document.getElementById('new-trial-consent'); if (tcon) tcon.checked = false;
-  var tcmsg = document.getElementById('new-trial-consent-msg'); if (tcmsg) tcmsg.textContent = '';
-  // Enrol choice + pay
-  var cd = document.getElementById('new-enrol-choice'); if (cd) { cd.style.display = 'none'; }
-  document.getElementById('new-pay-wrap').style.display = 'none';
-  // Reset radio buttons
+  safeStyle('new-batch-cards',           'display', 'none');
+  safeSet  ('new-batch-list',            'innerHTML', '');
+  safeSet  ('new-batch-id',              'value', '');
+  safeSet  ('new-batch-msg',             'textContent', '');
+  safeStyle('new-trial-msg',             'display', 'none');
+  safeSet  ('new-trial-session-cards',   'innerHTML', '<div style="padding:14px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>');
+  safeSet  ('new-trial-session-id',      'value', '');
+  safeSet  ('new-trial-session-date',    'value', '');
+  safeSet  ('new-trial-session-timings', 'value', '');
+  safeStyle('new-trial-form-wrap',       'display', 'none');
+  safeStyle('new-trial-batches',         'display', 'none');
+  safeStyle('new-enrol-choice',          'display', 'none');
+  safeStyle('new-pay-wrap',              'display', 'none');
+  safeStyle('new-individual-msg',        'display', 'none');
+  var tcon  = document.getElementById('new-trial-consent');      if (tcon)  tcon.checked  = false;
+  var tcmsg = document.getElementById('new-trial-consent-msg');  if (tcmsg) tcmsg.textContent = '';
   var radios = document.querySelectorAll('input[name="new-proceed"]');
   radios.forEach(function(r){ r.checked = false; });
-  var ctl = document.getElementById('new-choice-trial-label'); if (ctl) ctl.style.borderColor = 'var(--bdr)';
-  var cel = document.getElementById('new-choice-enrol-label'); if (cel) cel.style.borderColor = 'var(--bdr)';
-  // Selected batch
+  safeStyle('new-choice-trial-label', 'borderColor', 'var(--bdr)');
+  safeStyle('new-choice-enrol-label', 'borderColor', 'var(--bdr)');
   selectedBatch = null;
 }
 
