@@ -243,6 +243,10 @@
 
         <!-- STEP 1: Student details + batch selector (shown after token) -->
         <div id="new-form-wrap" style="display:none;">
+          <div id="new-token-confirm" style="display:none;background:#F0FFF4;border:1px solid #A5D6A7;border-radius:4px;padding:10px 16px;margin-bottom:18px;align-items:center;gap:10px;font-size:0.82rem;color:#1B5E20;">
+            <span style="font-size:1.1rem;">✓</span>
+            <span><strong>Thank you.</strong> Enrolment details received. Please complete the form below.</span>
+          </div>
           <span class="lbl">New Student Registration</span>
           <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Enrolment &amp; Payment</h2>
 
@@ -298,6 +302,24 @@
                 </select>
               </div>
               <div class="fg-field">
+                <label for="new-gender">Gender *</label>
+                <select id="new-gender" onchange="onGenderChange()">
+                  <option value="">— Select —</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div id="new-gender-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:4px;">
+              <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">
+                <strong>Our current batches are open for female students.</strong><br>
+                <span style="font-size:0.78rem;color:var(--ink-soft);">We are working on expanding our programme. Please WhatsApp us to register your interest — we will reach out as soon as batches are available.</span>
+              </p>
+              <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes+at+Kalpavruksha.+Please+let+me+know+when+batches+are+available." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Register Interest</a>
+            </div>
+            <div id="new-classtype-row" style="display:none;" class="fg-row">
+              <div class="fg-field" style="flex:1;">
                 <label for="new-classtype">Class Type *</label>
                 <select id="new-classtype" onchange="filterBatches()">
                   <option value="">— Select —</option>
@@ -306,12 +328,29 @@
                 </select>
               </div>
             </div>
+            </div>
+            <div class="fg-field" id="new-sessiontype-wrap" style="display:none;">
+              <label for="new-sessiontype">Session Type *</label>
+              <select id="new-sessiontype" onchange="onSessionTypeChange()">
+                <option value="">— Select —</option>
+                <option value="Group">Group Session</option>
+                <option value="Individual">Individual Session</option>
+              </select>
+              <span class="hint" id="new-sessiontype-hint">All our classes are conducted in small groups</span>
+            </div>
+            <div id="new-individual-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:4px;">
+              <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">
+                <strong>Individual sessions are currently not open for enrolment.</strong><br>
+                <span style="font-size:0.78rem;color:var(--ink-soft);">Please WhatsApp us to check availability or join the waitlist.</span>
+              </p>
+              <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Individual+sessions+at+Kalpavruksha." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Enquire</a>
+            </div>
 
             <div class="fg-field" id="new-level-wrap" style="display:none;">
               <label for="new-level">Learning Stage *</label>
               <select id="new-level" onchange="filterBatches()">
                 <option value="">— Select —</option>
-                <option value="Beginner">Foundation</option>
+                <option value="Foundation">Foundation</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Advanced">Advanced</option>
               </select>
@@ -334,9 +373,35 @@
 
             <!-- Available batch cards -->
             <div id="new-batch-cards" style="display:none;">
-              <div id="new-batch-list" style="display:grid;gap:10px;margin-bottom:16px;"></div>
+              <div id="new-batch-list" style="display:grid;gap:10px;margin-bottom:12px;"></div>
               <input type="hidden" id="new-batch-id" value="">
               <span class="hint err" id="new-batch-msg"></span>
+              <!-- Trial vs Enrol radio choice -->
+              <div id="new-enrol-choice" style="display:none;margin-top:14px;">
+                <p style="font-size:0.78rem;font-weight:600;color:var(--ink);letter-spacing:0.04em;margin-bottom:10px;">HOW WOULD YOU LIKE TO PROCEED?</p>
+                <div style="display:grid;gap:8px;">
+                  <label id="new-choice-trial-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
+                    <input type="radio" name="new-proceed" value="trial" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+                    <div>
+                      <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">🌿 Book a Free Trial Class</div>
+                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Attend one session at no cost before committing. We will confirm your slot on WhatsApp.</div>
+                    </div>
+                  </label>
+                  <label id="new-choice-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
+                    <input type="radio" name="new-proceed" value="enrol" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+                    <div>
+                      <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">✅ Enrol &amp; Pay Now</div>
+                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Block your batch seat by paying the registration fee. Monthly class fee applies from your enrolment date.</div>
+                    </div>
+                  </label>
+                </div>
+                <!-- Trial confirmation form -->
+                <div id="new-trial-wa" style="display:none;margin-top:12px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
+                  <p style="font-size:0.82rem;font-weight:600;color:var(--ink);margin-bottom:4px;">Confirm Your Trial Interest</p>
+                  <p style="font-size:0.76rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;">Please note: Trial sessions are conducted across batches and groups — not specific to the batch selected above.</p>
+                  <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Interest</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -353,16 +418,37 @@
             </div>
             <input type="hidden" id="new-amount" value="3000">
             <input type="hidden" id="new-enrol-desc" value="">
+            <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin-bottom:14px;">
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="new-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
+                <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">
+                  I confirm that all details provided above are true and accurate to the best of my knowledge. I understand that enrolment is subject to verification and school confirmation, and that the school reserves the right to reassess or cancel enrolment if the information provided is found to be inaccurate or inconsistent. I agree that registration fees paid are non-refundable under any circumstances.
+                </span>
+              </label>
+              <span class="hint err" id="new-consent-msg" style="display:block;margin-top:6px;"></span>
+            </div>
             <button class="pay-btn" id="new-pay-btn" onclick="initiatePayment('new')">Pay Registration Fee</button>
             <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
         </div>
 
         <!-- Success screen -->
+        <!-- Trial interest success -->
+        <div class="success-screen" id="new-trial-success">
+          <div class="success-icon">🙏</div>
+          <h2>Thank You!</h2>
+          <p>Thank you for showing your interest. We have received your details.<br>You will receive communication regarding the next Trial session shortly.</p>
+          <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:12px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
+            <strong>Please note:</strong> Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.
+          </p>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+
+        <!-- Enrolment payment success -->
         <div class="success-screen" id="new-success">
           <div class="success-icon">🙏</div>
-          <h2>Payment Received</h2>
-          <p>Thank you for registering with Kalpavruksha School of Fine Arts.<br>We will be in touch shortly to confirm your batch slot and class details.</p>
+          <h2>Enrolment Received</h2>
+          <p>Thank you for showing your interest. We have received your enrolment details.<br>Please reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a> in case you need any other information.</p>
           <div id="new-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
             <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
             <span id="new-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
@@ -832,6 +918,9 @@ function verifyToken() {
   msg.textContent = '';
   document.getElementById('new-token-gate').style.display = 'none';
   document.getElementById('new-form-wrap').style.display = 'block';
+  // Show confirmation banner
+  var banner = document.getElementById('new-token-confirm');
+  if (banner) { banner.style.display = 'flex'; setTimeout(function(){ banner.style.display = 'none'; }, 4000); }
   // Default enrolment date to today
   var td = new Date(); var mm = String(td.getMonth()+1).padStart(2,'0'); var dd = String(td.getDate()).padStart(2,'0');
   document.getElementById('new-enrol-date').value = td.getFullYear() + '-' + mm + '-' + dd;
@@ -842,6 +931,104 @@ function verifyToken() {
 // BATCH SELECTOR
 // ─────────────────────────────────────────────────────────────────
 var selectedBatch = null;
+
+function onGenderChange() {
+  var gender = document.getElementById('new-gender').value;
+  var genderMsg   = document.getElementById('new-gender-msg');
+  var classtypeRow = document.getElementById('new-classtype-row');
+  var sessionWrap  = document.getElementById('new-sessiontype-wrap');
+  // Reset downstream
+  document.getElementById('new-level-wrap').style.display = 'none';
+  document.getElementById('new-batch-cards').style.display = 'none';
+  document.getElementById('new-trial-msg').style.display = 'none';
+  document.getElementById('new-trial-batches').style.display = 'none';
+  document.getElementById('new-pay-wrap').style.display = 'none';
+  if (gender === 'Male' || gender === 'Other') {
+    genderMsg.style.display = 'block';
+    classtypeRow.style.display = 'none';
+    sessionWrap.style.display = 'none';
+  } else if (gender === 'Female') {
+    genderMsg.style.display = 'none';
+    classtypeRow.style.display = 'flex';
+    sessionWrap.style.display = 'block';
+  } else {
+    genderMsg.style.display = 'none';
+    classtypeRow.style.display = 'none';
+    sessionWrap.style.display = 'none';
+  }
+}
+
+function submitTrialInterest() {
+  // Validate basic fields are filled
+  var n   = document.getElementById('new-name').value.trim();
+  var par = document.getElementById('new-parent').value.trim();
+  var ph  = document.getElementById('new-phone').value.trim();
+  var em  = document.getElementById('new-email').value.trim();
+  var batch = document.getElementById('new-batch-id').value;
+
+  if (!isNotEmpty(n)) { alert('Please enter the student name.'); return; }
+  if (!isNotEmpty(par)) { alert('Please enter the parent / guardian name.'); return; }
+  if (!isValidPhone(ph)) { alert('Please enter a valid 10-digit mobile number starting with 6-9.'); return; }
+  if (!isValidEmail(em)) { alert('Please enter a valid email address.'); return; }
+  if (!batch) { alert('Please select a batch preference above before confirming trial interest.'); return; }
+
+  var btn = document.getElementById('new-trial-confirm-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Hide form, show trial success
+  document.getElementById('new-form-wrap').style.display = 'none';
+  document.getElementById('new-trial-success').classList.add('show');
+
+  btn.disabled = false;
+  btn.textContent = 'Confirm Trial Interest';
+}
+
+function onProceedChange(radio) {
+  var trialWa  = document.getElementById('new-trial-wa');
+  var payWrap  = document.getElementById('new-pay-wrap');
+  var choiceTrialLabel = document.getElementById('new-choice-trial-label');
+  var choiceEnrolLabel = document.getElementById('new-choice-enrol-label');
+  if (radio.value === 'trial') {
+    trialWa.style.display = 'block';
+    payWrap.style.display = 'none';
+    choiceTrialLabel.style.borderColor = 'var(--maroon)';
+    choiceEnrolLabel.style.borderColor = 'var(--bdr)';
+  } else {
+    trialWa.style.display = 'none';
+    payWrap.style.display = 'block';
+    choiceEnrolLabel.style.borderColor = 'var(--maroon)';
+    choiceTrialLabel.style.borderColor = 'var(--bdr)';
+  }
+}
+
+function onSessionTypeChange() {
+  var val = document.getElementById('new-sessiontype').value;
+  var indMsg   = document.getElementById('new-individual-msg');
+  var levelWrap = document.getElementById('new-level-wrap');
+  var batchCards = document.getElementById('new-batch-cards');
+  var trialMsg  = document.getElementById('new-trial-msg');
+  var trialBatches = document.getElementById('new-trial-batches');
+  var payWrap  = document.getElementById('new-pay-wrap');
+  if (val === 'Individual') {
+    indMsg.style.display = 'block';
+    levelWrap.style.display = 'none';
+    batchCards.style.display = 'none';
+    trialMsg.style.display = 'none';
+    trialBatches.style.display = 'none';
+    payWrap.style.display = 'none';
+  } else if (val === 'Group') {
+    indMsg.style.display = 'none';
+    // Re-run filterBatches to show appropriate content
+    filterBatches();
+  } else {
+    indMsg.style.display = 'none';
+    levelWrap.style.display = 'none';
+    batchCards.style.display = 'none';
+    trialMsg.style.display = 'none';
+    payWrap.style.display = 'none';
+  }
+}
 
 function onEnrolDateChange() {
   // Recalculate if a batch is already selected
@@ -877,6 +1064,8 @@ function onCountryChange() {
 }
 
 function filterBatches() {
+  var sessionType = document.getElementById('new-sessiontype') ? document.getElementById('new-sessiontype').value : 'Group';
+  if (sessionType === 'Individual' || sessionType === '') return;
   var group     = document.getElementById('new-group').value;
   var classtype = document.getElementById('new-classtype').value;
   var level     = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
@@ -938,7 +1127,7 @@ function filterBatches() {
   var filtered = DATA.batches.filter(function(b) {
     // Check Is Open defensively — handle column name variations
     var isOpen = b['Is Open'] || b['IsOpen'] || 'yes';
-    return b['Website Level'] === 'Beginner'
+    return b['Website Level'] === 'Foundation'
         && b['Group Type']    === group
         && b['Class Type']    === classtype
         && isOpen.toLowerCase() === 'yes';
@@ -976,6 +1165,7 @@ function renderBatchCards(batches) {
   selectedBatch = null;
   document.getElementById('new-batch-id').value = '';
   document.getElementById('new-pay-wrap').style.display = 'none';
+  var cd = document.getElementById('new-enrol-choice'); if (cd) cd.style.display = 'none';
 
   if (!batches.length) {
     container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:20px;text-align:center;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time.<br><a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
@@ -1006,8 +1196,19 @@ function selectBatch(el, batchId) {
   document.getElementById('new-batch-id').value = batchId;
   document.getElementById('new-batch-msg').textContent = '';
   calcFirstPayment(batchId);
-  document.getElementById('new-pay-wrap').style.display = 'block';
-  document.getElementById('new-pay-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // Show Trial vs Enrol choice
+  var choiceDiv = document.getElementById('new-enrol-choice');
+  if (choiceDiv) {
+    choiceDiv.style.display = 'block';
+    // Reset radio selection
+    var radios = choiceDiv.querySelectorAll('input[type=radio]');
+    radios.forEach(function(r){ r.checked = false; });
+    document.getElementById('new-trial-wa').style.display = 'none';
+    document.getElementById('new-pay-wrap').style.display = 'none';
+    document.getElementById('new-choice-trial-label').style.borderColor = 'var(--bdr)';
+    document.getElementById('new-choice-enrol-label').style.borderColor = 'var(--bdr)';
+    choiceDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -1515,13 +1716,33 @@ function initiatePayment(flow) {
     var country = document.getElementById('new-country').value;
     var batchId = document.getElementById('new-batch-id').value;
 
-    if (!isNotEmpty(n) || !isNotEmpty(par) || !isValidPhone(ph) || !isValidEmail(em)) {
-      alert('Please fill in all required fields correctly.');
-      return;
-    }
-    if (!country) { alert('Please select your country.'); return; }
+    // Validate each field with specific messages
+    if (!isNotEmpty(n)) { alert('Please enter the student name.'); document.getElementById('new-name').focus(); return; }
+    if (/\d/.test(n)) { alert('Student name should not contain numbers.'); document.getElementById('new-name').focus(); return; }
+    if (!isNotEmpty(par)) { alert('Please enter the parent / guardian name.'); document.getElementById('new-parent').focus(); return; }
+    if (/\d/.test(par)) { alert('Parent name should not contain numbers.'); document.getElementById('new-parent').focus(); return; }
+    if (!isValidPhone(ph)) { alert('Please enter a valid 10-digit mobile number starting with 6, 7, 8 or 9.'); document.getElementById('new-phone').focus(); return; }
+    if (!isValidEmail(em)) { alert('Please enter a valid email address.'); document.getElementById('new-email').focus(); return; }
+    if (!country) { alert('Please select your country.'); document.getElementById('new-country').focus(); return; }
+    var gender = document.getElementById('new-gender').value;
+    if (!gender) { alert('Please select the gender.'); document.getElementById('new-gender').focus(); return; }
+    var groupVal = document.getElementById('new-group').value;
+    if (!groupVal) { alert('Please select who is joining — Kid or Adult.'); document.getElementById('new-group').focus(); return; }
+    var sessionType = document.getElementById('new-sessiontype').value;
+    if (!sessionType) { alert('Please select a session type — Group or Individual.'); document.getElementById('new-sessiontype').focus(); return; }
+    var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
+    if (!classtype) { alert('Please select the class type — Online or Offline.'); return; }
+    var levelVal = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
+    if (!levelVal) { alert('Please select a learning stage.'); return; }
     var enrolDate = document.getElementById('new-enrol-date').value;
     if (!enrolDate) { alert('Please select a date of enrolment.'); return; }
+    var consent = document.getElementById('new-consent');
+    if (consent && !consent.checked) {
+      document.getElementById('new-consent-msg').textContent = 'Please read and accept the declaration to proceed.';
+      consent.closest('div').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    if (consent) document.getElementById('new-consent-msg').textContent = '';
     if (country === 'India' && !batchId) {
       document.getElementById('new-batch-msg').textContent = 'Please select a batch to proceed.';
       document.getElementById('new-batch-cards').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
