@@ -1167,10 +1167,19 @@ function onEnrolDateChange() {
 function onCountryChange() {
   var country = document.getElementById('new-country').value;
   var batchWrap = document.getElementById('new-batch-wrap');
+  // Full reset including gender-dependent fields
   resetBatchUI();
+  document.getElementById('new-gender').value = '';
+  document.getElementById('new-group').value  = '';
+  document.getElementById('new-classtype-row').style.display  = 'none';
+  document.getElementById('new-sessiontype-wrap').style.display = 'none';
+  document.getElementById('new-level-wrap').style.display     = 'none';
+  document.getElementById('new-gender-msg').style.display     = 'none';
+  var ses = document.getElementById('new-sessiontype'); if (ses) ses.value = '';
+  var lev = document.getElementById('new-level');       if (lev) lev.value = '';
   if (country === 'India') {
     batchWrap.style.display = 'block';
-    filterBatches();
+    // Don't call filterBatches — user must select gender first
   } else if (country === 'International') {
     batchWrap.style.display = 'none';
     document.getElementById('new-pay-wrap').style.display = 'none';
