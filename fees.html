@@ -367,8 +367,6 @@
               <input type="hidden" id="new-batch-id" value="">
               <span class="hint err" id="new-batch-msg"></span>
 
-              <!-- Trial session cards for Intermediate/Advanced -->
-              <div id="new-trial-session-cards" style="display:none;margin-top:10px;display:grid;gap:10px;"></div>
               <input type="hidden" id="new-trial-session-id" value="">
               <input type="hidden" id="new-trial-session-date" value="">
               <input type="hidden" id="new-trial-session-timings" value="">
@@ -1124,6 +1122,13 @@ function getNextFridays(sessions) {
 function renderTrialSessionCards(classtype) {
   var container = document.getElementById('new-trial-session-cards');
   if (!container) return;
+  // Always make visible first
+  container.style.display = 'grid';
+  if (!dataLoaded) {
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>';
+    loadAllData().then(function() { renderTrialSessionCards(classtype); });
+    return;
+  }
   if (!DATA.trialSessions || !DATA.trialSessions.length) {
     container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions available at this time. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
     return;
@@ -1456,7 +1461,8 @@ function resetBatchUI() {
   safeSet  ('new-batch-id',              'value', '');
   safeSet  ('new-batch-msg',             'textContent', '');
   safeStyle('new-trial-msg',             'display', 'none');
-  safeSet  ('new-trial-session-cards',   'innerHTML', '<div style="padding:14px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>');
+  safeSet  ('new-trial-session-cards',   'innerHTML', '');
+  safeStyle('new-trial-session-cards',   'display', 'none');
   safeSet  ('new-trial-session-id',      'value', '');
   safeSet  ('new-trial-session-date',    'value', '');
   safeSet  ('new-trial-session-timings', 'value', '');
@@ -1497,7 +1503,6 @@ function filterBatches() {
   if (!level) return;
 
   // Step 3: Load batches for all levels
-  // Enrol is locked for Intermediate/Advanced unless _kfaEnrolEnabled
   var isTrialLevel = (level === 'Intermediate' || level === 'Advanced') && !window._kfaEnrolEnabled;
   setEnrolOption(isTrialLevel);
 
