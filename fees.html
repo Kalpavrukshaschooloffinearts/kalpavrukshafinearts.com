@@ -221,32 +221,14 @@
         <!-- STEP 0: Token gate -->
         <div id="new-token-gate">
           <span class="lbl">New Student Enrolment</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:18px">Welcome to Kalpavruksha</h2>
-
-          <!-- Radio: New Enquiry vs Trial Completed -->
-          <div style="display:grid;gap:10px;margin-bottom:20px;">
-            <label id="new-gate-enquiry-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
-              <input type="radio" name="new-gate-type" value="enquiry" onchange="onGateTypeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
-              <div>
-                <div style="font-size:0.90rem;font-weight:600;color:var(--ink);">New Enquiry</div>
-                <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.6;">First time here? Enter the access code shared by the school.<br>
-                  <span style="font-size:0.72rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+enrolling+at+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> to get started. 🌿 First trial is <strong>FREE</strong></span>
-                </div>
-              </div>
-            </label>
-            <label id="new-gate-trial-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
-              <input type="radio" name="new-gate-type" value="trial" onchange="onGateTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
-              <div>
-                <div style="font-size:0.90rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
-                <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.6;">Already attended a trial class? Enter the enrolment code shared by the school to proceed.</div>
-              </div>
-            </label>
-          </div>
-
-          <!-- Code entry — same field, label changes based on selection -->
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:6px">New to Kalpavruksha?</h2>
+          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">
+            To enrol, please enter the access code shared by the school.<br>
+            <span style="font-size:0.78rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+enrolling+at+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> to get started.</span>
+          </p>
           <div class="lookup-row">
             <div class="fg-field">
-              <label for="new-token" id="new-token-label">Access Code *</label>
+              <label for="new-token">Access Code *</label>
               <input type="text" id="new-token" placeholder="Enter code" autocomplete="off"
                 onkeydown="if(event.key==='Enter'){event.preventDefault();verifyToken();}"
                 style="text-transform:uppercase;letter-spacing:0.1em;">
@@ -254,13 +236,50 @@
             <button class="lookup-btn" onclick="verifyToken()">Verify</button>
           </div>
           <span class="hint err" id="new-token-msg" style="display:block;margin-top:-8px;"></span>
+          <div class="form-divider" style="margin-top:20px;"></div>
+          <p style="font-size:0.76rem;color:var(--ink-soft);text-align:center;line-height:1.6;">
+            🌿 First trial session is <strong>FREE</strong> — <a href="contact.html" style="color:var(--saffron);">Book a trial class</a>
+          </p>
         </div>
 
         <!-- STEP 1: Student details + batch selector (shown after token) -->
         <div id="new-form-wrap" style="display:none;">
 
           <span class="lbl">New Student Registration</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Enrolment &amp; Payment</h2>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:16px">Enrolment &amp; Payment</h2>
+
+          <!-- Trial completed upgrade — shown only for KFA2014 new enquiry token -->
+          <div id="new-trial-upgrade" style="display:none;margin-bottom:20px;">
+            <div style="display:grid;gap:8px;">
+              <label id="new-upgrade-no-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:12px 16px;cursor:pointer;">
+                <input type="radio" name="new-upgrade" value="new" onchange="onUpgradeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600;color:var(--ink);">New to Kalpavruksha</div>
+                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:1px;">Select a batch and book a free trial or enrol directly.</div>
+                </div>
+              </label>
+              <label id="new-upgrade-yes-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 16px;cursor:pointer;">
+                <input type="radio" name="new-upgrade" value="trial_done" onchange="onUpgradeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
+                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:1px;">Already attended a trial? Enter your enrolment code to unlock payment.</div>
+                </div>
+              </label>
+            </div>
+            <!-- Enrolment code entry — shown when trial_done selected -->
+            <div id="new-upgrade-code-wrap" style="display:none;margin-top:12px;">
+              <div class="lookup-row">
+                <div class="fg-field">
+                  <label for="new-upgrade-code">Enrolment Code *</label>
+                  <input type="text" id="new-upgrade-code" placeholder="Enter enrolment code" autocomplete="off"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();verifyUpgradeCode();}"
+                    style="text-transform:uppercase;letter-spacing:0.1em;">
+                </div>
+                <button class="lookup-btn" onclick="verifyUpgradeCode()">Verify</button>
+              </div>
+              <span class="hint err" id="new-upgrade-code-msg" style="display:block;margin-top:-8px;"></span>
+            </div>
+          </div>
 
           <!-- Student details -->
           <div class="fg-row">
@@ -1001,6 +1020,48 @@ function verifyToken() {
 // BATCH SELECTOR
 // ─────────────────────────────────────────────────────────────────
 var selectedBatch = null;
+
+function onUpgradeChange(radio) {
+  var noLabel   = document.getElementById('new-upgrade-no-label');
+  var yesLabel  = document.getElementById('new-upgrade-yes-label');
+  var codeWrap  = document.getElementById('new-upgrade-code-wrap');
+  var codeMsg   = document.getElementById('new-upgrade-code-msg');
+  if (radio.value === 'trial_done') {
+    noLabel.style.borderColor  = 'var(--bdr)';  noLabel.style.borderWidth  = '1px';
+    yesLabel.style.borderColor = 'var(--maroon)'; yesLabel.style.borderWidth = '2px';
+    codeWrap.style.display = 'block';
+  } else {
+    noLabel.style.borderColor  = 'var(--maroon)'; noLabel.style.borderWidth  = '2px';
+    yesLabel.style.borderColor = 'var(--bdr)';  yesLabel.style.borderWidth  = '1px';
+    codeWrap.style.display = 'none';
+    if (codeMsg) codeMsg.textContent = '';
+    // Reset to non-trial mode
+    window._kfaPresetLevel = null;
+    setEnrolOption(true); // re-lock enrol
+    resetBatchUI();
+  }
+}
+
+function verifyUpgradeCode() {
+  var val = document.getElementById('new-upgrade-code').value.trim().toUpperCase();
+  var msg = document.getElementById('new-upgrade-code-msg');
+  if (!val) { msg.textContent = 'Please enter your enrolment code.'; return; }
+  if (!TRIAL_CODES[val]) {
+    msg.textContent = 'Invalid enrolment code. Please check the code shared by the school.';
+    return;
+  }
+  msg.textContent = '';
+  msg.style.color = '#1B5E20';
+  msg.textContent = '✓ Code verified — Enrol & Pay Now is unlocked for you.';
+  window._kfaPresetLevel = TRIAL_CODES[val];
+  // Pre-select level and unlock enrol
+  var levelSel = document.getElementById('new-level');
+  if (levelSel && window._kfaPresetLevel) {
+    levelSel.value = window._kfaPresetLevel;
+    filterBatches();
+  }
+  setEnrolOption(false); // unlock enrol for all levels
+}
 
 function onGenderChange() {
   var gender = document.getElementById('new-gender').value;
