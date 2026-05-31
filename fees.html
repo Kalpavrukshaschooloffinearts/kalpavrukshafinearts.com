@@ -1520,7 +1520,10 @@ function filterBatches() {
   if (!level) return;
 
   // Step 3: Load batches for all levels
-  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced') && !window._kfaEnrolEnabled;
+  // Foundation always unlocked. Intermediate/Advanced locked unless correct trial code used.
+  var presetLevel = window._kfaPresetLevel || null;
+  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced')
+                  && !(presetLevel === level || presetLevel === 'Intermediate' && level === 'Intermediate' || presetLevel === 'Advanced' && level === 'Advanced');
   setEnrolOption(isTrialLevel);
 
   if (!dataLoaded) {
@@ -1620,7 +1623,11 @@ function selectBatch(el, batchId) {
     var el = document.getElementById(id);
     if (el) { el.style.borderColor='var(--bdr)'; el.style.borderWidth='1px'; }
   });
-  setEnrolOption(!window._kfaEnrolEnabled);
+  // Recalculate trial lock based on selected level vs preset
+  var curLevel = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
+  var pre = window._kfaPresetLevel || null;
+  var locked = (curLevel === 'Intermediate' || curLevel === 'Advanced') && pre !== curLevel;
+  setEnrolOption(locked);
   // Show intent options
   safeStyle('new-entry-options', 'display', 'block');
   var eo = document.getElementById('new-entry-options');
