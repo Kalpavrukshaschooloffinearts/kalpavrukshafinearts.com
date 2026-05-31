@@ -418,6 +418,28 @@
             <span class="hint err" id="new-entry-msg" style="display:block;margin-top:8px;"></span>
           </div>
 
+          <!-- Trial session form — shown when Book Trial selected -->
+          <div id="new-trial-form-wrap" style="display:none;margin-top:12px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
+            <p id="new-trial-type-note" style="font-size:0.82rem;color:var(--ink);margin-bottom:8px;font-weight:600;"></p>
+            <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:10px 14px;margin-bottom:12px;">
+              <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;"><strong>Please check this page by Friday afternoon to confirm your trial session status.</strong> We will update the session status here if there are any changes.</p>
+            </div>
+            <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">Note: Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.</p>
+            <!-- Trial session date cards -->
+            <div id="new-trial-session-cards" style="display:none;gap:10px;margin-bottom:12px;"></div>
+            <input type="hidden" id="new-trial-session-id" value="">
+            <input type="hidden" id="new-trial-session-date" value="">
+            <input type="hidden" id="new-trial-session-timings" value="">
+            <span class="hint err" id="new-trial-session-msg" style="display:block;margin-bottom:8px;"></span>
+            <div style="margin-bottom:14px;">
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="new-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
+                <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">I confirm that all details provided are true and accurate to the best of my knowledge. I understand that trial class scheduling is subject to availability and school confirmation, and that the school reserves the right to reassess enrolment if information provided is found to be inaccurate or inconsistent.</span>
+              </label>
+              <span class="hint err" id="new-trial-consent-msg" style="display:block;margin-top:4px;"></span>
+            </div>
+            <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Registration</button>
+          </div>
 
           <!-- Fee + payment -->
           <div id="new-pay-wrap" style="display:none;">
@@ -1352,8 +1374,8 @@ function submitTrialInterest() {
 function onProceedChange(radio) {
   var trialForm = document.getElementById('new-trial-form-wrap');
   var payWrap   = document.getElementById('new-pay-wrap');
-  var choiceTrialLabel = document.getElementById('new-choice-trial-label');
-  var choiceEnrolLabel = document.getElementById('new-choice-enrol-label');
+  var choiceTrialLabel = null;
+  var choiceEnrolLabel = null;
   var level = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
 
   if (radio.value === 'trial') {
@@ -1362,8 +1384,7 @@ function onProceedChange(radio) {
     var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
     renderTrialSessionCards(classtype);
     if (payWrap)   payWrap.style.display   = 'none';
-    if (choiceTrialLabel) choiceTrialLabel.style.borderColor = 'var(--maroon)';
-    if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--bdr)';
+
   } else {
     // Block enrol if Intermediate/Advanced
     var enrolRadio = document.getElementById('new-enrol-radio');
@@ -1374,8 +1395,6 @@ function onProceedChange(radio) {
     }
     if (trialForm) trialForm.style.display = 'none';
     if (payWrap)   payWrap.style.display   = 'block';
-    if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--maroon)';
-    if (choiceTrialLabel) choiceTrialLabel.style.borderColor = 'var(--bdr)';
   }
 }
 
@@ -1385,7 +1404,6 @@ function onSessionTypeChange() {
   var levelWrap = document.getElementById('new-level-wrap');
   var batchCards = document.getElementById('new-batch-cards');
   var trialMsg  = document.getElementById('new-trial-msg');
-  var trialBatches = document.getElementById('new-trial-batches');
   var payWrap  = document.getElementById('new-pay-wrap');
   resetBatchUI();
   if (val === 'Individual') {
@@ -1467,7 +1485,7 @@ function resetBatchUI() {
   safeSet  ('new-trial-session-date',    'value', '');
   safeSet  ('new-trial-session-timings', 'value', '');
   safeStyle('new-trial-form-wrap',       'display', 'none');
-  safeStyle('new-trial-batches',         'display', 'none');
+
   safeStyle('new-enrol-choice',          'display', 'none');
   safeStyle('new-pay-wrap',              'display', 'none');
   safeStyle('new-individual-msg',        'display', 'none');
@@ -1555,7 +1573,7 @@ function renderBatchCards(batches) {
   selectedBatch = null;
   document.getElementById('new-batch-id').value = '';
   document.getElementById('new-pay-wrap').style.display = 'none';
-  var cd = document.getElementById('new-enrol-choice'); if (cd) cd.style.display = 'none';
+  safeStyle('new-entry-options', 'display', 'none');
 
   if (!batches.length) {
     container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:20px;text-align:center;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time.<br><a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
@@ -1589,19 +1607,25 @@ function selectBatch(el, batchId) {
   document.getElementById('new-batch-id').value = actualId;
   document.getElementById('new-batch-msg').textContent = '';
   calcFirstPayment(actualId);
-  // Show Trial vs Enrol choice
-  var choiceDiv = document.getElementById('new-enrol-choice');
-  if (choiceDiv) {
-    choiceDiv.style.display = 'block';
-    // Reset radio selection
-    var radios = choiceDiv.querySelectorAll('input[type=radio]');
-    radios.forEach(function(r){ r.checked = false; });
-    var ntf = document.getElementById('new-trial-form-wrap'); if(ntf) ntf.style.display = 'none';
-    document.getElementById('new-pay-wrap').style.display = 'none';
-    document.getElementById('new-choice-trial-label').style.borderColor = 'var(--bdr)';
-    document.getElementById('new-choice-enrol-label').style.borderColor = 'var(--bdr)';
-    choiceDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+  // Reset downstream
+  safeStyle('new-trial-form-wrap',      'display', 'none');
+  safeStyle('new-pay-wrap',             'display', 'none');
+  safeStyle('new-trial-done-code-wrap', 'display', 'none');
+  safeStyle('new-trial-session-cards',  'display', 'none');
+  safeSet  ('new-trial-session-cards',  'innerHTML', '');
+  safeSet  ('new-entry-msg',            'textContent', '');
+  safeSet  ('new-trial-done-msg',       'textContent', '');
+  // Reset radio buttons
+  document.querySelectorAll('input[name="new-entry-type"]').forEach(function(r){ r.checked = false; });
+  ['new-opt-trial-label','new-opt-enrol-label','new-opt-direct-label'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) { el.style.borderColor='var(--bdr)'; el.style.borderWidth='1px'; }
+  });
+  setEnrolOption(!window._kfaEnrolEnabled);
+  // Show intent options
+  safeStyle('new-entry-options', 'display', 'block');
+  var eo = document.getElementById('new-entry-options');
+  if (eo) eo.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
 // ─────────────────────────────────────────────────────────────────
