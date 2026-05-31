@@ -1050,10 +1050,14 @@ function onEntryTypeChange(radio) {
   safeStyle('new-trial-done-code-wrap', 'display', radio.value === 'trial_done' ? 'block' : 'none');
 
   if (radio.value === 'trial') {
-    // Show trial session selector
+    // Show trial session selector for all levels
     var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
     safeStyle('new-trial-form-wrap', 'display', 'block');
-    renderTrialSessionCards(classtype);
+    if (!dataLoaded) {
+      loadAllData().then(function() { renderTrialSessionCards(classtype); });
+    } else {
+      renderTrialSessionCards(classtype);
+    }
 
   } else if (radio.value === 'trial_done') {
     // Code entry shown inline — wait for verify
@@ -1296,9 +1300,12 @@ function submitTrialInterest() {
   var trialTimings   = document.getElementById('new-trial-session-timings') ? document.getElementById('new-trial-session-timings').value : '';
   // For Foundation, batch must be selected
   var levelVal = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
-  if (levelVal === 'Foundation' && !batch) { alert('Please select a batch preference above before confirming trial interest.'); return; }
-  if ((levelVal === 'Intermediate' || levelVal === 'Advanced') && !trialSessionId) {
-    document.getElementById('new-trial-session-msg').textContent = 'Please select a trial session above.';
+  if (!batch && levelVal === 'Foundation') { alert('Please select a batch preference above before confirming trial interest.'); return; }
+  if (!trialSessionId) {
+    var tsm = document.getElementById('new-trial-session-msg');
+    if (tsm) tsm.textContent = 'Please select a trial session date above.';
+    var tsc = document.getElementById('new-trial-session-cards');
+    if (tsc) tsc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return;
   }
   var trialConsent = document.getElementById('new-trial-consent');
