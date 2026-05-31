@@ -221,14 +221,32 @@
         <!-- STEP 0: Token gate -->
         <div id="new-token-gate">
           <span class="lbl">New Student Enrolment</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:6px">New to Kalpavruksha?</h2>
-          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">
-            To enrol, please enter the access code shared by the school.<br>
-            <span style="font-size:0.78rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+enrolling+at+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> to get started.</span>
-          </p>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:18px">Welcome to Kalpavruksha</h2>
+
+          <!-- Radio: New Enquiry vs Trial Completed -->
+          <div style="display:grid;gap:10px;margin-bottom:20px;">
+            <label id="new-gate-enquiry-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
+              <input type="radio" name="new-gate-type" value="enquiry" onchange="onGateTypeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
+              <div>
+                <div style="font-size:0.90rem;font-weight:600;color:var(--ink);">New Enquiry</div>
+                <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.6;">First time here? Enter the access code shared by the school.<br>
+                  <span style="font-size:0.72rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+enrolling+at+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> to get started. 🌿 First trial is <strong>FREE</strong></span>
+                </div>
+              </div>
+            </label>
+            <label id="new-gate-trial-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
+              <input type="radio" name="new-gate-type" value="trial" onchange="onGateTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+              <div>
+                <div style="font-size:0.90rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
+                <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.6;">Already attended a trial class? Enter the enrolment code shared by the school to proceed.</div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Code entry — same field, label changes based on selection -->
           <div class="lookup-row">
             <div class="fg-field">
-              <label for="new-token">Access Code *</label>
+              <label for="new-token" id="new-token-label">Access Code *</label>
               <input type="text" id="new-token" placeholder="Enter code" autocomplete="off"
                 onkeydown="if(event.key==='Enter'){event.preventDefault();verifyToken();}"
                 style="text-transform:uppercase;letter-spacing:0.1em;">
@@ -236,10 +254,6 @@
             <button class="lookup-btn" onclick="verifyToken()">Verify</button>
           </div>
           <span class="hint err" id="new-token-msg" style="display:block;margin-top:-8px;"></span>
-          <div class="form-divider" style="margin-top:20px;"></div>
-          <p style="font-size:0.76rem;color:var(--ink-soft);text-align:center;line-height:1.6;">
-            🌿 First trial session is <strong>FREE</strong> — <a href="contact.html" style="color:var(--saffron);">Book a trial class</a>
-          </p>
         </div>
 
         <!-- STEP 1: Student details + batch selector (shown after token) -->
