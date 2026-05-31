@@ -799,7 +799,7 @@ var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0
 var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1860368087&single=true&output=csv';
 var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=159984302&single=true&output=csv';
 var SHEET_TRIAL_CSV     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=321963845&single=true&output=csv';
-var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbyXvNGmemUhFn9XsWIJYXEYounKFpiPD1pVW4w0vfSNC22GB_lcxtjKljKYLk0I5Oc/exec';
+var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbzr_tCedgOh3KI67ebdntIAU5-gISoRZvH1QNTiZfEs95pFUdYDquoiOywfvDbRywM/exec';
 var SHEET_BATCHES_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
 // ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
@@ -2330,6 +2330,11 @@ function initiatePayment(flow) {
       email:   email,
       contact: phone
     },
+    notes: {
+      student_name: name,
+      description:  desc,
+      contact:      phone
+    },
     theme: { color: '#7B1D2E' },
     handler: function(response) {
       // Show transaction ID
@@ -2370,6 +2375,20 @@ function initiatePayment(flow) {
               rollBox.style.display = 'block';
             }
           }
+        });
+      }
+
+      // Existing student monthly fee receipt
+      if (successId === 'existing-success' && foundStudent) {
+        submitToPortal({
+          submissionType : 'Monthly Fee',
+          studentName    : foundStudent['Student Name'] || name,
+          rollNo         : foundStudent['Roll No'] || '',
+          phone          : phone,
+          email          : email,
+          amountPaid     : amount,
+          transactionId  : response.razorpay_payment_id || '',
+          feeMonth       : document.getElementById('ex-month') ? document.getElementById('ex-month').value : ''
         });
       }
 
