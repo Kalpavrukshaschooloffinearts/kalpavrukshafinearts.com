@@ -710,7 +710,6 @@
           </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
-      </div>
       <!-- end panels -->
 
     </div><!-- end fee-wrap -->
@@ -1473,27 +1472,36 @@ function safeStyle(id, prop, val) {
 }
 
 function resetBatchUI() {
+  // Batch cards
   safeStyle('new-batch-cards',           'display', 'none');
   safeSet  ('new-batch-list',            'innerHTML', '');
   safeSet  ('new-batch-id',              'value', '');
   safeSet  ('new-batch-msg',             'textContent', '');
+  // Trial
   safeStyle('new-trial-msg',             'display', 'none');
+  safeStyle('new-trial-form-wrap',       'display', 'none');
   safeSet  ('new-trial-session-cards',   'innerHTML', '');
   safeStyle('new-trial-session-cards',   'display', 'none');
   safeSet  ('new-trial-session-id',      'value', '');
   safeSet  ('new-trial-session-date',    'value', '');
   safeSet  ('new-trial-session-timings', 'value', '');
-  safeStyle('new-trial-form-wrap',       'display', 'none');
-
-  safeStyle('new-enrol-choice',          'display', 'none');
+  safeSet  ('new-trial-session-msg',     'textContent', '');
+  // Intent options
+  safeStyle('new-entry-options',         'display', 'none');
+  safeStyle('new-trial-done-code-wrap',  'display', 'none');
+  safeSet  ('new-trial-done-msg',        'textContent', '');
+  safeSet  ('new-entry-msg',             'textContent', '');
+  // Pay
   safeStyle('new-pay-wrap',              'display', 'none');
   safeStyle('new-individual-msg',        'display', 'none');
-  var tcon  = document.getElementById('new-trial-consent');      if (tcon)  tcon.checked  = false;
-  var tcmsg = document.getElementById('new-trial-consent-msg');  if (tcmsg) tcmsg.textContent = '';
-  var radios = document.querySelectorAll('input[name="new-proceed"]');
-  radios.forEach(function(r){ r.checked = false; });
-  safeStyle('new-choice-trial-label', 'borderColor', 'var(--bdr)');
-  safeStyle('new-choice-enrol-label', 'borderColor', 'var(--bdr)');
+  // Reset checkboxes and radios
+  var tcon = document.getElementById('new-trial-consent'); if (tcon) tcon.checked = false;
+  var tcmsg = document.getElementById('new-trial-consent-msg'); if (tcmsg) tcmsg.textContent = '';
+  document.querySelectorAll('input[name="new-entry-type"]').forEach(function(r){ r.checked = false; });
+  ['new-opt-trial-label','new-opt-enrol-label','new-opt-direct-label'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) { el.style.borderColor='var(--bdr)'; el.style.borderWidth='1px'; }
+  });
   selectedBatch = null;
 }
 
@@ -1585,18 +1593,57 @@ function renderBatchCards(batches) {
 
   var html = '';
   batches.forEach(function(b) {
-    var status   = b['Availability Status'] || 'Available';
-    var statusCls = status === 'Full' ? 'status-full' : status === 'Filling Fast' ? 'status-fast' : status === 'Limited' ? 'status-limited' : 'status-open';
-    var statusDot = status === 'Full' ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
-    html +=
-      '<div class="batch-card" data-id="' + b['Batch ID'] + '" onclick="selectBatch(this, this.dataset.id)" style="cursor:pointer;">' +
-        '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
-        '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' ' + status + '</div>' +
-      '</div>';
+    var status    = b['Availability Status'] || 'Available';
+    var isFull    = status === 'Full';
+    var statusDot = isFull ? '🔴' : status === 'Filling Fast' ? '🟠' : status === 'Limited' ? '🟡' : '🟢';
+    if (isFull) {
+      // Full batch — greyed out, waitlist button
+      html +=
+        '<div class="batch-card" data-id="' + b['Batch ID'] + '" data-status="Full" style="opacity:0.55;cursor:default;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;">' +
+          '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
+          '<div style="font-size:0.76rem;color:var(--ink-soft);margin-bottom:8px;">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' Full</div>' +
+          '<button data-bid="' + b['Batch ID'] + '" data-binfo="' + b['Timings (IST)'] + '" onclick="joinWaitlist(this.dataset.bid,this.dataset.binfo)" style="font-size:0.74rem;padding:4px 12px;background:#fff;border:1px solid var(--maroon);border-radius:3px;color:var(--maroon);cursor:pointer;pointer-events:all;">Join Waitlist</button>' +
+        '</div>';
+    } else {
+      html +=
+        '<div class="batch-card" data-id="' + b['Batch ID'] + '" data-status="' + status + '" onclick="selectBatch(this, this.dataset.id)" style="cursor:pointer;">' +
+          '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
+          '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' ' + status + '</div>' +
+        '</div>';
+    }
   });
   container.innerHTML = html;
   wrap.style.display = 'block';
   msg.textContent = '';
+}
+
+function joinWaitlist(batchId, batchInfo) {
+  // Collect basic details and submit as waitlist
+  var n   = (document.getElementById('new-name')   || {}).value || '';
+  var ph  = (document.getElementById('new-phone')  || {}).value || '';
+  var em  = (document.getElementById('new-email')  || {}).value || '';
+  var par = (document.getElementById('new-parent') || {}).value || '';
+  if (!n || !ph || !em) {
+    alert('Please fill in Student Name, Mobile Number and Email before joining the waitlist.');
+    return;
+  }
+  submitToPortal({
+    submissionType : 'Batch Waitlist',
+    studentName    : n,
+    parentName     : par,
+    phone          : ph,
+    email          : em,
+    gender         : document.getElementById('new-gender') ? document.getElementById('new-gender').value : '',
+    whoIsJoining   : document.getElementById('new-group') ? document.getElementById('new-group').value : '',
+    country        : document.getElementById('new-country') ? document.getElementById('new-country').value : '',
+    classType      : document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '',
+    sessionType    : document.getElementById('new-sessiontype') ? document.getElementById('new-sessiontype').value : '',
+    learningStage  : document.getElementById('new-level') ? document.getElementById('new-level').value : '',
+    batchSelected  : batchId,
+    notes          : 'Batch waitlist: ' + batchInfo
+  }, function() {
+    alert('You have been added to the waitlist for this batch. We will reach out when a seat becomes available.');
+  });
 }
 
 function selectBatch(el, batchId) {
@@ -1623,11 +1670,18 @@ function selectBatch(el, batchId) {
     var el = document.getElementById(id);
     if (el) { el.style.borderColor='var(--bdr)'; el.style.borderWidth='1px'; }
   });
+  // Lock enrol if batch is full
+  var batchStatus = (card.dataset.status || '').toLowerCase();
+  var batchFull   = batchStatus === 'full';
   // Recalculate trial lock based on selected level vs preset
   var curLevel = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
   var pre = window._kfaPresetLevel || null;
-  var locked = (curLevel === 'Intermediate' || curLevel === 'Advanced') && pre !== curLevel;
-  setEnrolOption(locked);
+  var levelLocked = (curLevel === 'Intermediate' || curLevel === 'Advanced') && pre !== curLevel;
+  setEnrolOption(levelLocked || batchFull);
+  // If batch is full, show message
+  if (batchFull) {
+    safeSet('new-entry-msg', 'textContent', 'This batch is full. Please select another batch or WhatsApp us.');
+  }
   // Show intent options
   safeStyle('new-entry-options', 'display', 'block');
   var eo = document.getElementById('new-entry-options');
@@ -2349,5 +2403,6 @@ function initiatePayment(flow) {
 // Data loaded on demand — not eagerly on page load
 // (called by verifyToken, lookupStudent, lookupByDetails, lookupWsStudent)
 </script>
+</div><!-- /outer-wrapper -->
 </body>
 </html>
