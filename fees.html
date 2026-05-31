@@ -1002,18 +1002,103 @@ function verifyToken() {
   var val = document.getElementById('new-token').value.trim().toUpperCase();
   var msg = document.getElementById('new-token-msg');
   if (!val) { msg.textContent = 'Please enter the access code.'; return; }
-  if (val !== NEW_ENROL_TOKEN) {
+  if (ALL_VALID_TOKENS.indexOf(val) === -1) {
     msg.textContent = 'Invalid code. Please check and try again, or WhatsApp us to get your code.';
     return;
   }
   msg.textContent = '';
+  window._kfaToken = val;
+  window._kfaPresetLevel = TRIAL_CODES[val] || null;
   document.getElementById('new-token-gate').style.display = 'none';
   document.getElementById('new-form-wrap').style.display = 'block';
-  // Banner removed — confirmation shown on success screen only
   // Default enrolment date to today
   var td = new Date(); var mm = String(td.getMonth()+1).padStart(2,'0'); var dd = String(td.getDate()).padStart(2,'0');
   document.getElementById('new-enrol-date').value = td.getFullYear() + '-' + mm + '-' + dd;
+  // Show trial upgrade radio only for general enquiry code
+  var upgradeDiv = document.getElementById('new-trial-upgrade');
+  if (upgradeDiv) upgradeDiv.style.display = val === NEW_ENROL_TOKEN ? 'block' : 'none';
   loadAllData();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TRIAL SESSION CARDS
+// ─────────────────────────────────────────────────────────────────
+function getNextFridays(sessions) {
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  var active = sessions.filter(function(s) {
+    var d = new Date((s['Date'] || '') + 'T00:00:00');
+    return (s['Status'] || '').trim() === 'Active' && d >= today;
+  }).sort(function(a,b){ return new Date(a['Date']) - new Date(b['Date']); });
+  var seen = {}, result = [];
+  active.forEach(function(s) {
+    if (!seen[s['Date']] && result.length < 2) { seen[s['Date']] = true; result.push(s['Date']); }
+  });
+  return result;
+}
+
+function renderTrialSessionCards(classtype) {
+  var container = document.getElementById('new-trial-session-cards');
+  if (!container) return;
+  if (!DATA.trialSessions || !DATA.trialSessions.length) {
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions available at this time. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    return;
+  }
+  var nextDates = getNextFridays(DATA.trialSessions);
+  if (!nextDates.length) {
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No upcoming trial sessions at this time. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    return;
+  }
+  var filtered = DATA.trialSessions.filter(function(s) {
+    return nextDates.indexOf(s['Date']) !== -1
+        && (s['Status'] || '').trim() === 'Active'
+        && (!classtype || s['Type'] === classtype);
+  });
+  if (!filtered.length) {
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions match your class type. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    return;
+  }
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  container.innerHTML = filtered.map(function(s) {
+    var avail    = parseInt(s['Available Slots']) || 0;
+    var isFull   = avail <= 0;
+    var dot      = isFull ? '🔴' : avail <= 3 ? '🟡' : '🟢';
+    var statusTxt = isFull ? 'Full — Join Waitlist' : avail <= 3 ? 'Limited (' + avail + ' slots)' : avail + ' slots available';
+    var d = new Date((s['Date'] || '') + 'T00:00:00');
+    var dateStr  = days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    var noteHtml = s['Note'] ? '<div style="font-size:0.74rem;color:var(--maroon);margin-top:4px;font-style:italic;">' + s['Note'] + '</div>' : '';
+    return '<div class="batch-card" style="cursor:pointer;"'
+      + ' data-sid="'     + (s['Session ID']    || '') + '"'
+      + ' data-date="'    + (s['Date']          || '') + '"'
+      + ' data-timings="' + (s['Timings (IST)'] || '') + '"'
+      + ' data-full="'    + isFull + '"'
+      + ' onclick="selectTrialSession(this)">'
+      + '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + dateStr + '</div>'
+      + '<div style="font-size:0.76rem;color:var(--ink-soft);">'
+      + s['Type'] + ' &nbsp;·&nbsp; ' + (s['Timings (IST)'] || '') + ' IST &nbsp;·&nbsp; ' + dot + ' ' + statusTxt
+      + '</div>' + noteHtml + '</div>';
+  }).join('');
+}
+
+function selectTrialSession(el) {
+  var card = el.closest ? el.closest('.batch-card') : el;
+  if (!card) return;
+  var isFull = card.dataset.full === 'true';
+  document.querySelectorAll('#new-trial-session-cards .batch-card').forEach(function(c){ c.classList.remove('selected'); });
+  card.classList.add('selected');
+  safeSet('new-trial-session-id',       'value', card.dataset.sid     || '');
+  safeSet('new-trial-session-date',     'value', card.dataset.date    || '');
+  safeSet('new-trial-session-timings',  'value', card.dataset.timings || '');
+  safeSet('new-trial-session-msg',      'textContent', '');
+  window._kfaTrialWaitlist = isFull;
+  var typeNote = document.getElementById('new-trial-type-note');
+  if (typeNote) typeNote.textContent = isFull
+    ? 'This session is full — you will be added to the waitlist.'
+    : 'You are registering for this trial session.';
+  safeStyle('new-trial-form-wrap', 'display', 'block');
+  var tw = document.getElementById('new-trial-form-wrap');
+  if (tw) tw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ─────────────────────────────────────────────────────────────────
