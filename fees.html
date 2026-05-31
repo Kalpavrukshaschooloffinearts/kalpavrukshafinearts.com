@@ -2333,7 +2333,10 @@ function initiatePayment(flow) {
     notes: {
       student_name: name,
       description:  desc,
-      contact:      phone
+      contact:      phone,
+      roll_no:      (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : '')),
+      fee_month:    (document.getElementById('ex-month') ? document.getElementById('ex-month').value : ''),
+      program:      (currentWs ? (currentWs['Name'] || '') : '')
     },
     theme: { color: '#7B1D2E' },
     handler: function(response) {
@@ -2388,7 +2391,27 @@ function initiatePayment(flow) {
           email          : email,
           amountPaid     : amount,
           transactionId  : response.razorpay_payment_id || '',
-          feeMonth       : document.getElementById('ex-month') ? document.getElementById('ex-month').value : ''
+          feeMonth       : document.getElementById('ex-month') ? document.getElementById('ex-month').value : '',
+          notes          : 'Monthly fee paid via website'
+        });
+      }
+
+      // Workshop registration
+      if (successId === 'workshop-success' && currentWs) {
+        submitToPortal({
+          submissionType : 'Program Registration',
+          programName    : currentWs['Name']         || '',
+          programType    : currentWs['Type']         || 'Workshop',
+          programDate    : currentWs['Date']         || '',
+          
+          studentType    : flow === 'ws-kv' ? 'KV Student' : 'Outside Student',
+          studentName    : name,
+          rollNo         : foundWsStudent ? (foundWsStudent['Roll No'] || '') : '',
+          phone          : phone,
+          email          : email,
+          amountPaid     : amount,
+          transactionId  : response.razorpay_payment_id || '',
+          notes          : desc || ''
         });
       }
 
