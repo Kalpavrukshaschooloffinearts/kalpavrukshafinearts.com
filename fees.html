@@ -218,70 +218,64 @@
       ═══════════════════════════ -->
       <div class="fpanel active fee-card" id="panel-new" role="tabpanel" aria-labelledby="tab-new">
 
-        <!-- STEP 0: Token gate -->
+        <!-- STEP 0: Three-option entry -->
         <div id="new-token-gate">
           <span class="lbl">New Student Enrolment</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:6px">New to Kalpavruksha?</h2>
-          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">
-            To enrol, please enter the access code shared by the school.<br>
-            <span style="font-size:0.78rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+enrolling+at+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> to get started.</span>
-          </p>
-          <div class="lookup-row">
-            <div class="fg-field">
-              <label for="new-token">Access Code *</label>
-              <input type="text" id="new-token" placeholder="Enter code" autocomplete="off"
-                onkeydown="if(event.key==='Enter'){event.preventDefault();verifyToken();}"
-                style="text-transform:uppercase;letter-spacing:0.1em;">
-            </div>
-            <button class="lookup-btn" onclick="verifyToken()">Verify</button>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:18px">How would you like to start?</h2>
+
+          <div style="display:grid;gap:10px;margin-bottom:20px;">
+
+            <!-- Option 1: Book Trial -->
+            <label id="new-opt-trial-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;">
+              <input type="radio" name="new-entry-type" value="trial" onchange="onEntryTypeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
+              <div>
+                <div style="font-size:0.92rem;font-weight:600;color:var(--ink);">🌿 Book a Free Trial Class</div>
+                <div style="font-size:0.76rem;color:var(--ink-soft);margin-top:3px;line-height:1.6;">Attend one session at no cost before committing. Open to all levels — Foundation, Intermediate and Advanced.</div>
+              </div>
+            </label>
+
+            <!-- Option 2: Trial Completed -->
+            <label id="new-opt-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;">
+              <input type="radio" name="new-entry-type" value="trial_done" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+              <div style="width:100%;">
+                <div style="font-size:0.92rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
+                <div style="font-size:0.76rem;color:var(--ink-soft);margin-top:3px;line-height:1.6;">Already attended a trial class? Enter your enrolment code to proceed.</div>
+                <div id="new-trial-done-code-wrap" style="display:none;margin-top:12px;">
+                  <div class="lookup-row">
+                    <div class="fg-field">
+                      <input type="text" id="new-trial-done-code" placeholder="Enter enrolment code" autocomplete="off"
+                        onkeydown="if(event.key==='Enter'){event.preventDefault();verifyTrialCode();}"
+                        style="text-transform:uppercase;letter-spacing:0.1em;">
+                    </div>
+                    <button class="lookup-btn" onclick="verifyTrialCode()">Verify</button>
+                  </div>
+                  <span class="hint err" id="new-trial-done-msg" style="display:block;margin-top:4px;"></span>
+                </div>
+              </div>
+            </label>
+
+            <!-- Option 3: Direct Enrol (Foundation only) -->
+            <label id="new-opt-direct-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;">
+              <input type="radio" name="new-entry-type" value="direct" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+              <div>
+                <div style="font-size:0.92rem;font-weight:600;color:var(--ink);">💳 Enrol Directly</div>
+                <div style="font-size:0.76rem;color:var(--ink-soft);margin-top:3px;line-height:1.6;">Foundation students only. Block your batch seat and start right away.</div>
+              </div>
+            </label>
+
           </div>
-          <span class="hint err" id="new-token-msg" style="display:block;margin-top:-8px;"></span>
-          <div class="form-divider" style="margin-top:20px;"></div>
-          <p style="font-size:0.76rem;color:var(--ink-soft);text-align:center;line-height:1.6;">
-            🌿 First trial session is <strong>FREE</strong> — <a href="contact.html" style="color:var(--saffron);">Book a trial class</a>
-          </p>
+
+          <button class="pay-btn" id="new-entry-proceed-btn" onclick="proceedFromEntry()" style="margin-bottom:0;">Continue →</button>
+          <span class="hint err" id="new-entry-msg" style="display:block;margin-top:8px;"></span>
         </div>
 
-        <!-- STEP 1: Student details + batch selector (shown after token) -->
+        <!-- STEP 1: Student details + batch selector (shown after entry) -->
         <div id="new-form-wrap" style="display:none;">
 
-          <span class="lbl">New Student Registration</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:16px">Enrolment &amp; Payment</h2>
+          <span class="lbl" id="new-form-lbl">New Student Registration</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:16px" id="new-form-heading">Book a Free Trial Class</h2>
 
-          <!-- Trial completed upgrade — shown only for KFA2014 new enquiry token -->
-          <div id="new-trial-upgrade" style="display:none;margin-bottom:20px;">
-            <div style="display:grid;gap:8px;">
-              <label id="new-upgrade-no-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:12px 16px;cursor:pointer;">
-                <input type="radio" name="new-upgrade" value="new" onchange="onUpgradeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
-                <div>
-                  <div style="font-size:0.86rem;font-weight:600;color:var(--ink);">New to Kalpavruksha</div>
-                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:1px;">Select a batch and book a free trial or enrol directly.</div>
-                </div>
-              </label>
-              <label id="new-upgrade-yes-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 16px;cursor:pointer;">
-                <input type="radio" name="new-upgrade" value="trial_done" onchange="onUpgradeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
-                <div>
-                  <div style="font-size:0.86rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
-                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:1px;">Already attended a trial? Enter your enrolment code to unlock payment.</div>
-                </div>
-              </label>
-            </div>
-            <!-- Enrolment code entry — shown when trial_done selected -->
-            <div id="new-upgrade-code-wrap" style="display:none;margin-top:12px;">
-              <div class="lookup-row">
-                <div class="fg-field">
-                  <label for="new-upgrade-code">Enrolment Code *</label>
-                  <input type="text" id="new-upgrade-code" placeholder="Enter enrolment code" autocomplete="off"
-                    onkeydown="if(event.key==='Enter'){event.preventDefault();verifyUpgradeCode();}"
-                    style="text-transform:uppercase;letter-spacing:0.1em;">
-                </div>
-                <button class="lookup-btn" onclick="verifyUpgradeCode()">Verify</button>
-              </div>
-              <span class="hint err" id="new-upgrade-code-msg" style="display:block;margin-top:-8px;"></span>
-            </div>
-          </div>
-
-          <!-- Student details -->
+                    <!-- Student details -->
           <div class="fg-row">
             <div class="fg-field">
               <label for="new-name">Student Name *</label>
@@ -998,27 +992,83 @@ var TRIAL_CODES = {
 };
 var ALL_VALID_TOKENS = ['KFA2014','KFATCF2014','KFATCI2014','KFATCA2014'];
 
-function verifyToken() {
-  var val = document.getElementById('new-token').value.trim().toUpperCase();
-  var msg = document.getElementById('new-token-msg');
-  if (!val) { msg.textContent = 'Please enter the access code.'; return; }
-  if (ALL_VALID_TOKENS.indexOf(val) === -1) {
-    msg.textContent = 'Invalid code. Please check and try again, or WhatsApp us to get your code.';
+// ─────────────────────────────────────────────────────────────────
+// ENTRY TYPE — three radio options
+// ─────────────────────────────────────────────────────────────────
+var _entryType = 'trial'; // trial | trial_done | direct
+
+function onEntryTypeChange(radio) {
+  _entryType = radio.value;
+  var labels = {
+    'trial':      'new-opt-trial-label',
+    'trial_done': 'new-opt-enrol-label',
+    'direct':     'new-opt-direct-label'
+  };
+  // Update border styles
+  Object.keys(labels).forEach(function(key) {
+    var el = document.getElementById(labels[key]);
+    if (el) {
+      el.style.borderColor = (key === radio.value) ? 'var(--maroon)' : 'var(--bdr)';
+      el.style.borderWidth = (key === radio.value) ? '2px' : '1px';
+    }
+  });
+  // Show/hide code entry for trial_done
+  safeStyle('new-trial-done-code-wrap', 'display', radio.value === 'trial_done' ? 'block' : 'none');
+  safeSet('new-entry-msg', 'textContent', '');
+  safeSet('new-trial-done-msg', 'textContent', '');
+}
+
+function proceedFromEntry() {
+  var msg = document.getElementById('new-entry-msg');
+  msg.textContent = '';
+
+  if (_entryType === 'trial') {
+    // Book Trial — no code needed, open to all
+    window._kfaPresetLevel  = null;
+    window._kfaEnrolEnabled = false;
+    openForm('Book a Free Trial Class', 'Trial Registration');
+
+  } else if (_entryType === 'trial_done') {
+    // Trial completed — verify code first
+    verifyTrialCode();
+    return;
+
+  } else if (_entryType === 'direct') {
+    // Direct enrol — Foundation only, no code
+    window._kfaPresetLevel  = 'Foundation';
+    window._kfaEnrolEnabled = true;
+    openForm('Enrol & Pay Now', 'New Student Registration');
+  }
+}
+
+function verifyTrialCode() {
+  var val = (document.getElementById('new-trial-done-code').value || '').trim().toUpperCase();
+  var msg = document.getElementById('new-trial-done-msg');
+  if (!val) { msg.textContent = 'Please enter your enrolment code.'; return; }
+  if (!TRIAL_CODES[val]) {
+    msg.textContent = 'Invalid code. Please check the code shared by the school or WhatsApp us.';
     return;
   }
-  msg.textContent = '';
-  window._kfaToken = val;
-  window._kfaPresetLevel = TRIAL_CODES[val] || null;
+  msg.style.color  = '#1B5E20';
+  msg.textContent  = '✓ Code verified!';
+  window._kfaPresetLevel  = TRIAL_CODES[val];
+  window._kfaEnrolEnabled = true;
+  openForm('Enrol & Pay Now', 'New Student Registration');
+}
+
+function openForm(heading, lbl) {
   document.getElementById('new-token-gate').style.display = 'none';
-  document.getElementById('new-form-wrap').style.display = 'block';
+  document.getElementById('new-form-wrap').style.display  = 'block';
+  safeSet('new-form-heading', 'textContent', heading);
+  safeSet('new-form-lbl',     'textContent', lbl);
   // Default enrolment date to today
-  var td = new Date(); var mm = String(td.getMonth()+1).padStart(2,'0'); var dd = String(td.getDate()).padStart(2,'0');
-  document.getElementById('new-enrol-date').value = td.getFullYear() + '-' + mm + '-' + dd;
-  // Show trial upgrade radio only for general enquiry code
-  var upgradeDiv = document.getElementById('new-trial-upgrade');
-  if (upgradeDiv) upgradeDiv.style.display = val === NEW_ENROL_TOKEN ? 'block' : 'none';
+  var td = new Date();
+  var mm = String(td.getMonth()+1).padStart(2,'0');
+  var dd = String(td.getDate()).padStart(2,'0');
+  safeSet('new-enrol-date', 'value', td.getFullYear() + '-' + mm + '-' + dd);
   loadAllData();
 }
+
 
 // ─────────────────────────────────────────────────────────────────
 // TRIAL SESSION CARDS
@@ -1106,7 +1156,7 @@ function selectTrialSession(el) {
 // ─────────────────────────────────────────────────────────────────
 var selectedBatch = null;
 
-function onUpgradeChange(radio) {
+function onUpgradeChange_DEPRECATED(radio) {
   var noLabel   = document.getElementById('new-upgrade-no-label');
   var yesLabel  = document.getElementById('new-upgrade-yes-label');
   var codeWrap  = document.getElementById('new-upgrade-code-wrap');
@@ -1266,17 +1316,12 @@ function onProceedChange(radio) {
   var choiceTrialLabel = document.getElementById('new-choice-trial-label');
   var choiceEnrolLabel = document.getElementById('new-choice-enrol-label');
   var level = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
-  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced');
 
   if (radio.value === 'trial') {
-    if (isTrialLevel) {
-      // Show trial session selector for Intermediate/Advanced
-      var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
-      if (trialForm) trialForm.style.display = 'block';
-      renderTrialSessionCards(classtype);
-    } else {
-      if (trialForm) trialForm.style.display = 'block';
-    }
+    if (trialForm) trialForm.style.display = 'block';
+    // Show trial session cards for all levels
+    var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
+    renderTrialSessionCards(classtype);
     if (payWrap)   payWrap.style.display   = 'none';
     if (choiceTrialLabel) choiceTrialLabel.style.borderColor = 'var(--maroon)';
     if (choiceEnrolLabel) choiceEnrolLabel.style.borderColor = 'var(--bdr)';
@@ -1417,10 +1462,9 @@ function filterBatches() {
   // Step 2: Need level to show batches
   if (!level) return;
 
-  // Step 3: Load batches for all levels (Foundation/Intermediate/Advanced)
-  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced');
-
-  // Update enrol option appearance based on level
+  // Step 3: Load batches for all levels
+  // Enrol is locked for Intermediate/Advanced unless _kfaEnrolEnabled
+  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced') && !window._kfaEnrolEnabled;
   setEnrolOption(isTrialLevel);
 
   if (!dataLoaded) {
@@ -1566,14 +1610,17 @@ function loadAllData() {
     dataLoaded = true;
     populateWorkshopDropdown();
     populateMonthDropdown();
-    // Pre-select level if trial completion code was used
+    // Pre-select level if set
     if (window._kfaPresetLevel) {
       var levelSel = document.getElementById('new-level');
       if (levelSel) {
         levelSel.value = window._kfaPresetLevel;
-        // Trigger filter if group and classtype already selected
         filterBatches();
       }
+    }
+    // Apply enrol enabled state
+    if (window._kfaEnrolEnabled !== undefined) {
+      setEnrolOption(!window._kfaEnrolEnabled);
     }
   }).catch(function(e){
     console.warn('Sheet data unavailable — running in offline/test mode', e);
