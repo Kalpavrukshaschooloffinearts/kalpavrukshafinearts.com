@@ -1020,9 +1020,8 @@ function verifyToken() {
   }
   msg.textContent = '';
   window._kfaToken = val;
-  // If trial completion code — store preset level but don't apply yet
   window._kfaPresetLevel  = TRIAL_CODES[val] || null;
-  window._kfaEnrolEnabled = false;
+  window._kfaEnrolEnabled = !!TRIAL_CODES[val]; // true for trial codes, false for KFA2014
   document.getElementById('new-token-gate').style.display = 'none';
   document.getElementById('new-form-wrap').style.display  = 'block';
   // Default enrolment date to today
@@ -1144,10 +1143,9 @@ function getNextFridays(sessions) {
 function renderTrialSessionCards(classtype) {
   var container = document.getElementById('new-trial-session-cards');
   if (!container) return;
-  // Always make visible first
   container.style.display = 'grid';
   if (!dataLoaded) {
-    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>';
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">Loading…</div>';
     loadAllData().then(function() { renderTrialSessionCards(classtype); });
     return;
   }
@@ -1429,6 +1427,7 @@ function onCountryChange() {
   var batchWrap = document.getElementById('new-batch-wrap');
   // Full reset including gender-dependent fields
   resetBatchUI();
+  safeStyle('new-intl-msg', 'display', 'none');
   document.getElementById('new-gender').value = '';
   document.getElementById('new-group').value  = '';
   document.getElementById('new-classtype-row').style.display  = 'none';
@@ -1547,7 +1546,7 @@ function showTrialBatches(level, group, classtype) {
 
 function setEnrolOption(isTrialLevel) {
   var enrolRadio = document.getElementById('new-enrol-radio');
-  var enrolLabel = document.getElementById('new-choice-enrol-label');
+  var enrolLabel = document.getElementById('new-opt-direct-label');  // correct ID
   var enrolText  = document.getElementById('new-enrol-label-text');
   var enrolDesc  = document.getElementById('new-enrol-label-desc');
   if (!enrolRadio) return;
