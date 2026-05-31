@@ -241,14 +241,85 @@
         <!-- STEP 1: Three options + form (shown after code verified) -->
         <div id="new-form-wrap" style="display:none;">
 
-          <!-- Three radio options -->
           <span class="lbl">New Student Registration</span>
           <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Please fill in your details</h2>
 
- will reach out as soon as batches are available.</span>
+          <!-- Student details -->
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="new-name">Student Name *</label>
+              <input type="text" id="new-name" placeholder="Full name" autocomplete="off" required>
+            </div>
+            <div class="fg-field">
+              <label for="new-parent">Parent / Guardian Name *</label>
+              <input type="text" id="new-parent" placeholder="Full name" autocomplete="off" required>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="new-phone">Mobile Number *</label>
+              <input type="tel" id="new-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
+            </div>
+            <div class="fg-field">
+              <label for="new-email">Email Address *</label>
+              <input type="email" id="new-email" placeholder="you@email.com" required>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="new-country">Country *</label>
+              <select id="new-country" onchange="onCountryChange()">
+                <option value="">— Select —</option>
+                <option value="India">India</option>
+                <option value="International">International (contact school for fee)</option>
+              </select>
+            </div>
+            <div class="fg-field">
+              <label for="new-enrol-date">Date of Enrolment *</label>
+              <input type="date" id="new-enrol-date" onchange="onEnrolDateChange()" required>
+              <span class="hint">Defaults to today · Change if joining from a different date</span>
+            </div>
+          </div>
+
+          <!-- International message -->
+          <div id="new-intl-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:4px;">
+            <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">For international students, fees are confirmed individually based on your timezone and batch.<br><span style="font-size:0.78rem;color:var(--ink-soft);">Please WhatsApp us to confirm your fee and batch details.</span></p>
+            <a href="https://wa.me/917200095585?text=Hello%2C+I+am+an+international+student+interested+in+enrolling+at+Kalpavruksha." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Enquire</a>
+          </div>
+
+          <!-- Batch selector — shown after country = India -->
+          <div id="new-batch-wrap" style="display:none;">
+            <div class="form-divider"></div>
+            <p style="font-size:0.80rem;font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:0.03em;">SELECT YOUR BATCH</p>
+
+            <div class="fg-row">
+              <div class="fg-field">
+                <label for="new-group">Who is joining? *</label>
+                <select id="new-group" onchange="filterBatches()">
+                  <option value="">— Select —</option>
+                  <option value="Kids">Kid (under 15)</option>
+                  <option value="Adults">Adult (15 &amp; above)</option>
+                </select>
+              </div>
+              <div class="fg-field">
+                <label for="new-gender">Gender *</label>
+                <select id="new-gender" onchange="onGenderChange()">
+                  <option value="">— Select —</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="new-gender-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:4px;">
+              <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">
+                <strong>Our current batches are open for female students.</strong><br>
+                <span style="font-size:0.78rem;color:var(--ink-soft);">We are working on expanding our programme. Please WhatsApp us to register your interest.</span>
               </p>
               <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes+at+Kalpavruksha.+Please+let+me+know+when+batches+are+available." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Register Interest</a>
             </div>
+
             <div id="new-classtype-row" style="display:none;" class="fg-row">
               <div class="fg-field" style="flex:1;">
                 <label for="new-classtype">Class Type *</label>
@@ -259,6 +330,7 @@
                 </select>
               </div>
             </div>
+
             <div class="fg-field" id="new-sessiontype-wrap" style="display:none;">
               <label for="new-sessiontype">Session Type *</label>
               <select id="new-sessiontype" onchange="onSessionTypeChange()">
@@ -268,6 +340,7 @@
               </select>
               <span class="hint" id="new-sessiontype-hint">All our classes are conducted in small groups</span>
             </div>
+
             <div id="new-individual-msg" style="display:none;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;margin-bottom:4px;">
               <p style="font-size:0.84rem;color:var(--ink);line-height:1.7;margin-bottom:10px;">
                 <strong>Individual sessions are currently not open for enrolment.</strong><br>
@@ -286,7 +359,6 @@
               </select>
             </div>
 
-            <!-- trial-msg placeholder -->
             <div id="new-trial-msg" style="display:none;"></div>
 
             <!-- Available batch cards -->
@@ -294,44 +366,14 @@
               <div id="new-batch-list" style="display:grid;gap:10px;margin-bottom:12px;"></div>
               <input type="hidden" id="new-batch-id" value="">
               <span class="hint err" id="new-batch-msg"></span>
-              <!-- Trial vs Enrol radio choice -->
-              <div id="new-enrol-choice" style="display:none;margin-top:14px;">
-                <p style="font-size:0.78rem;font-weight:600;color:var(--ink);letter-spacing:0.04em;margin-bottom:10px;">HOW WOULD YOU LIKE TO PROCEED?</p>
-                <div style="display:grid;gap:8px;">
-                  <label id="new-choice-trial-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s;">
-                    <input type="radio" name="new-proceed" value="trial" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
-                    <div>
-                      <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">🌿 Book a Free Trial Class</div>
-                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">Attend one session at no cost before committing. We will update the trial session status on this page by Friday afternoon.</div>
-                    </div>
-                  </label>
-                  <label id="new-choice-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;transition:border-color 0.2s;" id="new-choice-enrol-label">
-                    <input type="radio" name="new-proceed" value="enrol" id="new-enrol-radio" onchange="onProceedChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
-                    <div>
-                      <div style="font-size:0.88rem;font-weight:600;" id="new-enrol-label-text">✅ Enrol &amp; Pay Now</div>
-                      <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;" id="new-enrol-label-desc">Block your batch seat by paying the registration fee. Monthly class fee applies from your enrolment date.</div>
-                    </div>
-                  </label>
-                </div>
-                <!-- Trial session form — shown after session selected -->
-                <div id="new-trial-form-wrap" style="display:none;margin-top:14px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
-                  <p id="new-trial-type-note" style="font-size:0.82rem;color:var(--ink);margin-bottom:10px;font-weight:600;"></p>
-                  <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:10px 14px;margin-bottom:14px;">
-                    <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;"><strong>Please check this page by Friday afternoon to confirm your trial session status.</strong> We will update the session status here if there are any changes.</p>
-                  </div>
-                  <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;">Note: Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.</p>
-                  <div style="margin-bottom:14px;">
-                    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
-                      <input type="checkbox" id="new-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
-                      <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">I confirm that all details provided are true and accurate to the best of my knowledge. I understand that trial class scheduling is subject to availability and school confirmation, and that the school reserves the right to reassess enrolment if information provided is found to be inaccurate or inconsistent.</span>
-                    </label>
-                    <span class="hint err" id="new-trial-consent-msg" style="display:block;margin-top:4px;"></span>
-                  </div>
-                  <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Registration</button>
-                </div>
-              </div>
+
+              <!-- Trial session cards for Intermediate/Advanced -->
+              <div id="new-trial-session-cards" style="display:none;margin-top:10px;display:grid;gap:10px;"></div>
+              <input type="hidden" id="new-trial-session-id" value="">
+              <input type="hidden" id="new-trial-session-date" value="">
+              <input type="hidden" id="new-trial-session-timings" value="">
+              <span class="hint err" id="new-trial-session-msg"></span>
             </div>
-          </div>
 
           <!-- Intent selection — appears after batch selected -->
           <div id="new-entry-options" style="display:none;margin-bottom:16px;">
@@ -378,6 +420,7 @@
             <span class="hint err" id="new-entry-msg" style="display:block;margin-top:8px;"></span>
           </div>
 
+
           <!-- Fee + payment -->
           <div id="new-pay-wrap" style="display:none;">
             <div class="form-divider"></div>
@@ -404,6 +447,11 @@
             <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
 
+
+
+        </div>
+          </div><!-- /new-batch-wrap -->
+        </div><!-- /new-form-wrap -->
         <!-- Trial interest success -->
         <div class="success-screen" id="new-trial-success">
           <div class="success-icon">🙏</div>
