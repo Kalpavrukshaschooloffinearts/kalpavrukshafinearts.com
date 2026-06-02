@@ -1,3 +1,10 @@
+
+/* Keyboard focus indicator — accessibility */
+*:focus-visible {
+  outline: 2px solid var(--saffron, #C8621A);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
 /* ============================================================
    Kalpavruksha School of Fine Arts
    Shared stylesheet — css/style.css
@@ -100,6 +107,11 @@ button{cursor:pointer;font-family:inherit;}
 .cb ul{display:flex;flex-direction:column;gap:6px;}
 .cb li{font-size:0.84rem;color:var(--ink-mid);padding-left:14px;position:relative;}
 .cb li::before{content:'›';position:absolute;left:0;color:var(--saffron);}
+/* Side-by-side info cards + curriculum on course detail sections */
+.cg-details{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+.cg-details .mg{margin-top:0;}
+.cg-details .cb{margin-top:0;}
+
 
 /* NAV — solid always */
 .site-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#5c1522;border-bottom:1px solid rgba(255,255,255,0.10);box-shadow:0 2px 12px rgba(0,0,0,0.30);height:68px;}
@@ -165,6 +177,8 @@ button{cursor:pointer;font-family:inherit;}
   .c{padding:0 16px;}
   .sec{padding:52px 0;}
   .mg{grid-template-columns:1fr;}
+  .cg-details{grid-template-columns:1fr;}
+
 }
 
 /* COMPATIBILITY ALIASES for old-class pages */
