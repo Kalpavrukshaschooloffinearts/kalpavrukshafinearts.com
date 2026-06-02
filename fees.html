@@ -608,7 +608,8 @@
       <div class="fpanel fee-card" id="panel-workshop" role="tabpanel" aria-labelledby="tab-workshop">
         <div id="ws-form-wrap">
           <span class="lbl">Workshop Registration</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Workshop Fee</h2>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">Register for a Workshop</h2>
+          <p style="font-size:0.88rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px">Upcoming workshops conducted by Kalpavruksha School of Fine Arts are listed below. Select a workshop to view details and complete your registration payment.</p>
 
           <!-- Workshop listing — populated from sheet -->
           <div id="ws-list-area">
@@ -670,7 +671,7 @@
               <input type="hidden" id="ws-kv-email">
               <input type="hidden" id="ws-kv-amount">
               <div class="form-divider"></div>
-              <button class="pay-btn" id="ws-kv-pay-btn" onclick="initiatePayment('ws-kv')">Pay Workshop Fee</button>
+              <button class="pay-btn" id="ws-kv-pay-btn" onclick="initiatePayment('ws-kv')">Complete Registration</button>
               <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
             </div>
           </div>
@@ -693,7 +694,7 @@
             </div>
             <input type="hidden" id="ws-out-amount">
             <div class="form-divider"></div>
-            <button class="pay-btn" id="ws-out-pay-btn" onclick="initiatePayment('ws-out')">Pay Workshop Fee</button>
+            <button class="pay-btn" id="ws-out-pay-btn" onclick="initiatePayment('ws-out')">Complete Registration</button>
             <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
 
@@ -701,7 +702,7 @@
         <div class="success-screen" id="workshop-success">
           <div class="success-icon">🙏</div>
           <h2>Registration Confirmed</h2>
-          <p>Your workshop registration fee has been received.<br>We look forward to seeing you at the workshop!</p>
+          <p>Your workshop registration payment has been received. We will send you confirmation details via WhatsApp or email. We look forward to seeing you at the workshop!</p>
           <div id="workshop-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
             <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
             <span id="workshop-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
