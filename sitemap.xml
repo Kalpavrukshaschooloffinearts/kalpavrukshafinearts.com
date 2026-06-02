@@ -48,4 +48,16 @@
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
   </url>
+  <url>
+    <loc>https://kalpavrukshafinearts.com/fees.html</loc>
+    <lastmod>2026-06-03</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://kalpavrukshafinearts.com/terms.html</loc>
+    <lastmod>2026-06-03</lastmod>
+    <priority>0.3</priority>
+    <changefreq>yearly</changefreq>
+  </url>
 </urlset>
