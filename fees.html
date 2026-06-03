@@ -1203,7 +1203,7 @@ function renderTrialSessionCards(classtype) {
   var filtered = DATA.trialSessions.filter(function(s) {
     return nextDates.indexOf(s['Date']) !== -1
         && (s['Status'] || '').trim() === 'Active'
-        && (!classtype || s['Type'] === classtype);
+        && (!classtype || s['Type'] === classtype || classtype.indexOf(s['Type']) !== -1);
   });
   if (!filtered.length) {
     container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions match your class type. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
@@ -1760,7 +1760,10 @@ function copyTxn(spanId, btn) {
 // Load all sheet data on page load
 // ─────────────────────────────────────────────────────────────────
 function fetchSheet(url) {
-  return fetch(url).then(function(r){ return r.text(); });
+  return fetch(url).then(function(r){
+    if (!r.ok) throw new Error('Sheet fetch failed: ' + r.status + ' ' + url.split('gid=')[1]);
+    return r.text();
+  });
 }
 
 function loadAllData() {
@@ -1794,8 +1797,14 @@ function loadAllData() {
       setEnrolOption(!window._kfaEnrolEnabled);
     }
   }).catch(function(e){
-    console.warn('Sheet data unavailable — running in offline/test mode', e);
-    dataLoaded = true; // allow page to work with empty data
+    console.error('Sheet load error:', e);
+    dataLoaded = false; // allow retry
+    // Show error message on any visible batch/trial container
+    var containers = ['new-batch-list','new-trial-session-cards'];
+    containers.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--err);">Unable to load session data. Please refresh the page or <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    });
   });
 }
 
