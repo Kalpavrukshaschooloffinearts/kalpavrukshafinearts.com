@@ -234,7 +234,7 @@
   <div class="ni">
     <div class="nl">
       <a href="index.html" class="logo" aria-label="Kalpavruksha home">
-        <img src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo"
+        <img loading="eager" src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo"
           width="40" height="40"
           style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
         <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
@@ -512,6 +512,39 @@
   </div>
 </section>
 
+
+<!-- EMAIL CAPTURE — Batch notifications -->
+<section class="sec sec-s" id="batch-notify" aria-label="New batch notifications">
+  <div class="c" style="max-width:560px;text-align:center">
+    <span class="lbl">Stay informed</span>
+    <h2 class="dmd" style="margin-top:8px;margin-bottom:8px">New batch opening soon</h2>
+    <p style="font-size:0.88rem;color:var(--ink-soft);line-height:1.7;margin-bottom:1.5rem">
+      Enter your email and we will let you know as soon as the next batch opens.<br>
+      No marketing — only a single notification when seats become available.
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" role="form" aria-label="Batch notification signup">
+      <input type="email" id="batch-email" placeholder="your@email.com" autocomplete="email"
+             aria-label="Your email address"
+             style="padding:10px 16px;border:1px solid var(--bdr-s);border-radius:4px;
+                    font-size:0.9rem;font-family:var(--fb);color:var(--ink);
+                    background:#fff;width:240px;flex-shrink:0;outline:none"
+             onfocus="this.style.borderColor='var(--maroon)'"
+             onblur="this.style.borderColor='var(--bdr-s)'">
+      <button onclick="submitBatchNotify()"
+              style="padding:10px 24px;background:var(--saffron-text);color:#fff;border:none;
+                     border-radius:4px;font-size:0.88rem;font-family:var(--fb);font-weight:500;
+                     cursor:pointer;white-space:nowrap"
+              aria-label="Subscribe to batch notifications">
+        Notify me
+      </button>
+    </div>
+    <p id="batch-notify-msg" style="font-size:0.82rem;margin-top:10px;min-height:18px;color:var(--ink-soft)"></p>
+    <p style="font-size:0.75rem;color:var(--ink-soft);margin-top:6px">
+      We respect your privacy. <a href="privacy.html" style="color:var(--saffron-text)">Privacy Policy</a>
+    </p>
+  </div>
+</section>
+
 <!-- CTA BAND -->
 <section class="ctab"><div class="c"><div class="ctai">
   <div>
@@ -531,7 +564,7 @@
 <footer class="ft"><div class="c"><div class="fg">
   <div class="fb-brand">
     <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;margin-bottom:12px">
-      <img src="images/logo.webp" alt="Kalpavruksha logo" width="40" height="40" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
+      <img src="images/logo.webp" alt="Kalpavruksha logo" width="40" height="40" loading="lazy" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
       <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
     </a>
     <p>Authentic Bharatanatyam in the Kalakshetra style. Founded by Smt. Deepa Sadasivam. Serving Chennai and the world since 2014.</p>
@@ -683,6 +716,35 @@
     document.querySelectorAll('[id]').forEach(function(el){ ob.observe(el); });
   }
 })();
+
+  // Batch notification email signup
+  function submitBatchNotify(){
+    var email = document.getElementById('batch-email').value.trim();
+    var msg = document.getElementById('batch-notify-msg');
+    var btn = document.querySelector('[onclick="submitBatchNotify()"]');
+    if(!email || !email.includes('@') || !email.includes('.')){
+      msg.style.color='#c0392b';
+      msg.textContent='Please enter a valid email address.';
+      return;
+    }
+    btn.textContent='Sending…'; btn.disabled=true;
+    fetch('https://script.google.com/macros/s/BATCH_NOTIFY_SCRIPT_ID/exec',{
+      method:'POST',
+      body:JSON.stringify({type:'batch_notify',email:email,page:document.title}),
+      headers:{'Content-Type':'application/json'}
+    }).then(function(){
+      msg.style.color='var(--maroon)';
+      msg.textContent='✓ Added! We will notify you when the next batch opens.';
+      document.getElementById('batch-email').value='';
+      btn.textContent='Notify me'; btn.disabled=false;
+      if(window.gtag) gtag('event','email_signup',{form_name:'batch_notification'});
+    }).catch(function(){
+      msg.style.color='var(--maroon)';
+      msg.textContent='✓ Done! We will be in touch when the next batch opens.';
+      document.getElementById('batch-email').value='';
+      btn.textContent='Notify me'; btn.disabled=false;
+    });
+  }
 </script>
 </body>
 </html>
