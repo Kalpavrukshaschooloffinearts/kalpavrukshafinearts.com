@@ -1061,14 +1061,16 @@ function onEntryTypeChange(radio) {
   safeSet('new-entry-msg',       'textContent', '');
   safeSet('new-trial-done-msg',  'textContent', '');
   // Reset downstream
-  safeStyle('new-trial-form-wrap', 'display', 'none');
-  safeStyle('new-pay-wrap',        'display', 'none');
+  safeStyle('new-trial-form-wrap',      'display', 'none');
+  safeStyle('new-pay-wrap',             'display', 'none');
+  safeStyle('new-trial-session-cards',  'display', 'none');
+  safeSet  ('new-trial-session-cards',  'innerHTML', '');
   safeStyle('new-trial-done-code-wrap', 'display', radio.value === 'trial_done' ? 'block' : 'none');
 
   if (radio.value === 'trial') {
-    // Show trial session selector for all levels
-    var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
+    // Show trial form and load session cards
     safeStyle('new-trial-form-wrap', 'display', 'block');
+    var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
     if (!dataLoaded) {
       loadAllData().then(function() { renderTrialSessionCards(classtype); });
     } else {
@@ -1102,28 +1104,49 @@ function proceedFromEntry() {
 }
 
 function verifyTrialCode() {
-  var val = (document.getElementById('new-trial-done-code').value || '').trim().toUpperCase();
-  var msg = document.getElementById('new-trial-done-msg');
-  if (!val) { msg.style.color = 'var(--err)'; msg.textContent = 'Please enter your enrolment code.'; return; }
-  if (!TRIAL_CODES[val]) { msg.style.color = 'var(--err)'; msg.textContent = 'Invalid code. Please check the code shared by the school.'; return; }
-  msg.style.color = '#1B5E20';
-  msg.textContent = '✓ Code verified — Enrol & Pay Now is unlocked.';
-  window._kfaPresetLevel  = TRIAL_CODES[val];
-  window._kfaEnrolEnabled = true;
-  // Update Enrol Directly label and unlock it
-  setEnrolOption(false);
-  // If level pre-set, apply it
-  if (window._kfaPresetLevel) {
-    var levelSel = document.getElementById('new-level');
-    if (levelSel && levelSel.value !== window._kfaPresetLevel) {
-      levelSel.value = window._kfaPresetLevel;
-      filterBatches();
-    }
+  var val     = (document.getElementById('new-trial-done-code').value || '').trim().toUpperCase();
+  var msg     = document.getElementById('new-trial-done-msg');
+  var levelSel = document.getElementById('new-level');
+  var currentLevel = levelSel ? levelSel.value : '';
+
+  if (!val) {
+    msg.style.color = 'var(--err)';
+    msg.textContent = 'Please enter your enrolment code.';
+    return;
   }
-  // Show pay section
-  safeStyle('new-pay-wrap', 'display', 'block');
-  var pw = document.getElementById('new-pay-wrap');
-  if (pw) pw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Check code is valid at all
+  if (!TRIAL_CODES[val]) {
+    msg.style.color = 'var(--err)';
+    msg.textContent = 'Invalid code. Please check the enrolment code shared by the school.';
+    return;
+  }
+
+  // Check code matches the level already selected
+  var codeLevel = TRIAL_CODES[val];
+  if (currentLevel && codeLevel !== currentLevel) {
+    msg.style.color = 'var(--err)';
+    msg.textContent = 'Invalid code. Please check the enrolment code shared by the school.';
+    return;
+  }
+
+  // Code is valid and matches level
+  msg.style.color = '#1B5E20';
+  msg.textContent = '✓ Code verified. Enrol & Pay Now is now unlocked. Please select a batch above to proceed.';
+  window._kfaPresetLevel  = codeLevel;
+  window._kfaEnrolEnabled = true;
+
+  // Set level if not already set
+  if (levelSel && !currentLevel) {
+    levelSel.value = codeLevel;
+    filterBatches();
+  }
+
+  // Unlock enrol WITHOUT calling filterBatches (which would re-lock it)
+  setEnrolOption(false);
+
+  // Do NOT show pay-wrap yet — parent must select a batch first
+  // pay-wrap shows when selectBatch() is called
 }
 
 function showDetailsForm(heading, lbl) {
@@ -1552,9 +1575,9 @@ function filterBatches() {
 
   // Step 3: Load batches for all levels
   // Foundation always unlocked. Intermediate/Advanced locked unless correct trial code used.
-  var presetLevel = window._kfaPresetLevel || null;
+  // isTrialLevel: locked if Intermediate/Advanced AND no matching preset level AND enrol not enabled
   var isTrialLevel = (level === 'Intermediate' || level === 'Advanced')
-                  && !(presetLevel === level || presetLevel === 'Intermediate' && level === 'Intermediate' || presetLevel === 'Advanced' && level === 'Advanced');
+                  && !window._kfaEnrolEnabled;
   setEnrolOption(isTrialLevel);
 
   if (!dataLoaded) {
@@ -1746,13 +1769,15 @@ function loadAllData() {
     fetchSheet(SHEET_STUDENTS_CSV),
     fetchSheet(SHEET_WORKSHOPS_CSV),
     fetchSheet(SHEET_CONFIG_CSV),
-    fetchSheet(SHEET_BATCHES_CSV)
+    fetchSheet(SHEET_BATCHES_CSV),
+    fetchSheet(SHEET_TRIAL_CSV)
   ]).then(function(results) {
-    DATA.students  = parseCSV(results[0]);
-    DATA.workshops = parseCSV(results[1]);
-    var cfgRows    = parseCSV(results[2]);
+    DATA.students      = parseCSV(results[0]);
+    DATA.workshops     = parseCSV(results[1]);
+    var cfgRows        = parseCSV(results[2]);
     cfgRows.forEach(function(r){ DATA.config[r['Key']] = r['Value']; });
-    DATA.batches   = parseBatchCSV(results[3]);
+    DATA.batches       = parseBatchCSV(results[3]);
+    DATA.trialSessions = parseCSV(results[4]).filter(function(r){ return r['Session ID'] && r['Session ID'] !== 'Session ID'; });
     dataLoaded = true;
     populateWorkshopDropdown();
     populateMonthDropdown();
