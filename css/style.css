@@ -1,7 +1,7 @@
 
 /* Keyboard focus indicator — accessibility */
 *:focus-visible {
-  outline: 2px solid var(--saffron, #C8621A);
+  outline: 2px solid var(--saffron-text, #B05618);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -29,7 +29,7 @@
    ============================================================ */
 
 /* ROOT */
-:root{--maroon:#7B1D2E;--maroon-d:#5c1522;--maroon-l:#F5E6EB;--gold:#B8962E;--gold-l:#fdf5d8;--saffron:#C8621A;--saffron-l:#FBF4EC;--ink:#1C0A0F;--ink-mid:#4A2B33;--ink-soft:#7A6558;--bdr:#E8DDD4;--bdr-s:#C8BAB0;--cream:#FAF4EF;--fd:'Playfair Display',Georgia,serif;--fb:'DM Sans',-apple-system,sans-serif;--mw:1200px;}
+:root{--maroon:#7B1D2E;--maroon-d:#5c1522;--maroon-l:#F5E6EB;--gold:#B8962E;--gold-l:#fdf5d8;--saffron:#C8621A;--saffron-text:#B05618;--saffron-l:#FBF4EC;--ink:#1C0A0F;--ink-mid:#4A2B33;--ink-soft:#7A6558;--bdr:#E8DDD4;--bdr-s:#C8BAB0;--cream:#FAF4EF;--fd:'Playfair Display',Georgia,serif;--fb:'DM Sans',-apple-system,sans-serif;--mw:1200px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
 body{font-family:var(--fb);color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;padding-top:68px;}
@@ -48,7 +48,7 @@ button{cursor:pointer;font-family:inherit;}
 .sec-s{background:var(--saffron-l);}
 .sec-m{background:var(--maroon);}
 .sec-k{background:var(--ink);}
-.lbl{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--saffron);}
+.lbl{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--saffron-text);}
 .sh{text-align:center;max-width:640px;margin:0 auto 48px;}
 .sh p{color:var(--ink-soft);margin-top:10px;}
 .hr{height:2px;width:48px;background:var(--gold);border:none;margin:0;}
@@ -59,7 +59,7 @@ button{cursor:pointer;font-family:inherit;}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:3px;font-family:var(--fb);font-size:0.83rem;font-weight:500;letter-spacing:0.04em;text-decoration:none;border:1px solid transparent;transition:all 0.2s;cursor:pointer;white-space:nowrap;}
-.bp{background:var(--saffron);color:#fff;border-color:var(--saffron);}.bp:hover{background:#a85016;}
+.bp{background:var(--saffron-text);color:#fff;border-color:var(--saffron-text);}.bp:hover{background:#8c4313;}
 .bs{background:transparent;color:var(--maroon);border-color:var(--maroon);}.bs:hover{background:var(--maroon);color:#fff;}
 .bg{background:var(--gold);color:#fff;}.bg:hover{background:#9a7d26;}
 .bw{background:#fff;color:var(--ink);}.bw:hover{background:rgba(255,255,255,0.88);}
@@ -95,7 +95,7 @@ button{cursor:pointer;font-family:inherit;}
 .faq-item.open .faq-q::after{transform:rotate(45deg);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
 .faq-a p{padding-bottom:18px;font-size:0.88rem;color:var(--ink-mid);line-height:1.75;}
-.faq-a a{color:var(--saffron);}
+.faq-a a{color:var(--saffron-text);text-decoration:underline;}
 
 /* META GRID */
 .mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;}
@@ -196,7 +196,7 @@ button{cursor:pointer;font-family:inherit;}
 .section--ink,.sec-k{background:#1C0A0F;}
 .section-head{text-align:center;max-width:640px;margin:0 auto 48px;}
 .section-head p{color:#7A6558;margin-top:10px;}
-.section-label{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#C8621A;}
+.section-label{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--saffron-text);}
 .display-xl{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:400;line-height:1.12;}
 .display-lg{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.7rem,4vw,2.7rem);font-weight:400;line-height:1.2;}
 .display-md{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:400;line-height:1.3;}
@@ -260,7 +260,7 @@ button{cursor:pointer;font-family:inherit;}
 .section--ink,.sec-k{background:#1C0A0F;}
 .section-head{text-align:center;max-width:640px;margin:0 auto 48px;}
 .section-head p{color:#7A6558;margin-top:10px;}
-.section-label{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#C8621A;}
+.section-label{display:inline-block;font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--saffron-text);}
 .display-xl{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:400;line-height:1.12;}
 .display-lg{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.7rem,4vw,2.7rem);font-weight:400;line-height:1.2;}
 .display-md{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:400;line-height:1.3;}
