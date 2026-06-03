@@ -449,6 +449,8 @@
             <input type="hidden" id="new-trial-session-date" value="">
             <input type="hidden" id="new-trial-session-timings" value="">
             <span class="hint err" id="new-trial-session-msg" style="display:block;margin-bottom:8px;"></span>
+            <!-- Consent and button shown only after session selected -->
+            <div id="new-trial-consent-wrap" style="display:none;">
             <div style="margin-bottom:14px;">
               <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                 <input type="checkbox" id="new-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
@@ -457,6 +459,7 @@
               <span class="hint err" id="new-trial-consent-msg" style="display:block;margin-top:4px;"></span>
             </div>
             <button class="pay-btn" id="new-trial-confirm-btn" onclick="submitTrialInterest()" style="margin-bottom:0;">Confirm Trial Registration</button>
+          </div><!-- /new-trial-consent-wrap -->
           </div>
 
           <!-- Fee + payment -->
@@ -1247,6 +1250,8 @@ function selectTrialSession(el) {
   if (typeNote) typeNote.textContent = isFull
     ? 'This session is full — you will be added to the waitlist.'
     : 'You are registering for this trial session.';
+  // Show consent and confirm button
+  safeStyle('new-trial-consent-wrap', 'display', 'block');
   safeStyle('new-trial-form-wrap', 'display', 'block');
   var tw = document.getElementById('new-trial-form-wrap');
   if (tw) tw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1532,6 +1537,7 @@ function resetBatchUI() {
   safeSet  ('new-trial-session-date',    'value', '');
   safeSet  ('new-trial-session-timings', 'value', '');
   safeSet  ('new-trial-session-msg',     'textContent', '');
+  safeStyle('new-trial-consent-wrap',    'display', 'none');
   // Intent options
   safeStyle('new-entry-options',         'display', 'none');
   safeStyle('new-trial-done-code-wrap',  'display', 'none');
