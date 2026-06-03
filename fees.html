@@ -2442,6 +2442,16 @@ function initiatePayment(flow) {
       document.getElementById(successId).classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
+    config: {
+      display: {
+        blocks: {
+          upi:    { name: 'Pay via UPI',    instruments: [{ method: 'upi'    }] },
+          wallet: { name: 'Pay via Wallet', instruments: [{ method: 'wallet' }] }
+        },
+        sequence: ['block.upi', 'block.wallet'],
+        preferences: { show_default_blocks: false }
+      }
+    },
     modal: {
       ondismiss: function() { /* user closed modal — do nothing */ }
     }
