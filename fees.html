@@ -1073,7 +1073,9 @@ function onEntryTypeChange(radio) {
   if (radio.value === 'trial') {
     // Show trial form and load session cards
     safeStyle('new-trial-form-wrap', 'display', 'block');
+    safeStyle('new-trial-consent-wrap', 'display', 'block');
     var classtype = document.getElementById('new-classtype') ? document.getElementById('new-classtype').value : '';
+    window._trialReloadAttempted = false;
     if (!dataLoaded) {
       loadAllData().then(function() { renderTrialSessionCards(classtype); });
     } else {
@@ -1189,13 +1191,22 @@ function renderTrialSessionCards(classtype) {
   var container = document.getElementById('new-trial-session-cards');
   if (!container) return;
   container.style.display = 'grid';
+  // If not loaded, load now
   if (!dataLoaded) {
-    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">Loading…</div>';
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>';
     loadAllData().then(function() { renderTrialSessionCards(classtype); });
     return;
   }
+  // If loaded but trialSessions empty, try reloading once
   if (!DATA.trialSessions || !DATA.trialSessions.length) {
-    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions available at this time. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    if (!window._trialReloadAttempted) {
+      window._trialReloadAttempted = true;
+      container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">Loading trial sessions…</div>';
+      dataLoaded = false;
+      loadAllData().then(function() { renderTrialSessionCards(classtype); });
+      return;
+    }
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions available. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
     return;
   }
   var nextDates = getNextFridays(DATA.trialSessions);
@@ -1250,7 +1261,6 @@ function selectTrialSession(el) {
   if (typeNote) typeNote.textContent = isFull
     ? 'This session is full — you will be added to the waitlist.'
     : 'You are registering for this trial session.';
-  // Show consent and confirm button
   safeStyle('new-trial-consent-wrap', 'display', 'block');
   safeStyle('new-trial-form-wrap', 'display', 'block');
   var tw = document.getElementById('new-trial-form-wrap');
