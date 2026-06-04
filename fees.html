@@ -1796,7 +1796,10 @@ function loadAllData() {
     var cfgRows        = parseCSV(results[2]);
     cfgRows.forEach(function(r){ DATA.config[r['Key']] = r['Value']; });
     DATA.batches       = parseBatchCSV(results[3]);
-    DATA.trialSessions = parseCSV(results[4]).filter(function(r){ return r['Session ID'] && r['Session ID'] !== 'Session ID'; });
+    var rawTrialData = parseCSV(results[4]);
+    console.log('RAW TRIAL CSV ROWS:', rawTrialData.length, JSON.stringify(rawTrialData[0]));
+    DATA.trialSessions = rawTrialData.filter(function(r){ return r['Session ID'] && r['Session ID'] !== 'Session ID'; });
+    console.log('FILTERED TRIAL SESSIONS:', DATA.trialSessions.length, DATA.trialSessions.map(function(s){ return s['Session ID']+' '+s['Status']+' '+s['Date']; }));
     dataLoaded = true;
     populateWorkshopDropdown();
     populateMonthDropdown();
