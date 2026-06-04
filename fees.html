@@ -450,10 +450,7 @@
           <!-- Trial session form — shown when Book Trial selected -->
           <div id="new-trial-form-wrap" style="display:none;margin-top:12px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
             <p id="new-trial-type-note" style="font-size:0.82rem;color:var(--ink);margin-bottom:8px;font-weight:600;"></p>
-            <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:10px 14px;margin-bottom:12px;">
-              <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;">We will confirm your trial session details via WhatsApp. For any queries, please reach out to <a href="https://wa.me/917200095585" style="color:#856404;font-weight:600;">7200095585</a>.</p>
-            </div>
-            <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">Note: Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.</p>
+            <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">Trial sessions are conducted across batches and groups and are not specific to any particular batch or timing. We will confirm your session details via WhatsApp — for queries, reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a>.</p>
             <!-- Trial session date cards -->
             <div id="new-trial-session-cards" style="display:none;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:12px;"></div>
             <input type="hidden" id="new-trial-session-id" value="">
@@ -510,11 +507,8 @@
           <h2 id="new-trial-success-heading">Trial Registration Confirmed!</h2>
           <p id="new-trial-success-msg">Thank you for registering for the trial session. Your details have been received.</p>
           <div id="new-trial-success-date" style="display:none;"></div>
-          <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:12px 16px;margin:14px auto;max-width:380px;text-align:left;">
-            <p style="font-size:0.78rem;color:#856404;line-height:1.7;margin:0;">We will confirm your trial session details via WhatsApp. For any queries, please reach out to <a href="https://wa.me/917200095585" style="color:#856404;font-weight:600;">7200095585</a> on the relevant Friday.</p>
-          </div>
           <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:8px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
-            <strong>Please note:</strong> Trial sessions are conducted across batches and groups. They are not specific to any particular batch or timing.
+            Trial sessions are conducted across batches and groups and are not specific to any particular batch or timing. We will confirm your session details via WhatsApp — for queries, reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a>.
           </p>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
@@ -1262,8 +1256,7 @@ function renderTrialSessionCards(classtype) {
     var dot      = isFull ? '🔴' : avail <= 3 ? '🟡' : '🟢';
     var statusTxt = isFull ? 'Full — Join Waitlist' : avail <= 3 ? 'Filling Fast' : 'Available';
     var dParts = (s['Date'] || '').split('-'); var d = new Date(parseInt(dParts[0]), parseInt(dParts[1])-1, parseInt(dParts[2]));
-    var dayName = (s['Day'] || '').trim() || days[d.getDay()]; // use sheet Day col, fallback to JS
-    var dateStr  = dayName + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    var dateStr  = days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
     var noteRow = (s['Note'] ? '<span style="font-size:0.74rem;color:var(--maroon);font-style:italic;">' + s['Note'] + '</span>' : '');
     return '<div class="batch-card" style="cursor:pointer;"'
       + ' data-sid="'     + (s['Session ID']    || '') + '"'
@@ -1646,12 +1639,8 @@ function filterBatches() {
   // Step 2: Need level to show batches
   if (!level) return;
 
-  // Step 3: Load batches for all levels
-  // Foundation always unlocked. Intermediate/Advanced locked unless correct trial code used.
-  // isTrialLevel: locked if Intermediate/Advanced AND no matching preset level AND enrol not enabled
-  var isTrialLevel = (level === 'Intermediate' || level === 'Advanced')
-                  && !window._kfaEnrolEnabled;
-  setEnrolOption(isTrialLevel);
+  // Enrol & Pay always locked until a batch card is physically selected
+  setEnrolOption(true);
 
   if (!dataLoaded) {
     if (window._batchLoadPending || window._loadFailed) return; // prevent loop
@@ -1720,10 +1709,12 @@ function renderBatchCards(batches) {
   }
 
   if (!batches.length) {
-    container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:20px;text-align:center;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time.<br><a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
+    container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time. <a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
+    container.style.gridTemplateColumns = '1fr'; // full width for message
     wrap.style.display = 'block';
     return;
   }
+  container.style.gridTemplateColumns = 'repeat(auto-fill,minmax(220px,1fr))'; // restore grid
 
   var html = '';
   batches.forEach(function(b) {
@@ -1806,13 +1797,8 @@ function selectBatch(el, batchId) {
   });
   // Lock enrol if batch is full
   var batchStatus = (card.dataset.status || '').toLowerCase();
-  var batchFull   = batchStatus === 'full';
-  // Recalculate trial lock based on selected level vs preset
-  var curLevel = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
-  var pre = window._kfaPresetLevel || null;
-  var levelLocked = (curLevel === 'Intermediate' || curLevel === 'Advanced') && pre !== curLevel;
-  setEnrolOption(levelLocked || batchFull);
-  // If batch is full, show message
+  var batchFull = batchStatus === 'full';
+  setEnrolOption(batchFull); // unlock enrol for available batches, lock for full
   if (batchFull) {
     safeSet('new-entry-msg', 'textContent', 'This batch is full. Please select another batch or WhatsApp us.');
   }
