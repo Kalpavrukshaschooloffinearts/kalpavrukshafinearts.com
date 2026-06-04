@@ -74,7 +74,8 @@
 @media(max-width:540px){.fee-card{padding:20px 18px;}}
 
 /* Field groups */
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.fg-row .fg-field{margin-bottom:0;}
 @media(max-width:500px){.fg-row{grid-template-columns:1fr;}}
 .fg-field{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
 .fg-field label{font-size:0.74rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);}
@@ -1064,7 +1065,7 @@ function verifyToken() {
     if (window._kfaPresetLevel) {
       var levelSel = document.getElementById('new-level');
       if (levelSel) levelSel.value = window._kfaPresetLevel;
-      setEnrolOption(!window._kfaEnrolEnabled);
+      // Enrol stays locked until batch card selected
     }
   });
   // Show entry options immediately — trial radio is pre-checked so onchange never fires
@@ -1162,21 +1163,16 @@ function verifyTrialCode() {
 
   // Code is valid and matches level
   msg.style.color = '#1B5E20';
-  msg.textContent = '✓ Code verified. Enrol & Pay Now is now unlocked. Please select a batch above to proceed.';
+  msg.textContent = '✓ Code verified. Please select a batch above to proceed with enrolment.';
   window._kfaPresetLevel  = codeLevel;
   window._kfaEnrolEnabled = true;
 
-  // Set level if not already set
-  if (levelSel && !currentLevel) {
+  // Set level if not already set, then show matching batches
+  if (levelSel) {
     levelSel.value = codeLevel;
     filterBatches();
   }
-
-  // Unlock enrol WITHOUT calling filterBatches (which would re-lock it)
-  setEnrolOption(false);
-
-  // Do NOT show pay-wrap yet — parent must select a batch first
-  // pay-wrap shows when selectBatch() is called
+  // Enrol & Pay Now stays locked — only unlocks when a batch card is selected
 }
 
 function showDetailsForm(heading, lbl) {
@@ -1341,7 +1337,7 @@ function verifyUpgradeCode() {
     levelSel.value = window._kfaPresetLevel;
     filterBatches();
   }
-  setEnrolOption(false); // unlock enrol for all levels
+  // Enrol unlocks only when batch card selected — not here
 }
 
 function onGenderChange() {
@@ -1798,7 +1794,9 @@ function selectBatch(el, batchId) {
   // Lock enrol if batch is full
   var batchStatus = (card.dataset.status || '').toLowerCase();
   var batchFull = batchStatus === 'full';
-  setEnrolOption(batchFull); // unlock enrol for available batches, lock for full
+  var level4 = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
+  var needsCode = (level4 === 'Intermediate' || level4 === 'Advanced') && !window._kfaEnrolEnabled;
+  setEnrolOption(batchFull || needsCode); // lock if full OR level needs trial code
   if (batchFull) {
     safeSet('new-entry-msg', 'textContent', 'This batch is full. Please select another batch or WhatsApp us.');
   }
