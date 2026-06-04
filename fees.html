@@ -1054,6 +1054,10 @@ function verifyToken() {
   var td = new Date();
   safeSet('new-enrol-date', 'value', td.getFullYear() + '-' + String(td.getMonth()+1).padStart(2,'0') + '-' + String(td.getDate()).padStart(2,'0'));
   loadAllData();
+  // Show entry options immediately — trial radio is pre-checked so onchange never fires
+  safeStyle('new-entry-options', 'display', 'block');
+  var defaultRadio = document.querySelector('input[name="new-entry-type"]:checked');
+  if (defaultRadio) { onEntryTypeChange(defaultRadio); }
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -1567,10 +1571,16 @@ function resetBatchUI() {
   // Reset checkboxes and radios
   var tcon = document.getElementById('new-trial-consent'); if (tcon) tcon.checked = false;
   var tcmsg = document.getElementById('new-trial-consent-msg'); if (tcmsg) tcmsg.textContent = '';
-  document.querySelectorAll('input[name="new-entry-type"]').forEach(function(r){ r.checked = false; });
+  // Re-check trial radio as default and restore its border
+  document.querySelectorAll('input[name="new-entry-type"]').forEach(function(r){
+    r.checked = (r.value === 'trial');
+  });
   ['new-opt-trial-label','new-opt-enrol-label','new-opt-direct-label'].forEach(function(id){
     var el = document.getElementById(id);
-    if (el) { el.style.borderColor='var(--bdr)'; el.style.borderWidth='1px'; }
+    if (el) {
+      el.style.borderColor = (id === 'new-opt-trial-label') ? 'var(--maroon)' : 'var(--bdr)';
+      el.style.borderWidth = (id === 'new-opt-trial-label') ? '2px' : '1px';
+    }
   });
   selectedBatch = null;
 }
@@ -1653,7 +1663,11 @@ function renderBatchCards(batches) {
   selectedBatch = null;
   document.getElementById('new-batch-id').value = '';
   document.getElementById('new-pay-wrap').style.display = 'none';
-  safeStyle('new-entry-options', 'display', 'none');
+  // Only hide entry options if trial radio is not already selected
+  var activeEntry = document.querySelector('input[name="new-entry-type"]:checked');
+  if (!activeEntry || activeEntry.value !== 'trial') {
+    safeStyle('new-entry-options', 'display', 'none');
+  }
 
   if (!batches.length) {
     container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:20px;text-align:center;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time.<br><a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
