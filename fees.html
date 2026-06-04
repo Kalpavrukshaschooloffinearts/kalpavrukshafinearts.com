@@ -246,7 +246,7 @@
           <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">New to Kalpavruksha?</h2>
           <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">
             To get started, please enter the access code shared by the school.<br>
-            <span style="font-size:0.78rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+Kalpavruksha." style="color:var(--saffron);">WhatsApp us</a> — 🌿 First trial is <strong>FREE</strong></span>
+            <span style="font-size:0.78rem;">Don&#39;t have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+would+like+to+enquire+about+Kalpavruksha." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> — 🌿 First trial is <strong>FREE</strong></span>
           </p>
           <div class="lookup-row">
             <div class="fg-field">
@@ -423,7 +423,7 @@
                   <div id="new-trial-done-code-wrap" style="display:none;margin-top:10px;">
                     <div class="lookup-row">
                       <div class="fg-field">
-                        <input type="text" id="new-trial-done-code" placeholder="Enter enrolment code" autocomplete="off"
+                        <input type="text" id="new-trial-done-code" placeholder="Enter Code" autocomplete="off"
                           onkeydown="if(event.key==='Enter'){event.preventDefault();verifyTrialCode();}"
                           style="text-transform:uppercase;letter-spacing:0.1em;">
                       </div>
@@ -450,7 +450,7 @@
           <!-- Trial session form — shown when Book Trial selected -->
           <div id="new-trial-form-wrap" style="display:none;margin-top:12px;background:#FFF8F0;border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;">
             <p id="new-trial-type-note" style="font-size:0.82rem;color:var(--ink);margin-bottom:8px;font-weight:600;"></p>
-            <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">Trial sessions are conducted across batches and groups and are not specific to any particular batch or timing. We will confirm your session details via WhatsApp — for queries, reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a>.</p>
+            <p style="font-size:0.74rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">Trial sessions are conducted across batches and groups and are not specific to any particular batch or timing. We will confirm your session details via WhatsApp — for queries, reach out to <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">7200095585</a>.</p>
             <!-- Trial session date cards -->
             <div id="new-trial-session-cards" style="display:none;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:12px;"></div>
             <input type="hidden" id="new-trial-session-id" value="">
@@ -508,7 +508,7 @@
           <p id="new-trial-success-msg">Thank you for registering for the trial session. Your details have been received.</p>
           <div id="new-trial-success-date" style="display:none;"></div>
           <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:8px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
-            Trial sessions are conducted across batches and groups and are not specific to any particular batch or timing. We will confirm your session details via WhatsApp — for queries, reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a>.
+            Trial sessions are conducted across batches and groups and are not specific to any particular batch or timing. We will confirm your session details via WhatsApp — for queries, reach out to <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">7200095585</a>.
           </p>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
@@ -517,7 +517,7 @@
         <div class="success-screen" id="new-success">
           <div class="success-icon">🙏</div>
           <h2>Enrolment Received</h2>
-          <p>Thank you for showing your interest. We have received your enrolment details.<br>Please reach out to <a href="https://wa.me/917200095585" style="color:var(--maroon);">7200095585</a> in case you need any other information.</p>
+          <p>Thank you for showing your interest. We have received your enrolment details.<br>Please reach out to <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">7200095585</a> in case you need any other information.</p>
           <!-- Roll Number box -->
           <div id="new-roll-box" style="display:none;margin:14px auto;max-width:380px;background:#F0FFF4;border:1px solid #A5D6A7;border-radius:4px;padding:14px 16px;text-align:left;">
             <div style="font-size:0.76rem;font-weight:600;color:#1B5E20;margin-bottom:6px;letter-spacing:0.04em;">YOUR ROLL NUMBER</div>
@@ -1162,16 +1162,24 @@ function verifyTrialCode() {
 
   // Code is valid and matches level
   msg.style.color = '#1B5E20';
-  msg.textContent = '✓ Code verified. Please select a batch above to proceed with enrolment.';
+  msg.textContent = '✓ Code verified. Select a batch above to proceed.';
   window._kfaPresetLevel  = codeLevel;
   window._kfaEnrolEnabled = true;
 
-  // Set level if not already set, then show matching batches
+  // Set level and filter batches
   if (levelSel) {
     levelSel.value = codeLevel;
     filterBatches();
   }
-  // Enrol & Pay Now stays locked — only unlocks when a batch card is selected
+  // Keep entry options visible and unlock Enrol & Pay Now radio
+  safeStyle('new-entry-options', 'display', 'block');
+  setEnrolOption(false); // unlock enrol — batch selection still required to pay
+  // Auto-select Enrol radio so parent can see it is now active
+  var directRadio = document.getElementById('new-enrol-radio');
+  if (directRadio) {
+    directRadio.checked = true;
+    onEntryTypeChange(directRadio);
+  }
 }
 
 function showDetailsForm(heading, lbl) {
@@ -1226,12 +1234,12 @@ function renderTrialSessionCards(classtype) {
       loadAllData().then(function() { renderTrialSessionCards(classtype); });
       return;
     }
-    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions available. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions available. Please <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">WhatsApp us</a>.</div>';
     return;
   }
   var nextDates = getNextFridays(DATA.trialSessions);
   if (!nextDates.length) {
-    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No upcoming trial sessions at this time. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No upcoming trial sessions at this time. Please <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">WhatsApp us</a>.</div>';
     return;
   }
   var filtered = DATA.trialSessions.filter(function(s) {
@@ -1240,7 +1248,7 @@ function renderTrialSessionCards(classtype) {
         && (!classtype || s['Type'] === classtype || classtype.indexOf(s['Type']) !== -1);
   });
   if (!filtered.length) {
-    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions match your class type. Please <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+    container.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--ink-soft);">No trial sessions match your class type. Please <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">WhatsApp us</a>.</div>';
     return;
   }
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1612,6 +1620,11 @@ function filterBatches() {
   var level     = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
   var levelWrap = document.getElementById('new-level-wrap');
 
+  // If level changed and no longer matches preset, revoke enrol permission
+  if (level && window._kfaPresetLevel && level !== window._kfaPresetLevel) {
+    window._kfaEnrolEnabled = false;
+  }
+
   // Light reset — only clear batch cards and payment, preserve filter values and entry options
   safeStyle('new-batch-cards',           'display', 'none');
   safeSet  ('new-batch-list',            'innerHTML', '');
@@ -1706,7 +1719,7 @@ function renderBatchCards(batches) {
   }
 
   if (!batches.length) {
-    container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time. <a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
+    container.innerHTML = '<div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:16px 18px;font-size:0.84rem;color:var(--ink-soft);line-height:1.7;">No open batches found for your selection at this time. <a href="https://wa.me/917200095585?text=Hello%2C+I+am+looking+for+a+Bharatanatyam+batch." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> — we may be able to accommodate you.</div>';
     container.style.gridTemplateColumns = '1fr'; // full width for message
     wrap.style.display = 'block';
     return;
@@ -1869,7 +1882,7 @@ function loadAllData() {
     var containers = ['new-batch-list','new-trial-session-cards'];
     containers.forEach(function(id){
       var el = document.getElementById(id);
-      if (el) el.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--err);">Unable to load session data. Please refresh the page or <a href="https://wa.me/917200095585" style="color:var(--maroon);">WhatsApp us</a>.</div>';
+      if (el) el.innerHTML = '<div style="padding:12px;font-size:0.82rem;color:var(--err);">Unable to load session data. Please refresh the page or <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">WhatsApp us</a>.</div>';
     });
   });
 }
