@@ -231,7 +231,7 @@
           <span class="ftab-icon">🎓</span>Existing Student
         </button>
         <button class="ftab"        role="tab" aria-selected="false" aria-controls="panel-workshop" id="tab-workshop" onclick="switchTab('workshop')">
-          <span class="ftab-icon">✨</span>Workshop
+          <span class="ftab-icon">✨</span>Programs
         </button>
       </div>
 
@@ -270,17 +270,17 @@
           <div class="fg-row">
             <div class="fg-field">
               <label for="new-name">Student Name *</label>
-              <input type="text" id="new-name" placeholder="Full name" autocomplete="off" required>
+              <input type="text" id="new-name" placeholder="Full name" autocomplete="off" required onblur="this.value=this.value.trim();">
             </div>
             <div class="fg-field">
               <label for="new-parent">Parent / Guardian Name *</label>
-              <input type="text" id="new-parent" placeholder="Full name" autocomplete="off" required>
+              <input type="text" id="new-parent" placeholder="Full name" autocomplete="off" required onblur="this.value=this.value.trim();">
             </div>
           </div>
           <div class="fg-row">
             <div class="fg-field">
               <label for="new-phone">Mobile Number *</label>
-              <input type="tel" id="new-phone" placeholder="10-digit number" maxlength="10" inputmode="numeric" required>
+              <input type="tel" id="new-phone" placeholder="10-digit number" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10);" maxlength="10" inputmode="numeric" required>
             </div>
             <div class="fg-field">
               <label for="new-email">Email Address *</label>
@@ -634,9 +634,9 @@
       ═══════════════════════════ -->
       <div class="fpanel fee-card" id="panel-workshop" role="tabpanel" aria-labelledby="tab-workshop">
         <div id="ws-form-wrap">
-          <span class="lbl">Workshop Registration</span>
-          <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">Register for a Workshop</h2>
-          <p style="font-size:0.88rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px">Upcoming workshops conducted by Kalpavruksha School of Fine Arts are listed below. Select a workshop to view details and complete your registration payment.</p>
+          <span class="lbl">Programs &amp; Workshops</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">Programs &amp; Workshops</h2>
+          <p style="font-size:0.88rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px" id="ws-intro-text">Upcoming programs and workshops by Kalpavruksha School of Fine Arts are listed below. Select one to view details and complete your registration.</p>
 
           <!-- Workshop listing — populated from sheet -->
           <div id="ws-list-area">
@@ -1895,11 +1895,10 @@ function populateWorkshopDropdown() {
   var active = DATA.workshops.filter(function(ws){ return (ws['Active'] || '').toLowerCase() === 'yes'; });
 
   if (!active.length) {
-    listArea.innerHTML =
-      '<div class="ws-empty">' +
-      '<p>There are no workshops scheduled at this time.<br>' +
-      'Please check back soon or <a href="contact.html">contact us</a> to be notified when new workshops are announced.</p>' +
-      '</div>';
+    // No active programs — update intro text and show message
+    var introEl = document.getElementById('ws-intro-text');
+    if (introEl) introEl.textContent = 'There are no programs or workshops scheduled at this time. Please check back soon or contact us to be notified of upcoming events.';
+    listArea.innerHTML = '<div class="ws-empty"><p>You can reach us at <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">7200095585</a> on WhatsApp to enquire about upcoming programs.</p></div>';
     // Hide the subsequent student-type/payment sections
     document.getElementById('ws-fee-reveal').style.display  = 'none';
     document.getElementById('ws-type-wrap').style.display   = 'none';
@@ -1924,6 +1923,8 @@ function populateWorkshopDropdown() {
   });
   html += '</div>';
   listArea.innerHTML = html;
+  var introEl2 = document.getElementById('ws-intro-text');
+  if (introEl2) introEl2.textContent = active.length + ' program' + (active.length > 1 ? 's' : '') + ' available. Select one below to register.';
 }
 
 function selectWorkshopCard(el, idx) {
@@ -1968,13 +1969,22 @@ function populateMonthDropdown() {
     return { m: months.indexOf(p[0]), y: parseInt(p[1]) };
   }
   var f = parseMonthYear(from), t = parseMonthYear(to);
+  var now = new Date();
+  var curMonth = now.getMonth();
+  var curYear  = now.getFullYear();
   var cur = { m: f.m, y: f.y };
+  var defaultVal = null;
   while (cur.y < t.y || (cur.y === t.y && cur.m <= t.m)) {
     var label = months[cur.m] + ' ' + cur.y;
     var displayLabel = monthsShort[cur.m] + ' ' + cur.y;
     var opt = document.createElement('option');
     opt.value = label;
     opt.textContent = displayLabel;
+    // Set current month as default
+    if (cur.m === curMonth && cur.y === curYear) {
+      opt.selected = true;
+      defaultVal = label;
+    }
     sel.appendChild(opt);
     cur.m++;
     if (cur.m > 11) { cur.m = 0; cur.y++; }
@@ -1992,6 +2002,11 @@ function switchTab(name) {
   if (name !== 'new') {
     var tokenGate = document.getElementById('new-token-gate');
     var formWrap  = document.getElementById('new-form-wrap');
+    var newTrialSS = document.getElementById('new-trial-success');
+    var newEnrolSS = document.getElementById('new-success');
+    // Hide success screens explicitly (belt + suspenders alongside the class removal above)
+    if (newTrialSS) newTrialSS.classList.remove('show');
+    if (newEnrolSS) newEnrolSS.classList.remove('show');
     if (tokenGate) tokenGate.style.display = 'block';
     if (formWrap)  formWrap.style.display  = 'none';
     var tokenInput = document.getElementById('new-token');
@@ -2002,6 +2017,7 @@ function switchTab(name) {
     window._kfaPresetLevel  = null;
     window._kfaEnrolEnabled = false;
     window._loadFailed      = false;
+    dataLoaded = false; // force fresh reload next visit
   }
 
   document.querySelectorAll('.ftab').forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
@@ -2349,6 +2365,14 @@ function clearErr(id) {
 // PAYMENT INITIATION
 // ─────────────────────────────────────────────────────────────────
 function initiatePayment(flow) {
+  // Guard: prevent double submission
+  var activeBtn = document.getElementById(
+    flow === 'new' ? 'new-pay-btn' :
+    flow === 'existing' ? 'ex-pay-btn' :
+    flow === 'ws-kv' ? 'ws-kv-pay-btn' : 'ws-out-pay-btn'
+  );
+  if (activeBtn && activeBtn.disabled) return; // already processing
+  if (activeBtn && !activeBtn.dataset.origText) activeBtn.dataset.origText = activeBtn.textContent;
   var name, phone, email, amount, desc, successId;
 
   if (flow === 'new') {
@@ -2591,8 +2615,19 @@ function initiatePayment(flow) {
 
   var rzp = new Razorpay(options);
   rzp.on('payment.failed', function(response){
+    // Re-enable pay button on failure
+    if (activeBtn) { activeBtn.disabled = false; activeBtn.textContent = activeBtn.dataset.origText || 'Pay'; }
     alert('Payment failed. Please try again or contact us at +91 72000 95585.\nError: ' + (response.error.description || 'Unknown error'));
   });
+  // Disable pay button while Razorpay modal is open
+  if (activeBtn) { activeBtn.disabled = true; activeBtn.textContent = 'Processing…'; }
+  // Re-enable if modal is dismissed without payment
+  options.modal = options.modal || {};
+  var _prevDismiss = options.modal.ondismiss;
+  options.modal.ondismiss = function() {
+    if (activeBtn) { activeBtn.disabled = false; activeBtn.textContent = activeBtn.dataset.origText || 'Pay'; }
+    if (_prevDismiss) _prevDismiss();
+  };
   rzp.open();
 }
 
