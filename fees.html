@@ -341,7 +341,7 @@
               <a href="https://wa.me/917200095585?text=Hello%2C+I+am+interested+in+Bharatanatyam+classes+at+Kalpavruksha.+Please+let+me+know+when+batches+are+available." class="lookup-btn" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">WhatsApp to Register Interest</a>
             </div>
 
-            <div id="new-classtype-row" style="display:none;" class="fg-row">
+            <div id="new-classtype-row" style="display:none;grid-template-columns:1fr 1fr;gap:16px;align-items:start;" class="fg-row">
               <div class="fg-field">
                 <label for="new-classtype">Class Type *</label>
                 <select id="new-classtype" onchange="filterBatches()">
@@ -350,9 +350,9 @@
                   <option value="Offline">Offline</option>
                 </select>
               </div>
-              <div class="fg-field" id="new-sessiontype-wrap" style="display:none;">
+              <div class="fg-field" id="new-sessiontype-wrap" style="visibility:hidden;">
                 <label for="new-sessiontype">Session Type *</label>
-                <select id="new-sessiontype" onchange="onSessionTypeChange()">
+                <select id="new-sessiontype" onchange="onSessionTypeChange()" disabled>
                   <option value="">— Select —</option>
                   <option value="Group">Group</option>
                   <option value="Individual">Individual</option>
@@ -397,10 +397,6 @@
               <input type="hidden" id="new-batch-id" value="">
               <span class="hint err" id="new-batch-msg"></span>
 
-              <input type="hidden" id="new-trial-session-id" value="">
-              <input type="hidden" id="new-trial-session-date" value="">
-              <input type="hidden" id="new-trial-session-timings" value="">
-              <span class="hint err" id="new-trial-session-msg"></span>
             </div>
 
           <!-- Intent selection — appears after batch selected -->
@@ -1270,6 +1266,7 @@ function renderTrialSessionCards(classtype) {
       + '</div>'
       + '</div>';
   }).join('');
+  container.style.display = 'grid';
 }
 
 function selectTrialSession(el) {
@@ -1348,7 +1345,7 @@ function onGenderChange() {
   // Reset classtype + sessiontype selects when gender changes
   var ct = document.getElementById('new-classtype'); if (ct) ct.value = '';
   var st = document.getElementById('new-sessiontype'); if (st) st.value = '';
-  if (sessionWrap) sessionWrap.style.display = 'none';
+  if (sessionWrap) { sessionWrap.style.visibility = 'hidden'; var stEl = document.getElementById('new-sessiontype'); if(stEl){stEl.disabled=true; stEl.value='';} }
   resetBatchUI();
   document.getElementById('new-level-wrap').style.display = 'none';
   if (gender === 'Male' || gender === 'Other') {
@@ -1356,7 +1353,7 @@ function onGenderChange() {
     classtypeRow.style.display = 'none';
   } else if (gender === 'Female') {
     genderMsg.style.display = 'none';
-    classtypeRow.style.display = 'flex';
+    classtypeRow.style.display = 'grid';
     // sessiontype-wrap shows after classtype is selected (via filterBatches)
   } else {
     genderMsg.style.display = 'none';
@@ -1518,8 +1515,8 @@ function onCountryChange() {
   safeStyle('new-intl-msg', 'display', 'none');
   document.getElementById('new-gender').value = '';
   document.getElementById('new-group').value  = '';
-  document.getElementById('new-classtype-row').style.display  = 'none';
-  document.getElementById('new-sessiontype-wrap').style.display = 'none';
+  var ctr = document.getElementById('new-classtype-row'); if(ctr) ctr.style.display = 'none';
+  var stWrap = document.getElementById('new-sessiontype-wrap'); if(stWrap) stWrap.style.visibility='hidden'; var stSel2 = document.getElementById('new-sessiontype'); if(stSel2){stSel2.disabled=true; stSel2.value='';}
   document.getElementById('new-level-wrap').style.display     = 'none';
   document.getElementById('new-gender-msg').style.display     = 'none';
   var ses = document.getElementById('new-sessiontype'); if (ses) ses.value = '';
@@ -1622,8 +1619,9 @@ function filterBatches() {
 
   // Step 1: Show sessiontype once classtype chosen; need both for level
   var sessionWrap2 = document.getElementById('new-sessiontype-wrap');
-  if (classtype && sessionWrap2) sessionWrap2.style.display = 'block';
-  if (!group || !classtype) {
+  if (classtype && sessionWrap2) { sessionWrap2.style.visibility = 'visible'; var stSel = document.getElementById('new-sessiontype'); if(stSel) stSel.disabled = false; }
+  var sessionType2 = document.getElementById('new-sessiontype') ? document.getElementById('new-sessiontype').value : '';
+  if (!group || !classtype || !sessionType2) {
     levelWrap.style.display = 'none';
     return;
   }
@@ -1722,14 +1720,14 @@ function renderBatchCards(batches) {
       html +=
         '<div class="batch-card" data-id="' + b['Batch ID'] + '" data-status="Full" style="opacity:0.55;cursor:default;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;">' +
           '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
-          '<div style="font-size:0.76rem;color:var(--ink-soft);margin-bottom:8px;">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' Full</div>' +
+          '<div style="font-size:0.76rem;color:var(--ink-soft);margin-bottom:8px;">' + b['Class Type'] + ' &nbsp;·&nbsp; ' + statusDot + ' Full</div>' +
           '<button data-bid="' + b['Batch ID'] + '" data-binfo="' + b['Timings (IST)'] + '" onclick="joinWaitlist(this.dataset.bid,this.dataset.binfo)" style="font-size:0.74rem;padding:4px 12px;background:#fff;border:1px solid var(--maroon);border-radius:3px;color:var(--maroon);cursor:pointer;pointer-events:all;">Join Waitlist</button>' +
         '</div>';
     } else {
       html +=
         '<div class="batch-card" data-id="' + b['Batch ID'] + '" data-status="' + status + '" onclick="selectBatch(this, this.dataset.id)" style="cursor:pointer;">' +
           '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + b['Weekdays'] + ' &nbsp;·&nbsp; ' + b['Timings (IST)'] + ' IST</div>' +
-          '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; Faculty: ' + b['Faculty'] + ' &nbsp;·&nbsp; ' + statusDot + ' ' + status + '</div>' +
+          '<div style="font-size:0.76rem;color:var(--ink-soft);">' + b['Class Type'] + ' &nbsp;·&nbsp; ' + statusDot + ' ' + status + '</div>' +
         '</div>';
     }
   });
