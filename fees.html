@@ -404,10 +404,11 @@
           <div id="new-entry-options" style="display:none;margin-bottom:16px;">
             <div class="form-divider" style="margin-bottom:16px;"></div>
             <p style="font-size:0.78rem;font-weight:600;color:var(--ink);letter-spacing:0.04em;margin-bottom:12px;">HOW WOULD YOU LIKE TO PROCEED?</p>
-            <div class="entry-opts-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+            <!-- Row 1: Trial options — 2 columns -->
+            <div class="entry-opts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
 
               <label id="new-opt-trial-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;">
-                <input type="radio" name="new-entry-type" value="trial" onchange="onEntryTypeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
+                <input type="radio" name="new-entry-type" value="trial" onchange="onEntryTypeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
                 <div>
                   <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">🌿 Book a Free Trial Class</div>
                   <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.5;">Attend one session at no cost. Open to all levels.</div>
@@ -415,7 +416,7 @@
               </label>
 
               <label id="new-opt-enrol-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;">
-                <input type="radio" name="new-entry-type" value="trial_done" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
+                <input type="radio" name="new-entry-type" value="trial_done" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
                 <div style="width:100%;">
                   <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
                   <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.5;">Already attended a trial? Enter your enrolment code to unlock payment.</div>
@@ -433,15 +434,16 @@
                 </div>
               </label>
 
-              <label id="new-opt-direct-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;">
-                <input type="radio" name="new-entry-type" id="new-enrol-radio" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);" value="direct">
-                <div>
-                  <div style="font-size:0.88rem;font-weight:600;" id="new-enrol-label-text">💳 Enrol Directly</div>
-                  <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.5;" id="new-enrol-label-desc">Foundation students — block your batch seat and start right away.</div>
-                </div>
-              </label>
-
             </div>
+
+            <!-- Row 2: Enrol now — full width -->
+            <label id="new-opt-direct-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;width:100%;box-sizing:border-box;">
+              <input type="radio" name="new-entry-type" id="new-enrol-radio" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;" value="direct">
+              <div>
+                <div style="font-size:0.88rem;font-weight:600;" id="new-enrol-label-text">🔒 Enrol &amp; Pay Now</div>
+                <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.5;" id="new-enrol-label-desc">Available after completing a trial class. You will receive an enrolment code from the school.</div>
+              </div>
+            </label>
             <span class="hint err" id="new-entry-msg" style="display:block;margin-top:8px;"></span>
           </div>
 
