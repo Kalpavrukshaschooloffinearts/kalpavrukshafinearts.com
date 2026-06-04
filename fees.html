@@ -353,8 +353,8 @@
                 <label for="new-sessiontype">Session Type *</label>
                 <select id="new-sessiontype" onchange="onSessionTypeChange()">
                   <option value="">— Select —</option>
-                  <option value="Group">Group Session</option>
-                  <option value="Individual">Individual Session</option>
+                  <option value="Group">Group</option>
+                  <option value="Individual">Individual</option>
                 </select>
               </div>
             </div>
@@ -1059,6 +1059,7 @@ function verifyToken() {
   window._kfaToken = val;
   window._kfaPresetLevel  = TRIAL_CODES[val] || null;
   window._kfaEnrolEnabled = !!TRIAL_CODES[val]; // true for trial codes, false for KFA2014
+  window._loadFailed = false; // reset any previous load failure on new session
   document.getElementById('new-token-gate').style.display = 'none';
   document.getElementById('new-form-wrap').style.display  = 'block';
   // Default enrolment date to today
@@ -1261,8 +1262,9 @@ function renderTrialSessionCards(classtype) {
     var dot      = isFull ? '🔴' : avail <= 3 ? '🟡' : '🟢';
     var statusTxt = isFull ? 'Full — Join Waitlist' : avail <= 3 ? 'Filling Fast' : 'Available';
     var dParts = (s['Date'] || '').split('-'); var d = new Date(parseInt(dParts[0]), parseInt(dParts[1])-1, parseInt(dParts[2]));
-    var dateStr  = days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-    var noteHtml = s['Note'] ? '<div style="font-size:0.74rem;color:var(--maroon);margin-top:4px;font-style:italic;">' + s['Note'] + '</div>' : '';
+    var dayName = (s['Day'] || '').trim() || days[d.getDay()]; // use sheet Day col, fallback to JS
+    var dateStr  = dayName + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    var noteRow = (s['Note'] ? '<span style="font-size:0.74rem;color:var(--maroon);font-style:italic;">' + s['Note'] + '</span>' : '');
     return '<div class="batch-card" style="cursor:pointer;"'
       + ' data-sid="'     + (s['Session ID']    || '') + '"'
       + ' data-date="'    + (s['Date']          || '') + '"'
@@ -1270,9 +1272,14 @@ function renderTrialSessionCards(classtype) {
       + ' data-full="'    + isFull + '"'
       + ' onclick="selectTrialSession(this)">'
       + '<div style="font-family:var(--fd);font-size:0.96rem;color:var(--maroon);margin-bottom:4px;">' + dateStr + '</div>'
-      + '<div style="font-size:0.76rem;color:var(--ink-soft);">'
-      + s['Type'] + ' &nbsp;·&nbsp; ' + (s['Timings (IST)'] || '') + ' IST &nbsp;·&nbsp; ' + dot + ' ' + statusTxt
-      + '</div>' + noteHtml + '</div>';
+      + '<div style="font-size:0.76rem;color:var(--ink-soft);margin-bottom:3px;">'
+      + s['Type'] + ' · ' + (s['Timings (IST)'] || '') + ' IST'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:10px;">'
+      + '<span style="font-size:0.74rem;color:var(--ink-soft);">' + dot + ' ' + statusTxt + '</span>'
+      + noteRow
+      + '</div>'
+      + '</div>';
   }).join('');
 }
 
@@ -1616,8 +1623,13 @@ function filterBatches() {
   var level     = document.getElementById('new-level') ? document.getElementById('new-level').value : '';
   var levelWrap = document.getElementById('new-level-wrap');
 
-  // Reset only downstream UI (cards, payment, trial) — not the filter selects
-  resetBatchUI();
+  // Light reset — only clear batch cards and payment, preserve filter values and entry options
+  safeStyle('new-batch-cards',           'display', 'none');
+  safeSet  ('new-batch-list',            'innerHTML', '');
+  safeSet  ('new-batch-id',              'value', '');
+  safeSet  ('new-batch-msg',             'textContent', '');
+  safeStyle('new-pay-wrap',              'display', 'none');
+  selectedBatch = null;
 
   // Step 1: Show sessiontype once classtype chosen; need both for level
   var sessionWrap2 = document.getElementById('new-sessiontype-wrap');
