@@ -77,6 +77,7 @@
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
 .fg-row .fg-field{margin-bottom:0;}
 @media(max-width:500px){.fg-row{grid-template-columns:1fr;}}
+@media(max-width:600px){.entry-opts-grid{grid-template-columns:1fr !important;}}
 .fg-field{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
 .fg-field label{font-size:0.74rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);}
 .fg-field input,.fg-field select{width:100%;padding:10px 13px;border:1px solid var(--bdr-s);border-radius:3px;font-family:var(--fb);font-size:0.9rem;color:var(--ink);background:#fff;transition:border-color 0.2s;}
@@ -393,7 +394,7 @@
 
             <!-- Available batch cards -->
             <div id="new-batch-cards" style="display:none;">
-              <div id="new-batch-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:12px;"></div>
+              <div id="new-batch-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px;margin-bottom:12px;"></div>
               <input type="hidden" id="new-batch-id" value="">
               <span class="hint err" id="new-batch-msg"></span>
 
@@ -403,9 +404,9 @@
           <div id="new-entry-options" style="display:none;margin-bottom:16px;">
             <div class="form-divider" style="margin-bottom:16px;"></div>
             <p style="font-size:0.78rem;font-weight:600;color:var(--ink);letter-spacing:0.04em;margin-bottom:12px;">HOW WOULD YOU LIKE TO PROCEED?</p>
-            <div style="display:grid;gap:8px;">
+            <div class="entry-opts-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
 
-              <label id="new-opt-trial-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:12px 16px;cursor:pointer;transition:border-color 0.2s;">
+              <label id="new-opt-trial-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:2px solid var(--maroon);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;">
                 <input type="radio" name="new-entry-type" value="trial" onchange="onEntryTypeChange(this)" checked style="margin-top:3px;accent-color:var(--maroon);">
                 <div>
                   <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">🌿 Book a Free Trial Class</div>
@@ -413,7 +414,7 @@
                 </div>
               </label>
 
-              <label id="new-opt-enrol-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 16px;cursor:pointer;transition:border-color 0.2s;">
+              <label id="new-opt-enrol-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;">
                 <input type="radio" name="new-entry-type" value="trial_done" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);">
                 <div style="width:100%;">
                   <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">✅ Trial Completed — Ready to Enrol</div>
@@ -432,7 +433,7 @@
                 </div>
               </label>
 
-              <label id="new-opt-direct-label" style="display:flex;align-items:flex-start;gap:12px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 16px;cursor:pointer;transition:border-color 0.2s;">
+              <label id="new-opt-direct-label" style="display:flex;align-items:flex-start;gap:10px;background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;">
                 <input type="radio" name="new-entry-type" id="new-enrol-radio" onchange="onEntryTypeChange(this)" style="margin-top:3px;accent-color:var(--maroon);" value="direct">
                 <div>
                   <div style="font-size:0.88rem;font-weight:600;" id="new-enrol-label-text">💳 Enrol Directly</div>
@@ -1625,7 +1626,7 @@ function filterBatches() {
     levelWrap.style.display = 'none';
     return;
   }
-  levelWrap.style.display = 'flex';
+  levelWrap.style.display = 'grid';
   // Restore level value (resetBatchUI hides the row but select value persists)
   var levelEl = document.getElementById('new-level');
   if (levelEl && level) levelEl.value = level;
