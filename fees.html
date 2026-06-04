@@ -1428,6 +1428,16 @@ function submitTrialInterest() {
     notes          : isWaitlist ? 'Added to waitlist' : 'Trial registration from website'
   };
 
+  // Client-side duplicate guard: prevent same session + phone submitting twice
+  var dupKey = 'kfa_trial_' + (trialSessionId || '') + '_' + n.toLowerCase().trim() + '_' + ph;
+  if (sessionStorage.getItem(dupKey)) {
+    alert('You have already registered for this trial session. Please check your email for confirmation.');
+    var confirmBtn2 = document.getElementById('new-trial-confirm-btn');
+    if (confirmBtn2) { confirmBtn2.disabled = false; confirmBtn2.textContent = 'Confirm Trial Registration'; }
+    return;
+  }
+  sessionStorage.setItem(dupKey, '1');
+
   submitToPortal(data, function() {
     var successScreen = document.getElementById('new-trial-success');
     var heading = document.getElementById('new-trial-success-heading');
@@ -2444,7 +2454,15 @@ function initiatePayment(flow) {
     var amt = parseInt(document.getElementById('ex-amount').value, 10);
     if (!amt || amt <= 0) { alert('Fee amount not found. Please contact the school.'); return; }
 
-    document.getElementById('existing-success-month').textContent = mon;
+    // Client-side duplicate guard for monthly fee
+  var monDupKey = 'kfa_fee_' + (foundStudent['Roll Number'] || '') + '_' + mon;
+  if (sessionStorage.getItem(monDupKey)) {
+    alert('Fee for ' + mon + ' has already been submitted in this session.');
+    return;
+  }
+  sessionStorage.setItem(monDupKey, '1');
+
+  document.getElementById('existing-success-month').textContent = mon;
     name      = foundStudent['Student Name'];
     phone     = ph;
     email     = em;
