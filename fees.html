@@ -2619,10 +2619,9 @@ function initiatePayment(flow) {
     config: {
       display: {
         blocks: {
-          upi:    { name: 'Pay via UPI',    instruments: [{ method: 'upi'    }] },
-          wallet: { name: 'Pay via Wallet', instruments: [{ method: 'wallet' }] }
+          upi: { name: 'Pay via UPI', instruments: [{ method: 'upi' }] }
         },
-        sequence: ['block.upi', 'block.wallet'],
+        sequence: ['block.upi'],
         preferences: { show_default_blocks: false }
       }
     },
