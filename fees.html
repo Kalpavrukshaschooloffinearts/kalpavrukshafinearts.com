@@ -900,7 +900,7 @@ var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0
 var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1860368087&single=true&output=csv';
 var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=159984302&single=true&output=csv';
 var SHEET_TRIAL_CSV     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=321963845&single=true&output=csv';
-var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbxDS97GW22USk3IyjmuzH31P23Wg_SFIcyqhcc3jOHZeB7_bEqBjRUGQ4mRlRt2Wlc/exec';
+var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbyyKjt22ZLZt7-PIHULb52144BD0AJJX40vQfp6XHlmBXyXtSm1kl1omY_WYEElEAM/exec';
 var SHEET_BATCHES_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
 // ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
@@ -2866,7 +2866,9 @@ function downloadReceipt(prefix) {
   y += 7;
 
   row('Description', r.description, y); y += 9;
-  row('Transaction ID', r.txnId, y); y += 9;
+  if (r.feeMonth) { row('Fee Month', r.feeMonth, y); y += 9; }
+  if (r.paymentMode) { row('Payment Mode', r.paymentMode, y); y += 9; }
+  row('Transaction ID', r.txnId || '—', y); y += 9;
 
   // Amount box
   y += 4;
@@ -2877,7 +2879,8 @@ function downloadReceipt(prefix) {
   doc.setTextColor(255, 255, 255);
   doc.text('Amount Paid', 28, y + 10);
   doc.setFontSize(14);
-  doc.text('Rs. ' + Number(r.amount).toLocaleString('en-IN'), W - 22, y + 10, { align: 'right' });
+  var currSymbol = (r.currency && r.currency !== 'INR') ? r.currency + ' ' : 'Rs. ';
+  doc.text(currSymbol + Number(r.amount).toLocaleString('en-IN'), W - 22, y + 10, { align: 'right' });
 
   // Footer
   doc.setDrawColor(maroon[0], maroon[1], maroon[2]);
@@ -3004,13 +3007,10 @@ function renderPaymentHistory(payments, phone, email) {
             (p.txnId ? '<div style="font-size:0.65rem;color:#aaa;font-family:monospace;margin-top:2px;">' + p.txnId.slice(-8) + '</div>' : '') +
           '</div>' +
         '</div>' +
-        (p.receiptNo ?
-          '<div style="margin-top:10px;">' +
-            '<button onclick="downloadHistoricalReceipt(' + idx + ')" data-idx="' + idx + '"' +
-              ' style="background:#7B1D2E;color:#fff;border:none;border-radius:3px;padding:7px 16px;font-size:0.77rem;font-family:var(--bs);letter-spacing:0.04em;cursor:pointer;">&#8595; Download Receipt</button>' +
-          '</div>'
-          : '<div style="margin-top:8px;font-size:0.72rem;color:#aaa;">Receipt number not yet assigned (legacy payment)</div>'
-        ) +
+        '<div style="margin-top:10px;">' +
+          '<button onclick="downloadHistoricalReceipt(' + idx + ')" data-idx="' + idx + '"' +
+            ' style="background:#7B1D2E;color:#fff;border:none;border-radius:3px;padding:7px 16px;font-size:0.77rem;font-family:var(--bs);letter-spacing:0.04em;cursor:pointer;">&#8595; Download Receipt</button>' +
+        '</div>' +
       '</div>';
     listEl.appendChild(card);
   });
@@ -3037,15 +3037,18 @@ function downloadHistoricalReceipt(idx) {
   if (!p) return;
   // Reuse downloadReceipt by temporarily loading receiptStore
   receiptStore['_hist'] = {
-    receiptNo   : p.receiptNo,
+    receiptNo   : p.receiptNo || 'Legacy Payment',
     studentName : p.studentName,
     parentName  : '',
     phone       : p.phone,
     email       : p.email,
-    rollNo      : p.rollNo || '',
-    txnId       : p.txnId  || '',
+    rollNo      : p.rollNo      || '',
+    txnId       : p.txnId       || '',
     amount      : p.amount,
-    description : p.description
+    description : p.description,
+    paymentMode : p.paymentMode || '',
+    currency    : p.currency    || 'INR',
+    feeMonth    : p.feeMonth    || ''
   };
   downloadReceipt('_hist');
 }
