@@ -900,7 +900,7 @@ var SHEET_STUDENTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0
 var SHEET_WORKSHOPS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1860368087&single=true&output=csv';
 var SHEET_CONFIG_CSV    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=159984302&single=true&output=csv';
 var SHEET_TRIAL_CSV     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=321963845&single=true&output=csv';
-var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbxwXqNdSTYNzaFbsLx6dZkN3UYMSuBuhXP_beDrpnDgbbSKgZ_eNPSpG8V2RbEngf8/exec';
+var PORTAL_SUBMIT_URL  = 'https://script.google.com/macros/s/AKfycbxDS97GW22USk3IyjmuzH31P23Wg_SFIcyqhcc3jOHZeB7_bEqBjRUGQ4mRlRt2Wlc/exec';
 var SHEET_BATCHES_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
 // ── NEW STUDENT FIXED FEE ─────────────────────────────────────────
@@ -2899,19 +2899,21 @@ function downloadReceipt(prefix) {
 function openPaymentHistory() {
   document.getElementById('ph-overlay').style.display = 'block';
   document.body.style.overflow = 'hidden';
-  // Pre-fill phone/email if available from current session
-  var phoneEl = document.getElementById('ex-phone') || document.getElementById('new-phone');
-  var emailEl = document.getElementById('ex-email') || document.getElementById('new-email');
-  if (phoneEl && phoneEl.value) document.getElementById('ph-phone').value = phoneEl.value;
-  if (emailEl && emailEl.value) document.getElementById('ph-email').value = emailEl.value;
+  // Do NOT pre-fill phone/email — parent must enter credentials manually each time
 }
 
 function closePaymentHistory() {
   document.getElementById('ph-overlay').style.display = 'none';
   document.body.style.overflow = '';
+  // Clear all state so credentials/results are never visible to next opener
   document.getElementById('ph-results').style.display = 'none';
+  document.getElementById('ph-results-header').innerHTML = '';
+  document.getElementById('ph-list').innerHTML = '';
   document.getElementById('ph-error').style.display = 'none';
+  document.getElementById('ph-phone').value = '';
+  document.getElementById('ph-email').value = '';
   document.getElementById('ph-form').style.display = 'block';
+  window._phPayments = null;
 }
 
 function fetchPaymentHistory() {
@@ -2957,7 +2959,28 @@ function fetchPaymentHistory() {
 function renderPaymentHistory(payments, phone, email) {
   var listEl = document.getElementById('ph-list');
   var hdrEl  = document.getElementById('ph-results-header');
-  hdrEl.textContent = payments.length + ' payment' + (payments.length !== 1 ? 's' : '') + ' found for this account';
+
+  // ── PRIVACY: hide the input form and clear the credential fields ──
+  document.getElementById('ph-form').style.display = 'none';
+  document.getElementById('ph-phone').value = '';
+  document.getElementById('ph-email').value = '';
+
+  // Masked identity line — e.g. "📱 ••••••4567  ✉ a***@gmail.com"
+  var maskedPhone = phone ? ('••••••' + phone.slice(-4)) : '';
+  var maskedEmail = '';
+  if (email) {
+    var atIdx = email.indexOf('@');
+    maskedEmail = (atIdx > 1 ? email[0] + '***' : '***') + email.slice(atIdx);
+  }
+  hdrEl.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">' +
+      '<div>' +
+        '<span style="color:#332a26;font-weight:600;">' + payments.length + ' payment' + (payments.length !== 1 ? 's' : '') + ' found</span>' +
+        '<div style="margin-top:3px;font-size:0.72rem;color:#78685e;">📱 ' + maskedPhone + ' &nbsp;&nbsp; ✉ ' + maskedEmail + '</div>' +
+      '</div>' +
+      '<button onclick="resetPaymentHistorySearch()" style="background:none;border:1px solid #c5bdb5;border-radius:3px;padding:4px 10px;font-size:0.72rem;color:#78685e;cursor:pointer;font-family:var(--bs);white-space:nowrap;">🔍 Search again</button>' +
+    '</div>';
+
   listEl.innerHTML = '';
 
   payments.forEach(function(p, idx) {
@@ -2995,6 +3018,18 @@ function renderPaymentHistory(payments, phone, email) {
   // Store for download callbacks
   window._phPayments = payments;
   document.getElementById('ph-results').style.display = 'block';
+}
+
+function resetPaymentHistorySearch() {
+  // Clear results and show the form again (with blank fields)
+  document.getElementById('ph-results').style.display = 'none';
+  document.getElementById('ph-results-header').innerHTML = '';
+  document.getElementById('ph-list').innerHTML = '';
+  document.getElementById('ph-error').style.display = 'none';
+  document.getElementById('ph-phone').value = '';
+  document.getElementById('ph-email').value = '';
+  document.getElementById('ph-form').style.display = 'block';
+  window._phPayments = null;
 }
 
 function downloadHistoricalReceipt(idx) {
