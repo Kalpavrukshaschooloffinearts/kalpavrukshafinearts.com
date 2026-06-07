@@ -530,6 +530,9 @@
             <span id="new-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
             <button class="copy-btn" style="margin-top:6px;" onclick="copyTxn('new-txn-id',this)">Copy</button>
           </div>
+          <div style="margin-top:18px;">
+            <button id="new-download-receipt" onclick="downloadReceipt('new')" style="display:none;background:var(--maroon);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:0.85rem;font-family:var(--bs);letter-spacing:0.05em;cursor:pointer;">&#8595; Download Receipt</button>
+          </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
       <!-- ═══════════════════════════
@@ -624,6 +627,12 @@
             <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
             <span id="existing-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
             <button class="copy-btn" style="margin-top:6px;" onclick="copyTxn('existing-txn-id',this)">Copy</button>
+          </div>
+          <div style="margin-top:18px;">
+            <button id="existing-download-receipt" onclick="downloadReceipt('existing')" style="display:none;background:var(--maroon);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:0.85rem;font-family:var(--bs);letter-spacing:0.05em;cursor:pointer;">&#8595; Download Receipt</button>
+          </div>
+          <div style="margin-top:14px;">
+            <button onclick="openPaymentHistory()" style="background:none;border:none;color:var(--maroon);font-size:0.78rem;font-family:var(--bs);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;text-decoration:underline;padding:0;">&#128196; View Past Payment History</button>
           </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
@@ -735,6 +744,9 @@
             <span id="workshop-txn-id" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
             <button class="copy-btn" style="margin-top:6px;" onclick="copyTxn('workshop-txn-id',this)">Copy</button>
           </div>
+          <div style="margin-top:18px;">
+            <button id="workshop-download-receipt" onclick="downloadReceipt('workshop')" style="display:none;background:var(--maroon);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:0.85rem;font-family:var(--bs);letter-spacing:0.05em;cursor:pointer;">&#8595; Download Receipt</button>
+          </div>
           <a href="index.html" class="back-link">← Return to Home</a>
         </div>
       <!-- end panels -->
@@ -743,6 +755,45 @@
   </div>
 </section>
 
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAYMENT HISTORY MODAL
+═══════════════════════════════════════════════════════════════ -->
+<div id="ph-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;overflow-y:auto;padding:20px 12px;">
+  <div style="background:#fff;max-width:560px;margin:0 auto;border-radius:6px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.22);">
+    <!-- Header -->
+    <div style="background:#7B1D2E;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="color:#fff;font-family:var(--fd);font-size:1.15rem;font-weight:600;">Payment History</div>
+        <div style="color:rgba(255,255,255,0.7);font-size:0.74rem;margin-top:2px;">Enter your registered phone and email to retrieve receipts</div>
+      </div>
+      <button onclick="closePaymentHistory()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;line-height:1;padding:0 4px;">&times;</button>
+    </div>
+    <!-- Lookup form -->
+    <div id="ph-form" style="padding:20px;">
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:0.76rem;font-weight:600;color:#7B1D2E;letter-spacing:0.05em;margin-bottom:5px;">PHONE NUMBER</label>
+        <input id="ph-phone" type="tel" placeholder="10-digit mobile number" maxlength="10"
+          style="width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid #d5cdc5;border-radius:3px;font-size:0.9rem;font-family:var(--bs);">
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-size:0.76rem;font-weight:600;color:#7B1D2E;letter-spacing:0.05em;margin-bottom:5px;">EMAIL ADDRESS</label>
+        <input id="ph-email" type="email" placeholder="Your registered email"
+          style="width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid #d5cdc5;border-radius:3px;font-size:0.9rem;font-family:var(--bs);">
+      </div>
+      <button onclick="fetchPaymentHistory()" id="ph-search-btn"
+        style="width:100%;padding:11px;background:#7B1D2E;color:#fff;border:none;border-radius:3px;font-size:0.88rem;font-family:var(--bs);letter-spacing:0.05em;cursor:pointer;">
+        Search Payments
+      </button>
+      <div id="ph-error" style="display:none;margin-top:12px;padding:10px 12px;background:#fdecea;border-radius:3px;font-size:0.8rem;color:#c0392b;"></div>
+    </div>
+    <!-- Results -->
+    <div id="ph-results" style="display:none;padding:0 20px 20px;">
+      <div id="ph-results-header" style="font-size:0.76rem;color:#78685e;border-top:1px solid #ede8e2;padding-top:14px;margin-bottom:10px;"></div>
+      <div id="ph-list"></div>
+    </div>
+  </div>
+</div>
 </main>
 
 <!-- FOOTER — exact match -->
@@ -801,6 +852,8 @@
 
 <!-- Razorpay SDK -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- jsPDF for client-side receipt generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════════
      CONFIGURATION — edit this section only
@@ -987,18 +1040,21 @@ function calcFirstPayment(batchId) {
 // PORTAL SUBMISSION — sends data to Google Sheet via Apps Script
 // ─────────────────────────────────────────────────────────────────
 function submitToPortal(data, callback) {
+  // Using cors + redirect:follow so we can read the receiptNo from the Apps Script response
   fetch(PORTAL_SUBMIT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    mode: 'no-cors'
-  }).then(function() {
-    // no-cors means we cannot read response body
-    // For enrolment, Roll Number is shown via separate doGet call
-    if (callback) callback({ status: 'success', rollNo: '' });
+    mode: 'cors',
+    redirect: 'follow'
+  }).then(function(resp) {
+    return resp.json();
+  }).then(function(result) {
+    if (callback) callback(result);
   }).catch(function(err) {
     console.error('Portal submit error:', err);
-    if (callback) callback({ status: 'error', rollNo: '' });
+    // Fallback: still show receipt button even if we couldn't read response
+    if (callback) callback({ status: 'error' });
   });
 }
 
@@ -2539,6 +2595,19 @@ function initiatePayment(flow) {
         txnBox.style.display = 'block';
       }
 
+      // Store receipt data for PDF generation (receiptNo filled after portal response)
+      receiptStore[txnPrefix] = {
+        receiptNo   : '',  // set by portal response below
+        studentName : name,
+        parentName  : (document.getElementById('new-parent') ? document.getElementById('new-parent').value.trim() : ''),
+        phone       : phone,
+        email       : email,
+        rollNo      : (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : '')),
+        txnId       : response.razorpay_payment_id || '',
+        amount      : amount,
+        description : desc
+      };
+
       // Submit to Portal and get Roll Number
       if (successId === 'new-success') {
         var enrolData = {
@@ -2560,13 +2629,21 @@ function initiatePayment(flow) {
           notes          : 'Paid via website'
         };
         submitToPortalAndGetRollNo(enrolData, function(result) {
-          if (result && result.rollNo) {
-            var rollBox = document.getElementById('new-roll-box');
-            var rollSpan = document.getElementById('new-roll-no');
-            if (rollBox && rollSpan) {
-              rollSpan.textContent = result.rollNo;
-              rollBox.style.display = 'block';
+          if (result) {
+            if (result.rollNo) {
+              var rollBox = document.getElementById('new-roll-box');
+              var rollSpan = document.getElementById('new-roll-no');
+              if (rollBox && rollSpan) {
+                rollSpan.textContent = result.rollNo;
+                rollBox.style.display = 'block';
+              }
+              if (receiptStore['new']) receiptStore['new'].rollNo = result.rollNo;
             }
+            if (result.receiptNo && receiptStore['new']) {
+              receiptStore['new'].receiptNo = result.receiptNo;
+            }
+            var btn = document.getElementById('new-download-receipt');
+            if (btn) btn.style.display = 'inline-block';
           }
         });
       }
@@ -2583,6 +2660,12 @@ function initiatePayment(flow) {
           transactionId  : response.razorpay_payment_id || '',
           feeMonth       : document.getElementById('ex-month') ? document.getElementById('ex-month').value : '',
           notes          : 'Monthly fee paid via website'
+        }, function(result) {
+          if (result && result.receiptNo && receiptStore['existing']) {
+            receiptStore['existing'].receiptNo = result.receiptNo;
+          }
+          var btn = document.getElementById('existing-download-receipt');
+          if (btn) btn.style.display = 'inline-block';
         });
       }
 
@@ -2593,7 +2676,6 @@ function initiatePayment(flow) {
           programName    : currentWs['Name']         || '',
           programType    : currentWs['Type']         || 'Workshop',
           programDate    : currentWs['Date']         || '',
-          
           studentType    : flow === 'ws-kv' ? 'KV Student' : 'Outside Student',
           studentName    : name,
           rollNo         : foundWsStudent ? (foundWsStudent['Roll No'] || '') : '',
@@ -2602,6 +2684,12 @@ function initiatePayment(flow) {
           amountPaid     : amount,
           transactionId  : response.razorpay_payment_id || '',
           notes          : desc || ''
+        }, function(result) {
+          if (result && result.receiptNo && receiptStore['workshop']) {
+            receiptStore['workshop'].receiptNo = result.receiptNo;
+          }
+          var btn = document.getElementById('workshop-download-receipt');
+          if (btn) btn.style.display = 'inline-block';
         });
       }
 
@@ -2647,6 +2735,276 @@ function initiatePayment(flow) {
   };
   rzp.open();
 }
+
+// ─────────────────────────────────────────────────────────────────
+// RECEIPT GENERATION
+// ─────────────────────────────────────────────────────────────────
+var receiptStore = {}; // keyed by prefix: 'new', 'existing', 'workshop'
+
+function downloadReceipt(prefix) {
+  var r = receiptStore[prefix];
+  if (!r) { alert('Receipt data not found. Please contact us.'); return; }
+  var { jsPDF } = window.jspdf;
+  var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  var W = 210, H = 297;
+  var maroon = [123, 29, 46];
+  var cream  = [247, 244, 239];
+  var green  = [74, 124, 89];
+  var ink    = [51, 42, 38];
+  var soft   = [120, 110, 100];
+
+  // Header band
+  doc.setFillColor(maroon[0], maroon[1], maroon[2]);
+  doc.rect(0, 0, W, 38, 'F');
+
+  // School name
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Kalpavruksha School of Fine Arts', W/2, 14, { align: 'center' });
+
+  // Tagline
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(220, 200, 200);
+  doc.text('Bharatanatyam \u2022 Kalakshetra Bani \u2022 Est. 2014', W/2, 20, { align: 'center' });
+
+  // Address line
+  doc.setFontSize(7.5);
+  doc.setTextColor(200, 185, 185);
+  doc.text('Kodambakkam, Chennai 600024  |  +91 72000 95585  |  kalpavrukshafinearts.com', W/2, 26, { align: 'center' });
+
+  // RECEIPT label
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(255, 220, 180);
+  doc.text('PAYMENT RECEIPT', W/2, 34, { align: 'center' });
+
+  // Cream body background
+  doc.setFillColor(cream[0], cream[1], cream[2]);
+  doc.rect(0, 38, W, H - 38, 'F');
+
+  // Receipt number + date row
+  var today = new Date();
+  var dateStr = today.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][today.getMonth()] + ' ' + today.getFullYear();
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(soft[0], soft[1], soft[2]);
+  doc.text('Receipt No: ' + r.receiptNo, 18, 47);
+  doc.text('Date: ' + dateStr, W - 18, 47, { align: 'right' });
+
+  // Divider
+  doc.setDrawColor(maroon[0], maroon[1], maroon[2]);
+  doc.setLineWidth(0.4);
+  doc.line(18, 50, W - 18, 50);
+
+  // Section helper
+  function row(label, value, y, highlight) {
+    doc.setFillColor(highlight ? 240 : 255, highlight ? 248 : 255, highlight ? 244 : 255);
+    if (highlight) { doc.setFillColor(235, 248, 238); doc.rect(18, y-5, W-36, 9, 'F'); }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(soft[0], soft[1], soft[2]);
+    doc.text(label, 22, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(ink[0], ink[1], ink[2]);
+    doc.text(value || '—', 90, y);
+  }
+
+  var y = 62;
+  // Student details block
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(maroon[0], maroon[1], maroon[2]);
+  doc.text('STUDENT DETAILS', 18, y);
+  y += 6;
+  doc.setDrawColor(200, 180, 180);
+  doc.setLineWidth(0.2);
+  doc.line(18, y, W - 18, y);
+  y += 7;
+
+  row('Student Name', r.studentName, y); y += 9;
+  if (r.rollNo) { row('Roll Number', r.rollNo, y); y += 9; }
+  if (r.parentName) { row('Parent / Guardian', r.parentName, y); y += 9; }
+  row('Contact', r.phone, y); y += 9;
+  if (r.email) { row('Email', r.email, y); y += 9; }
+
+  y += 4;
+  // Payment details block
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(maroon[0], maroon[1], maroon[2]);
+  doc.text('PAYMENT DETAILS', 18, y);
+  y += 6;
+  doc.setDrawColor(200, 180, 180);
+  doc.setLineWidth(0.2);
+  doc.line(18, y, W - 18, y);
+  y += 7;
+
+  row('Description', r.description, y); y += 9;
+  row('Transaction ID', r.txnId, y); y += 9;
+
+  // Amount box
+  y += 4;
+  doc.setFillColor(maroon[0], maroon[1], maroon[2]);
+  doc.roundedRect(18, y, W - 36, 16, 2, 2, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Amount Paid', 28, y + 10);
+  doc.setFontSize(14);
+  doc.text('Rs. ' + Number(r.amount).toLocaleString('en-IN'), W - 22, y + 10, { align: 'right' });
+
+  // Footer
+  doc.setDrawColor(maroon[0], maroon[1], maroon[2]);
+  doc.setLineWidth(0.3);
+  doc.line(18, H - 28, W - 18, H - 28);
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(7.5);
+  doc.setTextColor(soft[0], soft[1], soft[2]);
+  doc.text('This is a computer-generated receipt. No signature required.', W/2, H - 22, { align: 'center' });
+  doc.text('For queries, contact us at +91 72000 95585 or reach us on WhatsApp.', W/2, H - 17, { align: 'center' });
+
+  var filename = 'KFA-Receipt-' + r.receiptNo + '.pdf';
+  doc.save(filename);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PAYMENT HISTORY RETRIEVAL
+// ─────────────────────────────────────────────────────────────────
+function openPaymentHistory() {
+  document.getElementById('ph-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  // Pre-fill phone/email if available from current session
+  var phoneEl = document.getElementById('ex-phone') || document.getElementById('new-phone');
+  var emailEl = document.getElementById('ex-email') || document.getElementById('new-email');
+  if (phoneEl && phoneEl.value) document.getElementById('ph-phone').value = phoneEl.value;
+  if (emailEl && emailEl.value) document.getElementById('ph-email').value = emailEl.value;
+}
+
+function closePaymentHistory() {
+  document.getElementById('ph-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('ph-results').style.display = 'none';
+  document.getElementById('ph-error').style.display = 'none';
+  document.getElementById('ph-form').style.display = 'block';
+}
+
+function fetchPaymentHistory() {
+  var phone = (document.getElementById('ph-phone').value || '').trim();
+  var email = (document.getElementById('ph-email').value || '').trim().toLowerCase();
+  var errEl = document.getElementById('ph-error');
+  errEl.style.display = 'none';
+
+  if (!phone || phone.length < 10) {
+    errEl.textContent = 'Please enter a valid 10-digit phone number.';
+    errEl.style.display = 'block'; return;
+  }
+  if (!email || email.indexOf('@') < 1) {
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.style.display = 'block'; return;
+  }
+
+  var btn = document.getElementById('ph-search-btn');
+  btn.textContent = 'Searching…'; btn.disabled = true;
+
+  var url = PORTAL_SUBMIT_URL + '?action=getPayments'
+    + '&phone=' + encodeURIComponent(phone)
+    + '&email=' + encodeURIComponent(email);
+
+  fetch(url, { method: 'GET', mode: 'cors' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.textContent = 'Search Payments'; btn.disabled = false;
+      if (data.status === 'not_found' || !data.payments || data.payments.length === 0) {
+        errEl.textContent = 'No payment records found matching this phone number and email. Please check and try again.';
+        errEl.style.display = 'block'; return;
+      }
+      renderPaymentHistory(data.payments, phone, email);
+    })
+    .catch(function(err) {
+      btn.textContent = 'Search Payments'; btn.disabled = false;
+      errEl.textContent = 'Could not retrieve records. Please try again or contact us at +91 72000 95585.';
+      errEl.style.display = 'block';
+      console.error('History fetch error:', err);
+    });
+}
+
+function renderPaymentHistory(payments, phone, email) {
+  var listEl = document.getElementById('ph-list');
+  var hdrEl  = document.getElementById('ph-results-header');
+  hdrEl.textContent = payments.length + ' payment' + (payments.length !== 1 ? 's' : '') + ' found for this account';
+  listEl.innerHTML = '';
+
+  payments.forEach(function(p, idx) {
+    var typeColor = p.type === 'Monthly Fee' ? '#1B5E20' : p.type === 'New Enrolment' ? '#0D47A1' : '#4A148C';
+    var typeBg    = p.type === 'Monthly Fee' ? '#E8F5E9'  : p.type === 'New Enrolment' ? '#E3F2FD'  : '#F3E5F5';
+    var card = document.createElement('div');
+    card.style.cssText = 'border:1px solid #ede8e2;border-radius:4px;margin-bottom:10px;overflow:hidden;';
+    card.innerHTML =
+      '<div style="padding:12px 14px;background:#faf7f4;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">' +
+              '<span style="font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:10px;background:' + typeBg + ';color:' + typeColor + ';">' + p.type + '</span>' +
+              (p.receiptNo ? '<span style="font-size:0.68rem;color:#78685e;font-family:monospace;">' + p.receiptNo + '</span>' : '') +
+            '</div>' +
+            '<div style="font-size:0.88rem;font-weight:600;color:#332a26;">' + (p.description || p.type) + '</div>' +
+            '<div style="font-size:0.76rem;color:#78685e;margin-top:2px;">' + p.studentName + (p.rollNo ? ' &nbsp;&bull;&nbsp; Roll: ' + p.rollNo : '') + ' &nbsp;&bull;&nbsp; ' + p.date + '</div>' +
+          '</div>' +
+          '<div style="text-align:right;flex-shrink:0;">' +
+            '<div style="font-size:1rem;font-weight:700;color:#7B1D2E;">&#8377;' + Number(p.amount).toLocaleString('en-IN') + '</div>' +
+            (p.txnId ? '<div style="font-size:0.65rem;color:#aaa;font-family:monospace;margin-top:2px;">' + p.txnId.slice(-8) + '</div>' : '') +
+          '</div>' +
+        '</div>' +
+        (p.receiptNo ?
+          '<div style="margin-top:10px;">' +
+            '<button onclick="downloadHistoricalReceipt(' + idx + ')" data-idx="' + idx + '"' +
+              ' style="background:#7B1D2E;color:#fff;border:none;border-radius:3px;padding:7px 16px;font-size:0.77rem;font-family:var(--bs);letter-spacing:0.04em;cursor:pointer;">&#8595; Download Receipt</button>' +
+          '</div>'
+          : '<div style="margin-top:8px;font-size:0.72rem;color:#aaa;">Receipt number not yet assigned (legacy payment)</div>'
+        ) +
+      '</div>';
+    listEl.appendChild(card);
+  });
+
+  // Store for download callbacks
+  window._phPayments = payments;
+  document.getElementById('ph-results').style.display = 'block';
+}
+
+function downloadHistoricalReceipt(idx) {
+  var p = window._phPayments && window._phPayments[idx];
+  if (!p) return;
+  // Reuse downloadReceipt by temporarily loading receiptStore
+  receiptStore['_hist'] = {
+    receiptNo   : p.receiptNo,
+    studentName : p.studentName,
+    parentName  : '',
+    phone       : p.phone,
+    email       : p.email,
+    rollNo      : p.rollNo || '',
+    txnId       : p.txnId  || '',
+    amount      : p.amount,
+    description : p.description
+  };
+  downloadReceipt('_hist');
+}
+
+// Close modal on overlay click
+document.addEventListener('DOMContentLoaded', function() {
+  var overlay = document.getElementById('ph-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closePaymentHistory();
+    });
+  }
+  // Enter key on ph inputs triggers search
+  ['ph-phone','ph-email'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', function(e) { if (e.key === 'Enter') fetchPaymentHistory(); });
+  });
+});
 
 // ─────────────────────────────────────────────────────────────────
 // Nav toggle (same as main site)
