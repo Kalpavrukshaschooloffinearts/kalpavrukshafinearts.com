@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<!-- fees-international.html v1.0 — Kalpavruksha School of Fine Arts — International Fee Portal -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>International Fee Payment | Kalpavruksha School of Fine Arts</title>
+  <meta name="description" content="Pay Bharatanatyam class fees securely. International students portal — Kalpavruksha School of Fine Arts, Chennai.">
+  <link rel="canonical" href="https://kalpavrukshafinearts.com/fees-international.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="International Fee Payment | Kalpavruksha School of Fine Arts">
+  <meta property="og:url" content="https://kalpavrukshafinearts.com/fees-international.html">
+  <meta property="og:image" content="https://kalpavrukshafinearts.com/images/arangetram.webp">
+
+  <!-- CRITICAL INLINE — prevent FOUC -->
+  <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{font-size:16px;scroll-behavior:smooth;}</style>
+
+  <!-- Shared stylesheet (same as domestic) -->
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"></noscript>
+
+  <!-- jsPDF for receipt download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
+  <style>
+/* ── INTERNATIONAL FEE PAGE ── */
+/* Inherits site variables: --maroon, --saffron, --cream, --bdr, --ink, --ink-soft, --fd, --fb etc.
+   If style.css is missing (dev/preview), define fallbacks here. */
+:root {
+  --maroon:   #7B1D2E;
+  --maroon-d: #5a1521;
+  --maroon-l: #fdf0f2;
+  --saffron:  #C8621A;
+  --saffron-l:#fff4ea;
+  --gold:     #B8962E;
+  --cream:    #f7f4ef;
+  --bdr:      #e4ddd5;
+  --bdr-s:    #d0c8bf;
+  --ink:      #332a26;
+  --ink-soft: #786860;
+  --fd: 'Playfair Display', Georgia, serif;
+  --fb: 'DM Sans', system-ui, sans-serif;
+  --err: #C0392B;
+}
+body { font-family: var(--fb); color: var(--ink); background: #fff; }
+
+/* ── INTL BANNER ── */
+.intl-banner {
+  background: linear-gradient(135deg, #0d2a4a 0%, #1a3f6f 100%);
+  border-bottom: 3px solid var(--gold);
+  padding: 10px 0;
+  text-align: center;
+}
+.intl-banner p { font-size: 0.80rem; color: rgba(255,255,255,0.85); line-height: 1.6; }
+.intl-banner strong { color: #f8dc8c; }
+.intl-banner a { color: #f8dc8c; }
+
+/* ── LAYOUT ── */
+.fee-wrap { max-width: 680px; margin: 0 auto; }
+
+/* ── TABS ── */
+.ftabs { display: flex; border: 1px solid var(--bdr); border-radius: 4px; overflow: hidden; margin-bottom: 32px; }
+.ftab { flex: 1; padding: 13px 8px; background: #fff; border: none; font-family: var(--fb); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; color: var(--ink-soft); cursor: pointer; transition: all 0.2s; text-align: center; border-right: 1px solid var(--bdr); }
+.ftab:last-child { border-right: none; }
+.ftab.active { background: var(--maroon); color: #fff; }
+.ftab:hover:not(.active) { background: var(--maroon-l); color: var(--maroon); }
+.ftab-icon { display: block; font-size: 1.05rem; margin-bottom: 3px; }
+
+/* ── PANELS ── */
+.fpanel { display: none; }
+.fpanel.active { display: block; }
+
+/* ── FORM CARD ── */
+.fee-card { background: #fff; border: 1px solid var(--bdr); border-radius: 4px; padding: 28px 32px; }
+@media(max-width:540px){.fee-card{padding:20px 18px;}}
+
+/* ── FIELDS ── */
+.fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.fg-row .fg-field { margin-bottom: 0; }
+@media(max-width:500px){.fg-row{grid-template-columns:1fr;}}
+.fg-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+.fg-field label { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.fg-field input, .fg-field select, .fg-field textarea {
+  width: 100%; padding: 10px 13px; border: 1px solid var(--bdr-s); border-radius: 3px;
+  font-family: var(--fb); font-size: 0.9rem; color: var(--ink); background: #fff;
+  transition: border-color 0.2s;
+}
+.fg-field input:focus, .fg-field select:focus, .fg-field textarea:focus {
+  outline: none; border-color: var(--maroon);
+}
+.fg-field input[readonly], .fg-field select[disabled] { background: var(--cream); color: var(--ink-soft); cursor: default; }
+.fg-field .hint { font-size: 0.73rem; color: var(--ink-soft); margin-top: 3px; }
+.fg-field .hint.err { color: var(--err); }
+.fg-field .hint.ok { color: #2E7D32; }
+
+/* ── CURRENCY ROW ── */
+.currency-amount-row { display: flex; gap: 0; align-items: stretch; }
+.currency-amount-row select { width: 90px; flex-shrink: 0; border-radius: 3px 0 0 3px; border-right: none; background: var(--cream); font-weight: 600; }
+.currency-amount-row input { border-radius: 0 3px 3px 0; }
+
+/* ── AMOUNT BOX ── */
+.amount-box {
+  background: var(--cream); border: 1px solid var(--bdr); border-radius: 3px;
+  padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+}
+.amount-box.hidden { display: none; }
+.amount-box .ab-label { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.amount-box .ab-value { font-family: var(--fd); font-size: 1.5rem; color: var(--maroon); font-weight: 600; }
+
+/* ── LOOKUP ROW ── */
+.lookup-row { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 16px; }
+.lookup-row .fg-field { flex: 1; margin-bottom: 0; }
+.lookup-btn { padding: 10px 16px; background: var(--maroon); color: #fff; border: none; border-radius: 3px; font-family: var(--fb); font-size: 0.80rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s; flex-shrink: 0; }
+.lookup-btn:hover { background: var(--maroon-d); }
+.lookup-btn:disabled { background: var(--bdr-s); cursor: default; }
+.lookup-btn.secondary { background: #fff; color: var(--maroon); border: 1px solid var(--maroon); }
+.lookup-btn.secondary:hover { background: var(--maroon-l); }
+
+/* ── NAME CHIP ── */
+.name-chip { display: none; background: #E8F5E9; border: 1px solid #A5D6A7; border-radius: 3px; padding: 12px 16px; margin-bottom: 16px; }
+.name-chip.show { display: block; }
+.name-chip .nc-table { width: 100%; border-collapse: collapse; }
+.name-chip .nc-table td { font-size: 0.84rem; padding: 3px 0; vertical-align: top; }
+.name-chip .nc-table td:first-child { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #2E7D32; width: 110px; padding-right: 10px; }
+.name-chip .nc-table td:last-child { color: #1B5E20; font-weight: 500; }
+
+/* ── INFO BOX ── */
+.info-box { background: #EFF8FF; border: 1px solid #BFDBFE; border-radius: 4px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.83rem; color: #1e3a5f; line-height: 1.7; }
+.info-box strong { color: #1a2e4a; }
+
+/* ── TIMEZONE NOTE ── */
+.tz-note { background: var(--saffron-l); border: 1px solid #e8c4a0; border-radius: 3px; padding: 10px 14px; font-size: 0.78rem; color: #5a3010; margin-bottom: 16px; line-height: 1.6; }
+
+/* ── PAY BUTTON ── */
+.pay-btn { width: 100%; padding: 14px; background: var(--saffron); color: #fff; border: none; border-radius: 3px; font-family: var(--fd); font-size: 1.05rem; font-weight: 500; cursor: pointer; transition: background 0.2s; letter-spacing: 0.02em; }
+.pay-btn:hover { background: #a85016; }
+.pay-btn:disabled { background: var(--bdr-s); cursor: default; }
+.pay-btn.intl-pay-btn { background: #0d2a4a; }
+.pay-btn.intl-pay-btn:hover { background: #0a1f37; }
+
+/* ── FORM DIVIDER ── */
+.form-divider { height: 1px; background: var(--bdr); margin: 20px 0; }
+
+/* ── REFUND NOTE ── */
+.refund-note { margin-top: 14px; font-size: 0.76rem; color: var(--ink-soft); text-align: center; line-height: 1.6; }
+.refund-note strong { color: var(--maroon); }
+
+/* ── SUCCESS ── */
+.success-screen { display: none; text-align: center; padding: 40px 20px; }
+.success-screen.show { display: block; }
+.success-icon { font-size: 3rem; margin-bottom: 16px; }
+.success-screen h2 { font-family: var(--fd); font-size: 1.8rem; color: var(--maroon); margin-bottom: 12px; }
+.success-screen p { font-size: 0.94rem; color: var(--ink-soft); line-height: 1.8; }
+.success-screen .back-link { display: inline-block; margin-top: 20px; font-size: 0.80rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--saffron); text-decoration: none; }
+
+/* ── SPINNER ── */
+.spin { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; margin-left: 8px; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── PROGRAM CARDS ── */
+.prog-list { display: grid; gap: 10px; margin-bottom: 20px; }
+.prog-item { background: var(--cream); border: 1px solid var(--bdr); border-radius: 4px; padding: 14px 16px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.prog-item:hover, .prog-item.selected { border-color: var(--maroon); background: #fff; }
+.prog-item.selected { box-shadow: 0 0 0 2px rgba(123,29,46,0.12); }
+.prog-item .pi-name { font-family: var(--fd); font-size: 1.0rem; color: var(--maroon); margin-bottom: 3px; }
+.prog-item .pi-desc { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 6px; line-height: 1.5; }
+.prog-item .pi-fee  { font-size: 0.80rem; color: var(--ink); font-weight: 600; }
+
+/* ── TRIAL STATUS CARDS ── */
+.trial-card { background: var(--cream); border: 1px solid var(--bdr); border-radius: 4px; padding: 14px 16px; cursor: pointer; transition: border-color 0.2s, background 0.2s; margin-bottom: 10px; user-select: none; }
+.trial-card:hover, .trial-card.selected { border-color: var(--maroon); background: #fff; box-shadow: 0 0 0 2px rgba(123,29,46,0.12); }
+.trial-card.selected::after { content: "✓ Selected"; display: block; font-size: 0.70rem; color: var(--maroon); font-weight: 600; margin-top: 6px; letter-spacing: 0.05em; }
+
+/* ── PHONE INPUT ── */
+.phone-row { display: flex; gap: 0; align-items: stretch; }
+.phone-row select { width: 110px; flex-shrink: 0; border-radius: 3px 0 0 3px; border-right: none; background: var(--cream); font-size: 0.82rem; }
+.phone-row input { border-radius: 0 3px 3px 0; }
+
+/* ── PAYMENT HISTORY OVERLAY ── */
+#ph-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+  z-index: 9000; overflow-y: auto; padding: 20px;
+}
+.ph-modal {
+  background: #fff; border-radius: 6px; max-width: 560px; margin: 40px auto;
+  padding: 28px 28px 24px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.ph-modal h3 { font-family: var(--fd); color: var(--maroon); margin-bottom: 4px; }
+.ph-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--ink-soft); line-height: 1; }
+
+/* ── PAYMENT HISTORY LINK ── */
+.ph-link { font-size: 0.78rem; color: var(--saffron); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: var(--fb); padding: 0; }
+
+/* ── COPY BUTTON ── */
+.copy-btn { font-size: 0.68rem; padding: 2px 7px; background: #fff; border: 1px solid #A5D6A7; border-radius: 3px; color: #2E7D32; cursor: pointer; font-family: var(--fb); transition: background 0.15s; }
+.copy-btn:hover { background: #C8E6C9; }
+.copy-btn.copied { background: #C8E6C9; color: #1B5E20; }
+
+/* Page hero (same as domestic) */
+.ph { background: var(--maroon); color: #fff; padding: 40px 0 32px; }
+.ph .lbl { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; opacity: 0.70; }
+.ph h1 { font-family: var(--fd); font-size: 2rem; margin: 8px 0 10px; }
+.ph p { font-size: 0.92rem; opacity: 0.80; }
+.ph .bc { font-size: 0.78rem; opacity: 0.70; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ph .bc a { color: inherit; text-decoration: none; }
+.ph .bc a:hover { text-decoration: underline; }
+.ph .bc-sep { opacity: 0.5; }
+
+/* Section wrapper */
+.sec { padding: 40px 0 60px; }
+.sec-c { background: var(--cream); }
+.c { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.lbl { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-soft); }
+.dmd { font-family: var(--fd); font-size: 1.4rem; color: var(--maroon); line-height: 1.3; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 10px; top: 10px; z-index: 9999; background: #fff; padding: 8px; }
+
+/* NAV (same as domestic) */
+.site-nav { background: #fff; border-bottom: 1px solid var(--bdr); position: sticky; top: 0; z-index: 200; }
+.ni { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.nl { display: flex; align-items: center; gap: 12px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-t { display: flex; flex-direction: column; }
+.logo-n { font-family: var(--fd); font-size: 1rem; color: var(--maroon); font-weight: 600; line-height: 1.2; }
+.logo-s { font-size: 0.65rem; color: var(--ink-soft); letter-spacing: 0.04em; line-height: 1.2; }
+.nm { display: flex; align-items: center; gap: 0; list-style: none; }
+.nm > li > a { display: block; padding: 0 14px; height: 60px; line-height: 60px; font-size: 0.82rem; font-weight: 500; color: var(--ink); text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+.nm > li > a:hover, .nm > li > a.on { color: var(--maroon); }
+.nm > li > a.ncta { background: var(--maroon); color: #fff; margin-left: 10px; }
+.nm > li > a.ncta:hover { background: var(--maroon-d); }
+.nm > li { position: relative; }
+.ndd { display: none; position: absolute; top: 60px; left: 0; background: #fff; border: 1px solid var(--bdr); border-top: 2px solid var(--maroon); min-width: 200px; z-index: 300; box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
+.nm > li:hover .ndd { display: block; }
+.ndd a { display: block; padding: 10px 18px; font-size: 0.80rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--bdr); }
+.ndd a:last-child { border-bottom: none; }
+.ndd a:hover { background: var(--cream); color: var(--maroon); }
+.ntog { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 6px; }
+.ntog span { display: block; width: 22px; height: 2px; background: var(--maroon); transition: all 0.2s; }
+@media(max-width:820px){
+  .nm { display: none; flex-direction: column; align-items: stretch; position: fixed; inset: 60px 0 0; background: #fff; overflow-y: auto; border-top: 1px solid var(--bdr); z-index: 199; padding: 16px 0; }
+  .nm.open { display: flex; }
+  .nm > li > a { height: auto; line-height: 1.4; padding: 12px 20px; border-bottom: 1px solid var(--bdr); }
+  .nm > li > a.ncta { margin: 16px 20px 0; text-align: center; padding: 12px 20px; }
+  .ndd { display: none !important; }
+  .ntog { display: flex; }
+}
+
+/* ── INTL BADGE in tabs ── */
+.intl-badge { display: inline-block; font-size: 0.60rem; background: #0d2a4a; color: #f8dc8c; padding: 1px 5px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- NAV -->
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="ni">
+    <div class="nl">
+      <a href="index.html" class="logo" aria-label="Kalpavruksha home">
+        <img loading="eager" src="images/logo.webp" alt="Kalpavruksha School of Fine Arts logo"
+          width="40" height="40"
+          style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
+        <div class="logo-t"><span class="logo-n">Kalpavruksha</span><span class="logo-s">School of Fine Arts</span></div>
+      </a>
+    </div>
+    <button class="ntog" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nm">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="courses.html">Courses <span style="font-size:0.7rem;">&#9662;</span></a>
+        <div class="ndd">
+          <a href="courses.html#beginners">Foundation (Age 4+)</a>
+          <a href="courses.html#intermediate">Intermediate</a>
+          <a href="courses.html#Advanced">Advanced</a>
+          <a href="courses.html#online-classes">Online Classes</a>
+        </div>
+      </li>
+      <li><a href="guru.html">Our Guru</a></li>
+      <li><a href="online-classes.html">Online Classes</a></li>
+      <li><a href="events.html">Events &amp; Gallery</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="fees.html">Fee Payment</a></li>
+      <li><a href="fees-international.html" class="on">🌐 International</a></li>
+      <li><a href="contact.html" class="ncta">Book Trial Class</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- INTL BANNER -->
+<div class="intl-banner">
+  <div class="c">
+    <p>🌐 <strong>International Student Portal</strong> — Pay in your local currency · All classes conducted online via Zoom · IST timings confirmed after enrolment. &nbsp;|&nbsp; Domestic students: <a href="fees.html">fees.html</a></p>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="ph" style="background: linear-gradient(135deg, #0d2a4a 0%, #7B1D2E 100%);">
+  <div class="c">
+    <nav class="bc" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="bc-sep" aria-hidden="true">›</span>
+      <a href="fees.html">Fee Payment</a>
+      <span class="bc-sep" aria-hidden="true">›</span>
+      <span>International</span>
+    </nav>
+    <span class="lbl" style="color:rgba(248,220,140,0.80)">International Students — Online Classes</span>
+    <h1 style="font-family:var(--fd);font-size:2rem;color:#fff;margin:8px 0 10px;">International Fee Portal</h1>
+    <p style="font-size:0.92rem;color:rgba(255,255,255,0.80);">Pay securely in USD, EUR, GBP, DKK or CAD · Receipt issued instantly · All timings in IST</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="sec sec-c">
+  <div class="c">
+    <div class="fee-wrap">
+
+      <!-- TAB SELECTOR -->
+      <div class="ftabs" role="tablist" aria-label="Payment type">
+        <button class="ftab active" role="tab" aria-selected="true"  aria-controls="panel-intl-new"      id="tab-intl-new"      onclick="switchIntlTab('new')">
+          <span class="ftab-icon">🌱</span>Trial &amp; Enrolment
+        </button>
+        <button class="ftab"        role="tab" aria-selected="false" aria-controls="panel-intl-existing" id="tab-intl-existing" onclick="switchIntlTab('existing')">
+          <span class="ftab-icon">🎓</span>Monthly Fee
+        </button>
+        <button class="ftab"        role="tab" aria-selected="false" aria-controls="panel-intl-program"  id="tab-intl-program"  onclick="switchIntlTab('program')">
+          <span class="ftab-icon">✨</span>Programs
+        </button>
+        <button class="ftab"        role="tab" aria-selected="false" aria-controls="panel-intl-history"  id="tab-intl-history"  onclick="switchIntlTab('history')">
+          <span class="ftab-icon">🧾</span>History
+        </button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           PANEL 1 — TRIAL & ENROLMENT
+      ═══════════════════════════════════════════════ -->
+      <div class="fpanel active fee-card" id="panel-intl-new" role="tabpanel" aria-labelledby="tab-intl-new">
+
+        <!-- Access code gate -->
+        <div id="intl-new-token-gate">
+          <span class="lbl">New Student</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">New to Kalpavruksha?</h2>
+          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">
+            To get started, enter the access code shared by the school.<br>
+            <span style="font-size:0.78rem;">Don't have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+am+an+international+student+and+would+like+to+enquire." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> — 🌿 First trial is <strong>FREE</strong></span>
+          </p>
+          <div class="lookup-row">
+            <div class="fg-field">
+              <label for="intl-new-token">Access Code *</label>
+              <input type="text" id="intl-new-token" placeholder="Enter code" autocomplete="off"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();verifyIntlToken();}"
+                style="text-transform:uppercase;letter-spacing:0.1em;">
+            </div>
+            <button class="lookup-btn" onclick="verifyIntlToken()">Verify</button>
+          </div>
+          <span class="hint err" id="intl-new-token-msg" style="display:block;margin-top:4px;"></span>
+        </div>
+
+        <!-- Main form (shown after code verified) -->
+        <div id="intl-new-form-wrap" style="display:none;">
+          <span class="lbl">New Student Registration</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:20px">Please fill in your details</h2>
+
+          <div class="info-box">
+            <strong>🌐 International Online Classes</strong><br>
+            All classes are conducted online via Zoom. After enrolment, the school will confirm your batch timing in IST and share a Zoom link. Please ensure you have a stable internet connection.
+          </div>
+
+          <!-- Student details -->
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="intl-new-name">Student Name *</label>
+              <input type="text" id="intl-new-name" placeholder="Full name" autocomplete="name">
+              <span class="hint err" id="intl-new-name-msg"></span>
+            </div>
+            <div class="fg-field">
+              <label for="intl-new-parent">Parent / Guardian Name *</label>
+              <input type="text" id="intl-new-parent" placeholder="Full name" autocomplete="off">
+              <span class="hint err" id="intl-new-parent-msg"></span>
+            </div>
+          </div>
+
+          <!-- Contact details — phone with country code -->
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="intl-new-phone">Mobile Number *</label>
+              <div class="phone-row">
+                <select id="intl-new-dialcode" onchange="onIntlDialCodeChange()">
+                  <option value="+1"   data-country="US">🇺🇸 +1</option>
+                  <option value="+1ca" data-country="CA">🇨🇦 +1</option>
+                  <option value="+44"  data-country="GB">🇬🇧 +44</option>
+                  <option value="+61"  data-country="AU">🇦🇺 +61</option>
+                  <option value="+65"  data-country="SG">🇸🇬 +65</option>
+                  <option value="+45"  data-country="DK">🇩🇰 +45</option>
+                  <option value="+49"  data-country="DE">🇩🇪 +49</option>
+                  <option value="+33"  data-country="FR">🇫🇷 +33</option>
+                  <option value="+971" data-country="AE">🇦🇪 +971</option>
+                  <option value="+60"  data-country="MY">🇲🇾 +60</option>
+                  <option value="+64"  data-country="NZ">🇳🇿 +64</option>
+                  <option value="+91"  data-country="IN">🇮🇳 +91</option>
+                  <option value="+other" data-country="OTHER">🌐 Other</option>
+                </select>
+                <input type="tel" id="intl-new-phone" placeholder="Mobile number" autocomplete="tel" inputmode="tel">
+              </div>
+              <span class="hint" id="intl-new-phone-hint" style="font-size:0.72rem;color:var(--ink-soft);">Include country code if not in the list above</span>
+              <span class="hint err" id="intl-new-phone-msg"></span>
+            </div>
+            <div class="fg-field">
+              <label for="intl-new-email">Email Address *</label>
+              <input type="email" id="intl-new-email" placeholder="you@email.com" autocomplete="email">
+              <span class="hint err" id="intl-new-email-msg"></span>
+            </div>
+          </div>
+
+          <!-- Country + Timezone -->
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="intl-new-country">Country of Residence *</label>
+              <select id="intl-new-country" onchange="onIntlCountryChange()">
+                <option value="">— Select country —</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+                <option>Australia</option>
+                <option>New Zealand</option>
+                <option>Singapore</option>
+                <option>Malaysia</option>
+                <option>Denmark</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Netherlands</option>
+                <option>Sweden</option>
+                <option>Norway</option>
+                <option>Switzerland</option>
+                <option>United Arab Emirates</option>
+                <option>Qatar</option>
+                <option>Bahrain</option>
+                <option>Kuwait</option>
+                <option>Oman</option>
+                <option>Saudi Arabia</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="fg-field">
+              <label for="intl-new-timezone">Your Timezone</label>
+              <input type="text" id="intl-new-timezone" placeholder="e.g. EST / BST / SGT" autocomplete="off">
+              <span class="hint">Helps us schedule your batch</span>
+            </div>
+          </div>
+
+          <!-- Gender + Who's joining -->
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="intl-new-gender">Gender *</label>
+              <select id="intl-new-gender" onchange="onIntlGenderChange()">
+                <option value="">— Select —</option>
+                <option>Female</option>
+                <option>Male</option>
+                <option>Other</option>
+              </select>
+              <span class="hint err" id="intl-new-gender-msg" style="display:none;">
+                🙏 Kalpavruksha currently teaches Bharatanatyam to female students only. Please <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> for more information.
+              </span>
+            </div>
+            <div class="fg-field">
+              <label for="intl-new-group">Who is Joining? *</label>
+              <select id="intl-new-group">
+                <option value="">— Select —</option>
+                <option value="Kid">Kid (below 18)</option>
+                <option value="Adult">Adult (18+)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Learning Stage -->
+          <div class="fg-field">
+            <label for="intl-new-level">Learning Stage *</label>
+            <select id="intl-new-level">
+              <option value="">— Select —</option>
+              <option value="Foundation">Foundation (Beginners / Age 4+)</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Adult Beginners">Adult Beginners</option>
+            </select>
+          </div>
+
+          <!-- Preferred batch time -->
+          <div class="fg-field">
+            <label for="intl-new-pref">Preferred Class Time (IST) *</label>
+            <select id="intl-new-pref">
+              <option value="">— Select preference —</option>
+              <option value="Morning (6am–10am IST)">Morning (6am–10am IST)</option>
+              <option value="Afternoon (10am–2pm IST)">Afternoon (10am–2pm IST)</option>
+              <option value="Evening (4pm–8pm IST)">Evening (4pm–8pm IST)</option>
+              <option value="Night (8pm–10pm IST)">Night (8pm–10pm IST)</option>
+              <option value="Weekend morning">Weekend morning</option>
+              <option value="Weekend evening">Weekend evening</option>
+              <option value="Flexible – any time">Flexible – any time</option>
+            </select>
+            <span class="hint">We will confirm your actual batch timing after reviewing schedules</span>
+          </div>
+
+          <!-- Notes -->
+          <div class="fg-field">
+            <label for="intl-new-notes">Additional Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+            <textarea id="intl-new-notes" rows="2" placeholder="Any questions, special requirements, or existing dance experience…" style="resize:vertical;"></textarea>
+          </div>
+
+          <div class="form-divider"></div>
+
+          <!-- Entry options -->
+          <div id="intl-entry-options">
+            <span class="lbl" style="display:block;margin-bottom:12px;">How would you like to proceed?</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;" id="intl-entry-grid">
+              <label id="intl-opt-trial-label"
+                style="display:block;border:2px solid var(--maroon);border-radius:4px;padding:14px 16px;cursor:pointer;background:#fff;transition:all 0.15s;">
+                <input type="radio" name="intl-entry-type" value="trial" id="intl-trial-radio"
+                  style="accent-color:var(--maroon);" checked onchange="onIntlEntryChange(this)">
+                <span id="intl-trial-label-text" style="display:block;font-weight:600;font-size:0.88rem;margin-top:6px;">🆓 Register for Free Trial</span>
+                <span style="display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">We will schedule a free online trial session for you and share the Zoom link.</span>
+              </label>
+              <label id="intl-opt-enrol-label"
+                style="display:block;border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;background:#fff;transition:all 0.15s;">
+                <input type="radio" name="intl-entry-type" value="enrol" id="intl-enrol-radio"
+                  style="accent-color:var(--maroon);" onchange="onIntlEntryChange(this)">
+                <span id="intl-enrol-label-text" style="display:block;font-weight:600;font-size:0.88rem;margin-top:6px;">✅ Enrol &amp; Pay Now</span>
+                <span id="intl-enrol-label-desc" style="display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">Available after completing a trial. You'll receive an enrolment code from the school.</span>
+              </label>
+            </div>
+            <span class="hint err" id="intl-entry-msg" style="display:block;margin-bottom:10px;"></span>
+
+            <!-- Trial submit button (shown when trial radio selected) -->
+            <div id="intl-trial-submit-wrap">
+              <div class="tz-note">
+                🕐 Your trial session will be an online Zoom class. We will WhatsApp you with the date, time and link within 2 business days of submitting this form.
+              </div>
+              <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin-bottom:14px;">
+                <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                  <input type="checkbox" id="intl-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
+                  <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">
+                    I confirm that all details provided are accurate. I understand the trial class is conducted online via Zoom, and that the school will contact me via WhatsApp to confirm the session.
+                  </span>
+                </label>
+                <span class="hint err" id="intl-trial-consent-msg" style="display:block;margin-top:6px;"></span>
+              </div>
+              <button class="pay-btn" id="intl-trial-submit-btn" onclick="submitIntlTrial()" style="background:var(--maroon);">Confirm Free Trial Registration</button>
+            </div>
+
+            <!-- Enrolment pay wrap (shown when enrol radio selected) -->
+            <div id="intl-enrol-wrap" style="display:none;">
+              <!-- Enrolment code gate -->
+              <div id="intl-trial-code-gate" style="display:block;">
+                <div class="info-box">
+                  <strong>Enrolment Code Required</strong><br>
+                  You need an enrolment code from the school to proceed. This is issued after your trial class. Please <a href="https://wa.me/917200095585?text=Hello%2C+I+am+an+international+student+and+completed+my+trial." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> if you haven't received yours.
+                </div>
+                <div class="lookup-row">
+                  <div class="fg-field">
+                    <label for="intl-enrol-code">Enrolment Code *</label>
+                    <input type="text" id="intl-enrol-code" placeholder="e.g. KFAI2014" autocomplete="off"
+                      style="text-transform:uppercase;letter-spacing:0.1em;"
+                      onkeydown="if(event.key==='Enter'){event.preventDefault();verifyIntlEnrolCode();}">
+                  </div>
+                  <button class="lookup-btn" onclick="verifyIntlEnrolCode()">Verify</button>
+                </div>
+                <span class="hint err" id="intl-enrol-code-msg" style="display:block;margin-top:4px;"></span>
+              </div>
+
+              <!-- Payment section (shown after code verified) -->
+              <div id="intl-pay-wrap" style="display:none;">
+                <div class="form-divider"></div>
+                <span class="lbl" style="display:block;margin-bottom:10px;">Payment Details</span>
+
+                <!-- Enrolment date -->
+                <div class="fg-field">
+                  <label for="intl-enrol-date">Enrolment / Start Date *</label>
+                  <input type="date" id="intl-enrol-date">
+                </div>
+
+                <!-- Fee placeholder + currency -->
+                <div class="fg-row">
+                  <div class="fg-field">
+                    <label for="intl-enrol-currency">Currency *</label>
+                    <select id="intl-enrol-currency" onchange="onIntlCurrencyChange('enrol')">
+                      <option value="USD">USD — US Dollar</option>
+                      <option value="GBP">GBP — British Pound</option>
+                      <option value="EUR">EUR — Euro</option>
+                      <option value="DKK">DKK — Danish Krone</option>
+                      <option value="CAD">CAD — Canadian Dollar</option>
+                    </select>
+                  </div>
+                  <div class="fg-field">
+                    <label for="intl-enrol-amount">Amount *</label>
+                    <input type="number" id="intl-enrol-amount" placeholder="As confirmed by school" min="1" step="0.01">
+                    <span class="hint">Fee confirmed individually by school. Check your WhatsApp.</span>
+                  </div>
+                </div>
+
+                <!-- Amount display -->
+                <div class="amount-box" id="intl-enrol-amount-box" style="display:none;">
+                  <span class="ab-label">Registration + First Month</span>
+                  <span class="ab-value" id="intl-enrol-amount-display">—</span>
+                </div>
+
+                <!-- Payment mode -->
+                <div class="fg-field">
+                  <label for="intl-enrol-paymode">Payment Mode *</label>
+                  <select id="intl-enrol-paymode">
+                    <option value="">— Select —</option>
+                    <option value="International Bank Transfer">International Bank Transfer</option>
+                    <option value="Wise">Wise (TransferWise)</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Stripe">Stripe</option>
+                    <option value="Revolut">Revolut</option>
+                    <option value="Other International">Other International</option>
+                  </select>
+                  <span class="hint">Payment instructions will be shared by WhatsApp. Mark paid after transfer.</span>
+                </div>
+
+                <!-- Transaction ID -->
+                <div class="fg-field">
+                  <label for="intl-enrol-txnid">Transaction / Reference ID *</label>
+                  <input type="text" id="intl-enrol-txnid" placeholder="Reference from your bank or Wise">
+                  <span class="hint err" id="intl-enrol-txnid-msg"></span>
+                </div>
+
+                <!-- Consent -->
+                <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin-bottom:14px;">
+                  <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                    <input type="checkbox" id="intl-enrol-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
+                    <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">
+                      I confirm all details are accurate. I understand that enrolment is subject to school confirmation, and that fees are non-refundable. I agree to the school's terms and policies.
+                    </span>
+                  </label>
+                  <span class="hint err" id="intl-enrol-consent-msg" style="display:block;margin-top:6px;"></span>
+                </div>
+
+                <button class="pay-btn intl-pay-btn" id="intl-enrol-pay-btn" onclick="submitIntlEnrolment()">Submit Enrolment</button>
+                <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. For exceptional circumstances, contact the school directly.</p>
+              </div>
+            </div>
+          </div><!-- /intl-entry-options -->
+        </div><!-- /intl-new-form-wrap -->
+
+        <!-- Trial success -->
+        <div class="success-screen" id="intl-trial-success">
+          <div class="success-icon">🙏</div>
+          <h2>Trial Registration Confirmed!</h2>
+          <p>Thank you for registering for an online trial class at Kalpavruksha.<br>We will contact you via WhatsApp within 2 business days to confirm your Zoom session details.</p>
+          <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:12px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
+            For queries, reach out on WhatsApp: <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">+91 72000 95585</a>
+          </p>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+
+        <!-- Enrolment success -->
+        <div class="success-screen" id="intl-enrol-success">
+          <div class="success-icon">🙏</div>
+          <h2>Enrolment Submitted!</h2>
+          <p>Your enrolment details and payment reference have been received.<br>The school will verify your payment and confirm your batch via WhatsApp.</p>
+          <div id="intl-enrol-roll-box" style="display:none;margin:14px auto;max-width:380px;background:#F0FFF4;border:1px solid #A5D6A7;border-radius:4px;padding:14px 16px;text-align:left;">
+            <div style="font-size:0.76rem;font-weight:600;color:#1B5E20;margin-bottom:6px;letter-spacing:0.04em;">YOUR ROLL NUMBER</div>
+            <div id="intl-enrol-roll-no" style="font-family:monospace;font-size:1.1rem;color:#1B5E20;font-weight:700;margin-bottom:8px;"></div>
+            <div style="font-size:0.72rem;color:#2E7D32;line-height:1.6;">Save this number — you'll use it for monthly fee payments.</div>
+          </div>
+          <div id="intl-enrol-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
+            <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
+            <span id="intl-enrol-txn-display" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
+          </div>
+          <div style="margin-top:18px;">
+            <button id="intl-enrol-download-receipt" onclick="downloadIntlReceipt('enrol')" style="display:none;background:var(--maroon);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:0.85rem;font-family:var(--fb);letter-spacing:0.05em;cursor:pointer;">&#8595; Download Receipt</button>
+          </div>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+
+      </div><!-- /panel-intl-new -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           PANEL 2 — MONTHLY FEE
+      ═══════════════════════════════════════════════ -->
+      <div class="fpanel fee-card" id="panel-intl-existing" role="tabpanel" aria-labelledby="tab-intl-existing">
+        <div id="intl-ex-form-wrap">
+          <span class="lbl">Monthly Class Fees</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">Existing International Student</h2>
+          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">Enter your Roll Number to pay monthly class fees.</p>
+
+          <!-- Roll lookup -->
+          <div class="lookup-row">
+            <div class="fg-field">
+              <label for="intl-ex-roll">Roll Number *</label>
+              <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="intl-ex-roll-wrap">
+                <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
+                <input type="text" id="intl-ex-roll" placeholder="e.g. 12400001" autocomplete="off" inputmode="text"
+                  oninput="resetIntlExLookup()"
+                  onkeydown="if(event.key==='Enter'){event.preventDefault();lookupIntlStudent();}"
+                  onfocus="document.getElementById('intl-ex-roll-wrap').style.borderColor='var(--maroon)'"
+                  onblur="document.getElementById('intl-ex-roll-wrap').style.borderColor='var(--bdr-s)'"
+                  required style="border:none;outline:none;flex:1;min-width:0;padding:10px 13px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);background:transparent;">
+              </div>
+              <span class="hint err" id="intl-ex-roll-msg" style="display:block;margin-top:4px;"></span>
+            </div>
+            <button class="lookup-btn" id="intl-ex-lookup-btn" onclick="lookupIntlStudent()">Find</button>
+          </div>
+
+          <!-- Confirmed student chip -->
+          <div class="name-chip" id="intl-ex-name-chip">
+            <table class="nc-table">
+              <tr><td>Roll No</td><td id="intl-ex-roll-display">—</td></tr>
+              <tr><td>Student</td><td id="intl-ex-student-name">—</td></tr>
+              <tr><td>Parent</td><td id="intl-ex-parent-name">—</td></tr>
+            </table>
+          </div>
+
+          <!-- Rest of form (shown after lookup) -->
+          <div id="intl-ex-rest" style="display:none;">
+            <!-- Fee month -->
+            <div class="fg-field">
+              <label for="intl-ex-month">Fee Month *</label>
+              <select id="intl-ex-month">
+                <option value="">— Select month —</option>
+              </select>
+              <span class="hint err" id="intl-ex-month-msg"></span>
+            </div>
+
+            <!-- Currency + Amount -->
+            <div class="fg-row">
+              <div class="fg-field">
+                <label for="intl-ex-currency">Currency *</label>
+                <select id="intl-ex-currency" onchange="onIntlCurrencyChange('ex')">
+                  <option value="USD">USD — US Dollar</option>
+                  <option value="GBP">GBP — British Pound</option>
+                  <option value="EUR">EUR — Euro</option>
+                  <option value="DKK">DKK — Danish Krone</option>
+                  <option value="CAD">CAD — Canadian Dollar</option>
+                </select>
+              </div>
+              <div class="fg-field">
+                <label for="intl-ex-amount">Amount *</label>
+                <input type="number" id="intl-ex-amount" placeholder="As confirmed by school" min="1" step="0.01" readonly
+                  style="background:var(--cream);">
+                <span class="hint">Monthly fee as set by school for your batch</span>
+              </div>
+            </div>
+
+            <!-- Amount display -->
+            <div class="amount-box" id="intl-ex-amount-box" style="display:none;">
+              <span class="ab-label">Monthly Fee</span>
+              <span class="ab-value" id="intl-ex-amount-display">—</span>
+            </div>
+
+            <!-- Payment mode -->
+            <div class="fg-field">
+              <label for="intl-ex-paymode">Payment Mode *</label>
+              <select id="intl-ex-paymode">
+                <option value="">— Select —</option>
+                <option value="International Bank Transfer">International Bank Transfer</option>
+                <option value="Wise">Wise (TransferWise)</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Stripe">Stripe</option>
+                <option value="Revolut">Revolut</option>
+                <option value="Other International">Other International</option>
+              </select>
+            </div>
+
+            <!-- Transaction ID -->
+            <div class="fg-field">
+              <label for="intl-ex-txnid">Transaction / Reference ID *</label>
+              <input type="text" id="intl-ex-txnid" placeholder="Reference from your bank or payment app">
+              <span class="hint err" id="intl-ex-txnid-msg"></span>
+            </div>
+
+            <button class="pay-btn intl-pay-btn" id="intl-ex-pay-btn" onclick="submitIntlMonthlyFee()">Submit Monthly Fee</button>
+            <p class="refund-note" style="margin-top:10px;">Contact us on WhatsApp for any payment queries: <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--saffron);">+91 72000 95585</a></p>
+          </div>
+        </div><!-- /intl-ex-form-wrap -->
+
+        <!-- Monthly fee success -->
+        <div class="success-screen" id="intl-ex-success">
+          <div class="success-icon">✅</div>
+          <h2>Payment Submitted!</h2>
+          <p>Your monthly fee payment reference has been received.<br>The school will verify the transfer and send a confirmation email.</p>
+          <div id="intl-ex-txn-box" style="display:none;margin:16px auto 0;max-width:340px;background:#f9f4ef;border:1px solid var(--bdr);border-radius:3px;padding:10px 14px;font-size:0.78rem;color:var(--ink-soft);text-align:left;">
+            <span style="font-weight:600;color:var(--ink);display:block;margin-bottom:4px;">Transaction Reference</span>
+            <span id="intl-ex-txn-display" style="font-family:monospace;font-size:0.82rem;color:var(--maroon);word-break:break-all;"></span>
+          </div>
+          <div style="margin-top:18px;">
+            <button id="intl-ex-download-receipt" onclick="downloadIntlReceipt('ex')" style="display:none;background:var(--maroon);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:0.85rem;font-family:var(--fb);letter-spacing:0.05em;cursor:pointer;">&#8595; Download Receipt</button>
+          </div>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+
+      </div><!-- /panel-intl-existing -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           PANEL 3 — PROGRAMS
+      ═══════════════════════════════════════════════ -->
+      <div class="fpanel fee-card" id="panel-intl-program" role="tabpanel" aria-labelledby="tab-intl-program">
+        <div id="intl-prog-form-wrap">
+          <span class="lbl">Programs &amp; Workshops</span>
+          <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">Program Registration</h2>
+          <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">Register for online workshops, special programs, or events. Fee amounts are shown per program below.</p>
+
+          <!-- Program selection -->
+          <div class="fg-field" style="margin-bottom:20px;">
+            <label for="intl-prog-select">Select Program *</label>
+            <select id="intl-prog-select" onchange="onIntlProgramChange()">
+              <option value="">— Loading programs… —</option>
+            </select>
+            <span class="hint err" id="intl-prog-select-msg"></span>
+          </div>
+
+          <!-- Program details card -->
+          <div id="intl-prog-reveal" style="display:none;background:var(--saffron-l);border:1px solid #e8c4a0;border-radius:4px;padding:14px 16px;margin-bottom:16px;">
+            <div style="font-size:0.78rem;font-weight:500;color:var(--ink-soft);" id="intl-prog-desc"></div>
+            <div style="font-family:var(--fd);font-size:1.2rem;color:var(--maroon);margin-top:4px;" id="intl-prog-fee-display"></div>
+          </div>
+
+          <!-- Participant details -->
+          <div id="intl-prog-details" style="display:none;">
+            <div class="form-divider"></div>
+            <span class="lbl" style="display:block;margin-bottom:12px;">Your Details</span>
+
+            <!-- Student type -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+              <label id="intl-prog-kv-label" style="display:block;border:2px solid var(--maroon);border-radius:4px;padding:12px 14px;cursor:pointer;transition:all 0.15s;">
+                <input type="radio" name="intl-prog-type" value="kv" id="intl-prog-kv-radio" checked style="accent-color:var(--maroon);" onchange="onIntlProgTypeChange(this)">
+                <span style="display:block;font-weight:600;font-size:0.85rem;margin-top:4px;">🎓 KV Student</span>
+                <span style="display:block;font-size:0.73rem;color:var(--ink-soft);margin-top:3px;">I am currently enrolled at Kalpavruksha</span>
+              </label>
+              <label id="intl-prog-out-label" style="display:block;border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;cursor:pointer;transition:all 0.15s;">
+                <input type="radio" name="intl-prog-type" value="outside" id="intl-prog-out-radio" style="accent-color:var(--maroon);" onchange="onIntlProgTypeChange(this)">
+                <span style="display:block;font-weight:600;font-size:0.85rem;margin-top:4px;">🌐 Outside Participant</span>
+                <span style="display:block;font-size:0.73rem;color:var(--ink-soft);margin-top:3px;">I am not currently enrolled at KV</span>
+              </label>
+            </div>
+
+            <!-- KV student roll lookup -->
+            <div id="intl-prog-kv-lookup" style="margin-bottom:16px;">
+              <div class="lookup-row">
+                <div class="fg-field">
+                  <label for="intl-prog-roll">Roll Number (KV Students)</label>
+                  <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;">
+                    <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);display:flex;align-items:center;">KAL01</span>
+                    <input type="text" id="intl-prog-roll" placeholder="e.g. 12400001" autocomplete="off"
+                      style="border:none;outline:none;flex:1;min-width:0;padding:10px 13px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);background:transparent;"
+                      onkeydown="if(event.key==='Enter'){event.preventDefault();lookupIntlProgStudent();}">
+                  </div>
+                </div>
+                <button class="lookup-btn" id="intl-prog-lookup-btn" onclick="lookupIntlProgStudent()">Check</button>
+              </div>
+              <div class="name-chip" id="intl-prog-name-chip" style="margin-top:-8px;">
+                <table class="nc-table">
+                  <tr><td>Student</td><td id="intl-prog-student-display">—</td></tr>
+                </table>
+              </div>
+              <span class="hint err" id="intl-prog-roll-msg" style="display:block;margin-top:4px;"></span>
+            </div>
+
+            <!-- Outside student / common fields -->
+            <div id="intl-prog-outside-fields">
+              <div class="fg-row">
+                <div class="fg-field">
+                  <label for="intl-prog-name">Participant Name *</label>
+                  <input type="text" id="intl-prog-name" placeholder="Full name">
+                </div>
+                <div class="fg-field">
+                  <label for="intl-prog-phone">Mobile Number *</label>
+                  <div class="phone-row">
+                    <select id="intl-prog-dialcode">
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+1ca">🇨🇦 +1</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+61">🇦🇺 +61</option>
+                      <option value="+65">🇸🇬 +65</option>
+                      <option value="+45">🇩🇰 +45</option>
+                      <option value="+49">🇩🇪 +49</option>
+                      <option value="+33">🇫🇷 +33</option>
+                      <option value="+971">🇦🇪 +971</option>
+                      <option value="+91">🇮🇳 +91</option>
+                      <option value="+other">🌐 Other</option>
+                    </select>
+                    <input type="tel" id="intl-prog-phone" placeholder="Mobile number" inputmode="tel">
+                  </div>
+                </div>
+              </div>
+              <div class="fg-field">
+                <label for="intl-prog-email">Email Address *</label>
+                <input type="email" id="intl-prog-email" placeholder="you@email.com">
+              </div>
+            </div>
+
+            <!-- Fee + currency -->
+            <div class="fg-row">
+              <div class="fg-field">
+                <label for="intl-prog-currency">Currency *</label>
+                <select id="intl-prog-currency" onchange="onIntlCurrencyChange('prog')">
+                  <option value="USD">USD — US Dollar</option>
+                  <option value="GBP">GBP — British Pound</option>
+                  <option value="EUR">EUR — Euro</option>
+                  <option value="DKK">DKK — Danish Krone</option>
+                  <option value="CAD">CAD — Canadian Dollar</option>
+                </select>
+              </div>
+              <div class="fg-field">
+                <label for="intl-prog-amount">Amount *</label>
+                <input type="number" id="intl-prog-amount" placeholder="As per program fee" min="1" step="0.01">
+              </div>
+            </div>
+
+            <!-- Payment mode -->
+            <div class="fg-field">
+              <label for="intl-prog-paymode">Payment Mode *</label>
+              <select id="intl-prog-paymode">
+                <option value="">— Select —</option>
+                <option value="International Bank Transfer">International Bank Transfer</option>
+                <option value="Wise">Wise (TransferWise)</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Stripe">Stripe</option>
+                <option value="Revolut">Revolut</option>
+                <option value="Other International">Other International</option>
+              </select>
+            </div>
+
+            <!-- Transaction ID -->
+            <div class="fg-field">
+              <label for="intl-prog-txnid">Transaction / Reference ID *</label>
+              <input type="text" id="intl-prog-txnid" placeholder="Reference from your bank or payment app">
+              <span class="hint err" id="intl-prog-txnid-msg"></span>
+            </div>
+
+            <!-- Notes -->
+            <div class="fg-field">
+              <label for="intl-prog-notes">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+              <input type="text" id="intl-prog-notes" placeholder="Any questions or special requirements">
+            </div>
+
+            <button class="pay-btn intl-pay-btn" id="intl-prog-pay-btn" onclick="submitIntlProgram()">Submit Program Registration</button>
+          </div><!-- /intl-prog-details -->
+        </div><!-- /intl-prog-form-wrap -->
+
+        <!-- Program success -->
+        <div class="success-screen" id="intl-prog-success">
+          <div class="success-icon">✨</div>
+          <h2>Registration Submitted!</h2>
+          <p>Your program registration has been received.<br>The school will confirm your place after verifying the payment.</p>
+          <div style="margin-top:18px;">
+            <button id="intl-prog-download-receipt" onclick="downloadIntlReceipt('prog')" style="display:none;background:var(--maroon);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:0.85rem;font-family:var(--fb);letter-spacing:0.05em;cursor:pointer;">&#8595; Download Receipt</button>
+          </div>
+          <a href="index.html" class="back-link">← Return to Home</a>
+        </div>
+
+      </div><!-- /panel-intl-program -->
+
+
+      <!-- ═══════════════════════════════════════════════
+           PANEL 4 — PAYMENT HISTORY
+      ═══════════════════════════════════════════════ -->
+      <div class="fpanel fee-card" id="panel-intl-history" role="tabpanel" aria-labelledby="tab-intl-history">
+        <span class="lbl">Payment Records</span>
+        <h2 class="dmd" style="margin-top:6px;margin-bottom:8px">Your Payment History</h2>
+        <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;">Enter your registered mobile number and email to view past receipts.</p>
+
+        <div id="intl-ph-form">
+          <div class="fg-row">
+            <div class="fg-field">
+              <label for="intl-ph-phone">Registered Mobile *</label>
+              <div class="phone-row">
+                <select id="intl-ph-dialcode">
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+1ca">🇨🇦 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+65">🇸🇬 +65</option>
+                  <option value="+45">🇩🇰 +45</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+other">🌐 Other</option>
+                </select>
+                <input type="tel" id="intl-ph-phone" placeholder="Your registered mobile" inputmode="tel"
+                  onkeydown="if(event.key==='Enter')fetchIntlHistory();">
+              </div>
+            </div>
+            <div class="fg-field">
+              <label for="intl-ph-email">Registered Email *</label>
+              <input type="email" id="intl-ph-email" placeholder="you@email.com"
+                onkeydown="if(event.key==='Enter')fetchIntlHistory();">
+            </div>
+          </div>
+          <span class="hint err" id="intl-ph-error" style="display:block;margin-bottom:10px;"></span>
+          <button class="lookup-btn" id="intl-ph-search-btn" onclick="fetchIntlHistory()" style="width:100%;padding:12px;">Search Payment Records</button>
+        </div>
+
+        <div id="intl-ph-results" style="display:none;">
+          <div id="intl-ph-results-header" style="margin-bottom:14px;"></div>
+          <div id="intl-ph-list"></div>
+        </div>
+      </div><!-- /panel-intl-history -->
+
+    </div><!-- /fee-wrap -->
+  </div><!-- /c -->
+</section>
+
+<!-- Footer note -->
+<div style="background:#0d2a4a;padding:20px 0;text-align:center;">
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.6);line-height:1.8;">
+    Kalpavruksha School of Fine Arts &nbsp;·&nbsp; Kodambakkam, Chennai<br>
+    <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:#f8dc8c;">WhatsApp: +91 72000 95585</a> &nbsp;·&nbsp;
+    <a href="mailto:info@kalpavrukshafinearts.com" style="color:#f8dc8c;">info@kalpavrukshafinearts.com</a> &nbsp;·&nbsp;
+    <a href="fees.html" style="color:rgba(255,255,255,0.5);">Domestic Portal</a>
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+// ─────────────────────────────────────────────────────────────────
+// CONFIGURATION — Update these to match your deployment
+// ─────────────────────────────────────────────────────────────────
+
+// ⚠️ PORTAL URL — same Google Apps Script endpoint as domestic portal
+var INTL_PORTAL_URL = 'REPLACE_WITH_APPS_SCRIPT_URL';
+// e.g. 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec'
+
+// ⚠️ STUDENT DATA — same spreadsheet, same sheet ID as domestic
+// International students will share the same Students sheet (for roll number lookup)
+var INTL_STUDENTS_CSV = 'REPLACE_WITH_STUDENTS_CSV_URL';
+// e.g. 'https://docs.google.com/spreadsheets/d/e/PUBLISHED_ID/pub?gid=STUDENTS_GID&single=true&output=csv'
+
+// ⚠️ PROGRAMS DATA — a new "Intl Programs" tab in the same spreadsheet
+var INTL_PROGRAMS_CSV = 'REPLACE_WITH_INTL_PROGRAMS_CSV_URL';
+// e.g. 'https://docs.google.com/spreadsheets/d/e/PUBLISHED_ID/pub?gid=INTL_PROGRAMS_GID&single=true&output=csv'
+
+// ⚠️ ACCESS TOKENS — update as needed
+var INTL_NEW_ENROL_TOKEN = 'KFAINTL2014';
+var INTL_ENROL_CODES = {
+  'KFAIF2014': 'Foundation',
+  'KFAII2014': 'Intermediate',
+  'KFAIA2014': 'Advanced',
+  'KFAIAD2014': 'Adult Beginners'
+};
+var INTL_ALL_TOKENS = ['KFAINTL2014','KFAIF2014','KFAII2014','KFAIA2014','KFAIAD2014'];
+
+// Currency symbols
+var CURRENCY_SYMBOLS = { USD: '$', GBP: '£', EUR: '€', DKK: 'DKK ', CAD: 'CA$' };
+
+// ─────────────────────────────────────────────────────────────────
+// DATA CACHE
+// ─────────────────────────────────────────────────────────────────
+var INTL_DATA = { students: [], programs: [] };
+var intlDataLoaded = false;
+
+function loadIntlData() {
+  if (intlDataLoaded) return Promise.resolve();
+  return Promise.all([
+    INTL_STUDENTS_CSV && !INTL_STUDENTS_CSV.startsWith('REPLACE')
+      ? fetch(INTL_STUDENTS_CSV).then(function(r){return r.text();}).then(function(t){INTL_DATA.students=parseIntlCSV(t);})
+      : Promise.resolve(),
+    INTL_PROGRAMS_CSV && !INTL_PROGRAMS_CSV.startsWith('REPLACE')
+      ? fetch(INTL_PROGRAMS_CSV).then(function(r){return r.text();}).then(function(t){INTL_DATA.programs=parseIntlCSV(t);})
+      : Promise.resolve()
+  ]).then(function(){
+    intlDataLoaded = true;
+  }).catch(function(err){
+    console.warn('Intl data load error:', err);
+    intlDataLoaded = true; // prevent infinite retry
+  });
+}
+
+function parseIntlCSV(text) {
+  var lines = text.trim().replace(/\r/g,'').split('\n');
+  if (!lines.length) return [];
+  var headerIdx = 0;
+  var knownHeaders = ['Roll','Session ID','Name','Key','Student Name','Workshop','Timestamp','Program'];
+  for (var hi = 0; hi < Math.min(6, lines.length); hi++) {
+    var lineHi = lines[hi];
+    if (knownHeaders.some(function(k){ return lineHi.indexOf(k) !== -1; })) { headerIdx = hi; break; }
+  }
+  var headers = lines[headerIdx].split(',').map(function(h){ return h.trim().replace(/^"|"$/g,''); });
+  return lines.slice(headerIdx + 1).map(function(line) {
+    var cols = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim());
+    var obj = {};
+    headers.forEach(function(h, i){ obj[h] = (cols[i] || '').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  }).filter(function(r){ return Object.values(r).some(function(v){ return v; }); });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TAB SWITCHING
+// ─────────────────────────────────────────────────────────────────
+function switchIntlTab(name) {
+  document.querySelectorAll('.ftab').forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  document.querySelectorAll('.fpanel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('tab-intl-' + name).classList.add('active');
+  document.getElementById('tab-intl-' + name).setAttribute('aria-selected','true');
+  document.getElementById('panel-intl-' + name).classList.add('active');
+
+  // Lazy-load programs when Programs tab is opened
+  if (name === 'program') loadIntlProgramOptions();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────
+function getDialCode(selectId) {
+  var sel = document.getElementById(selectId);
+  if (!sel) return '';
+  var val = sel.value;
+  if (val === '+1ca') return '+1';
+  if (val === '+other') return '';
+  return val;
+}
+
+function buildFullPhone(dialSelectId, phoneInputId) {
+  var code = getDialCode(dialSelectId);
+  var num  = (document.getElementById(phoneInputId) || {}).value || '';
+  num = num.trim().replace(/^\+?[0-9\s\-()]+$/, function(m){ return m.replace(/[\s\-()]/g,''); });
+  if (code && !num.startsWith(code)) return code + num;
+  return num;
+}
+
+function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||'').trim()); }
+function isNotEmpty(v)   { return (v||'').trim().length > 0; }
+
+function showIntlErr(id, msg) {
+  var el = document.getElementById(id);
+  if (el) { el.textContent = msg; el.className = 'hint err'; el.style.display = 'block'; }
+}
+function clearIntlErr(id) {
+  var el = document.getElementById(id);
+  if (el) { el.textContent = ''; el.style.display = 'none'; }
+}
+function safeIntlStyle(id, prop, val) {
+  var el = document.getElementById(id); if (el) el.style[prop] = val;
+}
+function safeIntlSet(id, prop, val) {
+  var el = document.getElementById(id); if (el) el[prop] = val;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// DIAL CODE → AUTO-SELECT CURRENCY
+// ─────────────────────────────────────────────────────────────────
+var DIALCODE_CURRENCY = {
+  '+1':   'USD', '+1ca': 'CAD', '+44': 'GBP',
+  '+45':  'DKK', '+46': 'DKK', '+47': 'DKK',
+  '+49':  'EUR', '+33': 'EUR', '+31': 'EUR',
+  '+61':  'USD', '+64': 'USD', '+65': 'USD',
+  '+971': 'USD', '+60': 'USD'
+};
+
+function onIntlDialCodeChange() {
+  var code = document.getElementById('intl-new-dialcode').value;
+  var cur  = DIALCODE_CURRENCY[code] || 'USD';
+  var enrollCur = document.getElementById('intl-enrol-currency');
+  if (enrollCur) enrollCur.value = cur;
+  var exCur = document.getElementById('intl-ex-currency');
+  if (exCur) exCur.value = cur;
+}
+
+function onIntlCountryChange() {
+  // Could auto-set dial code based on country — optional enhancement
+}
+
+function onIntlCurrencyChange(flow) {
+  var idMap = { enrol: ['intl-enrol-currency','intl-enrol-amount','intl-enrol-amount-box','intl-enrol-amount-display'],
+                ex:    ['intl-ex-currency','intl-ex-amount','intl-ex-amount-box','intl-ex-amount-display'],
+                prog:  ['intl-prog-currency','intl-prog-amount','intl-prog-amount-box','intl-prog-amount-display'] };
+  var ids = idMap[flow];
+  if (!ids) return;
+  var cur = (document.getElementById(ids[0]) || {}).value || 'USD';
+  var sym = CURRENCY_SYMBOLS[cur] || cur + ' ';
+  var amtEl = document.getElementById(ids[1]);
+  var amt = amtEl ? parseFloat(amtEl.value) : 0;
+  if (amt > 0) {
+    var boxEl = document.getElementById(ids[2]);
+    var dispEl = document.getElementById(ids[3]);
+    if (boxEl) boxEl.style.display = 'flex';
+    if (dispEl) dispEl.textContent = sym + amt.toLocaleString();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// GENDER CHECK
+// ─────────────────────────────────────────────────────────────────
+function onIntlGenderChange() {
+  var gender = document.getElementById('intl-new-gender').value;
+  var msg = document.getElementById('intl-new-gender-msg');
+  if (gender === 'Male' || gender === 'Other') {
+    msg.style.display = 'block';
+  } else {
+    msg.style.display = 'none';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TOKEN GATE — NEW STUDENT
+// ─────────────────────────────────────────────────────────────────
+function verifyIntlToken() {
+  var val = (document.getElementById('intl-new-token').value || '').trim().toUpperCase();
+  var msg = document.getElementById('intl-new-token-msg');
+  if (!val) { msg.textContent = 'Please enter the access code.'; return; }
+  if (INTL_ALL_TOKENS.indexOf(val) === -1) {
+    msg.textContent = 'Invalid code. Please check and try again, or WhatsApp us.';
+    return;
+  }
+  msg.textContent = '';
+  document.getElementById('intl-new-token-gate').style.display = 'none';
+  document.getElementById('intl-new-form-wrap').style.display  = 'block';
+  // Set default enrolment date
+  var td = new Date();
+  var dateStr = td.getFullYear() + '-' + String(td.getMonth()+1).padStart(2,'0') + '-' + String(td.getDate()).padStart(2,'0');
+  var enrolDate = document.getElementById('intl-enrol-date');
+  if (enrolDate) enrolDate.value = dateStr;
+  // If it was a specific level code, pre-select level
+  if (INTL_ENROL_CODES[val]) {
+    var levelSel = document.getElementById('intl-new-level');
+    if (levelSel) levelSel.value = INTL_ENROL_CODES[val];
+    // Unlock enrol option
+    unlockIntlEnrol();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ENTRY TYPE TOGGLE
+// ─────────────────────────────────────────────────────────────────
+function onIntlEntryChange(radio) {
+  var trialLabel  = document.getElementById('intl-opt-trial-label');
+  var enrolLabel  = document.getElementById('intl-opt-enrol-label');
+  if (trialLabel) trialLabel.style.borderColor = radio.value === 'trial' ? 'var(--maroon)' : 'var(--bdr)';
+  if (trialLabel) trialLabel.style.borderWidth  = radio.value === 'trial' ? '2px' : '1px';
+  if (enrolLabel) enrolLabel.style.borderColor = radio.value === 'enrol' ? 'var(--maroon)' : 'var(--bdr)';
+  if (enrolLabel) enrolLabel.style.borderWidth  = radio.value === 'enrol' ? '2px' : '1px';
+
+  safeIntlStyle('intl-trial-submit-wrap', 'display', radio.value === 'trial' ? 'block' : 'none');
+  safeIntlStyle('intl-enrol-wrap',        'display', radio.value === 'enrol' ? 'block' : 'none');
+
+  // Check if enrol radio is blocked
+  if (radio.value === 'enrol') {
+    var enrolRadio = document.getElementById('intl-enrol-radio');
+    if (enrolRadio && enrolRadio.disabled) {
+      safeIntlSet('intl-entry-msg', 'textContent', 'Please complete a trial class first. You will receive an enrolment code from the school.');
+      radio.checked = false;
+      if (enrolLabel) { enrolLabel.style.borderColor='var(--bdr)'; enrolLabel.style.borderWidth='1px'; }
+      safeIntlStyle('intl-enrol-wrap','display','none');
+    } else {
+      clearIntlErr('intl-entry-msg');
+    }
+  } else {
+    clearIntlErr('intl-entry-msg');
+  }
+}
+
+function unlockIntlEnrol() {
+  var enrolRadio = document.getElementById('intl-enrol-radio');
+  var enrolLabel = document.getElementById('intl-opt-enrol-label');
+  var descEl     = document.getElementById('intl-enrol-label-desc');
+  var textEl     = document.getElementById('intl-enrol-label-text');
+  if (enrolRadio) { enrolRadio.disabled = false; }
+  if (enrolLabel) { enrolLabel.style.opacity = '1'; enrolLabel.style.cursor = 'pointer'; }
+  if (textEl)  textEl.innerHTML = '✅ Enrol &amp; Pay Now';
+  if (descEl)  descEl.textContent = 'Your trial is complete. Confirm your enrolment and submit payment details.';
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ENROLMENT CODE VERIFICATION
+// ─────────────────────────────────────────────────────────────────
+function verifyIntlEnrolCode() {
+  var val = (document.getElementById('intl-enrol-code').value || '').trim().toUpperCase();
+  var msg = document.getElementById('intl-enrol-code-msg');
+  if (!val) { msg.textContent = 'Please enter your enrolment code.'; return; }
+  if (!INTL_ENROL_CODES[val]) {
+    msg.textContent = 'Invalid enrolment code. Please check the code shared by the school.';
+    return;
+  }
+  msg.style.color = '#1B5E20';
+  msg.textContent = '✓ Code verified. Please fill in the payment details below.';
+  // Set level from code
+  var levelSel = document.getElementById('intl-new-level');
+  if (levelSel) levelSel.value = INTL_ENROL_CODES[val];
+  // Show pay section
+  document.getElementById('intl-trial-code-gate').style.display = 'none';
+  document.getElementById('intl-pay-wrap').style.display = 'block';
+  document.getElementById('intl-pay-wrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TRIAL SUBMISSION
+// ─────────────────────────────────────────────────────────────────
+function submitIntlTrial() {
+  var n   = (document.getElementById('intl-new-name')   || {}).value || '';
+  var par = (document.getElementById('intl-new-parent') || {}).value || '';
+  var ph  = buildFullPhone('intl-new-dialcode','intl-new-phone');
+  var em  = (document.getElementById('intl-new-email')  || {}).value || '';
+  var cnt = (document.getElementById('intl-new-country')|| {}).value || '';
+  var tz  = (document.getElementById('intl-new-timezone')|| {}).value || '';
+  var grp = (document.getElementById('intl-new-group')  || {}).value || '';
+  var gen = (document.getElementById('intl-new-gender') || {}).value || '';
+  var lev = (document.getElementById('intl-new-level')  || {}).value || '';
+  var pref= (document.getElementById('intl-new-pref')   || {}).value || '';
+  var notes=(document.getElementById('intl-new-notes')  || {}).value || '';
+
+  if (!isNotEmpty(n)) { alert('Please enter the student name.'); return; }
+  if (!isNotEmpty(par)) { alert('Please enter the parent / guardian name.'); return; }
+  if (!isNotEmpty(ph)) { alert('Please enter your mobile number.'); return; }
+  if (!isValidEmail(em)) { alert('Please enter a valid email address.'); return; }
+  if (!cnt) { alert('Please select your country.'); return; }
+  if (!gen) { alert('Please select the gender.'); return; }
+  if (!grp) { alert('Please select who is joining.'); return; }
+  if (!lev) { alert('Please select a learning stage.'); return; }
+  if (!pref){ alert('Please select a preferred class time.'); return; }
+
+  var consent = document.getElementById('intl-trial-consent');
+  if (!consent || !consent.checked) {
+    safeIntlSet('intl-trial-consent-msg','textContent','Please accept the declaration to proceed.');
+    return;
+  }
+  safeIntlSet('intl-trial-consent-msg','textContent','');
+
+  // Duplicate guard
+  var dupKey = 'kfa_intl_trial_' + n.toLowerCase().trim() + '_' + ph;
+  if (sessionStorage.getItem(dupKey)) {
+    alert('You have already submitted a trial request. We will contact you via WhatsApp soon.');
+    return;
+  }
+  sessionStorage.setItem(dupKey,'1');
+
+  var btn = document.getElementById('intl-trial-submit-btn');
+  btn.disabled = true; btn.innerHTML = 'Submitting… <span class="spin"></span>';
+
+  var data = {
+    submissionType : 'Trial Interest',
+    portalType     : 'international',
+    studentName    : n,
+    parentName     : par,
+    phone          : ph,
+    email          : em,
+    gender         : gen,
+    whoIsJoining   : grp,
+    country        : cnt,
+    timezone       : tz || '',
+    classType      : 'Online',
+    sessionType    : 'Group',
+    learningStage  : lev,
+    preferredTime  : pref,
+    notes          : 'International trial — Timezone: ' + (tz||'not specified') + ' | Pref: ' + pref + (notes ? ' | ' + notes : ''),
+    currency       : 'N/A',
+    paymentMode    : 'N/A'
+  };
+
+  submitToIntlPortal(data, function() {
+    document.getElementById('intl-new-form-wrap').style.display = 'none';
+    document.getElementById('intl-new-token-gate').style.display = 'none';
+    document.getElementById('intl-trial-success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.disabled = false; btn.textContent = 'Confirm Free Trial Registration';
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ENROLMENT SUBMISSION
+// ─────────────────────────────────────────────────────────────────
+function submitIntlEnrolment() {
+  var n   = (document.getElementById('intl-new-name')   || {}).value || '';
+  var par = (document.getElementById('intl-new-parent') || {}).value || '';
+  var ph  = buildFullPhone('intl-new-dialcode','intl-new-phone');
+  var em  = (document.getElementById('intl-new-email')  || {}).value || '';
+  var cnt = (document.getElementById('intl-new-country')|| {}).value || '';
+  var gen = (document.getElementById('intl-new-gender') || {}).value || '';
+  var grp = (document.getElementById('intl-new-group')  || {}).value || '';
+  var lev = (document.getElementById('intl-new-level')  || {}).value || '';
+  var tz  = (document.getElementById('intl-new-timezone')|| {}).value || '';
+  var pref= (document.getElementById('intl-new-pref')   || {}).value || '';
+  var enrolDate = (document.getElementById('intl-enrol-date')|| {}).value || '';
+  var currency  = (document.getElementById('intl-enrol-currency')|| {}).value || 'USD';
+  var amount    = parseFloat((document.getElementById('intl-enrol-amount')|| {}).value || '0');
+  var payMode   = (document.getElementById('intl-enrol-paymode')|| {}).value || '';
+  var txnId     = (document.getElementById('intl-enrol-txnid') || {}).value || '';
+
+  if (!isNotEmpty(n)) { alert('Please enter the student name.'); return; }
+  if (!isNotEmpty(par)) { alert('Please enter the parent / guardian name.'); return; }
+  if (!isNotEmpty(ph)) { alert('Please enter your mobile number.'); return; }
+  if (!isValidEmail(em)) { alert('Please enter a valid email address.'); return; }
+  if (!cnt)    { alert('Please select your country.'); return; }
+  if (!gen)    { alert('Please select gender.'); return; }
+  if (!grp)    { alert('Please select who is joining.'); return; }
+  if (!lev)    { alert('Please select a learning stage.'); return; }
+  if (!enrolDate) { alert('Please select an enrolment date.'); return; }
+  if (!amount || amount <= 0) { alert('Please enter the agreed fee amount.'); return; }
+  if (!payMode) { alert('Please select a payment mode.'); return; }
+  if (!isNotEmpty(txnId)) { alert('Please enter your transaction / reference ID.'); return; }
+
+  var consent = document.getElementById('intl-enrol-consent');
+  if (!consent || !consent.checked) {
+    safeIntlSet('intl-enrol-consent-msg','textContent','Please accept the declaration to proceed.');
+    return;
+  }
+  safeIntlSet('intl-enrol-consent-msg','textContent','');
+
+  var btn = document.getElementById('intl-enrol-pay-btn');
+  btn.disabled = true; btn.innerHTML = 'Submitting… <span class="spin"></span>';
+
+  var data = {
+    submissionType : 'New Enrolment',
+    portalType     : 'international',
+    studentName    : n,
+    parentName     : par,
+    phone          : ph,
+    email          : em,
+    gender         : gen,
+    whoIsJoining   : grp,
+    country        : cnt,
+    timezone       : tz || '',
+    classType      : 'Online',
+    sessionType    : 'Group',
+    learningStage  : lev,
+    batchSelected  : 'International Online' + (pref ? ' — ' + pref : ''),
+    enrolmentDate  : enrolDate,
+    amountPaid     : amount,
+    transactionId  : txnId,
+    paymentMode    : payMode,
+    currency       : currency,
+    notes          : 'International enrolment — Timezone: ' + (tz||'not specified') + (pref ? ' | Pref: ' + pref : '') + ' | Paid via website'
+  };
+
+  intlReceiptStore['enrol'] = {
+    receiptNo   : '',
+    studentName : n,
+    parentName  : par,
+    phone       : ph,
+    email       : em,
+    rollNo      : '',
+    txnId       : txnId,
+    amount      : amount,
+    currency    : currency,
+    description : 'New Enrolment — International Online — ' + lev,
+    paymentMode : payMode,
+    paymentDate : enrolDate
+  };
+
+  submitToIntlPortalAndGetRollNo(data, function(result) {
+    btn.disabled = false; btn.textContent = 'Submit Enrolment';
+    if (result && result.rollNo) {
+      safeIntlSet('intl-enrol-roll-no','textContent', result.rollNo);
+      safeIntlStyle('intl-enrol-roll-box','display','block');
+      if (intlReceiptStore['enrol']) intlReceiptStore['enrol'].rollNo = result.rollNo;
+    }
+    if (result && result.receiptNo && intlReceiptStore['enrol']) {
+      intlReceiptStore['enrol'].receiptNo = result.receiptNo;
+    }
+    safeIntlSet('intl-enrol-txn-display','textContent', txnId);
+    safeIntlStyle('intl-enrol-txn-box','display','block');
+    safeIntlStyle('intl-enrol-download-receipt','display','inline-block');
+    document.getElementById('intl-new-form-wrap').style.display = 'none';
+    document.getElementById('intl-new-token-gate').style.display = 'none';
+    document.getElementById('intl-enrol-success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// EXISTING STUDENT — Roll Number Lookup
+// ─────────────────────────────────────────────────────────────────
+var intlFoundStudent = null;
+
+function resetIntlExLookup() {
+  intlFoundStudent = null;
+  document.getElementById('intl-ex-name-chip').classList.remove('show');
+  safeIntlSet('intl-ex-roll-display','innerHTML','—');
+  safeIntlStyle('intl-ex-rest','display','none');
+  clearIntlErr('intl-ex-roll-msg');
+}
+
+function lookupIntlStudent() {
+  var rawRoll = document.getElementById('intl-ex-roll').value.trim();
+  var msg     = document.getElementById('intl-ex-roll-msg');
+  var btn     = document.getElementById('intl-ex-lookup-btn');
+  if (!rawRoll) { msg.textContent = 'Please enter your Roll No.'; msg.className='hint err'; return; }
+  var roll = 'KAL01' + rawRoll.toUpperCase();
+  btn.disabled = true; btn.textContent = 'Finding…';
+  msg.textContent = ''; msg.className = 'hint';
+
+  loadIntlData().then(function() {
+    btn.disabled = false; btn.textContent = 'Find';
+    if (!INTL_DATA.students.length) {
+      msg.innerHTML = 'Unable to connect to student database. Please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+      msg.className = 'hint err'; return;
+    }
+    var student = INTL_DATA.students.find(function(s){
+      return (s['Roll No'] || '').toString().trim().toUpperCase() === roll;
+    });
+    if (!student) {
+      msg.innerHTML = 'Roll No not recognised. Please check or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+      msg.className = 'hint err'; return;
+    }
+    if ((student['Status'] || '').toLowerCase() !== 'active') {
+      msg.innerHTML = 'This Roll No is inactive. Please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a> for help.';
+      msg.className = 'hint err'; return;
+    }
+    intlFoundStudent = student;
+    msg.textContent = '';
+    safeIntlSet('intl-ex-roll-display','textContent', student['Roll No'] || roll);
+    safeIntlSet('intl-ex-student-name','textContent', student['Student Name'] || '—');
+    safeIntlSet('intl-ex-parent-name', 'textContent', student['Parent Name']  || '—');
+    document.getElementById('intl-ex-name-chip').classList.add('show');
+    // Set fee from student record
+    var fee = student['Fee'] || '';
+    var feeEl = document.getElementById('intl-ex-amount');
+    if (feeEl && fee) {
+      feeEl.value = fee;
+      feeEl.removeAttribute('readonly');
+    }
+    // Populate fee months
+    populateIntlFeeMonths();
+    document.getElementById('intl-ex-rest').style.display = 'block';
+    // Auto-set currency from student's country
+    // (placeholder: try to infer, else leave as USD)
+  }).catch(function() {
+    btn.disabled = false; btn.textContent = 'Find';
+    msg.innerHTML = 'Unable to connect. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+    msg.className = 'hint err';
+  });
+}
+
+function populateIntlFeeMonths() {
+  var sel = document.getElementById('intl-ex-month');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Select month —</option>';
+  var months = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+  var d = new Date();
+  // Show current + next 2 months, and previous month
+  var offsets = [-1, 0, 1, 2];
+  offsets.forEach(function(o) {
+    var dt = new Date(d.getFullYear(), d.getMonth() + o, 1);
+    var label = months[dt.getMonth()] + ' ' + dt.getFullYear();
+    var opt = document.createElement('option');
+    opt.value = label; opt.textContent = label;
+    if (o === 0) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// MONTHLY FEE SUBMISSION
+// ─────────────────────────────────────────────────────────────────
+function submitIntlMonthlyFee() {
+  if (!intlFoundStudent) { alert('Please look up your Roll Number first.'); return; }
+  var rollNo   = intlFoundStudent['Roll No'] || '';
+  var ph       = intlFoundStudent['Phone']   || '';
+  var em       = intlFoundStudent['Email']   || '';
+  var sName    = intlFoundStudent['Student Name'] || '';
+  var feeMonth = (document.getElementById('intl-ex-month')   || {}).value || '';
+  var currency = (document.getElementById('intl-ex-currency')|| {}).value || 'USD';
+  var amount   = parseFloat((document.getElementById('intl-ex-amount') || {}).value || '0');
+  var payMode  = (document.getElementById('intl-ex-paymode') || {}).value || '';
+  var txnId    = (document.getElementById('intl-ex-txnid')   || {}).value || '';
+
+  if (!feeMonth) { showIntlErr('intl-ex-month-msg','Please select the fee month.'); return; }
+  clearIntlErr('intl-ex-month-msg');
+  if (!amount || amount <= 0) { alert('Please enter the fee amount.'); return; }
+  if (!payMode) { alert('Please select a payment mode.'); return; }
+  if (!isNotEmpty(txnId)) { showIntlErr('intl-ex-txnid-msg','Please enter your transaction reference.'); return; }
+  clearIntlErr('intl-ex-txnid-msg');
+
+  var btn = document.getElementById('intl-ex-pay-btn');
+  btn.disabled = true; btn.innerHTML = 'Submitting… <span class="spin"></span>';
+
+  var data = {
+    submissionType : 'Monthly Fee',
+    portalType     : 'international',
+    studentName    : sName,
+    rollNo         : rollNo,
+    phone          : ph,
+    email          : em,
+    feeMonth       : feeMonth,
+    amountPaid     : amount,
+    transactionId  : txnId,
+    paymentMode    : payMode,
+    currency       : currency,
+    notes          : 'International monthly fee paid via website'
+  };
+
+  intlReceiptStore['ex'] = {
+    receiptNo   : '',
+    studentName : sName,
+    parentName  : intlFoundStudent['Parent Name'] || '',
+    phone       : ph,
+    email       : em,
+    rollNo      : rollNo,
+    txnId       : txnId,
+    amount      : amount,
+    currency    : currency,
+    description : 'Monthly Fee — ' + feeMonth,
+    paymentMode : payMode,
+    feeMonth    : feeMonth,
+    paymentDate : new Date().toISOString().slice(0,10)
+  };
+
+  submitToIntlPortal(data, function(result) {
+    btn.disabled = false; btn.textContent = 'Submit Monthly Fee';
+    if (result && result.receiptNo && intlReceiptStore['ex']) {
+      intlReceiptStore['ex'].receiptNo = result.receiptNo;
+    }
+    safeIntlSet('intl-ex-txn-display','textContent', txnId);
+    safeIntlStyle('intl-ex-txn-box','display','block');
+    safeIntlStyle('intl-ex-download-receipt','display','inline-block');
+    document.getElementById('intl-ex-form-wrap').style.display = 'none';
+    document.getElementById('intl-ex-success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PROGRAMS — load options
+// ─────────────────────────────────────────────────────────────────
+var currentIntlProg = null;
+
+function loadIntlProgramOptions() {
+  var sel = document.getElementById('intl-prog-select');
+  if (!sel || sel.options.length > 1) return; // already loaded
+  loadIntlData().then(function() {
+    sel.innerHTML = '<option value="">— Select a program —</option>';
+    if (!INTL_DATA.programs || !INTL_DATA.programs.length) {
+      sel.innerHTML = '<option value="">No programs available at this time</option>';
+      return;
+    }
+    var now = new Date();
+    var active = INTL_DATA.programs.filter(function(p) {
+      var status = (p['Status'] || '').trim().toLowerCase();
+      if (status === 'closed' || status === 'cancelled') return false;
+      if (p['Date']) {
+        var d = new Date(p['Date']); if (!isNaN(d.getTime()) && d < now) return false;
+      }
+      return true;
+    });
+    if (!active.length) {
+      sel.innerHTML = '<option value="">No upcoming programs available</option>';
+      return;
+    }
+    active.forEach(function(p) {
+      var opt = document.createElement('option');
+      opt.value = p['Name'] || '';
+      opt.textContent = (p['Name'] || '') + (p['Date'] ? ' — ' + p['Date'] : '');
+      sel.appendChild(opt);
+    });
+  });
+}
+
+function onIntlProgramChange() {
+  var name = document.getElementById('intl-prog-select').value;
+  currentIntlProg = INTL_DATA.programs.find(function(p){ return p['Name'] === name; }) || null;
+  var reveal  = document.getElementById('intl-prog-reveal');
+  var details = document.getElementById('intl-prog-details');
+  if (!currentIntlProg) { reveal.style.display='none'; details.style.display='none'; return; }
+  safeIntlSet('intl-prog-desc','textContent', currentIntlProg['Description'] || '');
+  safeIntlSet('intl-prog-fee-display','textContent', '');
+  reveal.style.display = 'block';
+  details.style.display = 'block';
+  // Show fee based on prog type selection
+  onIntlProgTypeChange(document.querySelector('input[name="intl-prog-type"]:checked'));
+}
+
+function onIntlProgTypeChange(radio) {
+  if (!radio) return;
+  var kvLabel  = document.getElementById('intl-prog-kv-label');
+  var outLabel = document.getElementById('intl-prog-out-label');
+  var kvLookup = document.getElementById('intl-prog-kv-lookup');
+  if (kvLabel)  { kvLabel.style.borderColor  = radio.value==='kv'? 'var(--maroon)':'var(--bdr)'; kvLabel.style.borderWidth  = radio.value==='kv'?'2px':'1px'; }
+  if (outLabel) { outLabel.style.borderColor = radio.value!=='kv'? 'var(--maroon)':'var(--bdr)'; outLabel.style.borderWidth = radio.value!=='kv'?'2px':'1px'; }
+  if (kvLookup) kvLookup.style.display = radio.value === 'kv' ? 'block' : 'none';
+
+  if (currentIntlProg) {
+    var feeKey = radio.value === 'kv' ? 'KV Fee' : 'Outside Fee';
+    var fee = currentIntlProg[feeKey] || currentIntlProg['Fee'] || '';
+    safeIntlSet('intl-prog-fee-display','textContent', fee ? 'USD ' + fee : 'Fee as per communication');
+    var amtEl = document.getElementById('intl-prog-amount');
+    if (amtEl && fee) amtEl.value = parseFloat(fee) || '';
+  }
+}
+
+function lookupIntlProgStudent() {
+  var rawRoll = document.getElementById('intl-prog-roll').value.trim();
+  if (!rawRoll) return;
+  var roll = 'KAL01' + rawRoll.toUpperCase();
+  var btn  = document.getElementById('intl-prog-lookup-btn');
+  var msg  = document.getElementById('intl-prog-roll-msg');
+  btn.disabled = true; btn.textContent = 'Checking…';
+
+  loadIntlData().then(function() {
+    btn.disabled = false; btn.textContent = 'Check';
+    var student = INTL_DATA.students.find(function(s){ return (s['Roll No']||'').trim().toUpperCase()===roll; });
+    if (!student || (student['Status']||'').toLowerCase()!=='active') {
+      msg.textContent = 'Roll No not recognised.'; msg.className='hint err'; return;
+    }
+    safeIntlSet('intl-prog-student-display','textContent', student['Student Name']||'—');
+    document.getElementById('intl-prog-name-chip').classList.add('show');
+    // Auto-fill outside fields from student
+    safeIntlSet('intl-prog-name', 'value', student['Student Name']||'');
+    safeIntlSet('intl-prog-email','value', student['Email']||'');
+    msg.textContent=''; msg.className='hint';
+    // Set KV fee
+    if (currentIntlProg) {
+      var fee = currentIntlProg['KV Fee'] || '';
+      safeIntlSet('intl-prog-fee-display','textContent', fee ? 'USD ' + fee : '');
+      var amtEl = document.getElementById('intl-prog-amount');
+      if (amtEl && fee) amtEl.value = parseFloat(fee)||'';
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PROGRAM SUBMISSION
+// ─────────────────────────────────────────────────────────────────
+function submitIntlProgram() {
+  if (!currentIntlProg) { safeIntlSet('intl-prog-select-msg','textContent','Please select a program.'); return; }
+  clearIntlErr('intl-prog-select-msg');
+  var progType = (document.querySelector('input[name="intl-prog-type"]:checked')||{}).value||'outside';
+  var sName    = (document.getElementById('intl-prog-name')   ||{}).value||'';
+  var ph       = buildFullPhone('intl-prog-dialcode','intl-prog-phone');
+  var em       = (document.getElementById('intl-prog-email')  ||{}).value||'';
+  var currency = (document.getElementById('intl-prog-currency')||{}).value||'USD';
+  var amount   = parseFloat((document.getElementById('intl-prog-amount')||{}).value||'0');
+  var payMode  = (document.getElementById('intl-prog-paymode')||{}).value||'';
+  var txnId    = (document.getElementById('intl-prog-txnid')  ||{}).value||'';
+  var notes    = (document.getElementById('intl-prog-notes')  ||{}).value||'';
+  var rollNo   = '';
+  if (progType === 'kv') {
+    rollNo = 'KAL01' + ((document.getElementById('intl-prog-roll')||{}).value||'').trim().toUpperCase();
+  }
+
+  if (!isNotEmpty(sName)) { alert('Please enter the participant name.'); return; }
+  if (!isValidEmail(em)) { alert('Please enter a valid email address.'); return; }
+  if (!amount || amount <= 0) { alert('Please enter the program fee amount.'); return; }
+  if (!payMode) { alert('Please select a payment mode.'); return; }
+  if (!isNotEmpty(txnId)) { showIntlErr('intl-prog-txnid-msg','Please enter your transaction reference.'); return; }
+  clearIntlErr('intl-prog-txnid-msg');
+
+  var btn = document.getElementById('intl-prog-pay-btn');
+  btn.disabled = true; btn.innerHTML = 'Submitting… <span class="spin"></span>';
+
+  var data = {
+    submissionType : 'Program Registration',
+    portalType     : 'international',
+    programName    : currentIntlProg['Name']  || '',
+    programType    : currentIntlProg['Type']  || 'Program',
+    programDate    : currentIntlProg['Date']  || '',
+    studentType    : progType === 'kv' ? 'KV Student' : 'Outside Student',
+    studentName    : sName,
+    rollNo         : rollNo,
+    phone          : ph,
+    email          : em,
+    amountPaid     : amount,
+    transactionId  : txnId,
+    paymentMode    : payMode,
+    currency       : currency,
+    notes          : notes || 'International program registration'
+  };
+
+  intlReceiptStore['prog'] = {
+    receiptNo   : '',
+    studentName : sName,
+    parentName  : '',
+    phone       : ph,
+    email       : em,
+    rollNo      : rollNo,
+    txnId       : txnId,
+    amount      : amount,
+    currency    : currency,
+    description : (currentIntlProg['Name']||'Program') + (currentIntlProg['Date'] ? ' — ' + currentIntlProg['Date'] : ''),
+    paymentMode : payMode,
+    paymentDate : new Date().toISOString().slice(0,10)
+  };
+
+  submitToIntlPortal(data, function(result) {
+    btn.disabled = false; btn.textContent = 'Submit Program Registration';
+    if (result && result.receiptNo && intlReceiptStore['prog']) {
+      intlReceiptStore['prog'].receiptNo = result.receiptNo;
+    }
+    safeIntlStyle('intl-prog-download-receipt','display','inline-block');
+    document.getElementById('intl-prog-form-wrap').style.display = 'none';
+    document.getElementById('intl-prog-success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PAYMENT HISTORY
+// ─────────────────────────────────────────────────────────────────
+function fetchIntlHistory() {
+  var dialcode = getDialCode('intl-ph-dialcode');
+  var rawPhone = (document.getElementById('intl-ph-phone')||{}).value || '';
+  var phone = dialcode ? dialcode + rawPhone.trim().replace(/[^0-9]/g,'') : rawPhone.trim();
+  var email = ((document.getElementById('intl-ph-email')||{}).value || '').trim().toLowerCase();
+  var errEl = document.getElementById('intl-ph-error');
+  errEl.style.display = 'none';
+
+  if (!rawPhone || rawPhone.length < 5) {
+    errEl.textContent = 'Please enter a valid phone number.'; errEl.style.display='block'; return;
+  }
+  if (!email || email.indexOf('@') < 1) {
+    errEl.textContent = 'Please enter a valid email address.'; errEl.style.display='block'; return;
+  }
+
+  var btn = document.getElementById('intl-ph-search-btn');
+  btn.textContent = 'Searching…'; btn.disabled = true;
+
+  var url = INTL_PORTAL_URL + '?action=getPayments'
+    + '&phone=' + encodeURIComponent(phone)
+    + '&email=' + encodeURIComponent(email);
+
+  fetch(url, { method:'GET', mode:'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      btn.textContent = 'Search Payment Records'; btn.disabled = false;
+      if (data.status === 'not_found' || !data.payments || !data.payments.length) {
+        errEl.textContent = 'No payment records found. Please check your details or contact us.';
+        errEl.style.display = 'block'; return;
+      }
+      renderIntlHistory(data.payments, phone, email);
+    })
+    .catch(function(err) {
+      btn.textContent = 'Search Payment Records'; btn.disabled = false;
+      errEl.textContent = 'Could not retrieve records. Please try again or contact us.';
+      errEl.style.display = 'block';
+      console.error(err);
+    });
+}
+
+function renderIntlHistory(payments, phone, email) {
+  var listEl = document.getElementById('intl-ph-list');
+  var hdrEl  = document.getElementById('intl-ph-results-header');
+  document.getElementById('intl-ph-form').style.display = 'none';
+  var maskedPhone = phone ? ('••••' + phone.slice(-4)) : '';
+  var maskedEmail = '';
+  if (email) { var atIdx = email.indexOf('@'); maskedEmail = (atIdx > 1 ? email[0] + '***' : '***') + email.slice(atIdx); }
+
+  hdrEl.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">' +
+      '<div><span style="color:#332a26;font-weight:600;">' + payments.length + ' payment' + (payments.length!==1?'s':'') + ' found</span>' +
+        '<div style="margin-top:3px;font-size:0.72rem;color:#78685e;">📱 ' + maskedPhone + ' &nbsp; ✉ ' + maskedEmail + '</div></div>' +
+      '<button onclick="resetIntlHistory()" style="background:none;border:1px solid #c5bdb5;border-radius:3px;padding:4px 10px;font-size:0.72rem;color:#78685e;cursor:pointer;font-family:var(--fb);">🔍 Search again</button>' +
+    '</div>';
+
+  listEl.innerHTML = '';
+  payments.forEach(function(p, idx) {
+    var typeColor = p.type==='Monthly Fee' ? '#1B5E20' : p.type==='New Enrolment' ? '#0D47A1' : '#4A148C';
+    var typeBg    = p.type==='Monthly Fee' ? '#E8F5E9'  : p.type==='New Enrolment' ? '#E3F2FD'  : '#F3E5F5';
+    var sym = CURRENCY_SYMBOLS[p.currency] || (p.currency+' ');
+    var card = document.createElement('div');
+    card.style.cssText = 'border:1px solid #ede8e2;border-radius:4px;margin-bottom:10px;overflow:hidden;';
+    card.innerHTML =
+      '<div style="padding:12px 14px;background:#faf7f4;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">' +
+              '<span style="font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:10px;background:'+typeBg+';color:'+typeColor+';">' + p.type + '</span>' +
+              (p.receiptNo ? '<span style="font-size:0.68rem;color:#78685e;font-family:monospace;">' + p.receiptNo + '</span>' : '') +
+            '</div>' +
+            '<div style="font-size:0.88rem;font-weight:600;color:#332a26;">' + (p.description||p.type) + '</div>' +
+            '<div style="font-size:0.76rem;color:#78685e;margin-top:2px;">' + p.studentName + (p.rollNo?' &nbsp;·&nbsp; Roll: '+p.rollNo:'') + ' &nbsp;·&nbsp; ' + p.date + '</div>' +
+          '</div>' +
+          '<div style="text-align:right;flex-shrink:0;">' +
+            '<div style="font-size:1rem;font-weight:700;color:#7B1D2E;">' + sym + Number(p.amount).toLocaleString() + '</div>' +
+            (p.txnId ? '<div style="font-size:0.65rem;color:#aaa;font-family:monospace;margin-top:2px;">' + p.txnId.slice(-8) + '</div>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div style="margin-top:10px;">' +
+          '<button onclick="downloadIntlHistoryReceipt('+idx+')" style="background:#7B1D2E;color:#fff;border:none;border-radius:3px;padding:7px 16px;font-size:0.77rem;font-family:var(--fb);letter-spacing:0.04em;cursor:pointer;">&#8595; Download Receipt</button>' +
+        '</div>' +
+      '</div>';
+    listEl.appendChild(card);
+  });
+  window._intlPhPayments = payments;
+  document.getElementById('intl-ph-results').style.display = 'block';
+}
+
+function resetIntlHistory() {
+  document.getElementById('intl-ph-results').style.display = 'none';
+  document.getElementById('intl-ph-results-header').innerHTML = '';
+  document.getElementById('intl-ph-list').innerHTML = '';
+  document.getElementById('intl-ph-error').style.display = 'none';
+  safeIntlSet('intl-ph-phone','value','');
+  safeIntlSet('intl-ph-email','value','');
+  document.getElementById('intl-ph-form').style.display = 'block';
+  window._intlPhPayments = null;
+}
+
+function downloadIntlHistoryReceipt(idx) {
+  var p = window._intlPhPayments && window._intlPhPayments[idx];
+  if (!p) return;
+  intlReceiptStore['_hist'] = {
+    receiptNo   : p.receiptNo || 'Legacy Payment',
+    studentName : p.studentName,
+    parentName  : '',
+    phone       : p.phone,
+    email       : p.email,
+    rollNo      : p.rollNo || '',
+    txnId       : p.txnId  || '',
+    amount      : p.amount,
+    currency    : p.currency || 'USD',
+    description : p.description,
+    paymentMode : p.paymentMode || '',
+    feeMonth    : p.feeMonth || '',
+    paymentDate : p.date || ''
+  };
+  downloadIntlReceipt('_hist');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PORTAL SUBMISSION HELPERS
+// ─────────────────────────────────────────────────────────────────
+function submitToIntlPortal(data, callback) {
+  if (INTL_PORTAL_URL.startsWith('REPLACE')) {
+    console.warn('INTL_PORTAL_URL not configured');
+    if (callback) callback({ status:'error', message:'Portal URL not configured' });
+    return;
+  }
+  fetch(INTL_PORTAL_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    mode: 'cors',
+    redirect: 'follow'
+  }).then(function(r){ return r.json(); })
+    .then(function(result){ if (callback) callback(result); })
+    .catch(function(err){
+      console.error('Intl portal submit error:', err);
+      if (callback) callback({ status:'error' });
+    });
+}
+
+function submitToIntlPortalAndGetRollNo(data, callback) {
+  if (INTL_PORTAL_URL.startsWith('REPLACE')) {
+    if (callback) callback({ status:'success', rollNo:'' });
+    return;
+  }
+  fetch(INTL_PORTAL_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    mode: 'no-cors'
+  }).then(function(){
+    return fetch(INTL_PORTAL_URL + '?action=getLastRoll&phone=' + encodeURIComponent(data.phone||''), { method:'GET', mode:'cors' });
+  }).then(function(r){ return r.json(); })
+    .then(function(result){ if (callback) callback(result); })
+    .catch(function(err){
+      console.error('Intl submit error:', err);
+      if (callback) callback({ status:'success', rollNo:'' });
+    });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// RECEIPT GENERATION (PDF via jsPDF)
+// ─────────────────────────────────────────────────────────────────
+var intlReceiptStore = {};
+
+function downloadIntlReceipt(prefix) {
+  var r = intlReceiptStore[prefix];
+  if (!r) { alert('Receipt data not found. Please contact us.'); return; }
+
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert('PDF library loading. Please try again in a moment.');
+    return;
+  }
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ unit:'mm', format:'a4' });
+  var W = 210, H = 297;
+  var darkBlue = [13, 42, 74];
+  var maroon   = [123, 29, 46];
+  var cream    = [247, 244, 239];
+  var gold     = [184, 150, 46];
+  var ink      = [51, 42, 38];
+  var soft     = [120, 110, 100];
+
+  // Header band — navy blue for international
+  doc.setFillColor(darkBlue[0], darkBlue[1], darkBlue[2]);
+  doc.rect(0, 0, W, 38, 'F');
+  // Gold stripe at top
+  doc.setFillColor(gold[0], gold[1], gold[2]);
+  doc.rect(0, 0, W, 2, 'F');
+
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(16);
+  doc.setTextColor(255,255,255);
+  doc.text('Kalpavruksha School of Fine Arts', W/2, 14, { align:'center' });
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(180, 200, 220);
+  doc.text('Bharatanatyam \u2022 Kalakshetra Bani \u2022 Est. 2014 \u2022 International', W/2, 20, { align:'center' });
+
+  doc.setFontSize(7.5);
+  doc.setTextColor(150, 180, 200);
+  doc.text('Kodambakkam, Chennai  |  +91 72000 95585  |  kalpavrukshafinearts.com', W/2, 26, { align:'center' });
+
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(11);
+  doc.setTextColor(248, 220, 140);
+  doc.text('INTERNATIONAL PAYMENT RECEIPT', W/2, 34, { align:'center' });
+
+  doc.setFillColor(cream[0], cream[1], cream[2]);
+  doc.rect(0, 38, W, H-38, 'F');
+
+  // Receipt No + Date
+  var _months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var dateStr;
+  if (r.paymentDate) {
+    var _parts = r.paymentDate.toString().split('-');
+    if (_parts.length===3 && _parts[0].length===4) {
+      dateStr = parseInt(_parts[2],10) + ' ' + _months[parseInt(_parts[1],10)-1] + ' ' + _parts[0];
+    } else {
+      var _pd = new Date(r.paymentDate);
+      dateStr = !isNaN(_pd.getTime())
+        ? _pd.getDate()+' '+_months[_pd.getMonth()]+' '+_pd.getFullYear()
+        : r.paymentDate;
+    }
+  } else {
+    var _t = new Date();
+    dateStr = _t.getDate()+' '+_months[_t.getMonth()]+' '+_t.getFullYear();
+  }
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.setTextColor(soft[0],soft[1],soft[2]);
+  doc.text('Receipt No: ' + (r.receiptNo||'—'), 18, 47);
+  doc.text('Date: ' + dateStr, W-18, 47, { align:'right' });
+
+  doc.setDrawColor(darkBlue[0],darkBlue[1],darkBlue[2]);
+  doc.setLineWidth(0.4);
+  doc.line(18,50,W-18,50);
+
+  function row(label, value, y, highlight) {
+    if (highlight) { doc.setFillColor(235,248,238); doc.rect(18,y-5,W-36,9,'F'); }
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8);
+    doc.setTextColor(soft[0],soft[1],soft[2]);
+    doc.text(label, 22, y);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(ink[0],ink[1],ink[2]);
+    doc.text(value||'—', 90, y);
+  }
+
+  var y = 62;
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  doc.setTextColor(darkBlue[0],darkBlue[1],darkBlue[2]);
+  doc.text('STUDENT DETAILS', 18, y); y += 6;
+  doc.setDrawColor(180,200,220); doc.setLineWidth(0.2);
+  doc.line(18,y,W-18,y); y += 7;
+
+  row('Student Name', r.studentName, y); y += 9;
+  if (r.rollNo) { row('Roll Number', r.rollNo, y); y += 9; }
+  if (r.parentName) { row('Parent / Guardian', r.parentName, y); y += 9; }
+  row('Contact', r.phone, y); y += 9;
+  if (r.email) { row('Email', r.email, y); y += 9; }
+
+  y += 4;
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  doc.setTextColor(darkBlue[0],darkBlue[1],darkBlue[2]);
+  doc.text('PAYMENT DETAILS', 18, y); y += 6;
+  doc.setDrawColor(180,200,220); doc.setLineWidth(0.2);
+  doc.line(18,y,W-18,y); y += 7;
+
+  row('Description', r.description, y); y += 9;
+  if (r.feeMonth) { row('Fee Month', r.feeMonth, y); y += 9; }
+  if (r.paymentMode) { row('Payment Mode', r.paymentMode, y); y += 9; }
+  row('Transaction ID', r.txnId||'—', y); y += 9;
+
+  y += 4;
+  doc.setFillColor(darkBlue[0],darkBlue[1],darkBlue[2]);
+  doc.roundedRect(18, y, W-36, 16, 2, 2, 'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.setTextColor(255,255,255);
+  doc.text('Amount Paid', 28, y+10);
+  doc.setFontSize(14);
+  var sym = CURRENCY_SYMBOLS[r.currency] || ((r.currency||'USD')+' ');
+  doc.text(sym + Number(r.amount).toLocaleString(), W-22, y+10, { align:'right' });
+
+  // Footer
+  doc.setDrawColor(darkBlue[0],darkBlue[1],darkBlue[2]);
+  doc.setLineWidth(0.3);
+  doc.line(18,H-28,W-18,H-28);
+  doc.setFont('helvetica','italic');
+  doc.setFontSize(7.5);
+  doc.setTextColor(soft[0],soft[1],soft[2]);
+  doc.text('This is a computer-generated receipt for an international payment. No signature required.', W/2, H-22, { align:'center' });
+  doc.text('For queries, contact us at +91 72000 95585 or reach us on WhatsApp.', W/2, H-17, { align:'center' });
+
+  var filename = 'KFA-International-Receipt-' + (r.receiptNo||'') + '.pdf';
+  doc.save(filename);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// NAV TOGGLE
+// ─────────────────────────────────────────────────────────────────
+(function(){
+  var t = document.querySelector('.ntog'), m = document.querySelector('.nm');
+  if (t && m) {
+    t.addEventListener('click', function(){ var o = m.classList.toggle('open'); t.setAttribute('aria-expanded', o); });
+    m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ m.classList.remove('open'); t.setAttribute('aria-expanded','false'); }); });
+  }
+})();
+
+// ─────────────────────────────────────────────────────────────────
+// INIT — populate fee month on load
+// ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  // Default enrol radio to disabled (unlock after token with level code)
+  var enrolRadio = document.getElementById('intl-enrol-radio');
+  var enrolLabel = document.getElementById('intl-opt-enrol-label');
+  if (enrolRadio) { enrolRadio.disabled = true; }
+  if (enrolLabel) { enrolLabel.style.opacity = '0.5'; enrolLabel.style.cursor = 'not-allowed'; }
+});
+</script>
+
+<!-- Cookie Consent + GA4 -->
+<script>
+(function(){
+  var KEY='kfa_consent';
+  var consent=localStorage.getItem(KEY);
+  function loadGA4(){
+    if(window._ga4Loaded)return;window._ga4Loaded=true;
+    var s=document.createElement('script');s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id=G-Z66NRXP98K';
+    document.head.appendChild(s);
+    s.onload=function(){
+      gtag('consent','update',{analytics_storage:'granted',ad_storage:'denied'});
+      gtag('config','G-Z66NRXP98K',{send_page_view:true});
+    };
+  }
+  function showBanner(){
+    var b=document.createElement('div');
+    b.id='kfa-cookie-banner';
+    b.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#1a0a0e;color:#f0ede8;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:sans-serif;font-size:13px;border-top:1px solid rgba(255,255,255,0.12);line-height:1.5';
+    b.innerHTML='<span style="max-width:520px">We use cookies for analytics (Google Analytics). <a href="/privacy.html" style="color:#F8DC8C;text-decoration:underline">Privacy Policy</a></span>'
+      +'<div style="display:flex;gap:8px;flex-shrink:0">'
+      +'<button id="kfa-decline" style="padding:8px 16px;border:1px solid rgba(255,255,255,0.25);background:transparent;color:#f0ede8;border-radius:4px;cursor:pointer;font-size:13px">Decline</button>'
+      +'<button id="kfa-accept" style="padding:8px 20px;border:none;background:#C8621A;color:#fff;border-radius:4px;cursor:pointer;font-size:13px;font-weight:500">Accept</button>'
+      +'</div>';
+    document.body.appendChild(b);
+    document.getElementById('kfa-accept').onclick=function(){localStorage.setItem(KEY,'accepted');loadGA4();b.remove();};
+    document.getElementById('kfa-decline').onclick=function(){localStorage.setItem(KEY,'declined');b.remove();};
+  }
+  if(consent==='accepted'){loadGA4();}
+  else if(!consent){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',showBanner);}
+    else{showBanner();}
+  }
+})();
+</script>
+
+</body>
+</html>
