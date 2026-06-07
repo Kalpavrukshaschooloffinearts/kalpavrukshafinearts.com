@@ -2629,7 +2629,11 @@ function initiatePayment(flow) {
         rollNo      : (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : '')),
         txnId       : response.razorpay_payment_id || '',
         amount      : amount,
-        description : desc
+        description : desc,
+        // paymentDate: enrolment uses the chosen date field; monthly fee / workshop use today
+        paymentDate : (document.getElementById('new-enrol-date') && document.getElementById('new-enrol-date').value)
+                        ? document.getElementById('new-enrol-date').value
+                        : (new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0') + '-' + String(new Date().getDate()).padStart(2,'0'))
       };
 
       // Submit to Portal and get Roll Number
@@ -2808,9 +2812,28 @@ function downloadReceipt(prefix) {
   doc.setFillColor(cream[0], cream[1], cream[2]);
   doc.rect(0, 38, W, H - 38, 'F');
 
-  // Receipt number + date row
-  var today = new Date();
-  var dateStr = today.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][today.getMonth()] + ' ' + today.getFullYear();
+  // Receipt number + date row — use actual payment date, never today's date
+  var _pdfMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var dateStr;
+  if (r.paymentDate) {
+    // paymentDate is "YYYY-MM-DD" (live payments) or "D Mon YYYY" (historical)
+    var _pd = new Date(r.paymentDate);
+    if (!isNaN(_pd.getTime())) {
+      // Parse as local date to avoid UTC-offset shifting the day
+      var _parts = r.paymentDate.toString().split('-');
+      if (_parts.length === 3 && _parts[0].length === 4) {
+        // "YYYY-MM-DD" — build date locally to avoid timezone shift
+        dateStr = parseInt(_parts[2], 10) + ' ' + _pdfMonths[parseInt(_parts[1], 10) - 1] + ' ' + _parts[0];
+      } else {
+        dateStr = _pd.getDate() + ' ' + _pdfMonths[_pd.getMonth()] + ' ' + _pd.getFullYear();
+      }
+    } else {
+      dateStr = r.paymentDate; // already a readable string e.g. "3 Jun 2026"
+    }
+  } else {
+    var _today = new Date();
+    dateStr = _today.getDate() + ' ' + _pdfMonths[_today.getMonth()] + ' ' + _today.getFullYear();
+  }
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(soft[0], soft[1], soft[2]);
@@ -3048,7 +3071,8 @@ function downloadHistoricalReceipt(idx) {
     description : p.description,
     paymentMode : p.paymentMode || '',
     currency    : p.currency    || 'INR',
-    feeMonth    : p.feeMonth    || ''
+    feeMonth    : p.feeMonth    || '',
+    paymentDate : p.date        || ''  // e.g. "3 Jun 2026" from doGet fmtDate()
   };
   downloadReceipt('_hist');
 }
