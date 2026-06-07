@@ -614,8 +614,32 @@
             <input type="hidden" id="ex-phone">
             <input type="hidden" id="ex-email">
 
-            <div class="form-divider"></div>
-            <button class="pay-btn" id="ex-pay-btn" onclick="initiatePayment('existing')">Pay Monthly Fee</button>
+<div class="form-divider"></div>
+
+<button class="pay-btn" id="ex-pay-btn" onclick="initiatePayment('existing')">
+  Pay Monthly Fee
+</button>
+
+<div style="margin-top:14px;text-align:center;">
+  <button
+    onclick="openPaymentHistory()"
+    style="
+      background:none;
+      border:none;
+      color:var(--maroon);
+      font-size:0.78rem;
+      font-family:var(--bs);
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      cursor:pointer;
+      text-decoration:underline;
+      padding:0;
+    ">
+    📄 View Past Payment History
+  </button>
+</div>
+
+<p class="refund-note">
             <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
         </div>
