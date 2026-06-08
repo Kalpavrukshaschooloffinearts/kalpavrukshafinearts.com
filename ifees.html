@@ -1373,7 +1373,7 @@ function onIntlCountryChange() {
 // ─────────────────────────────────────────────────────────────────
 var INTL_BATCHES_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
 
-// Fallback static slots if CSV cannot be loaded
+// Fallback static slots used only if CSV completely fails to load
 var KFA_BATCH_SLOTS_IST = [
   { label: 'Early Morning', time: '06:30', display: '6:30 AM IST' },
   { label: 'Morning',       time: '08:00', display: '8:00 AM IST' },
@@ -1385,50 +1385,149 @@ var KFA_BATCH_SLOTS_IST = [
   { label: 'Late Night',    time: '21:00', display: '9:00 PM IST' }
 ];
 var batchSlotsLoaded = false;
+var _batchLoadPromise = null;
 
 function loadBatchSlots() {
   if (batchSlotsLoaded) return Promise.resolve();
-  return fetch(INTL_BATCHES_CSV)
-    .then(function(r){ return r.text(); })
+  if (_batchLoadPromise) return _batchLoadPromise;
+
+  _batchLoadPromise = fetch(INTL_BATCHES_CSV)
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
     .then(function(text) {
       batchSlotsLoaded = true;
-      var rows = parseIntlCSV(text);
-      if (!rows || !rows.length) return;
-      // Expected columns: Time (IST), Label/Name, Day (optional)
-      // Try multiple possible header names
-      var slots = [];
-      rows.forEach(function(row) {
-        var timeVal  = row['Time (IST)'] || row['IST Time'] || row['Time'] || row['Batch Time'] || '';
-        var labelVal = row['Label'] || row['Name'] || row['Batch'] || row['Batch Name'] || row['Day'] || '';
-        timeVal = timeVal.toString().trim();
-        labelVal = labelVal.toString().trim();
-        if (!timeVal) return;
-        // Normalise time to HH:MM 24h
-        var t24 = parseTimeTo24(timeVal);
-        if (!t24) return;
-        // Build display string (12h IST)
-        var parts = t24.split(':');
-        var h = parseInt(parts[0], 10), m = parseInt(parts[1], 10);
-        var ampm = h >= 12 ? 'PM' : 'AM';
-        var h12 = (h % 12) || 12;
-        var display = h12 + ':' + String(m).padStart(2,'0') + ' ' + ampm + ' IST';
-        if (labelVal) display = labelVal + ' — ' + display;
-        slots.push({ label: labelVal || display, time: t24, display: display });
-      });
-      if (slots.length) KFA_BATCH_SLOTS_IST = slots;
+      _parseBatchCSV(text);
     })
     .catch(function(err) {
       batchSlotsLoaded = true;
-      console.warn('Batch slots load error:', err);
+      _batchLoadPromise = null; // allow retry on next interaction
+      console.warn('[KFA Batches] Load error — using fallback slots:', err.message);
     });
+
+  return _batchLoadPromise;
+}
+
+function _parseBatchCSV(text) {
+  var rows = parseIntlCSV(text);
+  if (!rows || !rows.length) {
+    console.warn('[KFA Batches] CSV parsed to 0 rows');
+    return;
+  }
+
+  // Log headers for debugging
+  var sampleHeaders = Object.keys(rows[0]);
+  console.log('[KFA Batches] Headers found:', sampleHeaders.join(' | '));
+  console.log('[KFA Batches] Total rows:', rows.length);
+
+  // ── Column detection: try every plausible header name ──
+  // Time column
+  var TIME_COLS  = ['Time (IST)','IST Time','Time','Batch Time','Start Time','Class Time','Slot Time','IST','Timing'];
+  // Label / name column
+  var LABEL_COLS = ['Batch Name','Label','Name','Batch','Day','Slot','Description','Title','Class Name','Batch Label'];
+  // Class type column (to filter Online only)
+  var TYPE_COLS  = ['Class Type','Type','Mode','Class Mode','Batch Type','Category','Online/Offline','Format'];
+  // Status column (to skip inactive)
+  var STATUS_COLS = ['Status','Active','Enabled','Published'];
+
+  function findCol(row, candidates) {
+    for (var i = 0; i < candidates.length; i++) {
+      if (row[candidates[i]] !== undefined) return candidates[i];
+    }
+    // Case-insensitive fallback
+    var keys = Object.keys(row);
+    for (var j = 0; j < candidates.length; j++) {
+      var cl = candidates[j].toLowerCase();
+      for (var k = 0; k < keys.length; k++) {
+        if (keys[k].toLowerCase() === cl) return keys[k];
+      }
+    }
+    return null;
+  }
+
+  // Detect column names from first row
+  var timeCol   = findCol(rows[0], TIME_COLS);
+  var labelCol  = findCol(rows[0], LABEL_COLS);
+  var typeCol   = findCol(rows[0], TYPE_COLS);
+  var statusCol = findCol(rows[0], STATUS_COLS);
+
+  console.log('[KFA Batches] Detected → Time:', timeCol, '| Label:', labelCol, '| Type:', typeCol, '| Status:', statusCol);
+
+  var slots = [];
+  rows.forEach(function(row, idx) {
+    var timeVal   = timeCol   ? (row[timeCol]   || '').toString().trim() : '';
+    var labelVal  = labelCol  ? (row[labelCol]  || '').toString().trim() : '';
+    var typeVal   = typeCol   ? (row[typeCol]   || '').toString().trim().toLowerCase() : '';
+    var statusVal = statusCol ? (row[statusCol] || '').toString().trim().toLowerCase() : '';
+
+    // Skip empty rows
+    if (!timeVal && !labelVal) return;
+
+    // ── ONLINE FILTER ──
+    // Only include rows where Class Type contains "online" (case-insensitive)
+    // If there's no type column at all, include everything (CSV may only have online batches)
+    if (typeCol && typeVal && typeVal.indexOf('online') === -1) {
+      console.log('[KFA Batches] Row', idx, 'skipped (not online):', typeVal);
+      return;
+    }
+
+    // Skip inactive if status column exists
+    if (statusCol && statusVal && statusVal !== 'active' && statusVal !== 'yes' && statusVal !== 'true' && statusVal !== '1') {
+      console.log('[KFA Batches] Row', idx, 'skipped (inactive):', statusVal);
+      return;
+    }
+
+    if (!timeVal) {
+      console.log('[KFA Batches] Row', idx, 'skipped (no time value). Label was:', labelVal);
+      return;
+    }
+
+    var t24 = parseTimeTo24(timeVal);
+    if (!t24) {
+      console.warn('[KFA Batches] Row', idx, '— could not parse time:', JSON.stringify(timeVal));
+      return;
+    }
+
+    // Build 12h IST display — use full original range if present, else build from parsed time
+    var parts = t24.split(':');
+    var h = parseInt(parts[0], 10), m = parseInt(parts[1], 10);
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    var h12 = (h % 12) || 12;
+    var istStr = h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm + ' IST';
+    // If the raw value was a range, show it cleaned up (e.g. "6:00 AM – 7:00 AM IST")
+    var rangeMatch = timeVal.match(/^(.+?)\s*[-–—to]\s*(.+)$/i);
+    if (rangeMatch) {
+      istStr = rangeMatch[1].trim() + ' – ' + rangeMatch[2].trim() + ' IST';
+    }
+    var display = labelVal ? labelVal + ' · ' + istStr : istStr;
+
+    slots.push({ label: labelVal || istStr, time: t24, display: display });
+  });
+
+  console.log('[KFA Batches] Loaded', slots.length, 'online slot(s):', slots.map(function(s){ return s.display; }).join(', '));
+
+  if (slots.length) {
+    KFA_BATCH_SLOTS_IST = slots;
+  } else {
+    console.warn('[KFA Batches] No valid online slots found — keeping fallback. Check column names above.');
+  }
 }
 
 function parseTimeTo24(str) {
-  str = str.trim().toUpperCase();
-  // Already HH:MM or H:MM 24h
+  str = str.trim();
+  // If it's a range like "06:00 AM - 07:00 AM", extract only the start time
+  var rangeSep = str.match(/^(.+?)\s*[-–—to]\s*.+$/i);
+  if (rangeSep) str = rangeSep[1].trim();
+
+  str = str.toUpperCase();
+  // HH:MM 24h (no AM/PM)
   var m24 = str.match(/^(\d{1,2}):(\d{2})$/);
   if (m24) return String(parseInt(m24[1],10)).padStart(2,'0') + ':' + m24[2];
-  // 12h format: 6:30 AM, 08:00 PM etc.
+  // HH.MM 24h (dot separator, e.g. "06.00")
+  var m24d = str.match(/^(\d{1,2})\.(\d{2})$/);
+  if (m24d) return String(parseInt(m24d[1],10)).padStart(2,'0') + ':' + m24d[2];
+  // 12h with colon: "6:30 AM", "08:00 PM"
   var m12 = str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
   if (m12) {
     var h = parseInt(m12[1], 10), mn = m12[2], ap = m12[3];
@@ -1436,7 +1535,15 @@ function parseTimeTo24(str) {
     if (ap === 'AM' && h === 12) h = 0;
     return String(h).padStart(2,'0') + ':' + mn;
   }
-  // Just hour: "6 PM"
+  // 12h with dot: "06.00 AM"
+  var m12d = str.match(/^(\d{1,2})\.(\d{2})\s*(AM|PM)$/);
+  if (m12d) {
+    var hd = parseInt(m12d[1], 10), mnd = m12d[2], apd = m12d[3];
+    if (apd === 'PM' && hd !== 12) hd += 12;
+    if (apd === 'AM' && hd === 12) hd = 0;
+    return String(hd).padStart(2,'0') + ':' + mnd;
+  }
+  // Just hour: "6 PM", "08 AM"
   var mh = str.match(/^(\d{1,2})\s*(AM|PM)$/);
   if (mh) {
     var h2 = parseInt(mh[1], 10), ap2 = mh[2];
