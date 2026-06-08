@@ -1410,107 +1410,157 @@ function loadBatchSlots() {
 }
 
 function _parseBatchCSV(text) {
-  var rows = parseIntlCSV(text);
-  if (!rows || !rows.length) {
-    console.warn('[KFA Batches] CSV parsed to 0 rows');
-    return;
+  // ── Step 1: split into raw lines ──
+  var lines = text.replace(/\r/g, '').split('\n').filter(function(l){ return l.trim(); });
+  if (!lines.length) { console.warn('[KFA Batches] Empty CSV'); return; }
+
+  console.log('[KFA Batches] Total lines:', lines.length);
+  for (var preview = 0; preview < Math.min(4, lines.length); preview++) {
+    console.log('[KFA Batches] Line ' + preview + ':', lines[preview].substring(0, 120));
   }
 
-  // Log headers for debugging
-  var sampleHeaders = Object.keys(rows[0]);
-  console.log('[KFA Batches] Headers found:', sampleHeaders.join(' | '));
-  console.log('[KFA Batches] Total rows:', rows.length);
-
-  // ── Column detection: try every plausible header name ──
-  // Time column
-  var TIME_COLS  = ['Time (IST)','IST Time','Time','Batch Time','Start Time','Class Time','Slot Time','IST','Timing'];
-  // Label / name column
-  var LABEL_COLS = ['Batch Name','Label','Name','Batch','Day','Slot','Description','Title','Class Name','Batch Label'];
-  // Class type column (to filter Online only)
-  var TYPE_COLS  = ['Class Type','Type','Mode','Class Mode','Batch Type','Category','Online/Offline','Format'];
-  // Status column (to skip inactive)
-  var STATUS_COLS = ['Status','Active','Enabled','Published'];
-
-  function findCol(row, candidates) {
-    for (var i = 0; i < candidates.length; i++) {
-      if (row[candidates[i]] !== undefined) return candidates[i];
+  function splitCSVLine(line) {
+    var cols = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim().replace(/^"|"$/g, '')); cur = ''; }
+      else { cur += c; }
     }
-    // Case-insensitive fallback
-    var keys = Object.keys(row);
-    for (var j = 0; j < candidates.length; j++) {
-      var cl = candidates[j].toLowerCase();
-      for (var k = 0; k < keys.length; k++) {
-        if (keys[k].toLowerCase() === cl) return keys[k];
+    cols.push(cur.trim().replace(/^"|"$/g, ''));
+    return cols;
+  }
+
+  // ── Step 2: find header row ──
+  // Scan up to row 6; the header row is the first line where ≥3 cells are non-empty
+  // AND any cell contains a known header keyword
+  var HEADER_KEYWORDS = ['batch','time','type','level','faculty','weekday','timing','status','name','class','style','group','dance'];
+  var headerIdx = -1, headers = [];
+
+  for (var li = 0; li < Math.min(6, lines.length); li++) {
+    var cols = splitCSVLine(lines[li]);
+    var nonEmpty = cols.filter(function(c){ return c.length > 0; });
+    var hasKeyword = cols.some(function(c){
+      var cl = c.toLowerCase();
+      return HEADER_KEYWORDS.some(function(k){ return cl.indexOf(k) !== -1; });
+    });
+    if (nonEmpty.length >= 3 && hasKeyword) {
+      headerIdx = li; headers = cols; break;
+    }
+  }
+
+  if (headerIdx === -1) {
+    console.warn('[KFA Batches] Could not detect header row — defaulting to row 0');
+    headerIdx = 0; headers = splitCSVLine(lines[0]);
+  }
+
+  console.log('[KFA Batches] Header row at line', headerIdx, '→', headers.join(' | '));
+
+  // ── Step 3: parse data rows ──
+  var dataRows = [];
+  for (var di = headerIdx + 1; di < lines.length; di++) {
+    var dcols = splitCSVLine(lines[di]);
+    var obj = {};
+    headers.forEach(function(h, i){ if (h) obj[h] = (dcols[i] || '').trim(); });
+    // skip fully empty rows
+    if (Object.values(obj).every(function(v){ return !v; })) return;
+    dataRows.push(obj);
+  }
+  console.log('[KFA Batches] Data rows:', dataRows.length);
+  if (dataRows.length) console.log('[KFA Batches] Sample row:', JSON.stringify(dataRows[0]));
+
+  // ── Step 4: map exact column names from this sheet ──
+  // Known exact names (from sheet screenshot): "Timings (IST)", "Class Type", "Website Level", "Batch Timing Type"
+  // We do case-insensitive partial matching as fallback.
+  function detectCol(exactNames, partialKeywords) {
+    // Try exact match first
+    for (var i = 0; i < exactNames.length; i++) {
+      if (headers.indexOf(exactNames[i]) !== -1) return exactNames[i];
+    }
+    // Case-insensitive exact
+    for (var i2 = 0; i2 < exactNames.length; i2++) {
+      var el = exactNames[i2].toLowerCase();
+      for (var k = 0; k < headers.length; k++) {
+        if (headers[k].toLowerCase() === el) return headers[k];
+      }
+    }
+    // Partial keyword match
+    for (var j = 0; j < partialKeywords.length; j++) {
+      var kw = partialKeywords[j].toLowerCase();
+      for (var k2 = 0; k2 < headers.length; k2++) {
+        if (headers[k2].toLowerCase().indexOf(kw) !== -1) return headers[k2];
       }
     }
     return null;
   }
 
-  // Detect column names from first row
-  var timeCol   = findCol(rows[0], TIME_COLS);
-  var labelCol  = findCol(rows[0], LABEL_COLS);
-  var typeCol   = findCol(rows[0], TYPE_COLS);
-  var statusCol = findCol(rows[0], STATUS_COLS);
+  // Exact column names visible in screenshot + fallback keywords
+  var timeCol   = detectCol(['Timings (IST)', 'Timing (IST)', 'Time (IST)', 'IST Time', 'Batch Time'],
+                            ['timing', 'time', 'slot']);
+  var labelCol  = detectCol(['Batch Timing Type', 'Batch Name', 'Label', 'Name', 'Slot Name'],
+                            ['timing type', 'batch timing', 'label', 'slot']);
+  var typeCol   = detectCol(['Class Type', 'Batch Type', 'Type'],
+                            ['class type', 'type', 'mode']);
+  var levelCol  = detectCol(['Website Level', 'Level'],
+                            ['website level', 'level']);
+  var weekdayCol = detectCol(['Weekdays', 'Days', 'Day'],
+                             ['weekday', 'day']);
 
-  console.log('[KFA Batches] Detected → Time:', timeCol, '| Label:', labelCol, '| Type:', typeCol, '| Status:', statusCol);
+  console.log('[KFA Batches] Columns → Time:', timeCol, '| Label:', labelCol, '| Type:', typeCol, '| Level:', levelCol, '| Days:', weekdayCol);
 
+  // ── Step 5: build slots, Online only ──
   var slots = [];
-  rows.forEach(function(row, idx) {
-    var timeVal   = timeCol   ? (row[timeCol]   || '').toString().trim() : '';
-    var labelVal  = labelCol  ? (row[labelCol]  || '').toString().trim() : '';
-    var typeVal   = typeCol   ? (row[typeCol]   || '').toString().trim().toLowerCase() : '';
-    var statusVal = statusCol ? (row[statusCol] || '').toString().trim().toLowerCase() : '';
+  dataRows.forEach(function(row, idx) {
+    var timeVal    = timeCol    ? (row[timeCol]    || '') : '';
+    var labelVal   = labelCol   ? (row[labelCol]   || '') : '';
+    var typeVal    = typeCol    ? (row[typeCol]    || '').toLowerCase() : '';
+    var levelVal   = levelCol   ? (row[levelCol]   || '') : '';
+    var weekdayVal = weekdayCol ? (row[weekdayCol] || '') : '';
 
-    // Skip empty rows
-    if (!timeVal && !labelVal) return;
+    timeVal  = timeVal.trim();
+    labelVal = labelVal.trim();
 
-    // ── ONLINE FILTER ──
-    // Only include rows where Class Type contains "online" (case-insensitive)
-    // If there's no type column at all, include everything (CSV may only have online batches)
+    if (!timeVal) return; // skip rows with no timing
+
+    // Online filter
     if (typeCol && typeVal && typeVal.indexOf('online') === -1) {
-      console.log('[KFA Batches] Row', idx, 'skipped (not online):', typeVal);
-      return;
-    }
-
-    // Skip inactive if status column exists
-    if (statusCol && statusVal && statusVal !== 'active' && statusVal !== 'yes' && statusVal !== 'true' && statusVal !== '1') {
-      console.log('[KFA Batches] Row', idx, 'skipped (inactive):', statusVal);
-      return;
-    }
-
-    if (!timeVal) {
-      console.log('[KFA Batches] Row', idx, 'skipped (no time value). Label was:', labelVal);
-      return;
+      return; // skip offline/in-person
     }
 
     var t24 = parseTimeTo24(timeVal);
     if (!t24) {
-      console.warn('[KFA Batches] Row', idx, '— could not parse time:', JSON.stringify(timeVal));
+      console.warn('[KFA Batches] Row', idx, '— unparseable time:', JSON.stringify(timeVal));
       return;
     }
 
-    // Build 12h IST display — use full original range if present, else build from parsed time
-    var parts = t24.split(':');
-    var h = parseInt(parts[0], 10), m = parseInt(parts[1], 10);
-    var ampm = h >= 12 ? 'PM' : 'AM';
-    var h12 = (h % 12) || 12;
-    var istStr = h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm + ' IST';
-    // If the raw value was a range, show it cleaned up (e.g. "6:00 AM – 7:00 AM IST")
-    var rangeMatch = timeVal.match(/^(.+?)\s*[-–—to]\s*(.+)$/i);
-    if (rangeMatch) {
-      istStr = rangeMatch[1].trim() + ' – ' + rangeMatch[2].trim() + ' IST';
-    }
-    var display = labelVal ? labelVal + ' · ' + istStr : istStr;
+    // Build display label: "Morning · Mon, Wed · 06:00 AM – 07:00 AM IST"
+    var rangeMatch = timeVal.match(/^(.+?)\s*[-–—]\s*(.+)$/);
+    var timeDisplay = rangeMatch
+      ? rangeMatch[1].trim() + ' – ' + rangeMatch[2].trim() + ' IST'
+      : (function(){
+          var ph = parseInt(t24.split(':')[0],10), pm2 = parseInt(t24.split(':')[1],10);
+          var ap = ph >= 12 ? 'PM' : 'AM'; var h12 = (ph%12)||12;
+          return h12 + ':' + String(pm2).padStart(2,'0') + ' ' + ap + ' IST';
+        })();
 
-    slots.push({ label: labelVal || istStr, time: t24, display: display });
+    // Compose a rich label from available metadata
+    var parts = [];
+    if (labelVal)   parts.push(labelVal);              // e.g. "Morning"
+    if (levelVal)   parts.push(levelVal);              // e.g. "Foundation"
+    if (weekdayVal) parts.push(weekdayVal);            // e.g. "Mon, Wed"
+
+    var display = (parts.length ? parts.join(' · ') + ' · ' : '') + timeDisplay;
+
+    slots.push({ label: display, time: t24, display: display });
   });
 
-  console.log('[KFA Batches] Loaded', slots.length, 'online slot(s):', slots.map(function(s){ return s.display; }).join(', '));
+  console.log('[KFA Batches] Loaded', slots.length, 'online slot(s)');
+  slots.forEach(function(s, i){ console.log('  [' + i + ']', s.display); });
 
   if (slots.length) {
     KFA_BATCH_SLOTS_IST = slots;
   } else {
-    console.warn('[KFA Batches] No valid online slots found — keeping fallback. Check column names above.');
+    console.warn('[KFA Batches] 0 slots loaded. Check logs above — likely typeCol or timeCol not matched.');
   }
 }
 
