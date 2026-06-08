@@ -251,8 +251,20 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
   .ntog { display: flex; }
 }
 
+/* ── TIME CONVERTER FIELD ── */
+.time-converter-grid { border: 1px solid var(--bdr); border-radius: 4px; overflow: hidden; }
+.time-converter-grid input[type="time"] { border: 1px solid var(--bdr-s); border-radius: 3px; padding: 8px 10px; font-size: 0.9rem; font-family: var(--fb); color: var(--ink); background: #fff; width: 100%; }
+.time-converter-grid input[type="time"]:focus { outline: none; border-color: var(--maroon); }
+#intl-slot-options button:hover { background: var(--maroon-l) !important; border-color: var(--maroon) !important; }
+
 /* ── INTL BADGE in tabs ── */
 .intl-badge { display: inline-block; font-size: 0.60rem; background: #0d2a4a; color: #f8dc8c; padding: 1px 5px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+
+/* ── COUNTRY SEARCH ── */
+#intl-country-search { padding: 10px 13px; border: 1px solid var(--bdr-s); border-radius: 3px; font-family: var(--fb); font-size: 0.9rem; color: var(--ink); transition: border-color 0.2s; }
+#intl-country-search:focus { outline: none; border-color: var(--maroon); border-radius: 3px 3px 0 0; }
+#intl-country-dropdown { font-family: var(--fb); }
+#intl-country-dropdown div:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -297,7 +309,7 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
 <!-- INTL BANNER -->
 <div class="intl-banner">
   <div class="c">
-    <p>🌐 <strong>International Student Portal</strong> — Pay in your local currency · All classes conducted online via Zoom · IST timings confirmed after enrolment. &nbsp;|&nbsp; Domestic students: <a href="fees.html">fees.html</a></p>
+    <p>🌐 <strong>International Student Portal</strong> — All classes conducted online via Google Meet · Batch timings confirmed after enrolment. &nbsp;|&nbsp; Domestic students: <a href="fees.html">fees.html</a></p>
   </div>
 </div>
 
@@ -313,7 +325,7 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
     </nav>
     <span class="lbl" style="color:rgba(248,220,140,0.80)">International Students — Online Classes</span>
     <h1 style="font-family:var(--fd);font-size:2rem;color:#fff;margin:8px 0 10px;">International Fee Portal</h1>
-    <p style="font-size:0.92rem;color:rgba(255,255,255,0.80);">Pay securely in USD, EUR, GBP, DKK or CAD · Receipt issued instantly · All timings in IST</p>
+    <p style="font-size:0.92rem;color:rgba(255,255,255,0.80);">Online Bharatanatyam classes · Batch timings confirmed individually after enrolment</p>
   </div>
 </div>
 
@@ -370,7 +382,7 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
 
           <div class="info-box">
             <strong>🌐 International Online Classes</strong><br>
-            All classes are conducted online via Zoom. After enrolment, the school will confirm your batch timing in IST and share a Zoom link. Please ensure you have a stable internet connection.
+            All classes are conducted online via Google Meet. After enrolment, the school will confirm your batch timing and share a Google Meet link via WhatsApp. Please ensure you have a stable internet connection.
           </div>
 
           <!-- Student details -->
@@ -419,39 +431,25 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
             </div>
           </div>
 
-          <!-- Country + Timezone -->
+          <!-- Country + Timezone (auto) -->
           <div class="fg-row">
             <div class="fg-field">
-              <label for="intl-new-country">Country of Residence *</label>
-              <select id="intl-new-country" onchange="onIntlCountryChange()">
-                <option value="">— Select country —</option>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>United Kingdom</option>
-                <option>Australia</option>
-                <option>New Zealand</option>
-                <option>Singapore</option>
-                <option>Malaysia</option>
-                <option>Denmark</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Netherlands</option>
-                <option>Sweden</option>
-                <option>Norway</option>
-                <option>Switzerland</option>
-                <option>United Arab Emirates</option>
-                <option>Qatar</option>
-                <option>Bahrain</option>
-                <option>Kuwait</option>
-                <option>Oman</option>
-                <option>Saudi Arabia</option>
-                <option>Other</option>
-              </select>
+              <label for="intl-country-search">Country of Residence *</label>
+              <div style="position:relative;">
+              <input type="text" id="intl-country-search" placeholder="Type to search country…" autocomplete="off"
+                oninput="filterCountryList()" onfocus="openCountryDropdown()" onblur="closeCountryDropdownDelay()"
+                style="margin-bottom:0;width:100%;">
+              <input type="hidden" id="intl-new-country">
+              <div id="intl-country-dropdown" style="display:none;position:absolute;z-index:500;background:#fff;border:1px solid var(--bdr-s);border-top:none;border-radius:0 0 3px 3px;max-height:200px;overflow-y:auto;width:100%;box-shadow:0 4px 12px rgba(0,0,0,0.10);"></div>
+              </div>
+              <span class="hint err" id="intl-country-msg"></span>
             </div>
-            <div class="fg-field">
+            <div class="fg-field" id="intl-tz-field" style="display:none;">
               <label for="intl-new-timezone">Your Timezone</label>
-              <input type="text" id="intl-new-timezone" placeholder="e.g. EST / BST / SGT" autocomplete="off">
-              <span class="hint">Helps us schedule your batch</span>
+              <select id="intl-new-timezone" onchange="calcISTSlot()">
+                <option value="">— Auto-filled from country —</option>
+              </select>
+              <span class="hint" id="intl-tz-local-hint"></span>
             </div>
           </div>
 
@@ -482,29 +480,80 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
           <!-- Learning Stage -->
           <div class="fg-field">
             <label for="intl-new-level">Learning Stage *</label>
-            <select id="intl-new-level">
+            <select id="intl-new-level" onchange="onIntlLevelChange()">
               <option value="">— Select —</option>
-              <option value="Foundation">Foundation (Beginners / Age 4+)</option>
+              <option value="Foundation">Foundation</option>
               <option value="Intermediate">Intermediate</option>
               <option value="Advanced">Advanced</option>
               <option value="Adult Beginners">Adult Beginners</option>
             </select>
           </div>
 
-          <!-- Preferred batch time -->
-          <div class="fg-field">
-            <label for="intl-new-pref">Preferred Class Time (IST) *</label>
-            <select id="intl-new-pref">
-              <option value="">— Select preference —</option>
-              <option value="Morning (6am–10am IST)">Morning (6am–10am IST)</option>
-              <option value="Afternoon (10am–2pm IST)">Afternoon (10am–2pm IST)</option>
-              <option value="Evening (4pm–8pm IST)">Evening (4pm–8pm IST)</option>
-              <option value="Night (8pm–10pm IST)">Night (8pm–10pm IST)</option>
-              <option value="Weekend morning">Weekend morning</option>
-              <option value="Weekend evening">Weekend evening</option>
-              <option value="Flexible – any time">Flexible – any time</option>
-            </select>
-            <span class="hint">We will confirm your actual batch timing after reviewing schedules</span>
+          <!-- Class Type + Session Type grid — shown after level is selected -->
+          <div id="intl-class-session-wrap" style="display:none;margin-bottom:16px;">
+            <p style="font-size:0.78rem;font-weight:600;color:var(--ink);letter-spacing:0.04em;margin-bottom:10px;">CLASS &amp; SESSION TYPE</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+              <!-- Class Type — Online only for international -->
+              <div style="border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;background:var(--cream);">
+                <div style="font-size:0.69rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;">Class Type</div>
+                <label style="display:flex;align-items:center;gap:9px;cursor:default;">
+                  <input type="radio" name="intl-classtype" value="Online" id="intl-classtype-online"
+                    style="accent-color:var(--maroon);flex-shrink:0;" checked disabled>
+                  <span>
+                    <span style="font-size:0.88rem;font-weight:600;color:var(--ink);display:block;">🌐 Online</span>
+                    <span style="font-size:0.70rem;color:var(--ink-soft);line-height:1.5;">Google Meet · All international classes</span>
+                  </span>
+                </label>
+                <input type="hidden" id="intl-new-classtype" value="Online">
+              </div>
+
+              <!-- Session Type — Group only for international -->
+              <div style="border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;background:var(--cream);">
+                <div style="font-size:0.69rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;">Session Type</div>
+                <label style="display:flex;align-items:center;gap:9px;cursor:default;">
+                  <input type="radio" name="intl-sessiontype" value="Group" id="intl-sessiontype-group"
+                    style="accent-color:var(--maroon);flex-shrink:0;" checked disabled>
+                  <span>
+                    <span style="font-size:0.88rem;font-weight:600;color:var(--ink);display:block;">👥 Group</span>
+                    <span style="font-size:0.70rem;color:var(--ink-soft);line-height:1.5;">All sessions are group classes</span>
+                  </span>
+                </label>
+                <input type="hidden" id="intl-new-sessiontype" value="Group">
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Preferred batch time — shown after level is selected -->
+          <div class="fg-field" id="intl-pref-time-field" style="display:none;">
+            <label>Preferred Class Time *</label>
+            <div style="border:1px solid var(--bdr);border-radius:4px;overflow:hidden;">
+              <!-- Input row -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--bdr);">
+                <div style="padding:12px 14px;border-right:1px solid var(--bdr);">
+                  <div style="font-size:0.70rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Your local time</div>
+                  <input type="time" id="intl-new-localtime"
+                    style="width:100%;border:1px solid var(--bdr-s);border-radius:3px;padding:8px 10px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);"
+                    oninput="calcISTSlot()" placeholder="--:--">
+                  <div style="font-size:0.70rem;color:var(--ink-soft);margin-top:5px;" id="intl-local-tz-label">Select country first</div>
+                </div>
+                <div style="padding:12px 14px;background:var(--cream);">
+                  <div style="font-size:0.70rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Equivalent IST (India)</div>
+                  <div id="intl-ist-display" style="font-size:1.1rem;font-weight:600;color:var(--maroon);padding:8px 0;min-height:36px;">—</div>
+                  <div id="intl-ist-day-note" style="font-size:0.70rem;color:var(--ink-soft);"></div>
+                </div>
+              </div>
+              <!-- Nearest batch slot suggestion -->
+              <div id="intl-slot-suggestion" style="display:none;padding:10px 14px;background:#fffbf5;border-top:1px solid var(--bdr);">
+                <div style="font-size:0.72rem;font-weight:600;color:var(--saffron);margin-bottom:4px;">NEAREST BATCH SLOTS</div>
+                <div id="intl-slot-options" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+              </div>
+            </div>
+            <span class="hint" id="intl-pref-hint">Enter your preferred class time in your local timezone. We'll show the IST equivalent and nearest available slots.</span>
+            <span class="hint err" id="intl-pref-msg"></span>
+            <!-- Hidden field for form submission -->
+            <input type="hidden" id="intl-new-pref" value="">
           </div>
 
           <!-- Notes -->
@@ -515,37 +564,50 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
 
           <div class="form-divider"></div>
 
-          <!-- Entry options -->
+          <!-- Entry options: 3 radio choices -->
           <div id="intl-entry-options">
             <span class="lbl" style="display:block;margin-bottom:12px;">How would you like to proceed?</span>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;" id="intl-entry-grid">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;" id="intl-entry-grid">
+
+              <!-- Option 1: Trial -->
               <label id="intl-opt-trial-label"
                 style="display:block;border:2px solid var(--maroon);border-radius:4px;padding:14px 16px;cursor:pointer;background:#fff;transition:all 0.15s;">
                 <input type="radio" name="intl-entry-type" value="trial" id="intl-trial-radio"
                   style="accent-color:var(--maroon);" checked onchange="onIntlEntryChange(this)">
-                <span id="intl-trial-label-text" style="display:block;font-weight:600;font-size:0.88rem;margin-top:6px;">🆓 Register for Free Trial</span>
-                <span style="display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">We will schedule a free online trial session for you and share the Zoom link.</span>
+                <span style="display:block;font-weight:600;font-size:0.85rem;margin-top:6px;">🆓 Free Trial</span>
+                <span style="display:block;font-size:0.73rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">Register for a free online trial class.</span>
               </label>
+
+              <!-- Option 2: Trial Completion / Enrolment Code -->
+              <label id="intl-opt-tc-label"
+                style="display:block;border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;background:#fff;transition:all 0.15s;">
+                <input type="radio" name="intl-entry-type" value="trialcomplete" id="intl-tc-radio"
+                  style="accent-color:var(--maroon);" onchange="onIntlEntryChange(this)">
+                <span style="display:block;font-weight:600;font-size:0.85rem;margin-top:6px;">✅ Trial Done</span>
+                <span style="display:block;font-size:0.73rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">Completed trial. Use your enrolment code.</span>
+              </label>
+
+              <!-- Option 3: Enrol (level-specific code) -->
               <label id="intl-opt-enrol-label"
                 style="display:block;border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;background:#fff;transition:all 0.15s;">
                 <input type="radio" name="intl-entry-type" value="enrol" id="intl-enrol-radio"
                   style="accent-color:var(--maroon);" onchange="onIntlEntryChange(this)">
-                <span id="intl-enrol-label-text" style="display:block;font-weight:600;font-size:0.88rem;margin-top:6px;">✅ Enrol &amp; Pay Now</span>
-                <span id="intl-enrol-label-desc" style="display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">Available after completing a trial. You'll receive an enrolment code from the school.</span>
+                <span id="intl-enrol-label-text" style="display:block;font-weight:600;font-size:0.85rem;margin-top:6px;">📋 Enrol &amp; Pay</span>
+                <span id="intl-enrol-label-desc" style="display:block;font-size:0.73rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;">Use your level-specific code to enrol directly.</span>
               </label>
             </div>
             <span class="hint err" id="intl-entry-msg" style="display:block;margin-bottom:10px;"></span>
 
-            <!-- Trial submit button (shown when trial radio selected) -->
+            <!-- ── TRIAL submit (shown when trial radio selected) ── -->
             <div id="intl-trial-submit-wrap">
               <div class="tz-note">
-                🕐 Your trial session will be an online Zoom class. We will WhatsApp you with the date, time and link within 2 business days of submitting this form.
+                🎓 Your trial class is conducted online via Google Meet. The school will WhatsApp you to confirm your session date and time in your local timezone.
               </div>
               <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin-bottom:14px;">
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                   <input type="checkbox" id="intl-trial-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
                   <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">
-                    I confirm that all details provided are accurate. I understand the trial class is conducted online via Zoom, and that the school will contact me via WhatsApp to confirm the session.
+                    I confirm that all details provided are true and accurate to the best of my knowledge. I understand that trial class scheduling is subject to availability and school confirmation, and that the school reserves the right to reassess enrolment if information provided is found to be inaccurate or inconsistent.
                   </span>
                 </label>
                 <span class="hint err" id="intl-trial-consent-msg" style="display:block;margin-top:6px;"></span>
@@ -553,18 +615,94 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
               <button class="pay-btn" id="intl-trial-submit-btn" onclick="submitIntlTrial()" style="background:var(--maroon);">Confirm Free Trial Registration</button>
             </div>
 
-            <!-- Enrolment pay wrap (shown when enrol radio selected) -->
+            <!-- ── TRIAL COMPLETION code gate (shown when trialcomplete radio selected) ── -->
+            <div id="intl-tc-wrap" style="display:none;">
+              <div class="info-box">
+                <strong>Trial Completion Code Required</strong><br>
+                Enter the code received from the school after your trial class. This unlocks your enrolment and payment form.
+                <br>Don't have a code? <a href="https://wa.me/917200095585?text=Hello%2C+I+completed+my+international+trial+class+and+would+like+to+enrol." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a>.
+              </div>
+              <div class="lookup-row">
+                <div class="fg-field">
+                  <label for="intl-tc-code">Trial Completion Code *</label>
+                  <input type="text" id="intl-tc-code" placeholder="e.g. KFAITCF2014" autocomplete="off"
+                    style="text-transform:uppercase;letter-spacing:0.1em;"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();verifyIntlTCCode();}">
+                </div>
+                <button class="lookup-btn" onclick="verifyIntlTCCode()">Verify</button>
+              </div>
+              <span class="hint err" id="intl-tc-code-msg" style="display:block;margin-top:4px;"></span>
+              <!-- Payment section unlocked after TC code verified -->
+              <div id="intl-tc-pay-wrap" style="display:none;">
+                <div class="form-divider"></div>
+                <span class="lbl" style="display:block;margin-bottom:10px;">Payment Details</span>
+                <div class="fg-field">
+                  <label for="intl-tc-enrol-date">Enrolment / Start Date *</label>
+                  <input type="date" id="intl-tc-enrol-date">
+                </div>
+                <div class="fg-row">
+                  <div class="fg-field">
+                    <label for="intl-tc-currency">Currency *</label>
+                    <select id="intl-tc-currency" onchange="onIntlCurrencyChange('tc')">
+                      <option value="USD">USD — US Dollar</option>
+                      <option value="GBP">GBP — British Pound</option>
+                      <option value="EUR">EUR — Euro</option>
+                      <option value="DKK">DKK — Danish Krone</option>
+                      <option value="CAD">CAD — Canadian Dollar</option>
+                    </select>
+                  </div>
+                  <div class="fg-field">
+                    <label for="intl-tc-amount">Amount *</label>
+                    <input type="number" id="intl-tc-amount" placeholder="As confirmed by school" min="1" step="0.01" oninput="onIntlCurrencyChange('tc')">
+                    <span class="hint">Fee confirmed by school via WhatsApp.</span>
+                  </div>
+                </div>
+                <div class="amount-box" id="intl-tc-amount-box" style="display:none;">
+                  <span class="ab-label">Registration + First Month</span>
+                  <span class="ab-value" id="intl-tc-amount-display">—</span>
+                </div>
+                <div class="fg-field">
+                  <label for="intl-tc-paymode">Payment Mode *</label>
+                  <select id="intl-tc-paymode">
+                    <option value="">— Select —</option>
+                    <option value="Razorpay">Razorpay (Card / International)</option>
+                    <option value="International Bank Transfer">International Bank Transfer</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <span class="hint">Razorpay accepts international debit/credit cards. For bank transfers, payment details will be shared via WhatsApp.</span>
+                </div>
+                <div class="fg-field">
+                  <label for="intl-tc-txnid">Transaction / Reference ID *</label>
+                  <input type="text" id="intl-tc-txnid" placeholder="Reference from your bank or payment app">
+                  <span class="hint err" id="intl-tc-txnid-msg"></span>
+                </div>
+                <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin-bottom:14px;">
+                  <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+                    <input type="checkbox" id="intl-tc-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
+                    <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">
+                      I confirm that all details provided above are true and accurate to the best of my knowledge. I understand that enrolment is subject to payment verification and school confirmation, and that the school reserves the right to reassess or cancel enrolment if information provided is found to be inaccurate or inconsistent. I agree that registration fees paid are non-refundable under any circumstances.
+                    </span>
+                  </label>
+                  <span class="hint err" id="intl-tc-consent-msg" style="display:block;margin-top:6px;"></span>
+                </div>
+                <button class="pay-btn intl-pay-btn" id="intl-tc-pay-btn" onclick="submitIntlTCEnrolment()">Submit Enrolment</button>
+                <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable.</p>
+              </div>
+            </div>
+
+            <!-- ── ENROL pay wrap (shown when enrol radio selected — level-specific code) ── -->
             <div id="intl-enrol-wrap" style="display:none;">
               <!-- Enrolment code gate -->
               <div id="intl-trial-code-gate" style="display:block;">
                 <div class="info-box">
-                  <strong>Enrolment Code Required</strong><br>
-                  You need an enrolment code from the school to proceed. This is issued after your trial class. Please <a href="https://wa.me/917200095585?text=Hello%2C+I+am+an+international+student+and+completed+my+trial." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> if you haven't received yours.
+                  <strong>Level Enrolment Code Required</strong><br>
+                  Enter the level-specific code shared by the school. This is different from the trial completion code.
+                  <br><a href="https://wa.me/917200095585?text=Hello%2C+I+am+an+international+student+and+completed+my+trial." target="_blank" rel="noopener" style="color:var(--saffron);">WhatsApp us</a> if you haven't received yours.
                 </div>
                 <div class="lookup-row">
                   <div class="fg-field">
                     <label for="intl-enrol-code">Enrolment Code *</label>
-                    <input type="text" id="intl-enrol-code" placeholder="e.g. KFAI2014" autocomplete="off"
+                    <input type="text" id="intl-enrol-code" placeholder="e.g. KFAIF2014" autocomplete="off"
                       style="text-transform:uppercase;letter-spacing:0.1em;"
                       onkeydown="if(event.key==='Enter'){event.preventDefault();verifyIntlEnrolCode();}">
                   </div>
@@ -577,14 +715,10 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
               <div id="intl-pay-wrap" style="display:none;">
                 <div class="form-divider"></div>
                 <span class="lbl" style="display:block;margin-bottom:10px;">Payment Details</span>
-
-                <!-- Enrolment date -->
                 <div class="fg-field">
                   <label for="intl-enrol-date">Enrolment / Start Date *</label>
                   <input type="date" id="intl-enrol-date">
                 </div>
-
-                <!-- Fee placeholder + currency -->
                 <div class="fg-row">
                   <div class="fg-field">
                     <label for="intl-enrol-currency">Currency *</label>
@@ -598,54 +732,43 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
                   </div>
                   <div class="fg-field">
                     <label for="intl-enrol-amount">Amount *</label>
-                    <input type="number" id="intl-enrol-amount" placeholder="As confirmed by school" min="1" step="0.01">
+                    <input type="number" id="intl-enrol-amount" placeholder="As confirmed by school" min="1" step="0.01" oninput="onIntlCurrencyChange('enrol')">
                     <span class="hint">Fee confirmed individually by school. Check your WhatsApp.</span>
                   </div>
                 </div>
-
-                <!-- Amount display -->
                 <div class="amount-box" id="intl-enrol-amount-box" style="display:none;">
                   <span class="ab-label">Registration + First Month</span>
                   <span class="ab-value" id="intl-enrol-amount-display">—</span>
                 </div>
-
-                <!-- Payment mode -->
                 <div class="fg-field">
                   <label for="intl-enrol-paymode">Payment Mode *</label>
                   <select id="intl-enrol-paymode">
                     <option value="">— Select —</option>
+                    <option value="Razorpay">Razorpay (Card / International)</option>
                     <option value="International Bank Transfer">International Bank Transfer</option>
-                    <option value="Wise">Wise (TransferWise)</option>
-                    <option value="PayPal">PayPal</option>
-                    <option value="Stripe">Stripe</option>
-                    <option value="Revolut">Revolut</option>
-                    <option value="Other International">Other International</option>
+                    <option value="Other">Other</option>
                   </select>
-                  <span class="hint">Payment instructions will be shared by WhatsApp. Mark paid after transfer.</span>
+                  <span class="hint">Razorpay accepts international debit/credit cards. For bank transfers, payment details will be shared via WhatsApp.</span>
                 </div>
-
-                <!-- Transaction ID -->
                 <div class="fg-field">
                   <label for="intl-enrol-txnid">Transaction / Reference ID *</label>
-                  <input type="text" id="intl-enrol-txnid" placeholder="Reference from your bank or Wise">
+                  <input type="text" id="intl-enrol-txnid" placeholder="Reference from your bank or Razorpay">
                   <span class="hint err" id="intl-enrol-txnid-msg"></span>
                 </div>
-
-                <!-- Consent -->
                 <div style="background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 16px;margin-bottom:14px;">
                   <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                     <input type="checkbox" id="intl-enrol-consent" style="margin-top:3px;accent-color:var(--maroon);flex-shrink:0;">
                     <span style="font-size:0.76rem;color:var(--ink-soft);line-height:1.7;">
-                      I confirm all details are accurate. I understand that enrolment is subject to school confirmation, and that fees are non-refundable. I agree to the school's terms and policies.
+                      I confirm that all details provided above are true and accurate to the best of my knowledge. I understand that enrolment is subject to payment verification and school confirmation, and that the school reserves the right to reassess or cancel enrolment if information provided is found to be inaccurate or inconsistent. I agree that registration fees paid are non-refundable under any circumstances.
                     </span>
                   </label>
                   <span class="hint err" id="intl-enrol-consent-msg" style="display:block;margin-top:6px;"></span>
                 </div>
-
                 <button class="pay-btn intl-pay-btn" id="intl-enrol-pay-btn" onclick="submitIntlEnrolment()">Submit Enrolment</button>
-                <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. For exceptional circumstances, contact the school directly.</p>
+                <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable.</p>
               </div>
             </div>
+
           </div><!-- /intl-entry-options -->
         </div><!-- /intl-new-form-wrap -->
 
@@ -653,7 +776,7 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
         <div class="success-screen" id="intl-trial-success">
           <div class="success-icon">🙏</div>
           <h2>Trial Registration Confirmed!</h2>
-          <p>Thank you for registering for an online trial class at Kalpavruksha.<br>We will contact you via WhatsApp within 2 business days to confirm your Zoom session details.</p>
+          <p>Thank you for registering for an online trial class at Kalpavruksha.<br>We will contact you via WhatsApp to confirm your Google Meet session details.</p>
           <p style="font-size:0.76rem;color:var(--ink-soft);margin-top:12px;background:var(--cream);border-radius:4px;padding:10px 14px;line-height:1.7;display:inline-block;text-align:left;">
             For queries, reach out on WhatsApp: <a href="https://wa.me/917200095585" target="_blank" rel="noopener" style="color:var(--maroon);">+91 72000 95585</a>
           </p>
@@ -761,13 +884,11 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
               <label for="intl-ex-paymode">Payment Mode *</label>
               <select id="intl-ex-paymode">
                 <option value="">— Select —</option>
+                <option value="Razorpay">Razorpay (Card / International)</option>
                 <option value="International Bank Transfer">International Bank Transfer</option>
-                <option value="Wise">Wise (TransferWise)</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Stripe">Stripe</option>
-                <option value="Revolut">Revolut</option>
-                <option value="Other International">Other International</option>
+                <option value="Other">Other</option>
               </select>
+              <span class="hint">Razorpay accepts international debit/credit cards. For bank transfers, payment details will be shared via WhatsApp.</span>
             </div>
 
             <!-- Transaction ID -->
@@ -921,13 +1042,11 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
               <label for="intl-prog-paymode">Payment Mode *</label>
               <select id="intl-prog-paymode">
                 <option value="">— Select —</option>
+                <option value="Razorpay">Razorpay (Card / International)</option>
                 <option value="International Bank Transfer">International Bank Transfer</option>
-                <option value="Wise">Wise (TransferWise)</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Stripe">Stripe</option>
-                <option value="Revolut">Revolut</option>
-                <option value="Other International">Other International</option>
+                <option value="Other">Other</option>
               </select>
+              <span class="hint">Razorpay accepts international debit/credit cards. For bank transfers, payment details will be shared via WhatsApp.</span>
             </div>
 
             <!-- Transaction ID -->
@@ -1029,30 +1148,36 @@ body { font-family: var(--fb); color: var(--ink); background: #fff; }
 // CONFIGURATION — Update these to match your deployment
 // ─────────────────────────────────────────────────────────────────
 
-// ⚠️ PORTAL URL — same Google Apps Script endpoint as domestic portal
-var INTL_PORTAL_URL = 'REPLACE_WITH_APPS_SCRIPT_URL';
-// e.g. 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec'
+// ⚠️ PORTAL URL — Google Apps Script endpoint (v8-intl)
+var INTL_PORTAL_URL = 'https://script.google.com/macros/s/AKfycbxwXqNdSTYNzaFbsLx6dZkN3UYMSuBuhXP_beDrpnDgbbSKgZ_eNPSpG8V2RbEngf8/exec';
 
 // ⚠️ STUDENT DATA — same spreadsheet, same sheet ID as domestic
 // International students will share the same Students sheet (for roll number lookup)
-var INTL_STUDENTS_CSV = 'REPLACE_WITH_STUDENTS_CSV_URL';
-// e.g. 'https://docs.google.com/spreadsheets/d/e/PUBLISHED_ID/pub?gid=STUDENTS_GID&single=true&output=csv'
+var INTL_STUDENTS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=593323512&single=true&output=csv';
 
 // ⚠️ PROGRAMS DATA — a new "Intl Programs" tab in the same spreadsheet
-var INTL_PROGRAMS_CSV = 'REPLACE_WITH_INTL_PROGRAMS_CSV_URL';
-// e.g. 'https://docs.google.com/spreadsheets/d/e/PUBLISHED_ID/pub?gid=INTL_PROGRAMS_GID&single=true&output=csv'
+var INTL_PROGRAMS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=398686647&single=true&output=csv';
 
 // ⚠️ ACCESS TOKENS — update as needed
-var INTL_NEW_ENROL_TOKEN = 'KFAINTL2014';
+var INTL_NEW_ENROL_TOKEN = 'KFAINT2014';
 var INTL_ENROL_CODES = {
   'KFAIF2014': 'Foundation',
   'KFAII2014': 'Intermediate',
   'KFAIA2014': 'Advanced',
   'KFAIAD2014': 'Adult Beginners'
 };
-var INTL_ALL_TOKENS = ['KFAINTL2014','KFAIF2014','KFAII2014','KFAIA2014','KFAIAD2014'];
+var INTL_TC_CODES = {
+  'KFAITCF2014':  'Foundation',
+  'KFAITCI2014':  'Intermediate',
+  'KFAITCA2014':  'Advanced'
+};
+var INTL_ALL_TOKENS = [
+  'KFAINT2014',
+  'KFAIF2014','KFAII2014','KFAIA2014','KFAIAD2014',
+  'KFAITCF2014','KFAITCI2014','KFAITCA2014'
+];
 
-// Currency symbols
+// Currency symbols — only supported currencies
 var CURRENCY_SYMBOLS = { USD: '$', GBP: '£', EUR: '€', DKK: 'DKK ', CAD: 'CA$' };
 
 // ─────────────────────────────────────────────────────────────────
@@ -1175,12 +1300,545 @@ function onIntlDialCodeChange() {
   if (exCur) exCur.value = cur;
 }
 
-function onIntlCountryChange() {
-  // Could auto-set dial code based on country — optional enhancement
+function getLocalTimeStr(ianaZone) {
+  try {
+    var now = new Date();
+    var localStr = now.toLocaleTimeString('en-IN', { timeZone: ianaZone, hour: '2-digit', minute: '2-digit', hour12: true });
+    return localStr;
+  } catch(e) { return ''; }
 }
+
+function onIntlCountryChange() {
+  var country = (document.getElementById('intl-new-country') || {}).value || '';
+  var tzSel   = document.getElementById('intl-new-timezone');
+  var tzHint  = document.getElementById('intl-tz-local-hint');
+  var tzField = document.getElementById('intl-tz-field');
+  if (!tzSel) return;
+
+  var zones = COUNTRY_TIMEZONES[country] || [];
+  tzSel.innerHTML = '';
+
+  if (!zones.length) {
+    // Unknown country — hide timezone entirely, it adds no value
+    if (tzField) tzField.style.display = 'none';
+    updateLocalTimeLabel('');
+    calcISTSlot();
+    return;
+  }
+
+  // Show the timezone field
+  if (tzField) tzField.style.display = 'block';
+
+  zones.forEach(function(z, idx) {
+    var label = z[0], iana = z[1];
+    var localTime = getLocalTimeStr(iana);
+    var opt = document.createElement('option');
+    opt.value = iana;
+    opt.textContent = label + (localTime ? ' — Now: ' + localTime : '');
+    if (idx === 0) opt.selected = true;
+    tzSel.appendChild(opt);
+  });
+
+  if (zones[0] && tzHint) {
+    var localT = getLocalTimeStr(zones[0][1]);
+    tzHint.textContent = localT ? 'Current local time: ' + localT : '';
+  }
+
+  updateLocalTimeLabel(zones[0] ? zones[0][0] : '');
+
+  // Also auto-set dial code if country matches
+  var codeMap = {
+    'United States':'+1','Canada':'+1ca','United Kingdom':'+44','Australia':'+61',
+    'New Zealand':'+64','Singapore':'+65','Malaysia':'+60','Denmark':'+45',
+    'Germany':'+49','France':'+33','Netherlands':'+31','United Arab Emirates':'+971',
+    'Qatar':'+974','Saudi Arabia':'+966','Japan':'+81','South Korea':'+82',
+    'Brazil':'+55','Mexico':'+52','Ireland':'+353','Sweden':'+46','Norway':'+47',
+    'Switzerland':'+41','Belgium':'+32','Spain':'+34','Italy':'+39','Portugal':'+351',
+    'Poland':'+48','Netherlands':'+31','Turkey':'+90','South Africa':'+27',
+    'Pakistan':'+92','Bangladesh':'+880','Sri Lanka':'+94','Philippines':'+63',
+    'Indonesia':'+62','Thailand':'+66','Vietnam':'+84','Nigeria':'+234',
+    'Kenya':'+254','Ghana':'+233'
+  };
+  var dialSel = document.getElementById('intl-new-dialcode');
+  if (dialSel && codeMap[country]) {
+    dialSel.value = codeMap[country];
+    onIntlDialCodeChange();
+  }
+
+  calcISTSlot();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// BATCHES CSV — loaded from spreadsheet
+// ─────────────────────────────────────────────────────────────────
+var INTL_BATCHES_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQLT0CgbzBSXKiiErfXJzuGskz8sZI7EzE9X-Wk2IkRQf7uuEkGaPuK_RUT1HybnphmVQcSYkQwSRQo/pub?gid=1781312802&single=true&output=csv';
+
+// Fallback static slots if CSV cannot be loaded
+var KFA_BATCH_SLOTS_IST = [
+  { label: 'Early Morning', time: '06:30', display: '6:30 AM IST' },
+  { label: 'Morning',       time: '08:00', display: '8:00 AM IST' },
+  { label: 'Mid Morning',   time: '09:30', display: '9:30 AM IST' },
+  { label: 'Afternoon',     time: '12:00', display: '12:00 PM IST' },
+  { label: 'Evening',       time: '17:00', display: '5:00 PM IST' },
+  { label: 'Evening 2',     time: '18:00', display: '6:00 PM IST' },
+  { label: 'Night',         time: '20:00', display: '8:00 PM IST' },
+  { label: 'Late Night',    time: '21:00', display: '9:00 PM IST' }
+];
+var batchSlotsLoaded = false;
+
+function loadBatchSlots() {
+  if (batchSlotsLoaded) return Promise.resolve();
+  return fetch(INTL_BATCHES_CSV)
+    .then(function(r){ return r.text(); })
+    .then(function(text) {
+      batchSlotsLoaded = true;
+      var rows = parseIntlCSV(text);
+      if (!rows || !rows.length) return;
+      // Expected columns: Time (IST), Label/Name, Day (optional)
+      // Try multiple possible header names
+      var slots = [];
+      rows.forEach(function(row) {
+        var timeVal  = row['Time (IST)'] || row['IST Time'] || row['Time'] || row['Batch Time'] || '';
+        var labelVal = row['Label'] || row['Name'] || row['Batch'] || row['Batch Name'] || row['Day'] || '';
+        timeVal = timeVal.toString().trim();
+        labelVal = labelVal.toString().trim();
+        if (!timeVal) return;
+        // Normalise time to HH:MM 24h
+        var t24 = parseTimeTo24(timeVal);
+        if (!t24) return;
+        // Build display string (12h IST)
+        var parts = t24.split(':');
+        var h = parseInt(parts[0], 10), m = parseInt(parts[1], 10);
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        var h12 = (h % 12) || 12;
+        var display = h12 + ':' + String(m).padStart(2,'0') + ' ' + ampm + ' IST';
+        if (labelVal) display = labelVal + ' — ' + display;
+        slots.push({ label: labelVal || display, time: t24, display: display });
+      });
+      if (slots.length) KFA_BATCH_SLOTS_IST = slots;
+    })
+    .catch(function(err) {
+      batchSlotsLoaded = true;
+      console.warn('Batch slots load error:', err);
+    });
+}
+
+function parseTimeTo24(str) {
+  str = str.trim().toUpperCase();
+  // Already HH:MM or H:MM 24h
+  var m24 = str.match(/^(\d{1,2}):(\d{2})$/);
+  if (m24) return String(parseInt(m24[1],10)).padStart(2,'0') + ':' + m24[2];
+  // 12h format: 6:30 AM, 08:00 PM etc.
+  var m12 = str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+  if (m12) {
+    var h = parseInt(m12[1], 10), mn = m12[2], ap = m12[3];
+    if (ap === 'PM' && h !== 12) h += 12;
+    if (ap === 'AM' && h === 12) h = 0;
+    return String(h).padStart(2,'0') + ':' + mn;
+  }
+  // Just hour: "6 PM"
+  var mh = str.match(/^(\d{1,2})\s*(AM|PM)$/);
+  if (mh) {
+    var h2 = parseInt(mh[1], 10), ap2 = mh[2];
+    if (ap2 === 'PM' && h2 !== 12) h2 += 12;
+    if (ap2 === 'AM' && h2 === 12) h2 = 0;
+    return String(h2).padStart(2,'0') + ':00';
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ALL COUNTRIES LIST
+// ─────────────────────────────────────────────────────────────────
+var ALL_COUNTRIES = [
+  "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
+  "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia",
+  "Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia",
+  "Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo (Brazzaville)",
+  "Congo (Kinshasa)","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
+  "Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
+  "Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea",
+  "Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","Indonesia","Iran","Iraq","Ireland","Israel",
+  "Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia",
+  "Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia",
+  "Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco",
+  "Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand",
+  "Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine",
+  "Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia",
+  "Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino",
+  "Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia",
+  "Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan",
+  "Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo",
+  "Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates",
+  "United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen",
+  "Zambia","Zimbabwe"
+];
+
+// Extended timezone map — covers all countries where we have IANA data
+var COUNTRY_TIMEZONES = {
+  'Afghanistan':              [['AFT','Asia/Kabul']],
+  'Albania':                  [['CET/CEST','Europe/Tirane']],
+  'Algeria':                  [['CET','Africa/Algiers']],
+  'Andorra':                  [['CET/CEST','Europe/Andorra']],
+  'Angola':                   [['WAT','Africa/Luanda']],
+  'Antigua and Barbuda':      [['AST','America/Antigua']],
+  'Argentina':                [['ART','America/Argentina/Buenos_Aires']],
+  'Armenia':                  [['AMT','Asia/Yerevan']],
+  'Australia':                [['AEST','Australia/Sydney'],['ACST','Australia/Darwin'],['AWST','Australia/Perth']],
+  'Austria':                  [['CET/CEST','Europe/Vienna']],
+  'Azerbaijan':               [['AZT','Asia/Baku']],
+  'Bahamas':                  [['EST/EDT','America/Nassau']],
+  'Bahrain':                  [['AST','Asia/Bahrain']],
+  'Bangladesh':               [['BST','Asia/Dhaka']],
+  'Barbados':                 [['AST','America/Barbados']],
+  'Belarus':                  [['FET','Europe/Minsk']],
+  'Belgium':                  [['CET/CEST','Europe/Brussels']],
+  'Belize':                   [['CST','America/Belize']],
+  'Bhutan':                   [['BTT','Asia/Thimphu']],
+  'Bolivia':                  [['BOT','America/La_Paz']],
+  'Bosnia and Herzegovina':   [['CET/CEST','Europe/Sarajevo']],
+  'Botswana':                 [['CAT','Africa/Gaborone']],
+  'Brazil':                   [['BRT','America/Sao_Paulo'],['AMT','America/Manaus']],
+  'Brunei':                   [['BNT','Asia/Brunei']],
+  'Bulgaria':                 [['EET/EEST','Europe/Sofia']],
+  'Cambodia':                 [['ICT','Asia/Phnom_Penh']],
+  'Cameroon':                 [['WAT','Africa/Douala']],
+  'Canada':                   [['EST/EDT','America/Toronto'],['CST/CDT','America/Winnipeg'],['MST/MDT','America/Edmonton'],['PST/PDT','America/Vancouver'],['NST/NDT','America/St_Johns']],
+  'Chile':                    [['CLT','America/Santiago']],
+  'China':                    [['CST','Asia/Shanghai']],
+  'Colombia':                 [['COT','America/Bogota']],
+  'Costa Rica':               [['CST','America/Costa_Rica']],
+  'Croatia':                  [['CET/CEST','Europe/Zagreb']],
+  'Cuba':                     [['CST/CDT','America/Havana']],
+  'Cyprus':                   [['EET/EEST','Asia/Nicosia']],
+  'Czech Republic':           [['CET/CEST','Europe/Prague']],
+  'Denmark':                  [['CET/CEST','Europe/Copenhagen']],
+  'Dominican Republic':       [['AST','America/Santo_Domingo']],
+  'Ecuador':                  [['ECT','America/Guayaquil']],
+  'Egypt':                    [['EET','Africa/Cairo']],
+  'El Salvador':              [['CST','America/El_Salvador']],
+  'Estonia':                  [['EET/EEST','Europe/Tallinn']],
+  'Ethiopia':                 [['EAT','Africa/Addis_Ababa']],
+  'Fiji':                     [['FJT','Pacific/Fiji']],
+  'Finland':                  [['EET/EEST','Europe/Helsinki']],
+  'France':                   [['CET/CEST','Europe/Paris']],
+  'Georgia':                  [['GET','Asia/Tbilisi']],
+  'Germany':                  [['CET/CEST','Europe/Berlin']],
+  'Ghana':                    [['GMT','Africa/Accra']],
+  'Greece':                   [['EET/EEST','Europe/Athens']],
+  'Guatemala':                [['CST','America/Guatemala']],
+  'Honduras':                 [['CST','America/Tegucigalpa']],
+  'Hungary':                  [['CET/CEST','Europe/Budapest']],
+  'Iceland':                  [['GMT','Atlantic/Reykjavik']],
+  'Indonesia':                [['WIB','Asia/Jakarta'],['WITA','Asia/Makassar'],['WIT','Asia/Jayapura']],
+  'Iran':                     [['IRST','Asia/Tehran']],
+  'Iraq':                     [['AST','Asia/Baghdad']],
+  'Ireland':                  [['GMT/IST','Europe/Dublin']],
+  'Israel':                   [['IST','Asia/Jerusalem']],
+  'Italy':                    [['CET/CEST','Europe/Rome']],
+  'Jamaica':                  [['EST','America/Jamaica']],
+  'Japan':                    [['JST','Asia/Tokyo']],
+  'Jordan':                   [['AST','Asia/Amman']],
+  'Kazakhstan':               [['ALMT','Asia/Almaty']],
+  'Kenya':                    [['EAT','Africa/Nairobi']],
+  'Kuwait':                   [['AST','Asia/Kuwait']],
+  'Kyrgyzstan':               [['KGT','Asia/Bishkek']],
+  'Laos':                     [['ICT','Asia/Vientiane']],
+  'Latvia':                   [['EET/EEST','Europe/Riga']],
+  'Lebanon':                  [['EET/EEST','Asia/Beirut']],
+  'Libya':                    [['EET','Africa/Tripoli']],
+  'Lithuania':                [['EET/EEST','Europe/Vilnius']],
+  'Luxembourg':               [['CET/CEST','Europe/Luxembourg']],
+  'Madagascar':               [['EAT','Indian/Antananarivo']],
+  'Malaysia':                 [['MYT','Asia/Kuala_Lumpur']],
+  'Maldives':                 [['MVT','Indian/Maldives']],
+  'Malta':                    [['CET/CEST','Europe/Malta']],
+  'Mauritius':                [['MUT','Indian/Mauritius']],
+  'Mexico':                   [['CST/CDT','America/Mexico_City'],['MST/MDT','America/Chihuahua'],['PST/PDT','America/Tijuana']],
+  'Moldova':                  [['EET/EEST','Europe/Chisinau']],
+  'Mongolia':                 [['ULAT','Asia/Ulaanbaatar']],
+  'Montenegro':               [['CET/CEST','Europe/Podgorica']],
+  'Morocco':                  [['WET','Africa/Casablanca']],
+  'Mozambique':               [['CAT','Africa/Maputo']],
+  'Myanmar':                  [['MMT','Asia/Rangoon']],
+  'Namibia':                  [['CAT','Africa/Windhoek']],
+  'Nepal':                    [['NPT','Asia/Kathmandu']],
+  'Netherlands':              [['CET/CEST','Europe/Amsterdam']],
+  'New Zealand':              [['NZST/NZDT','Pacific/Auckland']],
+  'Nigeria':                  [['WAT','Africa/Lagos']],
+  'North Macedonia':          [['CET/CEST','Europe/Skopje']],
+  'Norway':                   [['CET/CEST','Europe/Oslo']],
+  'Oman':                     [['GST','Asia/Muscat']],
+  'Pakistan':                 [['PKT','Asia/Karachi']],
+  'Panama':                   [['EST','America/Panama']],
+  'Papua New Guinea':         [['PGT','Pacific/Port_Moresby']],
+  'Paraguay':                 [['PYT','America/Asuncion']],
+  'Peru':                     [['PET','America/Lima']],
+  'Philippines':              [['PST','Asia/Manila']],
+  'Poland':                   [['CET/CEST','Europe/Warsaw']],
+  'Portugal':                 [['WET/WEST','Europe/Lisbon']],
+  'Qatar':                    [['AST','Asia/Qatar']],
+  'Romania':                  [['EET/EEST','Europe/Bucharest']],
+  'Russia':                   [['MSK','Europe/Moscow'],['YEKT','Asia/Yekaterinburg'],['KRAT','Asia/Krasnoyarsk'],['IRKT','Asia/Irkutsk'],['VLAT','Asia/Vladivostok']],
+  'Saudi Arabia':             [['AST','Asia/Riyadh']],
+  'Serbia':                   [['CET/CEST','Europe/Belgrade']],
+  'Seychelles':               [['SCT','Indian/Mahe']],
+  'Singapore':                [['SGT','Asia/Singapore']],
+  'Slovakia':                 [['CET/CEST','Europe/Bratislava']],
+  'Slovenia':                 [['CET/CEST','Europe/Ljubljana']],
+  'South Africa':             [['SAST','Africa/Johannesburg']],
+  'South Korea':              [['KST','Asia/Seoul']],
+  'Spain':                    [['CET/CEST','Europe/Madrid']],
+  'Sri Lanka':                [['IST','Asia/Colombo']],
+  'Sweden':                   [['CET/CEST','Europe/Stockholm']],
+  'Switzerland':              [['CET/CEST','Europe/Zurich']],
+  'Taiwan':                   [['CST','Asia/Taipei']],
+  'Tanzania':                 [['EAT','Africa/Dar_es_Salaam']],
+  'Thailand':                 [['ICT','Asia/Bangkok']],
+  'Trinidad and Tobago':      [['AST','America/Port_of_Spain']],
+  'Tunisia':                  [['CET','Africa/Tunis']],
+  'Turkey':                   [['TRT','Europe/Istanbul']],
+  'Turkmenistan':             [['TMT','Asia/Ashgabat']],
+  'Uganda':                   [['EAT','Africa/Kampala']],
+  'Ukraine':                  [['EET/EEST','Europe/Kiev']],
+  'United Arab Emirates':     [['GST','Asia/Dubai']],
+  'United Kingdom':           [['GMT/BST','Europe/London']],
+  'United States':            [['EST/EDT','America/New_York'],['CST/CDT','America/Chicago'],['MST/MDT','America/Denver'],['PST/PDT','America/Los_Angeles'],['AKST/AKDT','America/Anchorage'],['HST','Pacific/Honolulu']],
+  'Uruguay':                  [['UYT','America/Montevideo']],
+  'Uzbekistan':               [['UZT','Asia/Tashkent']],
+  'Venezuela':                [['VET','America/Caracas']],
+  'Vietnam':                  [['ICT','Asia/Ho_Chi_Minh']],
+  'Yemen':                    [['AST','Asia/Aden']],
+  'Zambia':                   [['CAT','Africa/Lusaka']],
+  'Zimbabwe':                 [['CAT','Africa/Harare']]
+};
+
+// ─────────────────────────────────────────────────────────────────
+// COUNTRY SEARCH WIDGET
+// ─────────────────────────────────────────────────────────────────
+var _countryDropdownTimer = null;
+
+function openCountryDropdown() {
+  renderCountryDropdown((document.getElementById('intl-country-search') || {}).value || '');
+  var dd = document.getElementById('intl-country-dropdown');
+  if (dd) dd.style.display = 'block';
+}
+
+function closeCountryDropdownDelay() {
+  _countryDropdownTimer = setTimeout(function() {
+    var dd = document.getElementById('intl-country-dropdown');
+    if (dd) dd.style.display = 'none';
+  }, 200);
+}
+
+function filterCountryList() {
+  renderCountryDropdown((document.getElementById('intl-country-search') || {}).value || '');
+  var dd = document.getElementById('intl-country-dropdown');
+  if (dd) dd.style.display = 'block';
+  // Clear selected hidden value when user is typing again
+  var hidden = document.getElementById('intl-new-country');
+  if (hidden) hidden.value = '';
+}
+
+function renderCountryDropdown(query) {
+  var dd = document.getElementById('intl-country-dropdown');
+  if (!dd) return;
+  var q = query.trim().toLowerCase();
+  var filtered = q ? ALL_COUNTRIES.filter(function(c){ return c.toLowerCase().indexOf(q) !== -1; }) : ALL_COUNTRIES;
+  dd.innerHTML = '';
+  if (!filtered.length) {
+    dd.innerHTML = '<div style="padding:10px 14px;font-size:0.82rem;color:var(--ink-soft);">No country found</div>';
+    return;
+  }
+  filtered.slice(0, 80).forEach(function(c) {
+    var item = document.createElement('div');
+    item.textContent = c;
+    item.style.cssText = 'padding:8px 14px;font-size:0.85rem;cursor:pointer;color:var(--ink);border-bottom:1px solid var(--bdr);transition:background 0.1s;';
+    item.onmouseenter = function(){ this.style.background = 'var(--maroon-l)'; this.style.color = 'var(--maroon)'; };
+    item.onmouseleave = function(){ this.style.background = ''; this.style.color = 'var(--ink)'; };
+    item.onmousedown = function(e) {
+      e.preventDefault(); // prevent blur before click
+      selectCountry(c);
+    };
+    dd.appendChild(item);
+  });
+}
+
+function selectCountry(country) {
+  var search = document.getElementById('intl-country-search');
+  var hidden = document.getElementById('intl-new-country');
+  var dd     = document.getElementById('intl-country-dropdown');
+  var msg    = document.getElementById('intl-country-msg');
+  if (search) search.value = country;
+  if (hidden) hidden.value = country;
+  if (dd) dd.style.display = 'none';
+  if (msg) msg.textContent = '';
+  onIntlCountryChange();
+}
+
+function updateLocalTimeLabel(tzLabel) {
+  var el = document.getElementById('intl-local-tz-label');
+  if (!el) return;
+  el.textContent = tzLabel ? 'Your time (' + tzLabel + ')' : 'Your local time';
+}
+
+function getISTOffset() {
+  // IST is UTC+5:30 = 330 minutes
+  return 330;
+}
+
+function getLocalOffsetMinutes(ianaZone) {
+  if (!ianaZone || ianaZone === 'Other') return null;
+  try {
+    // Use Intl.DateTimeFormat to get the offset
+    var now = new Date();
+    var formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: ianaZone,
+      timeZoneName: 'short',
+      hour: 'numeric', hour12: false
+    });
+    // Get UTC time and local time, compute diff
+    var utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+    var localDate = new Date(now.toLocaleString('en-US', { timeZone: ianaZone }));
+    return Math.round((localDate - utcDate) / 60000);
+  } catch(e) { return null; }
+}
+
+function calcISTSlot() {
+  // Ensure batch slots are loaded from CSV first
+  loadBatchSlots().then(function(){ _doCalcISTSlot(); });
+}
+
+function _doCalcISTSlot() {
+  var timeInput = document.getElementById('intl-new-localtime');
+  var tzSel     = document.getElementById('intl-new-timezone');
+  var istDisplay   = document.getElementById('intl-ist-display');
+  var istDayNote   = document.getElementById('intl-ist-day-note');
+  var slotSuggest  = document.getElementById('intl-slot-suggestion');
+  var slotOptions  = document.getElementById('intl-slot-options');
+  var hiddenPref   = document.getElementById('intl-new-pref');
+
+  if (!timeInput || !timeInput.value) {
+    if (istDisplay) istDisplay.textContent = '—';
+    if (istDayNote) istDayNote.textContent = '';
+    if (slotSuggest) slotSuggest.style.display = 'none';
+    if (hiddenPref) hiddenPref.value = '';
+    return;
+  }
+
+  var ianaZone = tzSel ? tzSel.value : '';
+  if (!ianaZone || ianaZone === 'Other' || ianaZone === '') {
+    if (istDisplay) istDisplay.textContent = 'Select country first';
+    if (slotSuggest) slotSuggest.style.display = 'none';
+    return;
+  }
+
+  try {
+    var parts = timeInput.value.split(':');
+    var localH = parseInt(parts[0], 10);
+    var localM = parseInt(parts[1] || '0', 10);
+
+    // Get offset from local to UTC
+    var localOffsetMin = getLocalOffsetMinutes(ianaZone);
+    if (localOffsetMin === null) {
+      if (istDisplay) istDisplay.textContent = 'Cannot calculate';
+      return;
+    }
+
+    var localTotalMin = localH * 60 + localM;
+    // Convert local → UTC → IST
+    var utcMin  = localTotalMin - localOffsetMin;
+    var istMin  = utcMin + getISTOffset();
+
+    // Normalize to 0–1440 range, track day offset
+    var dayOffset = 0;
+    while (istMin < 0)    { istMin += 1440; dayOffset--; }
+    while (istMin >= 1440){ istMin -= 1440; dayOffset++; }
+
+    var istH = Math.floor(istMin / 60);
+    var istMn = istMin % 60;
+    var ampm = istH >= 12 ? 'PM' : 'AM';
+    var disp12 = ((istH % 12) || 12) + ':' + String(istMn).padStart(2,'0') + ' ' + ampm + ' IST';
+
+    if (istDisplay) istDisplay.textContent = disp12;
+    if (istDayNote) {
+      istDayNote.textContent = dayOffset > 0 ? '(next day in India)' : dayOffset < 0 ? '(previous day in India)' : '';
+    }
+
+    // Find nearest batch slots (within ±90 min of the IST time)
+    if (slotSuggest && slotOptions) {
+      var nearby = KFA_BATCH_SLOTS_IST.filter(function(slot) {
+        var slotParts = slot.time.split(':');
+        var slotMin   = parseInt(slotParts[0],10)*60 + parseInt(slotParts[1],10);
+        return Math.abs(slotMin - istMin) <= 90;
+      });
+
+      slotOptions.innerHTML = '';
+      if (nearby.length) {
+        slotSuggest.style.display = 'block';
+        nearby.forEach(function(slot) {
+          var slotParts = slot.time.split(':');
+          var slotMin   = parseInt(slotParts[0],10)*60 + parseInt(slotParts[1],10);
+          var diff = slotMin - istMin;
+          var diffStr = diff === 0 ? 'Exact match' : (diff > 0 ? '+' + diff : diff) + ' min';
+          // Compute local equivalent of this slot
+          var localEquiv = slotMin - getISTOffset() + localOffsetMin;
+          while (localEquiv < 0)    localEquiv += 1440;
+          while (localEquiv >= 1440) localEquiv -= 1440;
+          var lh = Math.floor(localEquiv/60), lm = localEquiv%60;
+          var lamp = lh >= 12 ? 'PM' : 'AM';
+          var localDisp = ((lh%12)||12) + ':' + String(lm).padStart(2,'0') + ' ' + lamp + ' (your time)';
+
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.style.cssText = 'background:#fff;border:1px solid var(--bdr-s);border-radius:3px;padding:6px 10px;font-size:0.73rem;cursor:pointer;font-family:var(--fb);color:var(--ink);text-align:left;transition:all 0.15s;';
+          btn.innerHTML = '<strong style="color:var(--maroon);">' + slot.display + '</strong><br><span style="color:var(--ink-soft);font-size:0.68rem;">' + localDisp + ' · ' + diffStr + '</span>';
+          btn.onclick = function(s, ld) { return function() {
+            selectISTSlot(s.display, ld);
+          }; }(slot, localDisp);
+          slotOptions.appendChild(btn);
+        });
+      } else {
+        slotSuggest.style.display = 'block';
+        slotOptions.innerHTML = '<span style="font-size:0.78rem;color:var(--ink-soft);">No standard batch slot is close to your preferred time. The school will find the best match for you.</span>';
+      }
+    }
+
+    // Store in hidden field
+    if (hiddenPref) hiddenPref.value = 'Local: ' + timeInput.value + ' → IST: ' + disp12 + (dayOffset ? ' (' + (dayOffset>0?'next day':'prev day') + ')' : '');
+
+  } catch(err) {
+    if (istDisplay) istDisplay.textContent = 'Cannot calculate';
+    console.warn('IST calc error:', err);
+  }
+}
+
+function selectISTSlot(istSlot, localEquiv) {
+  var hiddenPref = document.getElementById('intl-new-pref');
+  var istDisplay = document.getElementById('intl-ist-display');
+  var slotOptions = document.getElementById('intl-slot-options');
+
+  if (hiddenPref) hiddenPref.value = istSlot + ' (your local equiv: ' + localEquiv + ')';
+
+  // Highlight selected button
+  if (slotOptions) {
+    Array.from(slotOptions.querySelectorAll('button')).forEach(function(b) {
+      b.style.background = '#fff';
+      b.style.borderColor = 'var(--bdr-s)';
+    });
+    event.target.closest('button').style.background = 'var(--maroon-l)';
+    event.target.closest('button').style.borderColor = 'var(--maroon)';
+  }
+
+  // Clear time error if any
+  var msg = document.getElementById('intl-pref-msg');
+  if (msg) msg.textContent = '';
+}
+
 
 function onIntlCurrencyChange(flow) {
   var idMap = { enrol: ['intl-enrol-currency','intl-enrol-amount','intl-enrol-amount-box','intl-enrol-amount-display'],
+                tc:    ['intl-tc-currency','intl-tc-amount','intl-tc-amount-box','intl-tc-amount-display'],
                 ex:    ['intl-ex-currency','intl-ex-amount','intl-ex-amount-box','intl-ex-amount-display'],
                 prog:  ['intl-prog-currency','intl-prog-amount','intl-prog-amount-box','intl-prog-amount-display'] };
   var ids = idMap[flow];
@@ -1198,8 +1856,34 @@ function onIntlCurrencyChange(flow) {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// GENDER CHECK
+// LEVEL → SHOW CLASS/SESSION TYPE + PREFERRED TIME
 // ─────────────────────────────────────────────────────────────────
+function onIntlLevelChange() {
+  var level = (document.getElementById('intl-new-level') || {}).value || '';
+  var classSessionWrap = document.getElementById('intl-class-session-wrap');
+  var prefTimeField    = document.getElementById('intl-pref-time-field');
+
+  if (level) {
+    if (classSessionWrap) classSessionWrap.style.display = 'block';
+    if (prefTimeField)    prefTimeField.style.display = 'block';
+  } else {
+    if (classSessionWrap) classSessionWrap.style.display = 'none';
+    if (prefTimeField)    prefTimeField.style.display = 'none';
+    // Clear time / IST when level is cleared
+    var lt = document.getElementById('intl-new-localtime');
+    if (lt) lt.value = '';
+    var ist = document.getElementById('intl-ist-display');
+    if (ist) ist.textContent = '—';
+    var istDayNote = document.getElementById('intl-ist-day-note');
+    if (istDayNote) istDayNote.textContent = '';
+    var ss = document.getElementById('intl-slot-suggestion');
+    if (ss) ss.style.display = 'none';
+    var hp = document.getElementById('intl-new-pref');
+    if (hp) hp.value = '';
+  }
+}
+
+
 function onIntlGenderChange() {
   var gender = document.getElementById('intl-new-gender').value;
   var msg = document.getElementById('intl-new-gender-msg');
@@ -1229,54 +1913,139 @@ function verifyIntlToken() {
   var dateStr = td.getFullYear() + '-' + String(td.getMonth()+1).padStart(2,'0') + '-' + String(td.getDate()).padStart(2,'0');
   var enrolDate = document.getElementById('intl-enrol-date');
   if (enrolDate) enrolDate.value = dateStr;
-  // If it was a specific level code, pre-select level
+  // If level-specific enrol code, pre-select level and jump to enrol radio
   if (INTL_ENROL_CODES[val]) {
     var levelSel = document.getElementById('intl-new-level');
-    if (levelSel) levelSel.value = INTL_ENROL_CODES[val];
-    // Unlock enrol option
-    unlockIntlEnrol();
+    if (levelSel) { levelSel.value = INTL_ENROL_CODES[val]; onIntlLevelChange(); }
+    var enrolRadio = document.getElementById('intl-enrol-radio');
+    if (enrolRadio) { enrolRadio.checked = true; onIntlEntryChange(enrolRadio); }
+  }
+  // If TC code, pre-select level and jump to trial-complete radio
+  if (INTL_TC_CODES[val]) {
+    var levelSel2 = document.getElementById('intl-new-level');
+    if (levelSel2) { levelSel2.value = INTL_TC_CODES[val]; onIntlLevelChange(); }
+    var tcRadio = document.getElementById('intl-tc-radio');
+    if (tcRadio) { tcRadio.checked = true; onIntlEntryChange(tcRadio); }
+    // Pre-fill the TC code field
+    var tcInput = document.getElementById('intl-tc-code');
+    if (tcInput) { tcInput.value = val; verifyIntlTCCode(); }
   }
 }
 
 // ─────────────────────────────────────────────────────────────────
-// ENTRY TYPE TOGGLE
+// ENTRY TYPE TOGGLE — 3 options
 // ─────────────────────────────────────────────────────────────────
 function onIntlEntryChange(radio) {
-  var trialLabel  = document.getElementById('intl-opt-trial-label');
-  var enrolLabel  = document.getElementById('intl-opt-enrol-label');
-  if (trialLabel) trialLabel.style.borderColor = radio.value === 'trial' ? 'var(--maroon)' : 'var(--bdr)';
-  if (trialLabel) trialLabel.style.borderWidth  = radio.value === 'trial' ? '2px' : '1px';
-  if (enrolLabel) enrolLabel.style.borderColor = radio.value === 'enrol' ? 'var(--maroon)' : 'var(--bdr)';
-  if (enrolLabel) enrolLabel.style.borderWidth  = radio.value === 'enrol' ? '2px' : '1px';
+  var labels = ['intl-opt-trial-label','intl-opt-tc-label','intl-opt-enrol-label'];
+  labels.forEach(function(lId) {
+    var el = document.getElementById(lId);
+    if (el) { el.style.borderColor = 'var(--bdr)'; el.style.borderWidth = '1px'; }
+  });
+  var active = document.getElementById('intl-opt-' + (radio.value === 'trial' ? 'trial' : radio.value === 'trialcomplete' ? 'tc' : 'enrol') + '-label');
+  if (active) { active.style.borderColor = 'var(--maroon)'; active.style.borderWidth = '2px'; }
 
-  safeIntlStyle('intl-trial-submit-wrap', 'display', radio.value === 'trial' ? 'block' : 'none');
-  safeIntlStyle('intl-enrol-wrap',        'display', radio.value === 'enrol' ? 'block' : 'none');
-
-  // Check if enrol radio is blocked
-  if (radio.value === 'enrol') {
-    var enrolRadio = document.getElementById('intl-enrol-radio');
-    if (enrolRadio && enrolRadio.disabled) {
-      safeIntlSet('intl-entry-msg', 'textContent', 'Please complete a trial class first. You will receive an enrolment code from the school.');
-      radio.checked = false;
-      if (enrolLabel) { enrolLabel.style.borderColor='var(--bdr)'; enrolLabel.style.borderWidth='1px'; }
-      safeIntlStyle('intl-enrol-wrap','display','none');
-    } else {
-      clearIntlErr('intl-entry-msg');
-    }
-  } else {
-    clearIntlErr('intl-entry-msg');
-  }
+  safeIntlStyle('intl-trial-submit-wrap', 'display', radio.value === 'trial'         ? 'block' : 'none');
+  safeIntlStyle('intl-tc-wrap',           'display', radio.value === 'trialcomplete'  ? 'block' : 'none');
+  safeIntlStyle('intl-enrol-wrap',        'display', radio.value === 'enrol'          ? 'block' : 'none');
+  clearIntlErr('intl-entry-msg');
 }
 
-function unlockIntlEnrol() {
-  var enrolRadio = document.getElementById('intl-enrol-radio');
-  var enrolLabel = document.getElementById('intl-opt-enrol-label');
-  var descEl     = document.getElementById('intl-enrol-label-desc');
-  var textEl     = document.getElementById('intl-enrol-label-text');
-  if (enrolRadio) { enrolRadio.disabled = false; }
-  if (enrolLabel) { enrolLabel.style.opacity = '1'; enrolLabel.style.cursor = 'pointer'; }
-  if (textEl)  textEl.innerHTML = '✅ Enrol &amp; Pay Now';
-  if (descEl)  descEl.textContent = 'Your trial is complete. Confirm your enrolment and submit payment details.';
+
+// ─────────────────────────────────────────────────────────────────
+// TRIAL COMPLETION CODE VERIFICATION
+// ─────────────────────────────────────────────────────────────────
+function verifyIntlTCCode() {
+  var val = (document.getElementById('intl-tc-code').value || '').trim().toUpperCase();
+  var msg = document.getElementById('intl-tc-code-msg');
+  if (!val) { msg.textContent = 'Please enter your trial completion code.'; return; }
+  if (!INTL_TC_CODES[val]) {
+    msg.textContent = 'Invalid code. Please check the code shared by the school, or WhatsApp us.';
+    msg.style.color = 'var(--err)';
+    return;
+  }
+  msg.style.color = '#1B5E20';
+  msg.textContent = '✓ Code verified. Please fill in your payment details below.';
+  // Pre-select level from TC code
+  var levelSel = document.getElementById('intl-new-level');
+  if (levelSel) levelSel.value = INTL_TC_CODES[val];
+  // Set today's date
+  var td = new Date();
+  var dateStr = td.getFullYear() + '-' + String(td.getMonth()+1).padStart(2,'0') + '-' + String(td.getDate()).padStart(2,'0');
+  var tcDate = document.getElementById('intl-tc-enrol-date');
+  if (tcDate) tcDate.value = dateStr;
+  // Show pay section
+  document.getElementById('intl-tc-pay-wrap').style.display = 'block';
+  document.getElementById('intl-tc-pay-wrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TC ENROLMENT SUBMISSION
+// ─────────────────────────────────────────────────────────────────
+function submitIntlTCEnrolment() {
+  var n      = (document.getElementById('intl-new-name')      || {}).value || '';
+  var par    = (document.getElementById('intl-new-parent')    || {}).value || '';
+  var ph     = buildFullPhone('intl-new-dialcode','intl-new-phone');
+  var em     = (document.getElementById('intl-new-email')     || {}).value || '';
+  var cnt    = (document.getElementById('intl-new-country')   || {}).value || '';
+  var tz     = (document.getElementById('intl-new-timezone')  || {}).value || '';
+  var gen    = (document.getElementById('intl-new-gender')    || {}).value || '';
+  var grp    = (document.getElementById('intl-new-group')     || {}).value || '';
+  var lev    = (document.getElementById('intl-new-level')     || {}).value || '';
+  var enDate = (document.getElementById('intl-tc-enrol-date') || {}).value || '';
+  var cur    = (document.getElementById('intl-tc-currency')   || {}).value || 'USD';
+  var amt    = (document.getElementById('intl-tc-amount')     || {}).value || '';
+  var pm     = (document.getElementById('intl-tc-paymode')    || {}).value || '';
+  var txn    = (document.getElementById('intl-tc-txnid')      || {}).value || '';
+
+  if (!isNotEmpty(n))   { alert('Please enter student name.'); return; }
+  if (!isNotEmpty(par)) { alert('Please enter parent / guardian name.'); return; }
+  if (!isNotEmpty(ph))  { alert('Please enter mobile number.'); return; }
+  if (!isValidEmail(em)){ alert('Please enter a valid email.'); return; }
+  if (!lev)  { alert('Please select a learning stage.'); return; }
+  if (!enDate){ alert('Please select an enrolment date.'); return; }
+  if (!amt || parseFloat(amt) <= 0) { alert('Please enter the fee amount.'); return; }
+  if (!pm)   { alert('Please select a payment mode.'); return; }
+  if (!isNotEmpty(txn)) { alert('Please enter a transaction / reference ID.'); return; }
+
+  var consent = document.getElementById('intl-tc-consent');
+  if (!consent || !consent.checked) {
+    safeIntlSet('intl-tc-consent-msg','textContent','Please accept the declaration to proceed.');
+    return;
+  }
+  safeIntlSet('intl-tc-consent-msg','textContent','');
+
+  var btn = document.getElementById('intl-tc-pay-btn');
+  btn.disabled = true; btn.innerHTML = 'Submitting… <span class="spin"></span>';
+
+  var data = {
+    submissionType : 'New Enrolment',
+    portalType     : 'international',
+    studentName    : n, parentName: par, phone: ph, email: em,
+    gender: gen, whoIsJoining: grp, country: cnt, timezone: tz,
+    classType: 'Online', sessionType: 'Group', learningStage: lev,
+    batchSelected: 'International Online', enrolmentDate: enDate,
+    amountPaid: amt, transactionId: txn, currency: cur, paymentMode: pm,
+    notes: 'Trial Completion Enrolment'
+  };
+
+  submitToIntlPortal(data, function(res) {
+    document.getElementById('intl-new-form-wrap').style.display = 'none';
+    document.getElementById('intl-new-token-gate').style.display = 'none';
+    var suc = document.getElementById('intl-enrol-success');
+    suc.classList.add('show');
+    if (res && res.rollNo) {
+      safeIntlStyle('intl-enrol-roll-box','display','block');
+      safeIntlSet('intl-enrol-roll-no','textContent', res.rollNo);
+    }
+    if (txn) {
+      safeIntlStyle('intl-enrol-txn-box','display','block');
+      safeIntlSet('intl-enrol-txn-display','textContent', txn);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.disabled = false; btn.textContent = 'Submit Enrolment';
+  }, function() {
+    btn.disabled = false; btn.textContent = 'Submit Enrolment';
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -1294,7 +2063,7 @@ function verifyIntlEnrolCode() {
   msg.textContent = '✓ Code verified. Please fill in the payment details below.';
   // Set level from code
   var levelSel = document.getElementById('intl-new-level');
-  if (levelSel) levelSel.value = INTL_ENROL_CODES[val];
+  if (levelSel) { levelSel.value = INTL_ENROL_CODES[val]; onIntlLevelChange(); }
   // Show pay section
   document.getElementById('intl-trial-code-gate').style.display = 'none';
   document.getElementById('intl-pay-wrap').style.display = 'block';
@@ -1325,7 +2094,21 @@ function submitIntlTrial() {
   if (!gen) { alert('Please select the gender.'); return; }
   if (!grp) { alert('Please select who is joining.'); return; }
   if (!lev) { alert('Please select a learning stage.'); return; }
-  if (!pref){ alert('Please select a preferred class time.'); return; }
+  if (!pref){
+    // Soft warning — not blocking (school will confirm timing anyway)
+    var localTime = (document.getElementById('intl-new-localtime') || {}).value || '';
+    if (!localTime) {
+      showIntlErr('intl-pref-msg', 'Please enter a preferred class time (your local time).');
+      document.getElementById('intl-new-localtime').focus();
+      return;
+    }
+    // Fallback: build pref from raw local time input
+    var hiddenPref2 = document.getElementById('intl-new-pref');
+    if (hiddenPref2 && !hiddenPref2.value) {
+      hiddenPref2.value = 'Local preference: ' + localTime + ' (IST not calculated — country/timezone not selected)';
+    }
+    pref = document.getElementById('intl-new-pref').value || 'Flexible';
+  }
 
   var consent = document.getElementById('intl-trial-consent');
   if (!consent || !consent.checked) {
@@ -2128,6 +2911,22 @@ document.addEventListener('DOMContentLoaded', function() {
   var enrolLabel = document.getElementById('intl-opt-enrol-label');
   if (enrolRadio) { enrolRadio.disabled = true; }
   if (enrolLabel) { enrolLabel.style.opacity = '0.5'; enrolLabel.style.cursor = 'not-allowed'; }
+
+  // Pre-load batch slots from CSV
+  loadBatchSlots();
+
+  // Timezone select onChange also recalculates IST
+  var tzSel = document.getElementById('intl-new-timezone');
+  if (tzSel) {
+    tzSel.addEventListener('change', function() {
+      var sel = tzSel.options[tzSel.selectedIndex];
+      if (sel) updateLocalTimeLabel(sel.textContent.split(' — ')[0]);
+      calcISTSlot();
+    });
+  }
+
+  // Init country dropdown with all countries
+  renderCountryDropdown('');
 });
 </script>
 
