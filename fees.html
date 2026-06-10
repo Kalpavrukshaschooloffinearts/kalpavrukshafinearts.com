@@ -2701,30 +2701,27 @@ function initiatePayment(flow) {
                          String(new Date().getDate()).padStart(2,'0'))
         };
 	alert("MONTHLY submitToPortal reached");
-		submitToPortal({
-		   submissionType : 'Monthly Fee',
-		   studentName    : pendingPayment.studentName,
-		   rollNo         : pendingPayment.rollNo,
-		   phone          : pendingPayment.phone,
-		   email          : pendingPayment.email,
-		   amountPaid     : pendingPayment.amount,
-		   feeMonth       : pendingPayment.feeMonth,
-		   transactionId  : response.razorpay_payment_id || '',
-		   notes          : 'Monthly fee paid via website'
-		}, function(result) {
-		
-		   alert(JSON.stringify(result));
-		
-		   if (result && result.receiptNo) {
-		      receiptStore['existing'].receiptNo = result.receiptNo;
-		   }
-		
-		});
+        submitToPortal({
+          submissionType : 'Monthly Fee',
+          studentName    : pending.studentName,
+          rollNo         : pending.rollNo,
+          feeMonth       : pending.feeMonth,
+          amountPaid     : pending.amount,
+          phone          : pending.phone,
+          email          : pending.email,
+          transactionId  : response.razorpay_payment_id || '',
+          notes          : 'Monthly fee paid via website'
+        }, function(result) {
+          if (result && result.receiptNo && receiptStore['existing']) {
+            receiptStore['existing'].receiptNo = result.receiptNo;
+          }
+          var btn = document.getElementById('existing-download-receipt');
+          if (btn) btn.style.display = 'inline-block';
+        });
 
         // Clear pending state
-        
-   	    window._pendingMonthlyFee = null;
-      
+        window._pendingMonthlyFee = null;
+      }
 
       // Workshop registration
       if (successId === 'workshop-success' && currentWs) {
