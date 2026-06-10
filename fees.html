@@ -2712,6 +2712,7 @@ function initiatePayment(flow) {
           transactionId  : response.razorpay_payment_id || '',
           notes          : 'Monthly fee paid via website'
         }, function(result) {
+			alert(JSON.stringify(result));
           if (result && result.receiptNo && receiptStore['existing']) {
             receiptStore['existing'].receiptNo = result.receiptNo;
           }
