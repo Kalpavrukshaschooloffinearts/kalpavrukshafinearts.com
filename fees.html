@@ -2535,7 +2535,7 @@ function initiatePayment(flow) {
     if (!amt || amt <= 0) { alert('Fee amount not found. Please contact the school.'); return; }
 
     // Client-side duplicate guard for monthly fee
-  var monDupKey = 'kfa_fee_' + (foundStudent['Roll Number'] || '') + '_' + mon;
+   var monDupKey = 'kfa_fee_' + (foundStudent['Roll No'] || '') + '_' + mon;
   if (sessionStorage.getItem(monDupKey)) {
     alert('Fee for ' + mon + ' has already been submitted in this session.');
     return;
@@ -2677,25 +2677,33 @@ function initiatePayment(flow) {
       }
 
       // Existing student monthly fee receipt
-      if (successId === 'existing-success' && foundStudent) {
-        submitToPortal({
-          submissionType : 'Monthly Fee',
-          studentName    : foundStudent['Student Name'] || name,
-          rollNo         : foundStudent['Roll No'] || '',
-          phone          : phone,
-          email          : email,
-          amountPaid     : amount,
-          transactionId  : response.razorpay_payment_id || '',
-          feeMonth       : document.getElementById('ex-month') ? document.getElementById('ex-month').value : '',
-          notes          : 'Monthly fee paid via website'
-        }, function(result) {
-          if (result && result.receiptNo && receiptStore['existing']) {
-            receiptStore['existing'].receiptNo = result.receiptNo;
-          }
-          var btn = document.getElementById('existing-download-receipt');
-          if (btn) btn.style.display = 'inline-block';
-        });
-      }
+	if (successId === 'existing-success') {
+
+ 	 var rec = receiptStore['existing'] || {};
+
+ 	 submitToPortal({
+  	  submissionType : 'Monthly Fee',
+   	 studentName    : rec.studentName || name,
+   	 rollNo         : rec.rollNo || '',
+   	 phone          : phone,
+    	email          : email,
+    	amountPaid     : amount,
+    	transactionId  : response.razorpay_payment_id || '',
+    	feeMonth       : document.getElementById('ex-month')
+                      ? document.getElementById('ex-month').value
+                      : '',
+   	 notes          : 'Monthly fee paid via website'
+ 	 }, function(result) {
+
+  	  if (result && result.receiptNo && receiptStore['existing']) {
+     	 receiptStore['existing'].receiptNo = result.receiptNo;
+   	 }
+
+  	  var btn = document.getElementById('existing-download-receipt');
+	    if (btn) btn.style.display = 'inline-block';
+	
+	  });
+	}
 
       // Workshop registration
       if (successId === 'workshop-success' && currentWs) {
