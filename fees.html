@@ -2700,7 +2700,7 @@ function initiatePayment(flow) {
                          String(new Date().getMonth()+1).padStart(2,'0') + '-' +
                          String(new Date().getDate()).padStart(2,'0'))
         };
-
+	alert("MONTHLY submitToPortal reached");
         submitToPortal({
           submissionType : 'Monthly Fee',
           studentName    : pending.studentName,
