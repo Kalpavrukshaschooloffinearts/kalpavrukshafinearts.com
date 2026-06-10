@@ -2713,7 +2713,6 @@ function initiatePayment(flow) {
 		   notes          : 'Monthly fee paid via website'
 		}, function(result) {
 		
-		   console.log("MONTHLY RESPONSE:", result);
 		   alert(JSON.stringify(result));
 		
 		   if (result && result.receiptNo) {
