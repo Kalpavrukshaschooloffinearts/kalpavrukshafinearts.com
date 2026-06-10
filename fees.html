@@ -2522,30 +2522,35 @@ function initiatePayment(flow) {
 
   } else if (flow === 'existing') {
     if (!foundStudent) { alert('Please find your Roll No first.'); return; }
-    var ph  = document.getElementById('ex-phone').value.trim();
-    var em  = document.getElementById('ex-email').value.trim();
-    var mon = document.getElementById('ex-month').value;
 
-    if (!mon) {
-      alert('Please select a fee month.');
-      return;
-    }
+    var mon = document.getElementById('ex-month').value;
+    if (!mon) { alert('Please select a fee month.'); return; }
 
     var amt = parseInt(document.getElementById('ex-amount').value, 10);
     if (!amt || amt <= 0) { alert('Fee amount not found. Please contact the school.'); return; }
 
     // Client-side duplicate guard for monthly fee
-   var monDupKey = 'kfa_fee_' + (foundStudent['Roll No'] || '') + '_' + mon;
-  if (sessionStorage.getItem(monDupKey)) {
-    alert('Fee for ' + mon + ' has already been submitted in this session.');
-    return;
-  }
-  sessionStorage.setItem(monDupKey, '1');
+    var monDupKey = 'kfa_fee_' + (foundStudent['Roll No'] || '') + '_' + mon;
+    if (sessionStorage.getItem(monDupKey)) {
+      alert('Fee for ' + mon + ' has already been submitted in this session.');
+      return;
+    }
+    sessionStorage.setItem(monDupKey, '1');
 
-  document.getElementById('existing-success-month').textContent = mon;
-    name      = foundStudent['Student Name'];
-    phone     = ph;
-    email     = em;
+    // ── PENDING PAYMENT: capture everything NOW before Razorpay opens ──
+    window._pendingMonthlyFee = {
+      studentName : foundStudent['Student Name'] || '',
+      rollNo      : foundStudent['Roll No']      || '',
+      feeMonth    : mon,
+      amount      : amt,
+      phone       : (document.getElementById('ex-phone').value || '').trim(),
+      email       : (document.getElementById('ex-email').value || '').trim()
+    };
+
+    document.getElementById('existing-success-month').textContent = mon;
+    name      = window._pendingMonthlyFee.studentName;
+    phone     = window._pendingMonthlyFee.phone;
+    email     = window._pendingMonthlyFee.email;
     amount    = amt;
     desc      = 'Monthly Fee — ' + name + ' — ' + mon;
     successId = 'existing-success';
@@ -2676,34 +2681,47 @@ function initiatePayment(flow) {
         });
       }
 
-      // Existing student monthly fee receipt
-	if (successId === 'existing-success') {
+      // ── EXISTING STUDENT: clean monthly fee submission ──────────────
+      if (successId === 'existing-success') {
+        // Read ONLY from pendingPayment — no DOM reads, no foundStudent dependency
+        var pending = window._pendingMonthlyFee || {};
 
- 	 var rec = receiptStore['existing'] || {};
+        // Pre-populate receiptStore so download button works after receipt arrives
+        receiptStore['existing'] = {
+          receiptNo   : '',  // filled by portal response below
+          studentName : pending.studentName || '',
+          phone       : pending.phone       || '',
+          email       : pending.email       || '',
+          rollNo      : pending.rollNo      || '',
+          txnId       : response.razorpay_payment_id || '',
+          amount      : pending.amount      || amount,
+          description : 'Monthly Fee — ' + (pending.studentName || '') + ' — ' + (pending.feeMonth || ''),
+          paymentDate : (new Date().getFullYear() + '-' +
+                         String(new Date().getMonth()+1).padStart(2,'0') + '-' +
+                         String(new Date().getDate()).padStart(2,'0'))
+        };
 
- 	 submitToPortal({
-  	  submissionType : 'Monthly Fee',
-   	 studentName    : rec.studentName || name,
-   	 rollNo         : rec.rollNo || '',
-   	 phone          : phone,
-    	email          : email,
-    	amountPaid     : amount,
-    	transactionId  : response.razorpay_payment_id || '',
-    	feeMonth       : document.getElementById('ex-month')
-                      ? document.getElementById('ex-month').value
-                      : '',
-   	 notes          : 'Monthly fee paid via website'
- 	 }, function(result) {
+        submitToPortal({
+          submissionType : 'Monthly Fee',
+          studentName    : pending.studentName,
+          rollNo         : pending.rollNo,
+          feeMonth       : pending.feeMonth,
+          amountPaid     : pending.amount,
+          phone          : pending.phone,
+          email          : pending.email,
+          transactionId  : response.razorpay_payment_id || '',
+          notes          : 'Monthly fee paid via website'
+        }, function(result) {
+          if (result && result.receiptNo && receiptStore['existing']) {
+            receiptStore['existing'].receiptNo = result.receiptNo;
+          }
+          var btn = document.getElementById('existing-download-receipt');
+          if (btn) btn.style.display = 'inline-block';
+        });
 
-  	  if (result && result.receiptNo && receiptStore['existing']) {
-     	 receiptStore['existing'].receiptNo = result.receiptNo;
-   	 }
-
-  	  var btn = document.getElementById('existing-download-receipt');
-	    if (btn) btn.style.display = 'inline-block';
-	
-	  });
-	}
+        // Clear pending state
+        window._pendingMonthlyFee = null;
+      }
 
       // Workshop registration
       if (successId === 'workshop-success' && currentWs) {
