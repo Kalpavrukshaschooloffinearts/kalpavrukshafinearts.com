@@ -2722,9 +2722,9 @@ function initiatePayment(flow) {
 		});
 
         // Clear pending state
-        if (window._pendingMonthlyFee) {
+        
    	    window._pendingMonthlyFee = null;
-      }
+      
 
       // Workshop registration
       if (successId === 'workshop-success' && currentWs) {
