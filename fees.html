@@ -1069,7 +1069,7 @@ function submitToPortal(data, callback) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    mode: 'cors',
+    mode: 'no-cors',
     redirect: 'follow'
   }).then(function(resp) {
     return resp.json();
@@ -2711,12 +2711,7 @@ function initiatePayment(flow) {
           email          : pending.email,
           transactionId  : response.razorpay_payment_id || '',
           notes          : 'Monthly fee paid via website'
-        }, function(result) {
-			alert(
-			  "Status = " + result.status +
-			  "\nMessage = " + result.message +
-			  "\nReceipt = " + result.receiptNo
-			);
+       }, function(result) {
           if (result && result.receiptNo && receiptStore['existing']) {
             receiptStore['existing'].receiptNo = result.receiptNo;
           }
