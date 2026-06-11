@@ -2686,45 +2686,55 @@ function initiatePayment(flow) {
         // Read ONLY from pendingPayment — no DOM reads, no foundStudent dependency
         var pending = window._pendingMonthlyFee || {};
 
+        // Copy pending immediately before it gets nulled out below
+        var pendingCopy = {
+          studentName : (pending.studentName || ''),
+          rollNo      : (pending.rollNo      || ''),
+          feeMonth    : (pending.feeMonth    || ''),
+          amount      : (pending.amount      || amount),
+          phone       : (pending.phone       || ''),
+          email       : (pending.email       || '')
+        };
+
         // Pre-populate receiptStore so download button works after receipt arrives
         receiptStore['existing'] = {
           receiptNo   : '',  // filled by portal response below
-          studentName : pending.studentName || '',
-          phone       : pending.phone       || '',
-          email       : pending.email       || '',
-          rollNo      : pending.rollNo      || '',
+          studentName : pendingCopy.studentName,
+          phone       : pendingCopy.phone,
+          email       : pendingCopy.email,
+          rollNo      : pendingCopy.rollNo,
           txnId       : response.razorpay_payment_id || '',
-          amount      : pending.amount      || amount,
-          description : 'Monthly Fee — ' + (pending.studentName || '') + ' — ' + (pending.feeMonth || ''),
+          amount      : pendingCopy.amount,
+          description : 'Monthly Fee — ' + pendingCopy.studentName + ' — ' + pendingCopy.feeMonth,
           paymentDate : (new Date().getFullYear() + '-' +
                          String(new Date().getMonth()+1).padStart(2,'0') + '-' +
                          String(new Date().getDate()).padStart(2,'0'))
         };
-	
-    // POST the payment (no-cors — data reaches sheet but response is opaque)
+
+        // POST the payment (no-cors — data reaches sheet but response is opaque)
         fetch(PORTAL_SUBMIT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             submissionType : 'Monthly Fee',
-            studentName    : pending.studentName,
-            rollNo         : pending.rollNo,
-            feeMonth       : pending.feeMonth,
-            amountPaid     : pending.amount,
-            phone          : pending.phone,
-            email          : pending.email,
+            studentName    : pendingCopy.studentName,
+            rollNo         : pendingCopy.rollNo,
+            feeMonth       : pendingCopy.feeMonth,
+            amountPaid     : pendingCopy.amount,
+            phone          : pendingCopy.phone,
+            email          : pendingCopy.email,
             transactionId  : response.razorpay_payment_id || '',
             notes          : 'Monthly fee paid via website'
           }),
           mode: 'no-cors',
           redirect: 'follow'
         }).then(function() {
-          // After POST completes, fetch receipt number via GET
+          // After POST, fetch receipt number via GET
           var getUrl = PORTAL_SUBMIT_URL
             + '?action=getReceipt'
-            + '&rollNo='   + encodeURIComponent(pending.rollNo  || '')
-            + '&feeMonth=' + encodeURIComponent(pending.feeMonth || '')
-            + '&phone='    + encodeURIComponent(pending.phone   || '');
+            + '&rollNo='   + encodeURIComponent(pendingCopy.rollNo   || '')
+            + '&feeMonth=' + encodeURIComponent(pendingCopy.feeMonth || '')
+            + '&phone='    + encodeURIComponent(pendingCopy.phone    || '');
           return fetch(getUrl, { method: 'GET', mode: 'cors' });
         }).then(function(resp) {
           return resp.json();
@@ -2734,12 +2744,17 @@ function initiatePayment(flow) {
           }
           var btn = document.getElementById('existing-download-receipt');
           if (btn) btn.style.display = 'inline-block';
-        }).catch(function() {
-          // Receipt fetch failed — still show download button, receipt number will be blank
+        }).catch(function(err) {
+          console.error('Monthly fee submission error:', err);
+          // Always show download button even if receipt fetch fails
           var btn = document.getElementById('existing-download-receipt');
           if (btn) btn.style.display = 'inline-block';
         });
-		  
+
+        // Clear pending state
+        window._pendingMonthlyFee = null;
+      }
+
       // Workshop registration
       if (successId === 'workshop-success' && currentWs) {
         submitToPortal({
