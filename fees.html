@@ -174,12 +174,13 @@
 .ge-grade-card.selected .gc-check{background:var(--maroon);border-color:var(--maroon);color:#fff;}
 .ge-grade-card .gc-name{font-family:var(--fd);font-size:1.0rem;color:var(--maroon);margin-bottom:10px;}
 .ge-grade-card .gc-total{font-size:1.1rem;font-weight:700;color:var(--ink);}
-.gc-options{display:none;margin-top:10px;border-top:1px solid var(--bdr);padding-top:8px;}
-.ge-grade-card.selected .gc-options{display:block;}
-.gc-opt{display:flex;align-items:center;justify-content:space-between;padding:5px 4px;border-radius:3px;cursor:pointer;font-size:0.8rem;gap:8px;}
-.gc-opt:hover{background:rgba(123,29,46,0.06);}
+.gc-options{margin-top:10px;border-top:1px solid var(--bdr);padding-top:8px;}
+.gc-opt{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:3px;cursor:pointer;font-size:0.79rem;gap:8px;border:1px solid var(--bdr);background:#fff;margin-bottom:4px;}
+.gc-opt:hover{border-color:var(--maroon);background:#fdf8f5;}
+.ge-grade-card.selected .gc-opt.active{border-color:var(--maroon);background:#fdf8f5;box-shadow:0 0 0 1px rgba(123,29,46,0.25);}
 .gc-opt input[type=radio]{accent-color:var(--maroon);margin:0;flex-shrink:0;}
-.gc-opt-label{flex:1;color:var(--ink);}
+.gc-opt-label{flex:1;color:var(--ink-soft);}
+.ge-grade-card.selected .gc-opt-label{color:var(--ink);}
 .gc-opt-price{font-weight:700;color:var(--ink);white-space:nowrap;}
 
 .ge-summary{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 18px;margin-bottom:16px;display:none;}
@@ -704,9 +705,14 @@
 
           <!-- Fee reveal (for outside students and guidance) -->
           <div class="ws-fee-reveal" id="ws-fee-reveal">
-            <div class="wfr-name" id="wfr-name"></div>
-            <div class="wfr-amount" id="wfr-amount"></div>
-            <div class="wfr-desc" id="wfr-desc"></div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div>
+                <div class="wfr-name" id="wfr-name"></div>
+                <div class="wfr-amount" id="wfr-amount"></div>
+                <div class="wfr-desc" id="wfr-desc"></div>
+              </div>
+              <button onclick="closeWorkshopSelection()" title="Close" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--ink-soft);line-height:1;padding:0 0 0 8px;flex-shrink:0;" aria-label="Close">✕</button>
+            </div>
           </div>
 
           <!-- Student type toggle -->
@@ -829,46 +835,41 @@
                 <div class="ge-grade-card" data-grade="Pre-Grade" data-exam="900" data-training="1900" data-total="900" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Pre-Grade</div>
-                  <div class="gc-total" id="gc-total-PreGrade">₹900</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="exam" checked onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹900</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="training" onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹1,900</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-PreGrade" value="exam" checked onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹900</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="training" onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹1,900</span></label>
                   </div>
                 </div>
                 <div class="ge-grade-card" data-grade="Grade 1" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 1</div>
-                  <div class="gc-total" id="gc-total-Grade1">₹1,200</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="exam" checked onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,200</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="training" onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,200</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade1" value="exam" checked onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,200</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="training" onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,200</span></label>
                   </div>
                 </div>
                 <div class="ge-grade-card" data-grade="Grade 2" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 2</div>
-                  <div class="gc-total" id="gc-total-Grade2">₹1,200</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="exam" checked onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,200</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="training" onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,200</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade2" value="exam" checked onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,200</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="training" onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,200</span></label>
                   </div>
                 </div>
                 <div class="ge-grade-card" data-grade="Grade 3" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 3</div>
-                  <div class="gc-total" id="gc-total-Grade3">₹1,200</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="exam" checked onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,200</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="training" onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,200</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade3" value="exam" checked onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,200</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="training" onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,200</span></label>
                   </div>
                 </div>
                 <div class="ge-grade-card" data-grade="Grade 4" data-exam="1800" data-training="2800" data-total="1800" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 4</div>
-                  <div class="gc-total" id="gc-total-Grade4">₹1,800</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="exam" checked onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,800</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="training" onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,800</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade4" value="exam" checked onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,800</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="training" onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,800</span></label>
                   </div>
                 </div>
               </div>
@@ -2205,6 +2206,18 @@ function selectWorkshopCard(el, idx) {
   }
 }
 
+function closeWorkshopSelection() {
+  document.querySelectorAll('.ws-list-item').forEach(function(c){ c.classList.remove('selected'); });
+  document.getElementById('ws-fee-reveal').classList.remove('show');
+  document.getElementById('ws-type-wrap').style.display  = 'none';
+  document.getElementById('ws-kv-wrap').style.display    = 'none';
+  document.getElementById('ws-out-wrap').style.display   = 'none';
+  document.getElementById('ge-wrap').style.display       = 'none';
+  resetWsLookup();
+  resetGeLookup();
+  currentWs = null;
+}
+
 // ─────────────────────────────────────────────────────────────────
 // GRADE EXAM FLOW
 // ─────────────────────────────────────────────────────────────────
@@ -2224,9 +2237,7 @@ function resetGeLookup() {
     var examRadio = c.querySelector('input[value=exam]');
     if (examRadio) examRadio.checked = true;
     c.dataset.total = c.dataset.exam;
-    var gradeKey = c.dataset.grade.replace(/\s/g,'');
-    var totalEl = document.getElementById('gc-total-' + gradeKey);
-    if (totalEl) totalEl.textContent = '₹' + parseInt(c.dataset.exam,10).toLocaleString('en-IN');
+    c.querySelectorAll('.gc-opt').forEach(function(opt,i){ if(i===0) opt.classList.add('active'); else opt.classList.remove('active'); });
   });
   updateGeSummary();
 }
@@ -2277,29 +2288,31 @@ function lookupGeStudent() {
 function toggleGradeCard(card) {
   card.classList.toggle('selected');
   document.getElementById('ge-grade-msg').textContent = '';
-  // When deselecting, reset radio back to exam-only so re-selection defaults correctly
+  // When deselecting, reset radio back to exam-only
   if (!card.classList.contains('selected')) {
-    var gradeKey = card.dataset.grade.replace(/\s/g,'');
     var radios = card.querySelectorAll('input[type=radio]');
     if (radios.length) radios[0].checked = true;
     card.dataset.total = card.dataset.exam;
-    var totalEl = document.getElementById('gc-total-' + gradeKey);
-    if (totalEl) totalEl.textContent = '₹' + parseInt(card.dataset.exam,10).toLocaleString('en-IN');
+    card.querySelectorAll('.gc-opt').forEach(function(opt,i){ if(i===0) opt.classList.add('active'); else opt.classList.remove('active'); });
   }
   updateGeSummary();
 }
 
 function selectGradeOption(radio, grade) {
-  // Find the parent card
   var card = radio.closest('.ge-grade-card');
   if (!card) return;
-  var gradeKey = grade.replace(/\s/g,'');
+  // Auto-select the card if not already selected
+  if (!card.classList.contains('selected')) {
+    card.classList.add('selected');
+    document.getElementById('ge-grade-msg').textContent = '';
+  }
+  // Update active class on option labels
+  card.querySelectorAll('.gc-opt').forEach(function(opt){ opt.classList.remove('active'); });
+  if (radio.closest('.gc-opt')) radio.closest('.gc-opt').classList.add('active');
   var examAmt     = parseInt(card.dataset.exam, 10);
   var trainingAmt = parseInt(card.dataset.training, 10);
   var chosen = radio.value === 'training' ? trainingAmt : examAmt;
   card.dataset.total = chosen;
-  var totalEl = document.getElementById('gc-total-' + gradeKey);
-  if (totalEl) totalEl.textContent = '₹' + chosen.toLocaleString('en-IN');
   updateGeSummary();
 }
 
@@ -2409,11 +2422,10 @@ function switchTab(name) {
   document.getElementById('tab-' + name).setAttribute('aria-selected','true');
   document.getElementById('panel-' + name).classList.add('active');
 
-  // Load workshop data when Programs tab is opened
+  // Load workshop data when Programs tab is opened (pre-fetched on page load so usually instant)
   if (name === 'workshop') {
     var listArea = document.getElementById('ws-list-area');
     if (listArea && !document.getElementById('ws-card-list')) {
-      listArea.innerHTML = '<p style="font-size:0.85rem;color:var(--ink-soft);padding:12px 0;">Loading programs…</p>';
       loadAllData().then(function() { populateWorkshopDropdown(); }).catch(function() {
         listArea.innerHTML = '<p style="font-size:0.85rem;color:var(--ink-soft);padding:12px 0;">Could not load programs. Please refresh and try again.</p>';
       });
@@ -3493,6 +3505,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var el = document.getElementById(id);
     if (el) el.addEventListener('keydown', function(e) { if (e.key === 'Enter') fetchPaymentHistory(); });
   });
+
+  // Pre-fetch all data eagerly so Programs tab is instant when clicked
+  loadAllData().then(function() { populateWorkshopDropdown(); }).catch(function(){});
 });
 
 // ─────────────────────────────────────────────────────────────────
