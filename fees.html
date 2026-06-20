@@ -2408,6 +2408,17 @@ function switchTab(name) {
   document.getElementById('tab-' + name).classList.add('active');
   document.getElementById('tab-' + name).setAttribute('aria-selected','true');
   document.getElementById('panel-' + name).classList.add('active');
+
+  // Load workshop data when Programs tab is opened
+  if (name === 'workshop') {
+    var listArea = document.getElementById('ws-list-area');
+    if (listArea && !document.getElementById('ws-card-list')) {
+      listArea.innerHTML = '<p style="font-size:0.85rem;color:var(--ink-soft);padding:12px 0;">Loading programs…</p>';
+      loadAllData().then(function() { populateWorkshopDropdown(); }).catch(function() {
+        listArea.innerHTML = '<p style="font-size:0.85rem;color:var(--ink-soft);padding:12px 0;">Could not load programs. Please refresh and try again.</p>';
+      });
+    }
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────
