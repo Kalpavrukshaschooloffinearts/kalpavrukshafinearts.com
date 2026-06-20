@@ -163,6 +163,24 @@
 .success-screen h2{font-family:var(--fd);font-size:1.8rem;color:var(--maroon);margin-bottom:12px;}
 .success-screen p{font-size:0.94rem;color:var(--ink-soft);line-height:1.8;}
 .success-screen .back-link{display:inline-block;margin-top:20px;font-size:0.80rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--saffron);text-decoration:none;}
+
+/* ── GRADE EXAM SELECTOR ── */
+.ge-grade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:20px;}
+.ge-grade-card{background:var(--cream);border:2px solid var(--bdr);border-radius:4px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;user-select:none;position:relative;}
+.ge-grade-card:hover{border-color:var(--maroon);background:#fff;}
+.ge-grade-card.selected{border-color:var(--maroon);background:#fff;box-shadow:0 0 0 2px rgba(123,29,46,0.12);}
+.ge-grade-card input[type=checkbox]{position:absolute;opacity:0;pointer-events:none;}
+.ge-grade-card .gc-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border:2px solid var(--bdr-s);border-radius:3px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:transparent;transition:all 0.15s;}
+.ge-grade-card.selected .gc-check{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+.ge-grade-card .gc-name{font-family:var(--fd);font-size:1.0rem;color:var(--maroon);margin-bottom:8px;}
+.ge-grade-card .gc-total{font-size:1.1rem;font-weight:700;color:var(--ink);}
+
+.ge-summary{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 18px;margin-bottom:16px;display:none;}
+.ge-summary.show{display:block;}
+.ge-summary-title{font-size:0.72rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;}
+.ge-summary-line{display:flex;justify-content:space-between;font-size:0.82rem;padding:3px 0;border-bottom:1px solid var(--bdr);color:var(--ink);}
+.ge-summary-line:last-of-type{border-bottom:none;}
+.ge-summary-total{display:flex;justify-content:space-between;font-family:var(--fd);font-size:1.15rem;font-weight:700;color:var(--maroon);margin-top:8px;padding-top:8px;border-top:2px solid var(--maroon);}
   </style>
 </head>
 <body>
@@ -697,7 +715,7 @@
             </div>
           </div>
 
-          <!-- KV student sub-form -->
+          <!-- KV student sub-form (regular workshops) -->
           <div id="ws-kv-wrap" style="display:none;">
             <div class="lookup-row">
               <div class="fg-field">
@@ -736,7 +754,7 @@
             </div>
           </div>
 
-          <!-- Outside student sub-form -->
+          <!-- Outside student sub-form (regular workshops) -->
           <div id="ws-out-wrap" style="display:none;">
             <div class="fg-row">
               <div class="fg-field">
@@ -757,6 +775,105 @@
             <button class="pay-btn" id="ws-out-pay-btn" onclick="initiatePayment('ws-out')">Complete Registration</button>
             <p class="refund-note"><strong>Refund Policy:</strong> All fees paid are non-refundable. In exceptional circumstances, refund requests may be submitted to the school — each case will be reviewed and a decision communicated at the discretion of the management.</p>
           </div>
+
+          <!-- ══════════════════════════════════════════
+               GRADE EXAM SUB-PANEL (shown when Type = "Grade Exam")
+          ══════════════════════════════════════════ -->
+          <div id="ge-wrap" style="display:none;">
+
+            <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:16px;">
+              Grade Exams are conducted offline on <strong style="color:var(--ink);">02 August 2026</strong>. This is open to Kalpavruksha students only. Enter your Roll No and select the grade(s) your child is appearing for — you can select more than one in a single payment.
+            </p>
+
+            <!-- Roll No lookup -->
+            <div class="lookup-row">
+              <div class="fg-field">
+                <label for="ge-roll">Student Roll Number *</label>
+                <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ge-roll-wrap">
+                  <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
+                  <input type="text" id="ge-roll" placeholder="12400001" autocomplete="off" inputmode="numeric"
+                    oninput="resetGeLookup()"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();lookupGeStudent();}"
+                    onfocus="document.getElementById('ge-roll-wrap').style.borderColor='var(--maroon)'"
+                    onblur="document.getElementById('ge-roll-wrap').style.borderColor='var(--bdr-s)'"
+                    style="border:none;outline:none;flex:1;min-width:0;padding:10px 13px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);background:transparent;">
+                </div>
+              </div>
+              <button class="lookup-btn" id="ge-lookup-btn" onclick="lookupGeStudent()">Check</button>
+            </div>
+            <div style="margin-top:-10px;margin-bottom:10px;">
+              <span class="hint" id="ge-roll-msg"></span>
+            </div>
+
+            <!-- Confirmed student chip -->
+            <div class="name-chip" id="ge-name-chip">
+              <table class="nc-table">
+                <tr><td>Student</td><td id="ge-student-name-display">—</td></tr>
+                <tr><td>Parent / Guardian</td><td id="ge-parent-name-display">—</td></tr>
+              </table>
+            </div>
+
+            <!-- Grade selector + fee breakdown (shown after Roll No confirmed) -->
+            <div id="ge-grade-section" style="display:none;">
+              <div class="form-divider"></div>
+              <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;">Select Grade(s) *</div>
+
+              <div class="ge-grade-grid" id="ge-grade-grid">
+                <div class="ge-grade-card" data-grade="Pre-Grade" data-total="1000" onclick="toggleGradeCard(this)">
+                  <input type="checkbox" value="Pre-Grade">
+                  <div class="gc-check">✓</div>
+                  <div class="gc-name">Pre-Grade</div>
+                  <div class="gc-total">₹1,000</div>
+                </div>
+                <div class="ge-grade-card" data-grade="Grade 1" data-total="1300" onclick="toggleGradeCard(this)">
+                  <input type="checkbox" value="Grade 1">
+                  <div class="gc-check">✓</div>
+                  <div class="gc-name">Grade 1</div>
+                  <div class="gc-total">₹1,300</div>
+                </div>
+                <div class="ge-grade-card" data-grade="Grade 2" data-total="1300" onclick="toggleGradeCard(this)">
+                  <input type="checkbox" value="Grade 2">
+                  <div class="gc-check">✓</div>
+                  <div class="gc-name">Grade 2</div>
+                  <div class="gc-total">₹1,300</div>
+                </div>
+                <div class="ge-grade-card" data-grade="Grade 3" data-total="1300" onclick="toggleGradeCard(this)">
+                  <input type="checkbox" value="Grade 3">
+                  <div class="gc-check">✓</div>
+                  <div class="gc-name">Grade 3</div>
+                  <div class="gc-total">₹1,300</div>
+                </div>
+                <div class="ge-grade-card" data-grade="Grade 4" data-total="1900" onclick="toggleGradeCard(this)">
+                  <input type="checkbox" value="Grade 4">
+                  <div class="gc-check">✓</div>
+                  <div class="gc-name">Grade 4</div>
+                  <div class="gc-total">₹1,900</div>
+                </div>
+              </div>
+              <span class="hint err" id="ge-grade-msg" style="display:block;margin-top:-10px;margin-bottom:14px;"></span>
+
+              <!-- Running total summary -->
+              <div class="ge-summary" id="ge-summary">
+                <div class="ge-summary-title">Selected Grades</div>
+                <div id="ge-summary-lines"></div>
+                <div class="ge-summary-total">
+                  <span>Total Payable</span>
+                  <span id="ge-summary-total-val">₹0</span>
+                </div>
+              </div>
+
+              <!-- Hidden fields -->
+              <input type="hidden" id="ge-phone">
+              <input type="hidden" id="ge-email">
+              <input type="hidden" id="ge-parent">
+              <input type="hidden" id="ge-amount" value="0">
+
+              <div class="form-divider"></div>
+              <button class="pay-btn" id="ge-pay-btn" onclick="initiatePayment('ge')" disabled>Select at least one grade to proceed</button>
+              <p class="refund-note"><strong>Note:</strong> Grade exam fees are remitted to the exam board and are strictly non-refundable once submitted.</p>
+            </div>
+
+          </div><!-- /ge-wrap -->
 
         </div>
         <div class="success-screen" id="workshop-success">
@@ -1999,11 +2116,16 @@ function populateWorkshopDropdown() {
 
   var html = '<div class="ws-list" id="ws-card-list">';
   active.forEach(function(ws, idx) {
-    var kvFee  = ws['KV Fee']      ? '₹' + ws['KV Fee']      : '';
-    var outFee = ws['Outside Fee'] ? '₹' + ws['Outside Fee'] : '';
+    var isGradeExam = (ws['Type'] || '').toLowerCase() === 'grade exam';
     var fees = '';
-    if (kvFee)  fees += '<span class="wli-fee-tag">KV Students: <strong>' + kvFee + '</strong></span>';
-    if (outFee) fees += '<span class="wli-fee-tag">Outside Students: <strong>' + outFee + '</strong></span>';
+    if (isGradeExam) {
+      fees = '<span class="wli-fee-tag" style="background:var(--maroon);color:#fff;padding:2px 8px;border-radius:3px;font-size:0.72rem;font-weight:600;letter-spacing:0.04em;">Grade Exam · Pre-Grade to Grade 4</span>';
+    } else {
+      var kvFee  = ws['KV Fee']      ? '₹' + ws['KV Fee']      : '';
+      var outFee = ws['Outside Fee'] ? '₹' + ws['Outside Fee'] : '';
+      if (kvFee)  fees += '<span class="wli-fee-tag">KV Students: <strong>' + kvFee + '</strong></span>';
+      if (outFee) fees += '<span class="wli-fee-tag">Outside Students: <strong>' + outFee + '</strong></span>';
+    }
     html +=
       '<div class="ws-list-item" id="ws-card-' + idx + '" data-idx="' + idx + '" onclick="selectWorkshopCard(this,' + idx + ')">' +
         '<div class="wli-name">' + ws['Name'] + '</div>' +
@@ -2028,22 +2150,138 @@ function selectWorkshopCard(el, idx) {
   // Sync the hidden input so the rest of the flow can read it
   document.getElementById('ws-select').value = currentWs['Name'];
 
-  // Call the existing reveal/type logic
   var reveal   = document.getElementById('ws-fee-reveal');
   var typeWrap = document.getElementById('ws-type-wrap');
   var kvWrap   = document.getElementById('ws-kv-wrap');
   var outWrap  = document.getElementById('ws-out-wrap');
+  var geWrap   = document.getElementById('ge-wrap');
 
+  // Hide all sub-panels first
   document.querySelectorAll('input[name="ws-type"]').forEach(function(r){ r.checked = false; });
   kvWrap.style.display  = 'none';
   outWrap.style.display = 'none';
+  geWrap.style.display  = 'none';
+  typeWrap.style.display = 'none';
+  reveal.classList.remove('show');
   resetWsLookup();
+  resetGeLookup();
 
-  document.getElementById('wfr-name').textContent   = currentWs['Name'];
-  document.getElementById('wfr-amount').textContent = '';
-  document.getElementById('wfr-desc').textContent   = currentWs['Description'] || '';
-  reveal.classList.add('show');
-  typeWrap.style.display = 'block';
+  // Route: Grade Exam gets its own sub-panel; everything else gets the standard flow
+  if ((currentWs['Type'] || '').toLowerCase() === 'grade exam') {
+    document.getElementById('wfr-name').textContent = currentWs['Name'];
+    document.getElementById('wfr-desc').textContent = currentWs['Description'] || 'Select your student\'s Roll No and the grade(s) to appear for.';
+    document.getElementById('wfr-amount').textContent = '';
+    reveal.classList.add('show');
+    geWrap.style.display = 'block';
+    geWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    document.getElementById('wfr-name').textContent   = currentWs['Name'];
+    document.getElementById('wfr-amount').textContent = '';
+    document.getElementById('wfr-desc').textContent   = currentWs['Description'] || '';
+    reveal.classList.add('show');
+    typeWrap.style.display = 'block';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// GRADE EXAM FLOW
+// ─────────────────────────────────────────────────────────────────
+var foundGeStudent = null;
+
+function resetGeLookup() {
+  foundGeStudent = null;
+  var chip = document.getElementById('ge-name-chip');
+  if (chip) chip.classList.remove('show');
+  var sec = document.getElementById('ge-grade-section');
+  if (sec) sec.style.display = 'none';
+  var rollMsg = document.getElementById('ge-roll-msg');
+  if (rollMsg) rollMsg.textContent = '';
+  // Deselect all grade cards
+  document.querySelectorAll('.ge-grade-card').forEach(function(c){ c.classList.remove('selected'); });
+  updateGeSummary();
+}
+
+function lookupGeStudent() {
+  var rawRoll = document.getElementById('ge-roll').value.trim();
+  var msg     = document.getElementById('ge-roll-msg');
+  var btn     = document.getElementById('ge-lookup-btn');
+
+  if (!rawRoll) { msg.textContent = 'Please enter your Roll No.'; msg.className = 'hint err'; return; }
+
+  var roll = 'KAL01' + rawRoll.toUpperCase();
+  btn.disabled = true; btn.textContent = 'Checking…';
+  msg.textContent = ''; msg.className = 'hint';
+
+  loadAllData().then(function() {
+    btn.disabled = false; btn.textContent = 'Check';
+
+    var student = DATA.students.find(function(s){
+      return (s['Roll No'] || '').toString().trim().toUpperCase() === roll;
+    });
+    if (!student) {
+      msg.innerHTML = 'Roll No not recognised. Please check and try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+      msg.className = 'hint err'; return;
+    }
+    if ((student['Status'] || '').toLowerCase() !== 'active') {
+      msg.innerHTML = 'This Roll No is inactive. Please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a> for help.';
+      msg.className = 'hint err'; return;
+    }
+
+    foundGeStudent = student;
+    document.getElementById('ge-student-name-display').textContent = student['Student Name'] || '—';
+    document.getElementById('ge-parent-name-display').textContent  = student['Parent Name']  || '—';
+    document.getElementById('ge-name-chip').classList.add('show');
+    document.getElementById('ge-phone').value  = student['Phone'] || '';
+    document.getElementById('ge-email').value  = student['Email'] || '';
+    document.getElementById('ge-parent').value = student['Parent Name'] || '';
+    document.getElementById('ge-grade-section').style.display = 'block';
+    document.getElementById('ge-grade-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  }).catch(function() {
+    btn.disabled = false; btn.textContent = 'Check';
+    msg.innerHTML = 'Unable to connect. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+    msg.className = 'hint err';
+  });
+}
+
+function toggleGradeCard(card) {
+  card.classList.toggle('selected');
+  document.getElementById('ge-grade-msg').textContent = '';
+  updateGeSummary();
+}
+
+function updateGeSummary() {
+  var selected = document.querySelectorAll('.ge-grade-card.selected');
+  var summaryEl = document.getElementById('ge-summary');
+  var linesEl   = document.getElementById('ge-summary-lines');
+  var totalEl   = document.getElementById('ge-summary-total-val');
+  var payBtn    = document.getElementById('ge-pay-btn');
+  var amtInput  = document.getElementById('ge-amount');
+
+  if (!selected.length) {
+    if (summaryEl) summaryEl.classList.remove('show');
+    if (payBtn) { payBtn.disabled = true; payBtn.textContent = 'Select at least one grade to proceed'; }
+    if (amtInput) amtInput.value = 0;
+    return;
+  }
+
+  var total = 0;
+  var lines = '';
+  selected.forEach(function(c) {
+    var grade = c.dataset.grade;
+    var amt   = parseInt(c.dataset.total, 10);
+    total += amt;
+    lines += '<div class="ge-summary-line"><span>' + grade + '</span><span>₹' + amt.toLocaleString('en-IN') + '</span></div>';
+  });
+
+  if (linesEl) linesEl.innerHTML = lines;
+  if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+  if (summaryEl) summaryEl.classList.add('show');
+  if (amtInput) amtInput.value = total;
+  if (payBtn) {
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay ₹' + total.toLocaleString('en-IN') + ' →';
+  }
 }
 
 function populateMonthDropdown() {
@@ -2459,7 +2697,8 @@ function initiatePayment(flow) {
   var activeBtn = document.getElementById(
     flow === 'new' ? 'new-pay-btn' :
     flow === 'existing' ? 'ex-pay-btn' :
-    flow === 'ws-kv' ? 'ws-kv-pay-btn' : 'ws-out-pay-btn'
+    flow === 'ws-kv' ? 'ws-kv-pay-btn' :
+    flow === 'ge' ? 'ge-pay-btn' : 'ws-out-pay-btn'
   );
   if (activeBtn && activeBtn.disabled) return; // already processing
   if (activeBtn && !activeBtn.dataset.origText) activeBtn.dataset.origText = activeBtn.textContent;
@@ -2590,6 +2829,29 @@ function initiatePayment(flow) {
     amount    = amt;
     desc      = 'Workshop — ' + currentWs['Name'] + ' — ' + n + ' (outside student)';
     successId = 'workshop-success';
+
+  } else if (flow === 'ge') {
+    if (!foundGeStudent || !currentWs) { alert('Please confirm your Roll No first.'); return; }
+
+    var selectedCards = document.querySelectorAll('.ge-grade-card.selected');
+    if (!selectedCards.length) {
+      document.getElementById('ge-grade-msg').textContent = 'Please select at least one grade.';
+      return;
+    }
+
+    var amt = parseInt(document.getElementById('ge-amount').value, 10);
+    if (!amt || amt <= 0) { alert('Fee calculation error. Please try again.'); return; }
+
+    // Build grade list for description
+    var gradeList = [];
+    selectedCards.forEach(function(c){ gradeList.push(c.dataset.grade); });
+
+    name      = foundGeStudent['Student Name'];
+    phone     = document.getElementById('ge-phone').value;
+    email     = document.getElementById('ge-email').value;
+    amount    = amt;
+    desc      = 'Grade Exam (02 Aug 2026) — ' + gradeList.join(' + ') + ' — ' + name;
+    successId = 'workshop-success';
   }
 
   // Open Razorpay
@@ -2609,7 +2871,7 @@ function initiatePayment(flow) {
       student_name: name,
       description:  desc,
       contact:      phone,
-      roll_no:      (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : '')),
+      roll_no:      (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : (foundGeStudent ? (foundGeStudent['Roll No'] || '') : ''))),
       fee_month:    (document.getElementById('ex-month') ? document.getElementById('ex-month').value : ''),
       program:      (currentWs ? (currentWs['Name'] || '') : '')
     },
@@ -2755,20 +3017,32 @@ function initiatePayment(flow) {
         window._pendingMonthlyFee = null;
       }
 
-      // Workshop registration
+      // Workshop / Grade Exam registration
       if (successId === 'workshop-success' && currentWs) {
+        var isGradeExam = flow === 'ge';
+        var geGradeList = [];
+        var geBreakdown = [];
+        if (isGradeExam) {
+          document.querySelectorAll('.ge-grade-card.selected').forEach(function(c){
+            geGradeList.push(c.dataset.grade);
+            geBreakdown.push(c.dataset.grade + ': ₹' + c.dataset.total);
+          });
+        }
         submitToPortal({
           submissionType : 'Program Registration',
           programName    : currentWs['Name']         || '',
-          programType    : currentWs['Type']         || 'Workshop',
-          programDate    : currentWs['Date']         || '',
-          studentType    : flow === 'ws-kv' ? 'KV Student' : 'Outside Student',
+          programType    : isGradeExam ? 'Grade Exam' : (currentWs['Type'] || 'Workshop'),
+          programDate    : isGradeExam ? '02 Aug 2026' : (currentWs['Date'] || ''),
+          studentType    : isGradeExam ? 'KV Student' : (flow === 'ws-kv' ? 'KV Student' : 'Outside Student'),
           studentName    : name,
-          rollNo         : foundWsStudent ? (foundWsStudent['Roll No'] || '') : '',
+          parentName     : isGradeExam ? (foundGeStudent ? (foundGeStudent['Parent Name'] || '') : '') : (foundWsStudent ? (foundWsStudent['Parent Name'] || '') : ''),
+          rollNo         : isGradeExam ? (foundGeStudent ? (foundGeStudent['Roll No'] || '') : '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : ''),
           phone          : phone,
           email          : email,
           amountPaid     : amount,
           transactionId  : response.razorpay_payment_id || '',
+          grades         : isGradeExam ? geGradeList.join(', ') : '',
+          gradeBreakdown : isGradeExam ? geBreakdown.join(' | ') : '',
           notes          : desc || ''
         }, function(result) {
           if (result && result.receiptNo && receiptStore['workshop']) {
