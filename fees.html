@@ -794,10 +794,25 @@
           ══════════════════════════════════════════ -->
           <div id="ge-wrap" style="display:none;">
 
-            <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:16px;">
-              Grade Exams are conducted offline on <strong style="color:var(--ink);">02 August 2026</strong>. This is open to Kalpavruksha students only. Enter your Roll No and select the grade(s) your child is appearing for — you can select more than one in a single payment.
-            </p>
+            <!-- Deadline banner (shown if past July 1) -->
+            <div id="ge-closed-banner" style="display:none;background:#fdf2f2;border:1px solid #e5b8b8;border-radius:4px;padding:12px 16px;margin-bottom:16px;font-size:0.84rem;color:#8b0000;line-height:1.6;">
+              <strong>Registrations closed.</strong> The deadline for Grade Exam enrolment was 1 July 2026. For late registrations please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);font-weight:600;">WhatsApp us</a>.
+            </div>
 
+            <div id="ge-open-wrap">
+              <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:16px;">
+                Grade Exams are conducted offline on <strong style="color:var(--ink);">02 August 2026</strong>. This is open to Kalpavruksha students only. Enrolment deadline: <strong style="color:var(--maroon);">1 July 2026</strong>.
+              </p>
+
+              <!-- Payment mode toggle: new enrolment vs training top-up -->
+              <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+                <button id="ge-mode-enrol" onclick="setGeMode('enrol')" style="flex:1;min-width:140px;padding:10px 16px;font-size:0.82rem;background:var(--maroon);color:#fff;border:2px solid var(--maroon);border-radius:3px;cursor:pointer;font-family:var(--fb);letter-spacing:0.04em;">New Enrolment</button>
+                <button id="ge-mode-topup" onclick="setGeMode('topup')" style="flex:1;min-width:140px;padding:10px 16px;font-size:0.82rem;background:#fff;color:var(--maroon);border:2px solid var(--maroon);border-radius:3px;cursor:pointer;font-family:var(--fb);letter-spacing:0.04em;">Add Training (Top-up)</button>
+              </div>
+
+
+            <!-- ── ENROL SECTION ── -->
+            <div id="ge-enrol-section">
             <!-- Roll No lookup -->
             <div class="lookup-row">
               <div class="fg-field">
@@ -832,44 +847,49 @@
               <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;">Select Grade(s) *</div>
 
               <div class="ge-grade-grid" id="ge-grade-grid">
-                <div class="ge-grade-card" data-grade="Pre-Grade" data-exam="900" data-training="1900" data-total="900" onclick="toggleGradeCard(this)">
+                <div class="ge-grade-card" data-grade="Pre-Grade" data-exam="1000" data-training="2000" data-total="1000" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Pre-Grade</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt active"><input type="radio" name="gc-opt-PreGrade" value="exam" checked onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹900</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="training" onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹1,900</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-PreGrade" value="exam" checked onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,000</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="training" onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,000</span></label>
+                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:4px;padding:0 4px;">Training: Jul 18, 19, 25 &amp; 26. <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">Contact school</a> for details.</div>
                   </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 1" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
+                <div class="ge-grade-card" data-grade="Grade 1" data-exam="1300" data-training="2300" data-total="1300" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 1</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade1" value="exam" checked onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,200</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="training" onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,200</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade1" value="exam" checked onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,300</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="training" onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,300</span></label>
+                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:4px;padding:0 4px;">Training: Jul 18, 19, 25 &amp; 26. <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">Contact school</a> for details.</div>
                   </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 2" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
+                <div class="ge-grade-card" data-grade="Grade 2" data-exam="1300" data-training="2300" data-total="1300" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 2</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade2" value="exam" checked onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,200</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="training" onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,200</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade2" value="exam" checked onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,300</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="training" onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,300</span></label>
+                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:4px;padding:0 4px;">Training: Jul 18, 19, 25 &amp; 26. <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">Contact school</a> for details.</div>
                   </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 3" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
+                <div class="ge-grade-card" data-grade="Grade 3" data-exam="1300" data-training="2300" data-total="1300" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 3</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade3" value="exam" checked onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,200</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="training" onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,200</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade3" value="exam" checked onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,300</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="training" onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,300</span></label>
+                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:4px;padding:0 4px;">Training: Jul 18, 19, 25 &amp; 26. <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">Contact school</a> for details.</div>
                   </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 4" data-exam="1800" data-training="2800" data-total="1800" onclick="toggleGradeCard(this)">
+                <div class="ge-grade-card" data-grade="Grade 4" data-exam="1900" data-training="2900" data-total="1900" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 4</div>
                   <div class="gc-options" onclick="event.stopPropagation()">
-                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade4" value="exam" checked onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,800</span></label>
-                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="training" onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,800</span></label>
+                    <label class="gc-opt active"><input type="radio" name="gc-opt-Grade4" value="exam" checked onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam only</span><span class="gc-opt-price">₹1,900</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="training" onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">+ Training</span><span class="gc-opt-price">₹2,900</span></label>
+                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:4px;padding:0 4px;">Training: Jul 18, 19, 25 &amp; 26. <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">Contact school</a> for details.</div>
                   </div>
                 </div>
               </div>
@@ -895,6 +915,98 @@
               <button class="pay-btn" id="ge-pay-btn" onclick="initiatePayment('ge')" disabled>Select at least one grade to proceed</button>
               <p class="refund-note"><strong>Note:</strong> Grade exam fees are remitted to the exam board and are strictly non-refundable once submitted.</p>
             </div>
+            </div><!-- /ge-enrol-section -->
+
+            <!-- ── TOP-UP SECTION (training add-on) ── -->
+            <div id="ge-topup-section" style="display:none;">
+              <p style="font-size:0.84rem;color:var(--ink-soft);line-height:1.7;margin-bottom:16px;">
+                Already paid the exam fee? Add training for <strong style="color:var(--ink);">₹1,000 per grade</strong> (all grades same rate). Training dates: <strong style="color:var(--ink);">Jul 18, 19, 25 &amp; 26</strong>.
+              </p>
+
+              <!-- Roll No lookup (shared fields, different lookup btn) -->
+              <div class="lookup-row">
+                <div class="fg-field">
+                  <label for="ge-topup-roll">Student Roll Number *</label>
+                  <div style="display:flex;align-items:stretch;border:1px solid var(--bdr-s);border-radius:3px;overflow:hidden;background:#fff;transition:border-color 0.2s;" id="ge-topup-roll-wrap">
+                    <span style="padding:10px 10px 10px 13px;background:var(--cream);color:var(--ink-soft);font-size:0.9rem;font-weight:600;border-right:1px solid var(--bdr-s);white-space:nowrap;display:flex;align-items:center;">KAL01</span>
+                    <input type="text" id="ge-topup-roll" placeholder="12400001" autocomplete="off" inputmode="numeric"
+                      oninput="resetGeTopup()"
+                      onkeydown="if(event.key==='Enter'){event.preventDefault();lookupGeTopupStudent();}"
+                      onfocus="document.getElementById('ge-topup-roll-wrap').style.borderColor='var(--maroon)'"
+                      onblur="document.getElementById('ge-topup-roll-wrap').style.borderColor='var(--bdr-s)'"
+                      style="border:none;outline:none;flex:1;min-width:0;padding:10px 13px;font-size:0.9rem;font-family:var(--fb);color:var(--ink);background:transparent;">
+                  </div>
+                </div>
+                <button class="lookup-btn" id="ge-topup-lookup-btn" onclick="lookupGeTopupStudent()">Check</button>
+              </div>
+              <div style="margin-top:-10px;margin-bottom:10px;">
+                <span class="hint" id="ge-topup-roll-msg"></span>
+              </div>
+
+              <!-- Confirmed student chip -->
+              <div class="name-chip" id="ge-topup-chip">
+                <table class="nc-table">
+                  <tr><td>Student</td><td id="ge-topup-student-display">—</td></tr>
+                  <tr><td>Parent / Guardian</td><td id="ge-topup-parent-display">—</td></tr>
+                </table>
+              </div>
+
+              <!-- Grade checkboxes for top-up -->
+              <div id="ge-topup-grade-section" style="display:none;">
+                <div class="form-divider"></div>
+                <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;">Select Grade(s) to add training for *</div>
+                <div class="ge-grade-grid">
+                  <div class="ge-grade-card" data-grade="Pre-Grade" data-topup="1000" onclick="toggleTopupCard(this)">
+                    <div class="gc-check">✓</div>
+                    <div class="gc-name">Pre-Grade</div>
+                    <div style="font-size:0.9rem;font-weight:700;color:var(--ink);margin-top:6px;">₹1,000</div>
+                  </div>
+                  <div class="ge-grade-card" data-grade="Grade 1" data-topup="1000" onclick="toggleTopupCard(this)">
+                    <div class="gc-check">✓</div>
+                    <div class="gc-name">Grade 1</div>
+                    <div style="font-size:0.9rem;font-weight:700;color:var(--ink);margin-top:6px;">₹1,000</div>
+                  </div>
+                  <div class="ge-grade-card" data-grade="Grade 2" data-topup="1000" onclick="toggleTopupCard(this)">
+                    <div class="gc-check">✓</div>
+                    <div class="gc-name">Grade 2</div>
+                    <div style="font-size:0.9rem;font-weight:700;color:var(--ink);margin-top:6px;">₹1,000</div>
+                  </div>
+                  <div class="ge-grade-card" data-grade="Grade 3" data-topup="1000" onclick="toggleTopupCard(this)">
+                    <div class="gc-check">✓</div>
+                    <div class="gc-name">Grade 3</div>
+                    <div style="font-size:0.9rem;font-weight:700;color:var(--ink);margin-top:6px;">₹1,000</div>
+                  </div>
+                  <div class="ge-grade-card" data-grade="Grade 4" data-topup="1000" onclick="toggleTopupCard(this)">
+                    <div class="gc-check">✓</div>
+                    <div class="gc-name">Grade 4</div>
+                    <div style="font-size:0.9rem;font-weight:700;color:var(--ink);margin-top:6px;">₹1,000</div>
+                  </div>
+                </div>
+                <span class="hint err" id="ge-topup-grade-msg" style="display:block;margin-top:-10px;margin-bottom:14px;"></span>
+
+                <!-- Summary -->
+                <div class="ge-summary" id="ge-topup-summary">
+                  <div class="ge-summary-title">Training Add-on</div>
+                  <div id="ge-topup-summary-lines"></div>
+                  <div class="ge-summary-total">
+                    <span>Total Payable</span>
+                    <span id="ge-topup-total-val">₹0</span>
+                  </div>
+                </div>
+
+                <!-- Hidden fields -->
+                <input type="hidden" id="ge-topup-phone">
+                <input type="hidden" id="ge-topup-email">
+                <input type="hidden" id="ge-topup-parent">
+                <input type="hidden" id="ge-topup-amount" value="0">
+
+                <div class="form-divider"></div>
+                <button class="pay-btn" id="ge-topup-pay-btn" onclick="initiatePayment('ge-topup')" disabled>Select at least one grade to proceed</button>
+                <p class="refund-note"><strong>Note:</strong> Training fees are non-refundable once submitted.</p>
+              </div>
+            </div><!-- /ge-topup-section -->
+
+            </div><!-- /ge-open-wrap -->
 
           </div><!-- /ge-wrap -->
 
@@ -2196,6 +2308,8 @@ function selectWorkshopCard(el, idx) {
     document.getElementById('wfr-amount').textContent = '';
     reveal.classList.add('show');
     geWrap.style.display = 'block';
+    checkGeDeadline();
+    setGeMode('enrol'); // always start on enrol tab
     geWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } else {
     document.getElementById('wfr-name').textContent   = currentWs['Name'];
@@ -2215,12 +2329,132 @@ function closeWorkshopSelection() {
   document.getElementById('ge-wrap').style.display       = 'none';
   resetWsLookup();
   resetGeLookup();
+  resetGeTopup();
   currentWs = null;
 }
 
 // ─────────────────────────────────────────────────────────────────
 // GRADE EXAM FLOW
 // ─────────────────────────────────────────────────────────────────
+var GE_DEADLINE = new Date('2026-07-01T23:59:59+05:30');
+var GE_MODE = 'enrol'; // 'enrol' or 'topup'
+
+function checkGeDeadline() {
+  var now = new Date();
+  var closed = now > GE_DEADLINE;
+  document.getElementById('ge-closed-banner').style.display = closed ? 'block' : 'none';
+  document.getElementById('ge-open-wrap').style.display     = closed ? 'none'  : 'block';
+  return closed;
+}
+
+function setGeMode(mode) {
+  GE_MODE = mode;
+  var enrolBtn  = document.getElementById('ge-mode-enrol');
+  var topupBtn  = document.getElementById('ge-mode-topup');
+  var enrolSec  = document.getElementById('ge-enrol-section');
+  var topupSec  = document.getElementById('ge-topup-section');
+  var activeStyle   = 'background:var(--maroon);color:#fff;border:2px solid var(--maroon);border-radius:3px;cursor:pointer;font-family:var(--fb);letter-spacing:0.04em;';
+  var inactiveStyle = 'background:#fff;color:var(--maroon);border:2px solid var(--maroon);border-radius:3px;cursor:pointer;font-family:var(--fb);letter-spacing:0.04em;';
+  if (mode === 'enrol') {
+    enrolBtn.style.cssText  = 'flex:1;min-width:140px;padding:10px 16px;font-size:0.82rem;' + activeStyle;
+    topupBtn.style.cssText  = 'flex:1;min-width:140px;padding:10px 16px;font-size:0.82rem;' + inactiveStyle;
+    enrolSec.style.display  = 'block';
+    topupSec.style.display  = 'none';
+  } else {
+    enrolBtn.style.cssText  = 'flex:1;min-width:140px;padding:10px 16px;font-size:0.82rem;' + inactiveStyle;
+    topupBtn.style.cssText  = 'flex:1;min-width:140px;padding:10px 16px;font-size:0.82rem;' + activeStyle;
+    enrolSec.style.display  = 'none';
+    topupSec.style.display  = 'block';
+  }
+}
+
+// ── TOP-UP FLOW ──────────────────────────────────────────────────
+var foundGeTopupStudent = null;
+
+function resetGeTopup() {
+  foundGeTopupStudent = null;
+  var chip = document.getElementById('ge-topup-chip');
+  if (chip) chip.classList.remove('show');
+  var sec = document.getElementById('ge-topup-grade-section');
+  if (sec) sec.style.display = 'none';
+  var msg = document.getElementById('ge-topup-roll-msg');
+  if (msg) msg.textContent = '';
+  document.querySelectorAll('#ge-topup-grade-section .ge-grade-card').forEach(function(c){
+    c.classList.remove('selected');
+  });
+  updateGeTopupSummary();
+}
+
+function lookupGeTopupStudent() {
+  var rawRoll = document.getElementById('ge-topup-roll').value.trim();
+  var msg = document.getElementById('ge-topup-roll-msg');
+  var btn = document.getElementById('ge-topup-lookup-btn');
+  if (!rawRoll) { msg.textContent = 'Please enter your Roll No.'; msg.className = 'hint err'; return; }
+  var roll = 'KAL01' + rawRoll.toUpperCase();
+  btn.disabled = true; btn.textContent = 'Checking…';
+  msg.textContent = ''; msg.className = 'hint';
+  loadAllData().then(function() {
+    btn.disabled = false; btn.textContent = 'Check';
+    var student = DATA.students.find(function(s){
+      return (s['Roll No'] || '').toString().trim().toUpperCase() === roll;
+    });
+    if (!student) {
+      msg.innerHTML = 'Roll No not recognised. Please check and try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+      msg.className = 'hint err'; return;
+    }
+    if ((student['Status'] || '').toLowerCase() !== 'active') {
+      msg.innerHTML = 'This Roll No is inactive. Please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a> for help.';
+      msg.className = 'hint err'; return;
+    }
+    foundGeTopupStudent = student;
+    document.getElementById('ge-topup-student-display').textContent = student['Student Name'] || '—';
+    document.getElementById('ge-topup-parent-display').textContent  = student['Parent Name']  || '—';
+    document.getElementById('ge-topup-chip').classList.add('show');
+    document.getElementById('ge-topup-phone').value  = student['Phone'] || '';
+    document.getElementById('ge-topup-email').value  = student['Email'] || '';
+    document.getElementById('ge-topup-parent').value = student['Parent Name'] || '';
+    document.getElementById('ge-topup-grade-section').style.display = 'block';
+    document.getElementById('ge-topup-grade-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }).catch(function() {
+    btn.disabled = false; btn.textContent = 'Check';
+    msg.innerHTML = 'Unable to connect. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+    msg.className = 'hint err';
+  });
+}
+
+function toggleTopupCard(card) {
+  card.classList.toggle('selected');
+  document.getElementById('ge-topup-grade-msg').textContent = '';
+  updateGeTopupSummary();
+}
+
+function updateGeTopupSummary() {
+  var selected  = document.querySelectorAll('#ge-topup-grade-section .ge-grade-card.selected');
+  var summaryEl = document.getElementById('ge-topup-summary');
+  var linesEl   = document.getElementById('ge-topup-summary-lines');
+  var totalEl   = document.getElementById('ge-topup-total-val');
+  var payBtn    = document.getElementById('ge-topup-pay-btn');
+  var amtInput  = document.getElementById('ge-topup-amount');
+  if (!selected.length) {
+    if (summaryEl) summaryEl.classList.remove('show');
+    if (payBtn) { payBtn.disabled = true; payBtn.textContent = 'Select at least one grade to proceed'; }
+    if (amtInput) amtInput.value = 0;
+    return;
+  }
+  var total = 0, lines = '';
+  selected.forEach(function(c) {
+    var grade = c.dataset.grade;
+    var amt   = parseInt(c.dataset.topup, 10);
+    total += amt;
+    lines += '<div class="ge-summary-line"><span>' + grade + ' — Training</span><span>₹' + amt.toLocaleString('en-IN') + '</span></div>';
+  });
+  if (linesEl) linesEl.innerHTML = lines;
+  if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+  if (summaryEl) summaryEl.classList.add('show');
+  if (amtInput) amtInput.value = total;
+  if (payBtn) { payBtn.disabled = false; payBtn.textContent = 'Pay ₹' + total.toLocaleString('en-IN') + ' →'; }
+}
+
 var foundGeStudent = null;
 
 function resetGeLookup() {
@@ -2776,7 +3010,8 @@ function initiatePayment(flow) {
     flow === 'new' ? 'new-pay-btn' :
     flow === 'existing' ? 'ex-pay-btn' :
     flow === 'ws-kv' ? 'ws-kv-pay-btn' :
-    flow === 'ge' ? 'ge-pay-btn' : 'ws-out-pay-btn'
+    flow === 'ge' ? 'ge-pay-btn' :
+    flow === 'ge-topup' ? 'ge-topup-pay-btn' : 'ws-out-pay-btn'
   );
   if (activeBtn && activeBtn.disabled) return; // already processing
   if (activeBtn && !activeBtn.dataset.origText) activeBtn.dataset.origText = activeBtn.textContent;
@@ -2933,9 +3168,29 @@ function initiatePayment(flow) {
     amount    = amt;
     desc      = 'Grade Exam (02 Aug 2026) — ' + gradeList.join(' + ') + ' — ' + name;
     successId = 'workshop-success';
-  }
 
-  // Open Razorpay
+  } else if (flow === 'ge-topup') {
+    if (!foundGeTopupStudent || !currentWs) { alert('Please confirm your Roll No first.'); return; }
+
+    var topupCards = document.querySelectorAll('#ge-topup-grade-section .ge-grade-card.selected');
+    if (!topupCards.length) {
+      document.getElementById('ge-topup-grade-msg').textContent = 'Please select at least one grade.';
+      return;
+    }
+
+    var topupAmt = parseInt(document.getElementById('ge-topup-amount').value, 10);
+    if (!topupAmt || topupAmt <= 0) { alert('Fee calculation error. Please try again.'); return; }
+
+    var topupGrades = [];
+    topupCards.forEach(function(c){ topupGrades.push(c.dataset.grade); });
+
+    name      = foundGeTopupStudent['Student Name'];
+    phone     = document.getElementById('ge-topup-phone').value;
+    email     = document.getElementById('ge-topup-email').value;
+    amount    = topupAmt;
+    desc      = 'Training Top-up (02 Aug 2026) — ' + topupGrades.join(' + ') + ' — ' + name;
+    successId = 'workshop-success';
+  }
   var options = {
     key:         RZP_KEY,
     amount:      amount * 100,   // paise
@@ -3101,31 +3356,40 @@ function initiatePayment(flow) {
       // Workshop / Grade Exam registration
       if (successId === 'workshop-success' && currentWs) {
         var isGradeExam = flow === 'ge';
+        var isTopup     = flow === 'ge-topup';
         var geGradeList = [];
         var geBreakdown = [];
         if (isGradeExam) {
-          document.querySelectorAll('.ge-grade-card.selected').forEach(function(c){
+          document.querySelectorAll('#ge-enrol-section .ge-grade-card.selected').forEach(function(c){
             var withTraining = c.querySelector('input[value=training]') && c.querySelector('input[value=training]').checked;
             var label = c.dataset.grade + (withTraining ? ' (+ Training)' : '');
             geGradeList.push(label);
             geBreakdown.push(label + ': ₹' + c.dataset.total);
           });
         }
+        if (isTopup) {
+          document.querySelectorAll('#ge-topup-grade-section .ge-grade-card.selected').forEach(function(c){
+            geGradeList.push(c.dataset.grade + ' (Training Top-up)');
+            geBreakdown.push(c.dataset.grade + ' Training: ₹' + c.dataset.topup);
+          });
+        }
+        var studentForSubmit = isTopup ? foundGeTopupStudent : foundGeStudent;
+        var wsStudent        = foundWsStudent;
         submitToPortal({
           submissionType : 'Program Registration',
           programName    : currentWs['Name']         || '',
-          programType    : isGradeExam ? 'Grade Exam' : (currentWs['Type'] || 'Workshop'),
-          programDate    : isGradeExam ? '02 Aug 2026' : (currentWs['Date'] || ''),
-          studentType    : isGradeExam ? 'KV Student' : (flow === 'ws-kv' ? 'KV Student' : 'Outside Student'),
+          programType    : (isGradeExam || isTopup) ? 'Grade Exam' : (currentWs['Type'] || 'Workshop'),
+          programDate    : (isGradeExam || isTopup) ? '02 Aug 2026' : (currentWs['Date'] || ''),
+          studentType    : (isGradeExam || isTopup) ? 'KV Student' : (flow === 'ws-kv' ? 'KV Student' : 'Outside Student'),
           studentName    : name,
-          parentName     : isGradeExam ? (foundGeStudent ? (foundGeStudent['Parent Name'] || '') : '') : (foundWsStudent ? (foundWsStudent['Parent Name'] || '') : ''),
-          rollNo         : isGradeExam ? (foundGeStudent ? (foundGeStudent['Roll No'] || '') : '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : ''),
+          parentName     : (isGradeExam || isTopup) ? (studentForSubmit ? (studentForSubmit['Parent Name'] || '') : '') : (wsStudent ? (wsStudent['Parent Name'] || '') : ''),
+          rollNo         : (isGradeExam || isTopup) ? (studentForSubmit ? (studentForSubmit['Roll No'] || '') : '') : (wsStudent ? (wsStudent['Roll No'] || '') : ''),
           phone          : phone,
           email          : email,
           amountPaid     : amount,
           transactionId  : response.razorpay_payment_id || '',
-          grades         : isGradeExam ? geGradeList.join(', ') : '',
-          gradeBreakdown : isGradeExam ? geBreakdown.join(' | ') : '',
+          grades         : geGradeList.join(', '),
+          gradeBreakdown : geBreakdown.join(' | '),
           notes          : desc || ''
         }, function(result) {
           if (result && result.receiptNo && receiptStore['workshop']) {
