@@ -172,8 +172,15 @@
 .ge-grade-card input[type=checkbox]{position:absolute;opacity:0;pointer-events:none;}
 .ge-grade-card .gc-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border:2px solid var(--bdr-s);border-radius:3px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:transparent;transition:all 0.15s;}
 .ge-grade-card.selected .gc-check{background:var(--maroon);border-color:var(--maroon);color:#fff;}
-.ge-grade-card .gc-name{font-family:var(--fd);font-size:1.0rem;color:var(--maroon);margin-bottom:8px;}
+.ge-grade-card .gc-name{font-family:var(--fd);font-size:1.0rem;color:var(--maroon);margin-bottom:10px;}
 .ge-grade-card .gc-total{font-size:1.1rem;font-weight:700;color:var(--ink);}
+.gc-options{display:none;margin-top:10px;border-top:1px solid var(--bdr);padding-top:8px;}
+.ge-grade-card.selected .gc-options{display:block;}
+.gc-opt{display:flex;align-items:center;justify-content:space-between;padding:5px 4px;border-radius:3px;cursor:pointer;font-size:0.8rem;gap:8px;}
+.gc-opt:hover{background:rgba(123,29,46,0.06);}
+.gc-opt input[type=radio]{accent-color:var(--maroon);margin:0;flex-shrink:0;}
+.gc-opt-label{flex:1;color:var(--ink);}
+.gc-opt-price{font-weight:700;color:var(--ink);white-space:nowrap;}
 
 .ge-summary{background:var(--cream);border:1px solid var(--bdr);border-radius:4px;padding:14px 18px;margin-bottom:16px;display:none;}
 .ge-summary.show{display:block;}
@@ -819,35 +826,50 @@
               <div style="font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;">Select Grade(s) *</div>
 
               <div class="ge-grade-grid" id="ge-grade-grid">
-                <div class="ge-grade-card" data-grade="Pre-Grade" data-total="1000" onclick="toggleGradeCard(this)">
-                  <input type="checkbox" value="Pre-Grade">
+                <div class="ge-grade-card" data-grade="Pre-Grade" data-exam="900" data-training="1900" data-total="900" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Pre-Grade</div>
-                  <div class="gc-total">₹1,000</div>
+                  <div class="gc-total" id="gc-total-PreGrade">₹900</div>
+                  <div class="gc-options" onclick="event.stopPropagation()">
+                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="exam" checked onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹900</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-PreGrade" value="training" onchange="selectGradeOption(this,'Pre-Grade')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹1,900</span></label>
+                  </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 1" data-total="1300" onclick="toggleGradeCard(this)">
-                  <input type="checkbox" value="Grade 1">
+                <div class="ge-grade-card" data-grade="Grade 1" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 1</div>
-                  <div class="gc-total">₹1,300</div>
+                  <div class="gc-total" id="gc-total-Grade1">₹1,200</div>
+                  <div class="gc-options" onclick="event.stopPropagation()">
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="exam" checked onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,200</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade1" value="training" onchange="selectGradeOption(this,'Grade 1')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,200</span></label>
+                  </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 2" data-total="1300" onclick="toggleGradeCard(this)">
-                  <input type="checkbox" value="Grade 2">
+                <div class="ge-grade-card" data-grade="Grade 2" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 2</div>
-                  <div class="gc-total">₹1,300</div>
+                  <div class="gc-total" id="gc-total-Grade2">₹1,200</div>
+                  <div class="gc-options" onclick="event.stopPropagation()">
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="exam" checked onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,200</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade2" value="training" onchange="selectGradeOption(this,'Grade 2')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,200</span></label>
+                  </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 3" data-total="1300" onclick="toggleGradeCard(this)">
-                  <input type="checkbox" value="Grade 3">
+                <div class="ge-grade-card" data-grade="Grade 3" data-exam="1200" data-training="2200" data-total="1200" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 3</div>
-                  <div class="gc-total">₹1,300</div>
+                  <div class="gc-total" id="gc-total-Grade3">₹1,200</div>
+                  <div class="gc-options" onclick="event.stopPropagation()">
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="exam" checked onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,200</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade3" value="training" onchange="selectGradeOption(this,'Grade 3')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,200</span></label>
+                  </div>
                 </div>
-                <div class="ge-grade-card" data-grade="Grade 4" data-total="1900" onclick="toggleGradeCard(this)">
-                  <input type="checkbox" value="Grade 4">
+                <div class="ge-grade-card" data-grade="Grade 4" data-exam="1800" data-training="2800" data-total="1800" onclick="toggleGradeCard(this)">
                   <div class="gc-check">✓</div>
                   <div class="gc-name">Grade 4</div>
-                  <div class="gc-total">₹1,900</div>
+                  <div class="gc-total" id="gc-total-Grade4">₹1,800</div>
+                  <div class="gc-options" onclick="event.stopPropagation()">
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="exam" checked onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam fee only</span><span class="gc-opt-price">₹1,800</span></label>
+                    <label class="gc-opt"><input type="radio" name="gc-opt-Grade4" value="training" onchange="selectGradeOption(this,'Grade 4')"><span class="gc-opt-label">Exam + Training</span><span class="gc-opt-price">₹2,800</span></label>
+                  </div>
                 </div>
               </div>
               <span class="hint err" id="ge-grade-msg" style="display:block;margin-top:-10px;margin-bottom:14px;"></span>
@@ -2196,8 +2218,16 @@ function resetGeLookup() {
   if (sec) sec.style.display = 'none';
   var rollMsg = document.getElementById('ge-roll-msg');
   if (rollMsg) rollMsg.textContent = '';
-  // Deselect all grade cards
-  document.querySelectorAll('.ge-grade-card').forEach(function(c){ c.classList.remove('selected'); });
+  // Deselect all grade cards and reset radios to exam-only
+  document.querySelectorAll('.ge-grade-card').forEach(function(c){
+    c.classList.remove('selected');
+    var examRadio = c.querySelector('input[value=exam]');
+    if (examRadio) examRadio.checked = true;
+    c.dataset.total = c.dataset.exam;
+    var gradeKey = c.dataset.grade.replace(/\s/g,'');
+    var totalEl = document.getElementById('gc-total-' + gradeKey);
+    if (totalEl) totalEl.textContent = '₹' + parseInt(c.dataset.exam,10).toLocaleString('en-IN');
+  });
   updateGeSummary();
 }
 
@@ -2247,6 +2277,29 @@ function lookupGeStudent() {
 function toggleGradeCard(card) {
   card.classList.toggle('selected');
   document.getElementById('ge-grade-msg').textContent = '';
+  // When deselecting, reset radio back to exam-only so re-selection defaults correctly
+  if (!card.classList.contains('selected')) {
+    var gradeKey = card.dataset.grade.replace(/\s/g,'');
+    var radios = card.querySelectorAll('input[type=radio]');
+    if (radios.length) radios[0].checked = true;
+    card.dataset.total = card.dataset.exam;
+    var totalEl = document.getElementById('gc-total-' + gradeKey);
+    if (totalEl) totalEl.textContent = '₹' + parseInt(card.dataset.exam,10).toLocaleString('en-IN');
+  }
+  updateGeSummary();
+}
+
+function selectGradeOption(radio, grade) {
+  // Find the parent card
+  var card = radio.closest('.ge-grade-card');
+  if (!card) return;
+  var gradeKey = grade.replace(/\s/g,'');
+  var examAmt     = parseInt(card.dataset.exam, 10);
+  var trainingAmt = parseInt(card.dataset.training, 10);
+  var chosen = radio.value === 'training' ? trainingAmt : examAmt;
+  card.dataset.total = chosen;
+  var totalEl = document.getElementById('gc-total-' + gradeKey);
+  if (totalEl) totalEl.textContent = '₹' + chosen.toLocaleString('en-IN');
   updateGeSummary();
 }
 
@@ -2270,8 +2323,10 @@ function updateGeSummary() {
   selected.forEach(function(c) {
     var grade = c.dataset.grade;
     var amt   = parseInt(c.dataset.total, 10);
+    var withTraining = c.querySelector('input[value=training]') && c.querySelector('input[value=training]').checked;
+    var label = grade + (withTraining ? ' (+ Training)' : '');
     total += amt;
-    lines += '<div class="ge-summary-line"><span>' + grade + '</span><span>₹' + amt.toLocaleString('en-IN') + '</span></div>';
+    lines += '<div class="ge-summary-line"><span>' + label + '</span><span>₹' + amt.toLocaleString('en-IN') + '</span></div>';
   });
 
   if (linesEl) linesEl.innerHTML = lines;
@@ -2844,7 +2899,10 @@ function initiatePayment(flow) {
 
     // Build grade list for description
     var gradeList = [];
-    selectedCards.forEach(function(c){ gradeList.push(c.dataset.grade); });
+    selectedCards.forEach(function(c){
+      var withTraining = c.querySelector('input[value=training]') && c.querySelector('input[value=training]').checked;
+      gradeList.push(c.dataset.grade + (withTraining ? '(+T)' : ''));
+    });
 
     name      = foundGeStudent['Student Name'];
     phone     = document.getElementById('ge-phone').value;
@@ -3024,8 +3082,10 @@ function initiatePayment(flow) {
         var geBreakdown = [];
         if (isGradeExam) {
           document.querySelectorAll('.ge-grade-card.selected').forEach(function(c){
-            geGradeList.push(c.dataset.grade);
-            geBreakdown.push(c.dataset.grade + ': ₹' + c.dataset.total);
+            var withTraining = c.querySelector('input[value=training]') && c.querySelector('input[value=training]').checked;
+            var label = c.dataset.grade + (withTraining ? ' (+ Training)' : '');
+            geGradeList.push(label);
+            geBreakdown.push(label + ': ₹' + c.dataset.total);
           });
         }
         submitToPortal({
