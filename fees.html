@@ -3378,7 +3378,7 @@ function initiatePayment(flow) {
         submitToPortal({
           submissionType : 'Program Registration',
           programName    : currentWs['Name']         || '',
-          programType    : (isGradeExam || isTopup) ? 'Grade Exam' : (currentWs['Type'] || 'Workshop'),
+          programType    : isGradeExam ? 'Grade Exam' : isTopup ? 'Training Top-up' : (currentWs['Type'] || 'Workshop'),
           programDate    : (isGradeExam || isTopup) ? '02 Aug 2026' : (currentWs['Date'] || ''),
           studentType    : (isGradeExam || isTopup) ? 'KV Student' : (flow === 'ws-kv' ? 'KV Student' : 'Outside Student'),
           studentName    : name,
