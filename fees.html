@@ -2387,37 +2387,80 @@ function resetGeTopup() {
 
 function lookupGeTopupStudent() {
   var rawRoll = document.getElementById('ge-topup-roll').value.trim();
-  var msg = document.getElementById('ge-topup-roll-msg');
-  var btn = document.getElementById('ge-topup-lookup-btn');
+  var msg     = document.getElementById('ge-topup-roll-msg');
+  var btn     = document.getElementById('ge-topup-lookup-btn');
   if (!rawRoll) { msg.textContent = 'Please enter your Roll No.'; msg.className = 'hint err'; return; }
   var roll = 'KAL01' + rawRoll.toUpperCase();
   btn.disabled = true; btn.textContent = 'Checking…';
   msg.textContent = ''; msg.className = 'hint';
+
   loadAllData().then(function() {
-    btn.disabled = false; btn.textContent = 'Check';
+    // Step 1 — verify student exists and is active
     var student = DATA.students.find(function(s){
       return (s['Roll No'] || '').toString().trim().toUpperCase() === roll;
     });
     if (!student) {
+      btn.disabled = false; btn.textContent = 'Check';
       msg.innerHTML = 'Roll No not recognised. Please check and try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
       msg.className = 'hint err'; return;
     }
     if ((student['Status'] || '').toLowerCase() !== 'active') {
+      btn.disabled = false; btn.textContent = 'Check';
       msg.innerHTML = 'This Roll No is inactive. Please <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a> for help.';
       msg.className = 'hint err'; return;
     }
-    foundGeTopupStudent = student;
-    document.getElementById('ge-topup-student-display').textContent = student['Student Name'] || '—';
-    document.getElementById('ge-topup-parent-display').textContent  = student['Parent Name']  || '—';
-    document.getElementById('ge-topup-chip').classList.add('show');
-    document.getElementById('ge-topup-phone').value  = student['Phone'] || '';
-    document.getElementById('ge-topup-email').value  = student['Email'] || '';
-    document.getElementById('ge-topup-parent').value = student['Parent Name'] || '';
-    document.getElementById('ge-topup-grade-section').style.display = 'block';
-    document.getElementById('ge-topup-grade-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Step 2 — verify exam fee paid before allowing topup
+    var verifyUrl = PORTAL_SUBMIT_URL + '?action=getExamGrades&rollNo=' + encodeURIComponent(roll);
+    return fetch(verifyUrl, { method: 'GET', mode: 'cors' })
+      .then(function(r) { return r.json(); })
+      .then(function(result) {
+        btn.disabled = false; btn.textContent = 'Check';
+
+        var paidGrades = (result && result.grades)
+          ? result.grades.split(',').map(function(g){ return g.trim(); }).filter(Boolean)
+          : [];
+
+        if (!paidGrades.length) {
+          // No exam payment found — block topup completely
+          msg.innerHTML =
+            '<strong>No Grade Exam payment found</strong> for this Roll No.<br>' +
+            'Training top-up is only available for students who have already paid the exam fee. ' +
+            'Please use <strong>New Enrolment</strong> above to pay the exam fee first, ' +
+            'or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a> if you believe this is an error.';
+          msg.className = 'hint err';
+          document.getElementById('ge-topup-chip').classList.remove('show');
+          document.getElementById('ge-topup-grade-section').style.display = 'none';
+          foundGeTopupStudent = null;
+          return;
+        }
+
+        // Step 3 — exam verified → show only eligible grade cards
+        foundGeTopupStudent = student;
+        document.getElementById('ge-topup-student-display').textContent = student['Student Name'] || '—';
+        document.getElementById('ge-topup-parent-display').textContent  = student['Parent Name']  || '—';
+        document.getElementById('ge-topup-chip').classList.add('show');
+        document.getElementById('ge-topup-phone').value  = student['Phone'] || '';
+        document.getElementById('ge-topup-email').value  = student['Email'] || '';
+        document.getElementById('ge-topup-parent').value = student['Parent Name'] || '';
+
+        // Show only grades where exam fee was paid; hide the rest
+        ['Pre-Grade', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4'].forEach(function(grade) {
+          var card = document.querySelector('#ge-topup-grade-section .ge-grade-card[data-grade="' + grade + '"]');
+          if (!card) return;
+          card.style.display = paidGrades.indexOf(grade) !== -1 ? '' : 'none';
+          card.classList.remove('selected');
+        });
+
+        msg.textContent = '✓ Exam fee verified. Training available for: ' + paidGrades.join(', ') + '.';
+        msg.className   = 'hint ok';
+        document.getElementById('ge-topup-grade-section').style.display = 'block';
+        document.getElementById('ge-topup-grade-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        updateGeTopupSummary();
+      });
   }).catch(function() {
     btn.disabled = false; btn.textContent = 'Check';
-    msg.innerHTML = 'Unable to connect. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
+    msg.innerHTML = 'Unable to verify. Please try again or <a href="https://wa.me/917200095585" target="_blank" style="color:var(--maroon);">WhatsApp us</a>.';
     msg.className = 'hint err';
   });
 }
@@ -3207,7 +3250,7 @@ function initiatePayment(flow) {
       student_name: name,
       description:  desc,
       contact:      phone,
-      roll_no:      (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : (foundGeStudent ? (foundGeStudent['Roll No'] || '') : ''))),
+      roll_no:      (foundStudent ? (foundStudent['Roll No'] || '') : (foundWsStudent ? (foundWsStudent['Roll No'] || '') : (foundGeStudent ? (foundGeStudent['Roll No'] || '') : (foundGeTopupStudent ? (foundGeTopupStudent['Roll No'] || '') : '')))),
       fee_month:    (document.getElementById('ex-month') ? document.getElementById('ex-month').value : ''),
       program:      (currentWs ? (currentWs['Name'] || '') : '')
     },
